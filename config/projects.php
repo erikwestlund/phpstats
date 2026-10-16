@@ -71,7 +71,7 @@ return [
         'status' => 'in-progress',
         'status_label' => 'In progress',
         'repo' => 'https://github.com/erikwestlund/phiz',
-        'docs' => null,
+        'docs' => 'https://erikwestlund.github.io/phiz/',
         'overview' => [
             'phiz describes charts with a grammar modeled on ggplot2 and produces Vega-Lite specifications, which the browser renders.',
         ],
