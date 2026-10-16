@@ -180,7 +180,9 @@ class PagesTest extends TestCase
 
     public function test_benchmarks_page_shows_every_model(): void
     {
-        $this->get('/benchmarks')->assertOk()->assertSee('Agrees with R');
+        $this->get('/benchmarks')->assertOk()->assertSee('Agrees with R')
+            ->assertSee('Plain PHP, normal equations (coefficients only)')
+            ->assertSee('Polyfill agrees');
 
         $data = Benchmarks::load();
         $this->assertSame(array_keys(Benchmarks::MODELS), array_keys($data['models']));
