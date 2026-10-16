@@ -114,5 +114,47 @@
                 The no-pooling model fits its own study-hours slope, so the distance between its intercepts and the mixed-model intercepts is not exactly this share.
             </p>
         </div>
+
+        <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">What if</h2>
+        @if (! $fit['what_if'])
+            <p class="mt-3 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
+                This PHP process has a php_stats build without stats_predict(), so it cannot predict for a new student.
+            </p>
+        @else
+            @php($whatIf = $fit['what_if'])
+            <div class="mt-3 flex flex-wrap items-end gap-6 text-sm">
+                <label class="flex flex-col gap-2">
+                    <span class="font-medium">School</span>
+                    <select wire:model.live="whatIfSchool" class="rounded border border-zinc-300 bg-transparent px-2 py-1 dark:border-zinc-700">
+                        <option value="new">A school not in the data</option>
+                        @foreach ($fit['schools'] as $school)
+                            <option value="{{ $school['school'] }}">{{ $school['school'] }}</option>
+                        @endforeach
+                    </select>
+                </label>
+                <label class="flex flex-col gap-2">
+                    <span class="font-medium">Study hours</span>
+                    <input type="number" min="0" max="20" step="0.5" wire:model.live.debounce.400ms.number="whatIfHours"
+                           class="w-24 rounded border border-zinc-300 bg-transparent px-2 py-1 dark:border-zinc-700">
+                </label>
+            </div>
+            <dl class="mt-4 grid gap-4 text-sm sm:grid-cols-2">
+                <div class="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+                    <dt class="text-zinc-500">Predicted score at {{ $whatIf['school'] === 'new' ? 'a new school' : $whatIf['school'] }}</dt>
+                    <dd class="mt-1 text-2xl font-semibold tabular-nums">{{ number_format($whatIf['conditional'], 1) }}</dd>
+                </div>
+                <div class="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+                    <dt class="text-zinc-500">Population prediction</dt>
+                    <dd class="mt-1 text-2xl font-semibold tabular-nums">{{ number_format($whatIf['population'], 1) }}</dd>
+                </div>
+            </dl>
+            <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+                stats_predict() gives both predictions for a student who studies {{ $whatIf['hours'] }} hours.
+                The first adds the school's random intercept, as lme4's predict() does by default.
+                The second uses the fixed effects only, as predict() does with re.form = NA.
+                A school outside the data has no estimated random intercept, so with allow_new_levels it gets the population prediction.
+                lme4 does not compute standard errors for these predictions, and neither does stats_predict().
+            </p>
+        @endif
     @endif
 </div>

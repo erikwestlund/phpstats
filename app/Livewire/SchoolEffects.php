@@ -22,6 +22,11 @@ class SchoolEffects extends Component
 
     public bool $reml = true;
 
+    /** What-if inputs: a school (or 'new' for one outside the data) and study hours. */
+    public string $whatIfSchool = 'new';
+
+    public float $whatIfHours = 8.0;
+
     public function render()
     {
         return view('livewire.school-effects', [
@@ -67,6 +72,30 @@ class SchoolEffects extends Component
             'icc' => $schoolVariance / ($schoolVariance + $residualVariance),
             'schools' => $schools,
             'chart' => $this->chart($schools, $intercept),
+            'what_if' => $this->whatIf($mixed, $random['group_labels']),
+        ];
+    }
+
+    /**
+     * stats_predict() for one student: the prediction with the school's random
+     * intercept (lme4's re.form = NULL) and the population prediction without
+     * it (re.form = NA). A new school predicts at the population level.
+     */
+    private function whatIf(array $mixed, array $schools): ?array
+    {
+        if (! function_exists('stats_predict')) {
+            return null;
+        }
+
+        $school = in_array($this->whatIfSchool, $schools, true) ? $this->whatIfSchool : 'new';
+        $hours = max(0.0, min(20.0, $this->whatIfHours));
+        $newdata = ['study_hours' => [$hours], 'school' => [$school === 'new' ? 'a new school' : $school]];
+
+        return [
+            'school' => $school,
+            'hours' => $hours,
+            'conditional' => stats_predict($mixed, $newdata, allow_new_levels: true)['fit'][0],
+            'population' => stats_predict($mixed, $newdata, random: false)['fit'][0],
         ];
     }
 

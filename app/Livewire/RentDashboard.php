@@ -9,7 +9,7 @@ use Phibble\Frame;
 use Phiz\Plot;
 use Throwable;
 
-use function Phplyr\{arrange, col, filter, glm, group_by, mean, median, mutate, n, summarise};
+use function Phplyr\{arrange, col, filter, glm, group_by, lm, mean, median, mutate, n, summarise};
 
 /**
  * Vignette: a reactive dashboard over the simulated rentals. Every input is a
@@ -28,6 +28,13 @@ class RentDashboard extends Component
     public int $maxBedrooms = 4;
 
     public int $budget = 2500;
+
+    /** What-if inputs: one hypothetical rental to predict. */
+    public string $whatIfNeighborhood = 'Riverside';
+
+    public int $whatIfArea = 75;
+
+    public int $whatIfBedrooms = 2;
 
     public function mount(): void
     {
@@ -83,6 +90,7 @@ class RentDashboard extends Component
         }
 
         return [
+            'whatIf' => $this->whatIf($rentals, $neighborhoods, $low, $high, $model),
             'rentals' => $rentals->nrow(),
             'budget' => $budget,
             'summary' => $summary->toRows(),
@@ -91,6 +99,54 @@ class RentDashboard extends Component
             'error' => $error,
             'scatter' => $this->scatter($rentals->toRows(), $budget),
             'curves' => $model ? $this->curves($model, $low, $high) : null,
+        ];
+    }
+
+    /**
+     * Predictions for the what-if rental with stats_predict(): its rent from a
+     * linear model, with a 95% prediction interval, and its chance of
+     * exceeding the budget from the logistic model, with a 95% confidence
+     * interval computed on the link scale.
+     */
+    private function whatIf(Frame $rentals, array $neighborhoods, int $low, int $high, ?array $model): ?array
+    {
+        if (! function_exists('stats_predict')) {
+            return null;
+        }
+
+        $neighborhood = in_array($this->whatIfNeighborhood, $neighborhoods, true) ? $this->whatIfNeighborhood : $neighborhoods[0];
+        $area = max(20, min(200, $this->whatIfArea));
+        $bedrooms = max(1, min(4, $this->whatIfBedrooms));
+        $newdata = ['neighborhood' => [$neighborhood], 'area_m2' => [$area], 'bedrooms' => [$bedrooms]];
+
+        // Constant columns leave the model, as in the logistic formula above.
+        $formula = 'monthly_rent ~ area_m2'
+            .($low === $high ? '' : ' + bedrooms')
+            .(count($neighborhoods) === 1 ? '' : ' + neighborhood');
+
+        try {
+            $rent = stats_predict($rentals |> lm($formula), $newdata, interval: 'prediction', level: 0.95);
+        } catch (Throwable $e) {
+            return ['error' => 'The rent model cannot be fitted to this selection: '.$e->getMessage()];
+        }
+
+        $over = null;
+        if ($model) {
+            $link = stats_predict($model, $newdata, se_fit: true);
+            $logistic = fn (float $eta) => 1 / (1 + exp(-$eta));
+            [$eta, $se] = [$link['fit'][0], $link['se_fit'][0]];
+            $over = ['fit' => $logistic($eta), 'lower' => $logistic($eta - 1.959964 * $se), 'upper' => $logistic($eta + 1.959964 * $se)];
+        }
+
+        return [
+            'neighborhood' => $neighborhood,
+            'area' => $area,
+            'bedrooms' => $bedrooms,
+            'extrapolating' => $bedrooms < $low || $bedrooms > $high,
+            'formula' => $formula,
+            'rent' => ['fit' => $rent['fit'][0], 'lower' => $rent['lower'][0], 'upper' => $rent['upper'][0]],
+            'over' => $over,
+            'error' => null,
         ];
     }
 

@@ -327,4 +327,36 @@ class PagesTest extends TestCase
         $this->assertNotNull($polars['max_difference']);
         $this->assertLessThan(1e-9, $polars['max_difference']);
     }
+
+    public function test_what_if_predictions(): void
+    {
+        if (! function_exists('stats_predict')) {
+            $this->markTestSkipped('php_stats with stats_predict is not loaded.');
+        }
+
+        $this->get('/vignettes/rent-dashboard')->assertOk()->assertSee('Predicted rent');
+        $this->get('/vignettes/school-effects')->assertOk()->assertSee('Population prediction');
+
+        $page = Livewire::test(RentDashboard::class)->set('whatIfNeighborhood', 'Harbor')->set('whatIfArea', 80)->set('whatIfBedrooms', 3);
+        $whatIf = $page->viewData('whatIf');
+        $this->assertSame('monthly_rent ~ area_m2 + bedrooms + neighborhood', $whatIf['formula']);
+        // The data were generated from this model, so the prediction lands near the true mean.
+        $truth = SimulatedRentals::INTERCEPT + SimulatedRentals::AREA_M2 * 80 + SimulatedRentals::BEDROOMS * 3 + SimulatedRentals::NEIGHBORHOODS['Harbor'];
+        $this->assertEqualsWithDelta($truth, $whatIf['rent']['fit'], 30);
+        $this->assertEqualsWithDelta(2 * 1.96 * SimulatedRentals::SIGMA, $whatIf['rent']['upper'] - $whatIf['rent']['lower'], 30);
+        $this->assertTrue($whatIf['over']['lower'] < $whatIf['over']['fit'] && $whatIf['over']['fit'] < $whatIf['over']['upper']);
+
+        $single = Livewire::test(RentDashboard::class)->set('neighborhoods', ['Harbor'])->set('minBedrooms', 2)->set('maxBedrooms', 2)->set('whatIfBedrooms', 3)->viewData('whatIf');
+        $this->assertSame('monthly_rent ~ area_m2', $single['formula']);
+        $this->assertTrue($single['extrapolating']);
+
+        $schools = Livewire::test(SchoolEffects::class)->set('whatIfSchool', 'school-07')->set('whatIfHours', 5)->viewData('fit');
+        $school07 = collect($schools['schools'])->firstWhere('school', 'school-07');
+        $hours = $schools['mixed']['named']['study_hours'];
+        $this->assertEqualsWithDelta($school07['partial_pooling'] + 5 * $hours, $schools['what_if']['conditional'], 1e-9);
+        $this->assertEqualsWithDelta($schools['mixed']['named']['(Intercept)'] + 5 * $hours, $schools['what_if']['population'], 1e-9);
+
+        $new = Livewire::test(SchoolEffects::class)->viewData('fit')['what_if'];
+        $this->assertSame($new['population'], $new['conditional']);
+    }
 }
