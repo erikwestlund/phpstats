@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Behind a TLS-terminating proxy (Nginx Proxy Manager on the VM), trust
+        // its X-Forwarded-* headers so generated URLs use https.
+        if ($proxies = config('app.trusted_proxies')) {
+            TrustProxies::at($proxies === '*' ? '*' : array_map('trim', explode(',', $proxies)));
+        }
     }
 }

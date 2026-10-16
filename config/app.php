@@ -55,6 +55,13 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     /*
+    | Trusted proxies: comma-separated proxy IPs or CIDRs whose X-Forwarded-*
+    | headers are trusted, or * for any. Applied in AppServiceProvider.
+    */
+
+    'trusted_proxies' => env('TRUSTED_PROXIES'),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
