@@ -40,8 +40,8 @@ class PagesTest extends TestCase
 
     public function test_school_scores_vignette_fits_the_model(): void
     {
-        if (! extension_loaded('php_stats')) {
-            $this->markTestSkipped('php_stats is not loaded.');
+        if (! function_exists('stats_lm')) {
+            $this->markTestSkipped('php_stats with stats_lm is not loaded.');
         }
 
         $this->get('/vignettes/school-scores')
@@ -62,8 +62,8 @@ class PagesTest extends TestCase
 
     public function test_simulated_rents_vignette_recovers_the_coefficients(): void
     {
-        if (! extension_loaded('php_stats')) {
-            $this->markTestSkipped('php_stats is not loaded.');
+        if (! function_exists('stats_lm')) {
+            $this->markTestSkipped('php_stats with stats_lm is not loaded.');
         }
 
         $this->get('/vignettes/simulated-rents')
@@ -80,8 +80,8 @@ class PagesTest extends TestCase
 
     public function test_neighborhood_summary_matches_the_sample(): void
     {
-        if (! extension_loaded('php_stats')) {
-            $this->markTestSkipped('php_stats is not loaded.');
+        if (! function_exists('stats_lm')) {
+            $this->markTestSkipped('php_stats with stats_lm is not loaded.');
         }
 
         $summary = Livewire::test(SimulatedRents::class)->set('n', 300)->viewData('fit')['by_neighborhood'];

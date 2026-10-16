@@ -8,16 +8,8 @@
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$scores = Frame::fromQuery(StudentScore::query());
-
-$fit = stats_ols(
-    x: $scores->toMatrix(['study_hours', 'prior_score']),
-    y: $scores->toVector('score'),
-);</code></pre>
-        <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-            When php-stats provides stats_lm(), phplyr's lm() will replace the stats_ols() call:
-        </p>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = $scores |> lm('score ~ study_hours + prior_score');</code></pre>
+        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = Frame::fromQuery(StudentScore::query())
+    |> lm('score ~ study_hours + prior_score');</code></pre>
     </article>
 
     <div class="mt-10">

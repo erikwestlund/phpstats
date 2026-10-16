@@ -11,7 +11,7 @@
 
     @if (! $extensionLoaded)
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-            The php_stats extension is not loaded in this PHP process, so the model cannot be fitted.
+            This PHP process does not have the php_stats extension with stats_lm(), so the model cannot be fitted.
         </p>
     @elseif (! $fit)
         <p class="mt-6 text-sm text-zinc-600 dark:text-zinc-400">Select at least one predictor.</p>

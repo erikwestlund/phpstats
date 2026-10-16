@@ -4,21 +4,19 @@ namespace App\Livewire;
 
 use App\Data\SimulatedRentals;
 use App\Models\SimulatedRental;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Phibble\Frame;
 use Phiz\Plot;
 
 use function Phiz\aes;
-use function Phplyr\{arrange, group_by, head, mean, mutate, n, summarise};
+use function Phplyr\{arrange, group_by, head, lm, mean, n, summarise};
 
 /**
  * Vignette: fit rent ~ area_m2 + bedrooms + neighborhood on simulated data
  * and compare the estimates with the coefficients that generated it.
  *
- * The data steps use phibble and phplyr. The neighborhood indicators are built
- * with mutate() and the fit calls stats_ols() until php_stats provides
- * stats_lm(), which phplyr's lm() wraps.
+ * phibble reads the table, phplyr summarises it, and phplyr's lm() fits the
+ * model with php_stats' stats_lm().
  */
 class SimulatedRents extends Component
 {
@@ -29,35 +27,25 @@ class SimulatedRents extends Component
     public function render()
     {
         return view('livewire.simulated-rents', [
-            'extensionLoaded' => extension_loaded('php_stats'),
+            'extensionLoaded' => function_exists('stats_lm'),
             'fit' => $this->fit(),
         ]);
     }
 
     private function fit(): ?array
     {
-        if (! extension_loaded('php_stats')) {
+        if (! function_exists('stats_lm')) {
             return null;
         }
 
         $n = in_array($this->n, self::SIZES, true) ? $this->n : max(self::SIZES);
-        $levels = array_slice(array_keys(SimulatedRentals::NEIGHBORHOODS), 1);
 
-        // One indicator column per non-reference neighborhood, e.g. is_old_town.
-        $indicators = [];
-        foreach ($levels as $level) {
-            $indicators['is_'.Str::snake($level)] = fn ($r) => $r->neighborhood === $level;
-        }
-
+        // Riverside first, so it is the reference level.
         $rentals = Frame::fromQuery(SimulatedRental::query()->orderBy('id'))
+            ->asFactor('neighborhood', array_keys(SimulatedRentals::NEIGHBORHOODS))
             |> head($n);
 
-        $design = $rentals |> mutate(...$indicators);
-
-        $result = stats_ols(
-            x: $design->toMatrix(['area_m2', 'bedrooms', ...array_keys($indicators)]),
-            y: $design->toVector('monthly_rent'),
-        );
+        $result = $rentals |> lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');
 
         $byNeighborhood = $rentals
             |> group_by('neighborhood')
@@ -65,10 +53,11 @@ class SimulatedRents extends Component
             |> arrange('neighborhood');
 
         $terms = [];
-        foreach (array_keys(SimulatedRentals::coefficients()) as $i => $term) {
+        foreach (SimulatedRentals::coefficients() as $term => $true) {
+            $i = array_search($term, $result['columns'], true);
             $terms[] = [
                 'term' => $term,
-                'true' => SimulatedRentals::coefficients()[$term],
+                'true' => $true,
                 'estimate' => $result['coefficients'][$i],
                 'std_error' => $result['std_errors'][$i],
                 'lower' => $result['conf_int'][$i][0],
@@ -90,7 +79,7 @@ class SimulatedRents extends Component
      */
     private function chart(array $terms): Plot
     {
-        $values = array_map(fn ($t) => [...$t, 'term' => substr($t['term'], strlen('neighborhood: '))], $terms);
+        $values = array_map(fn ($t) => [...$t, 'term' => substr($t['term'], strlen('neighborhood'))], $terms);
 
         return Plot::of($values)
             ->aes(x: 'estimate', y: 'term', xmin: 'lower', xmax: 'upper')

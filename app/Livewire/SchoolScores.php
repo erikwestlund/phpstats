@@ -7,11 +7,12 @@ use Livewire\Component;
 use Phibble\Frame;
 use Phiz\Plot;
 
+use function Phplyr\lm;
+
 /**
  * Vignette: regress test score on study hours and prior score.
  *
- * phibble reads the table and the fit calls stats_ols(). Once php_stats
- * provides stats_lm(), this becomes Frame::fromQuery(...) |> lm(...).
+ * phibble reads the table and phplyr's lm() fits it with php_stats' stats_lm().
  */
 class SchoolScores extends Component
 {
@@ -26,7 +27,7 @@ class SchoolScores extends Component
     public function render()
     {
         return view('livewire.school-scores', [
-            'extensionLoaded' => extension_loaded('php_stats'),
+            'extensionLoaded' => function_exists('stats_lm'),
             'fit' => $this->fit(),
         ]);
     }
@@ -35,16 +36,13 @@ class SchoolScores extends Component
     {
         $predictors = array_values(array_intersect(array_keys(self::PREDICTORS), $this->predictors));
 
-        if (! extension_loaded('php_stats') || $predictors === []) {
+        if (! function_exists('stats_lm') || $predictors === []) {
             return null;
         }
 
         $scores = Frame::fromQuery(StudentScore::query()->select([...$predictors, 'score']));
 
-        $result = stats_ols(
-            x: $scores->toMatrix($predictors),
-            y: $scores->toVector('score'),
-        );
+        $result = $scores |> lm('score ~ '.implode(' + ', $predictors));
 
         return [
             'terms' => ['(Intercept)', ...array_map(fn ($p) => self::PREDICTORS[$p], $predictors)],

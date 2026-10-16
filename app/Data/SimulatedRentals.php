@@ -67,8 +67,9 @@ final class SimulatedRentals
     }
 
     /**
-     * True coefficients in design-matrix order: intercept, area, bedrooms,
-     * then one indicator per non-reference neighborhood.
+     * True coefficients keyed by R's coefficient names for
+     * monthly_rent ~ area_m2 + bedrooms + neighborhood, with Riverside as the
+     * reference level: (Intercept), area_m2, bedrooms, neighborhoodOld Town, ...
      *
      * @return array<string, float>
      */
@@ -80,7 +81,7 @@ final class SimulatedRentals
             '(Intercept)' => self::INTERCEPT,
             'area_m2' => self::AREA_M2,
             'bedrooms' => self::BEDROOMS,
-            ...array_combine(array_map(fn ($n) => "neighborhood: {$n}", array_keys($effects)), $effects),
+            ...array_combine(array_map(fn ($n) => "neighborhood{$n}", array_keys($effects)), $effects),
         ];
     }
 
