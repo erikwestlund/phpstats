@@ -11,7 +11,7 @@ return [
         'status' => 'working',
         'status_label' => 'Working, v0.2',
         'repo' => 'https://github.com/erikwestlund/php-stats',
-        'docs' => null,
+        'docs' => 'https://erikwestlund.github.io/php-stats/',
         'overview' => [
             'php-stats fits statistical models inside PHP and returns plain PHP arrays. It provides OLS, logistic, probit, and Poisson regression, linear mixed models, and mixed logistic regression.',
             'Version 0.2 adds probability distributions, descriptive statistics, posterior-draw kernels, and a seeded random number generator. Results are verified against R.',
