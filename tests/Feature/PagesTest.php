@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Data\SchoolPosterior;
 use App\Data\SimulatedRentals;
 use App\Livewire\BayesianSchools;
+use App\Livewire\RentDashboard;
 use App\Livewire\SchoolEffects;
 use App\Livewire\SimulatedRents;
 use App\Livewire\SqlPipeline;
@@ -148,6 +149,31 @@ class PagesTest extends TestCase
             $fit['parameters'][3]['upper'] - $fit['parameters'][3]['lower'],
             $narrow['parameters'][3]['upper'] - $narrow['parameters'][3]['lower'],
         );
+    }
+
+    public function test_rent_dashboard_reacts_to_its_filters(): void
+    {
+        if (! function_exists('stats_glm')) {
+            $this->markTestSkipped('php_stats with stats_glm is not loaded.');
+        }
+
+        $this->get('/vignettes/rent-dashboard')->assertOk()->assertSee('3,000 rentals selected');
+
+        $harbor = Livewire::test(RentDashboard::class)->set('neighborhoods', ['Harbor'])->set('budget', 2500);
+        $this->assertSame(SimulatedRental::where('neighborhood', 'Harbor')->count(), $harbor->viewData('rentals'));
+        $this->assertEqualsWithDelta(
+            SimulatedRental::where('neighborhood', 'Harbor')->where('monthly_rent', '>', 2500)->count() / $harbor->viewData('rentals'),
+            $harbor->viewData('summary')[0]['share_over_budget'],
+            1e-12,
+        );
+        $this->assertGreaterThan(0, $harbor->viewData('model')['named']['area_m2']);
+
+        $single = Livewire::test(RentDashboard::class)->set('minBedrooms', 2)->set('maxBedrooms', 2);
+        $this->assertSame(['(Intercept)', 'area_m2'], $single->viewData('model')['columns']);
+
+        $allOver = Livewire::test(RentDashboard::class)->set('minBedrooms', 4)->set('budget', 1750);
+        $this->assertNull($allOver->viewData('model'));
+        $this->assertStringContainsString('over the budget', $allOver->viewData('error'));
     }
 
     public function test_sql_pipeline_matches_the_in_memory_result(): void

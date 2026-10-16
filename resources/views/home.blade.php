@@ -26,6 +26,7 @@
         <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Each vignette fits its models on the server when the page loads or an input changes.</p>
         <ul class="mt-4 space-y-3">
             @foreach ([
+                'vignettes.rent-dashboard' => ['Rent dashboard', 'A reactive Livewire dashboard: filters, a phplyr summary, two phiz charts, and a logistic model.'],
                 'vignettes.simulated-rents' => ['Simulated rents', 'Linear regression with a factor, compared with the coefficients that generated the data.'],
                 'vignettes.school-scores' => ['School scores', 'Linear regression with a choice of predictors and an observed-against-fitted chart.'],
                 'vignettes.school-effects' => ['School effects', 'A linear mixed model with random school intercepts, variance components, and shrinkage.'],
