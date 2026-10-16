@@ -18,8 +18,24 @@
     |> lm('log_price ~ area + neighborhood');</code></pre>
         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
             phibble loads the query into a frame. phplyr filters and transforms it, and lm() fits the model with php-stats.
-            The <a href="{{ route('vignettes.simulated-rents') }}" class="underline">simulated rents</a> and <a href="{{ route('vignettes.school-scores') }}" class="underline">school scores</a> vignettes run models like this one on the server.
         </p>
+    </section>
+
+    <section class="mt-12">
+        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">Vignettes</h2>
+        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Each vignette fits its models on the server when the page loads or an input changes.</p>
+        <ul class="mt-4 space-y-3">
+            @foreach ([
+                'vignettes.simulated-rents' => ['Simulated rents', 'Linear regression with a factor, compared with the coefficients that generated the data.'],
+                'vignettes.school-scores' => ['School scores', 'Linear regression with a choice of predictors and an observed-against-fitted chart.'],
+                'vignettes.school-effects' => ['School effects', 'A linear mixed model with random school intercepts, variance components, and shrinkage.'],
+            ] as $route => [$title, $description])
+                <li>
+                    <a href="{{ route($route) }}" class="font-medium underline">{{ $title }}</a>
+                    <span class="text-zinc-600 dark:text-zinc-400"> {{ $description }}</span>
+                </li>
+            @endforeach
+        </ul>
     </section>
 
     <section class="mt-12">

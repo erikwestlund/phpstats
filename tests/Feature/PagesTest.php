@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Data\SimulatedRentals;
+use App\Livewire\SchoolEffects;
 use App\Livewire\SimulatedRents;
 use App\Models\SimulatedRental;
+use App\Models\StudentScore;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -75,6 +77,41 @@ class PagesTest extends TestCase
 
         foreach ($fit['terms'] as $term) {
             $this->assertEqualsWithDelta($term['true'], $term['estimate'], 4 * $term['std_error'], $term['term']);
+        }
+    }
+
+    public function test_school_effects_vignette_reports_variance_components(): void
+    {
+        if (! function_exists('stats_lmer')) {
+            $this->markTestSkipped('php_stats with stats_lmer is not loaded.');
+        }
+
+        $this->get('/vignettes/school-effects')
+            ->assertOk()
+            ->assertSee('Variance components')
+            ->assertSee('REML fit on 250 students in 12 schools');
+
+        $ml = Livewire::test(SchoolEffects::class)->set('reml', false)->viewData('fit');
+        $this->assertSame('ML', $ml['mixed']['method']);
+    }
+
+    public function test_school_intercepts_shrink_by_the_stated_share(): void
+    {
+        if (! function_exists('stats_lmer')) {
+            $this->markTestSkipped('php_stats with stats_lmer is not loaded.');
+        }
+
+        $fit = Livewire::test(SchoolEffects::class)->viewData('fit');
+        $intercept = $fit['mixed']['named']['(Intercept)'];
+        $residuals = [];
+        foreach (StudentScore::query()->get() as $i => $student) {
+            $residuals[$student->school][] = $fit['mixed']['marginal_residuals'][$i];
+        }
+
+        // The random intercept is the school's mean residual times (1 - shrinkage).
+        foreach ($fit['schools'] as $school) {
+            $mean = array_sum($residuals[$school['school']]) / count($residuals[$school['school']]);
+            $this->assertEqualsWithDelta((1 - $school['shrinkage']) * $mean, $school['partial_pooling'] - $intercept, 1e-9);
         }
     }
 
