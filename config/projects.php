@@ -35,12 +35,13 @@ return [
     'phibble' => [
         'name' => 'phibble',
         'summary' => 'A typed, immutable data frame that loads from CSV files, PDO, and Eloquent or Doctrine queries.',
-        'status' => 'in-progress',
-        'status_label' => 'MVP in progress',
+        'status' => 'working',
+        'status_label' => 'Released, v0.1.0',
         'repo' => 'https://github.com/erikwestlund/phibble',
         'docs' => 'https://erikwestlund.github.io/phibble/',
         'links' => [
             'Laravel integration' => 'https://erikwestlund.github.io/phibble/laravel.html',
+            'Release notes' => 'https://github.com/erikwestlund/phibble/releases/tag/v0.1.0',
         ],
         'overview' => [
             'phibble is the shared table type for phplyr, phpolars, php-stats, and cmdstanphp. Every operation returns a new frame.',
