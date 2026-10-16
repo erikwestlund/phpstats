@@ -8,7 +8,7 @@
     "require": {
         "php": "^8.5",
         "cmdstan/php": "dev-phpstats-family",
-        "erikwestlund/phibble": "dev-main",
+        "erikwestlund/phibble": "^0.1",
         "erikwestlund/phiz": "^0.2",
         "erikwestlund/phplyr": "dev-main",
         "laravel/framework": "^13.17",

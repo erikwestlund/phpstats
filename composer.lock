@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f37df0384539efafe400ee30934f021b",
+    "content-hash": "2184b974222bb88b6c3b6622cf089479",
     "packages": [
         {
             "name": "brick/math",
@@ -577,16 +577,16 @@
         },
         {
             "name": "erikwestlund/phibble",
-            "version": "dev-main",
+            "version": "v0.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/erikwestlund/phibble.git",
-                "reference": "9655e2a0220d525bacc51509c6fce0a6d4eeaf81"
+                "url": "git@github.com:erikwestlund/phibble.git",
+                "reference": "2a6e457f5e9a255f5b3cd8eb9cdef577593248b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phibble/zipball/9655e2a0220d525bacc51509c6fce0a6d4eeaf81",
-                "reference": "9655e2a0220d525bacc51509c6fce0a6d4eeaf81",
+                "url": "https://api.github.com/repos/erikwestlund/phibble/zipball/2a6e457f5e9a255f5b3cd8eb9cdef577593248b8",
+                "reference": "2a6e457f5e9a255f5b3cd8eb9cdef577593248b8",
                 "shasum": ""
             },
             "require": {
@@ -602,7 +602,6 @@
                 "ext-pdo_sqlite": "Used by the test suite for the PDO source",
                 "illuminate/database": "Laravel integration: Collection::toFrame() and query builder ->phibble() / ->toFrame() macros (auto-discovered)"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -630,11 +629,7 @@
                 "MIT"
             ],
             "description": "A typed, immutable in-memory data frame for PHP.",
-            "support": {
-                "source": "https://github.com/erikwestlund/phibble/tree/main",
-                "issues": "https://github.com/erikwestlund/phibble/issues"
-            },
-            "time": "2026-10-16T09:56:11+00:00"
+            "time": "2026-10-16T10:49:25+00:00"
         },
         {
             "name": "erikwestlund/phiz",
@@ -722,17 +717,17 @@
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/erikwestlund/phplyr.git",
-                "reference": "e71e0eab86d701e724285b760288324e69753812"
+                "url": "git@github.com:erikwestlund/phplyr.git",
+                "reference": "88b9c78cfcee64f1f5e17c02ce034c42acf22496"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/e71e0eab86d701e724285b760288324e69753812",
-                "reference": "e71e0eab86d701e724285b760288324e69753812",
+                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/88b9c78cfcee64f1f5e17c02ce034c42acf22496",
+                "reference": "88b9c78cfcee64f1f5e17c02ce034c42acf22496",
                 "shasum": ""
             },
             "require": {
-                "erikwestlund/phibble": "dev-main",
+                "erikwestlund/phibble": "^0.1",
                 "php": "^8.5"
             },
             "require-dev": {
@@ -769,11 +764,7 @@
                 "MIT"
             ],
             "description": "A dplyr-style grammar of data manipulation for PHP 8.5 pipes",
-            "support": {
-                "source": "https://github.com/erikwestlund/phplyr/tree/main",
-                "issues": "https://github.com/erikwestlund/phplyr/issues"
-            },
-            "time": "2026-10-16T08:32:12+00:00"
+            "time": "2026-10-16T10:50:49+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -8712,7 +8703,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "cmdstan/php": 20,
-        "erikwestlund/phibble": 20,
         "erikwestlund/phplyr": 20
     },
     "prefer-stable": true,
