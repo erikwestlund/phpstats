@@ -69,6 +69,6 @@ $fit = $data |> glm('{{ $formula }}', family: '{{ $spec['family'] }}', link: '{{
             The band is a 95% confidence interval, computed on the link scale and transformed to the response scale.
             Points are the observations.
         </p>
-        <x-phiz :plot="$fit['chart']" wire:key="glm-chart" class="mt-3 w-full" />
+        <x-phit :plot="$fit['chart']" wire:key="glm-chart" class="mt-3 w-full" />
     @endif
 </div>

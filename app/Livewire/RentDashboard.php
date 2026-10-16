@@ -6,7 +6,7 @@ use App\Data\SimulatedRentals;
 use App\Models\SimulatedRental;
 use Livewire\Component;
 use Phibble\Frame;
-use Phiz\Plot;
+use Phit\Plot;
 use Throwable;
 
 use function Phplyr\{arrange, col, filter, glm, group_by, mean, median, mutate, n, summarise};
@@ -14,7 +14,7 @@ use function Phplyr\{arrange, col, filter, glm, group_by, mean, median, mutate, 
 /**
  * Vignette: a reactive dashboard over the simulated rentals. Every input is a
  * Livewire property; each change reruns the phplyr pipeline, refits the glm,
- * and re-renders the tables and phiz charts on the server.
+ * and re-renders the tables and phit charts on the server.
  */
 class RentDashboard extends Component
 {

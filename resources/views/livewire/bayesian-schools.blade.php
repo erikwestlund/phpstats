@@ -43,14 +43,14 @@
         <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             Blue points and lines are posterior medians and {{ $fit['level_label'] }} intervals. Red diamonds are the stats_lmer intercepts (fixed intercept plus the conditional mode of the random effect).
         </p>
-        <x-phiz :plot="$fit['intercept_chart']" wire:key="bayes-intercepts" class="mt-3 w-full" />
+        <x-phit :plot="$fit['intercept_chart']" wire:key="bayes-intercepts" class="mt-3 w-full" />
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Between-school SD</h2>
         <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             The histogram shows the posterior draws of τ. The red line is the REML estimate.
             With 12 schools, the posterior for τ is wide and skewed to the right, which a single point estimate does not show.
         </p>
-        <x-phiz :plot="$fit['tau_chart']" wire:key="bayes-tau" class="mt-3 w-full" />
+        <x-phit :plot="$fit['tau_chart']" wire:key="bayes-tau" class="mt-3 w-full" />
 
         @php($c = $fit['convergence'])
         @php($m = $fit['meta'])

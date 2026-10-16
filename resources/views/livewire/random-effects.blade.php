@@ -47,7 +47,7 @@ random_effects_plot($fit, level: {{ $level / 100 }});</code></pre>
             Each bar is a {{ $fit['level'] }}% interval of ±z standard deviations, where the standard deviation is the square root of the conditional variance.
             Schools are sorted by their intercept.
         </p>
-        <x-phiz :plot="$fit['chart']" wire:key="random-effects-chart" class="mt-3 w-full" />
+        <x-phit :plot="$fit['chart']" wire:key="random-effects-chart" class="mt-3 w-full" />
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Variance components</h2>
         <div class="mt-3 overflow-x-auto">

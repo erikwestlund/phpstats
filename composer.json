@@ -9,7 +9,7 @@
         "php": "^8.5",
         "cmdstan/php": "dev-phpstats-family",
         "erikwestlund/phibble": "^0.1",
-        "erikwestlund/phiz": "^0.3",
+        "erikwestlund/phit": "^0.4",
         "erikwestlund/phplyr": "^0.1",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
@@ -93,9 +93,9 @@
         "type": "vcs",
         "url": "https://github.com/erikwestlund/cmdstanphp"
     },{
-        "name": "phiz",
+        "name": "phit",
         "type": "vcs",
-        "url": "https://github.com/erikwestlund/phiz"
+        "url": "https://github.com/erikwestlund/phit"
     },{
         "name": "phplyr",
         "type": "vcs",

@@ -13,7 +13,7 @@
             </select>
         </label>
 
-        <x-phiz :plot="$chart" wire:key="benchmark-chart" class="mt-6 w-full" />
+        <x-phit :plot="$chart" wire:key="benchmark-chart" class="mt-6 w-full" />
 
         <div class="mt-6 overflow-x-auto">
             <table class="w-full text-sm tabular-nums">

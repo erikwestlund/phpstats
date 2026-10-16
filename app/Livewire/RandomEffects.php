@@ -6,7 +6,7 @@ use App\Models\StudentScore;
 use Livewire\Component;
 use Phibble\Frame;
 
-use function Phiz\random_effects_plot;
+use function Phit\random_effects_plot;
 use function Phplyr\lmer;
 
 /**
@@ -72,7 +72,7 @@ class RandomEffects extends Component
             $schools[] = $row;
         }
 
-        // A faceted chart (one panel per effect) keeps phiz's fixed panel width.
+        // A faceted chart (one panel per effect) keeps phit's fixed panel width.
         $chart = random_effects_plot($result, level: $level / 100);
         if (count($term['columns']) === 1) {
             $chart = $chart->width('container');

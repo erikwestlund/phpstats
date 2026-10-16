@@ -64,12 +64,12 @@
             <div class="mt-8 grid gap-8 xl:grid-cols-2">
                 <div class="min-w-0">
                     <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">Rent and area</h2>
-                    <x-phiz :plot="$scatter" wire:key="dashboard-scatter" class="mt-3 w-full" />
+                    <x-phit :plot="$scatter" wire:key="dashboard-scatter" class="mt-3 w-full" />
                 </div>
                 <div class="min-w-0">
                     <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">Chance of exceeding the budget</h2>
                     @if ($curves)
-                        <x-phiz :plot="$curves" wire:key="dashboard-curves" class="mt-3 w-full" />
+                        <x-phit :plot="$curves" wire:key="dashboard-curves" class="mt-3 w-full" />
                     @else
                         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{{ $error }}</p>
                     @endif

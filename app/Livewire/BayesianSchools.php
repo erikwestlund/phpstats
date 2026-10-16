@@ -6,9 +6,9 @@ use App\Data\SchoolPosterior;
 use App\Models\StudentScore;
 use Livewire\Component;
 use Phibble\Frame;
-use Phiz\Plot;
+use Phit\Plot;
 
-use function Phiz\aes;
+use function Phit\aes;
 
 /**
  * Vignette: the school random-intercept model fitted with Stan through

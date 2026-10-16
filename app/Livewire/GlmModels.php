@@ -4,9 +4,9 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Phibble\Frame;
-use Phiz\Plot;
+use Phit\Plot;
 
-use function Phiz\effect_plot;
+use function Phit\effect_plot;
 use function Phplyr\glm;
 
 /**

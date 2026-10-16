@@ -29,7 +29,7 @@
                 The plain PHP figure solves the normal equations directly. It computes coefficients only, with no standard errors or rank checks, and it squares the condition number of the design, so it is faster but less accurate and is not a substitute for either library.
             </p>
 
-            <x-phiz :plot="\App\Data\Benchmarks::polyfillChart($polyfill)" class="mt-6 w-full" />
+            <x-phit :plot="\App\Data\Benchmarks::polyfillChart($polyfill)" class="mt-6 w-full" />
 
             <div class="mt-6 overflow-x-auto">
                 <table class="w-full text-sm tabular-nums">
@@ -80,7 +80,7 @@
                 @endif
             </p>
 
-            <x-phiz :plot="\App\Data\Benchmarks::backendChart($backends, $largest)" class="mt-6 w-full" />
+            <x-phit :plot="\App\Data\Benchmarks::backendChart($backends, $largest)" class="mt-6 w-full" />
 
             <div class="mt-6 overflow-x-auto">
                 <table class="w-full text-sm tabular-nums">

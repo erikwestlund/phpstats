@@ -6,9 +6,9 @@ use App\Data\SimulatedRentals;
 use App\Models\SimulatedRental;
 use Livewire\Component;
 use Phibble\Frame;
-use Phiz\Plot;
+use Phit\Plot;
 
-use function Phiz\aes;
+use function Phit\aes;
 use function Phplyr\{arrange, group_by, head, lm, mean, n, summarise};
 
 /**

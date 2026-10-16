@@ -2,7 +2,7 @@
 
 namespace App\Data;
 
-use Phiz\Plot;
+use Phit\Plot;
 
 /**
  * Benchmark results copied from the php-stats docs by `php artisan benchmarks:sync`.

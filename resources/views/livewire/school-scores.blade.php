@@ -49,6 +49,6 @@
             </p>
         </div>
 
-        <x-phiz :plot="$fit['chart']" wire:key="school-scores-chart" class="mt-8 w-full" />
+        <x-phit :plot="$fit['chart']" wire:key="school-scores-chart" class="mt-8 w-full" />
     @endif
 </div>

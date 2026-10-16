@@ -70,20 +70,20 @@ return [
             'Summary helpers such as n(), mean(), sd(), and quantile() follow R conventions for missing values and use php-stats when the extension is loaded. Model formulas such as monthly_rent ~ area_m2 + neighborhood will fit models through php-stats.',
         ],
     ],
-    'phiz' => [
-        'name' => 'phiz',
+    'phit' => [
+        'name' => 'phit',
         'summary' => 'A ggplot-style grammar of graphics for PHP that produces Vega-Lite charts.',
         'status' => 'working',
         'status_label' => 'Released, v0.2.0',
-        'repo' => 'https://github.com/erikwestlund/phiz',
-        'docs' => 'https://erikwestlund.github.io/phiz/',
+        'repo' => 'https://github.com/erikwestlund/phit',
+        'docs' => 'https://erikwestlund.github.io/phit/',
         'links' => [
-            'Release notes' => 'https://github.com/erikwestlund/phiz/releases/tag/v0.2.0',
+            'Release notes' => 'https://github.com/erikwestlund/phit/releases/tag/v0.2.0',
         ],
         'overview' => [
-            'phiz describes charts with a grammar modeled on ggplot2 and produces Vega-Lite specifications, which the browser renders.',
+            'phit describes charts with a grammar modeled on ggplot2 and produces Vega-Lite specifications, which the browser renders.',
             'Plots take rows, columns, phibble frames, or Laravel collections, and support layers, scales, facets, themes, and interactive selections.',
-            'The <x-phiz> Blade component renders a plot and re-renders it when a Livewire component updates. Every chart on this site is drawn with it.',
+            'The <x-phit> Blade component renders a plot and re-renders it when a Livewire component updates. Every chart on this site is drawn with it.',
         ],
     ],
     'phpolars' => [

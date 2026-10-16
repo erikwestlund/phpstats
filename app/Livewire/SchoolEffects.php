@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Models\StudentScore;
 use Livewire\Component;
 use Phibble\Frame;
-use Phiz\Plot;
+use Phit\Plot;
 
 use function Phplyr\lm;
 

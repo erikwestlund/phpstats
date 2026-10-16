@@ -72,6 +72,6 @@
         <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             Points are estimates with 95% confidence intervals. Red diamonds mark the true values.
         </p>
-        <x-phiz :plot="$fit['chart']" wire:key="simulated-rents-chart" class="mt-3 w-full" />
+        <x-phit :plot="$fit['chart']" wire:key="simulated-rents-chart" class="mt-3 w-full" />
     @endif
 </div>

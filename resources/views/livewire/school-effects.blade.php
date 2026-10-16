@@ -79,7 +79,7 @@
         <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             Red points are the no-pooling intercepts. Blue points are the mixed-model intercepts, which move toward the overall intercept (dashed line).
         </p>
-        <x-phiz :plot="$fit['chart']" wire:key="school-effects-chart" class="mt-3 w-full" />
+        <x-phit :plot="$fit['chart']" wire:key="school-effects-chart" class="mt-3 w-full" />
 
         <div class="mt-6 overflow-x-auto">
             <table class="w-full text-sm tabular-nums">

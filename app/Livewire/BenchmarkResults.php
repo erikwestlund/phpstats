@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Data\Benchmarks;
 use Livewire\Component;
-use Phiz\Plot;
+use Phit\Plot;
 
 class BenchmarkResults extends Component
 {
