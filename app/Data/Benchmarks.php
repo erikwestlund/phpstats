@@ -18,6 +18,24 @@ final class Benchmarks
         'logistic-mixed' => 'Mixed logistic regression',
     ];
 
+    /**
+     * Notes shown under a model's results, with an optional link.
+     *
+     * @var array<string, array{text: string, url: string, link: string}>
+     */
+    public const NOTES = [
+        'logistic' => [
+            'text' => 'The million-row, three-coefficient fit is slower than in the October 11 report because php-stats now sums the likelihood with compensated (Neumaier) summation. The earlier build failed its line search on most random million-row logistic datasets. The wider designs are faster because of a QR-based solver.',
+            'url' => 'https://github.com/erikwestlund/php-stats/commit/c1bf8a2',
+            'link' => 'php-stats c1bf8a2',
+        ],
+        'probit' => [
+            'text' => 'The million-row, three-coefficient fit is slower than in the October 11 report because php-stats now sums the likelihood with compensated (Neumaier) summation, which avoids line-search failures on large datasets. The wider designs are faster because of a QR-based solver.',
+            'url' => 'https://github.com/erikwestlund/php-stats/commit/c1bf8a2',
+            'link' => 'php-stats c1bf8a2',
+        ],
+    ];
+
     public static function path(): string
     {
         return database_path('data/benchmarks.json');

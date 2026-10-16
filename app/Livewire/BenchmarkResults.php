@@ -33,6 +33,7 @@ class BenchmarkResults extends Component
         return view('livewire.benchmark-results', [
             'data' => $data,
             'report' => $model,
+            'note' => Benchmarks::NOTES[$key] ?? null,
             'implementations' => $implementations,
             'chart' => $this->chart(array_values(array_filter($rows, fn ($r) => $r['seconds'] > 0)), $labels),
         ]);

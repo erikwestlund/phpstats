@@ -58,5 +58,10 @@
             R's timer has millisecond resolution, so fits under 1 ms show as &lt; 1 ms and are left out of the chart.
             <a href="{{ $report['source'] }}" class="underline">Full report</a>.
         </p>
+        @if ($note)
+            <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+                {{ $note['text'] }} See <a href="{{ $note['url'] }}" class="underline">{{ $note['link'] }}</a>.
+            </p>
+        @endif
     @endif
 </div>
