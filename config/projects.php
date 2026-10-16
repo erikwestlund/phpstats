@@ -53,9 +53,10 @@ return [
         'repo' => 'https://github.com/erikwestlund/phplyr',
         'docs' => null,
         'overview' => [
-            'phplyr provides filter, select, mutate, rename, arrange, group_by, summarise, count, distinct, slice_head, and pull. Each verb returns a closure, so verbs compose with the PHP 8.5 pipe operator.',
-            'Summary helpers such as n(), mean(), sd(), and quantile() follow R conventions for missing values and use php-stats when the extension is loaded.',
-            'Model formulas such as monthly_rent ~ area_m2 + neighborhood will fit models through php-stats. Joins, window functions, and across() are in progress.',
+            'phplyr covers most of dplyr and tidyr. Each verb returns a closure, so verbs compose with the PHP 8.5 pipe operator.',
+            'The dplyr side includes the single-table verbs, mutating and filtering joins, set operations, window functions such as lag(), lead(), and row_number(), and across() with tidyselect-style selectors.',
+            'The tidyr side includes pivot_longer(), pivot_wider(), separate and unite functions, nesting, and functions for completing and filling missing values.',
+            'Summary helpers such as n(), mean(), sd(), and quantile() follow R conventions for missing values and use php-stats when the extension is loaded. Model formulas such as monthly_rent ~ area_m2 + neighborhood will fit models through php-stats.',
         ],
     ],
     'phiz' => [
