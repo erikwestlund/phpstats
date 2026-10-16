@@ -1,6 +1,6 @@
 {
     "source": "erikwestlund/php-stats@main",
-    "synced_at": "2026-10-16T08:23:10+00:00",
+    "synced_at": "2026-10-16T08:30:13+00:00",
     "models": {
         "ols": {
             "label": "Linear regression (OLS)",
@@ -703,6 +703,246 @@
                     "same_result_keys": true,
                     "agrees": true
                 }
+            }
+        ]
+    },
+    "backends": {
+        "source": "https://erikwestlund.github.io/phplyr/performance.html",
+        "data": "https://github.com/erikwestlund/phplyr/blob/main/docs/benchmarks/backends-results.json",
+        "schema": "phplyr-backends/1",
+        "method": {
+            "statistic": "best",
+            "repeats": 3,
+            "timing": "pipeline through collect(); data preloaded and not timed",
+            "verification": "rows canonicalised (floats to 9 significant digits, sorted) and hashed, then compared with the reference backend",
+            "reference": "Frame",
+            "polars_threads": 2,
+            "threads_note": "polars_threads applies to PolarsTable only; Frame and SqlTable(SQLite) run single-threaded",
+            "machine": {
+                "os": "Darwin 27.0.0 arm64",
+                "cpu": "Apple M5 Ultra",
+                "cores": 30,
+                "memory_gb": 96
+            },
+            "php": "8.5.10",
+            "versions": {
+                "phplyr": "3836131",
+                "phibble": "042ebb8",
+                "phpolars": {
+                    "sha": "f97eaeb",
+                    "extension": "0.1.0",
+                    "polars": null,
+                    "profile": "release"
+                },
+                "sqlite": "3.53.4"
+            },
+            "data": {
+                "script": "bench/backends.php",
+                "seed": 7,
+                "tables": {
+                    "sales": "id, store (100 values), product (1,000), day (1-365), units (about 2% NA, 5% zero), price",
+                    "stores": "store, region (5 values)"
+                },
+                "note": "no date or datetime columns; datetime columns add about 0.2 s per 1M rows to PolarsTable collect()"
+            }
+        },
+        "pipelines": [
+            {
+                "id": "A",
+                "title": "filter, join, grouped summary, ranked window",
+                "code": "fn (Table $s, Table $st) => $s\n    |> filter(col('units')->gt(0))\n    |> left_join($st, by: 'store')\n    |> group_by('region', 'product')\n    |> summarise(n: n(), revenue: sum(col('units')->mul(col('price'))), avg_price: mean('price'))\n    |> group_by('region')\n    |> mutate(rank: min_rank(desc('revenue')))\n    |> filter(col('rank')->le(10))\n    |> arrange('region', 'rank')"
+            },
+            {
+                "id": "B",
+                "title": "per-group windows over every row",
+                "code": "fn (Table $s, Table $st) => $s\n    |> group_by('store')\n    |> mutate(prev: lag('units', order_by: 'day'), running: cumsum('units'), share: col('units')->div(sum('units', na_rm: true)))"
+            },
+            {
+                "id": "C",
+                "title": "as A, with a PHP closure in filter()",
+                "code": "fn (Table $s, Table $st) => $s\n    |> filter(fn ($r) => $r->units > 0)\n    |> left_join($st, by: 'store')\n    |> group_by('region', 'product')\n    |> summarise(n: n(), revenue: sum(col('units')->mul(col('price'))), avg_price: mean('price'))\n    |> group_by('region')\n    |> mutate(rank: min_rank(desc('revenue')))\n    |> filter(col('rank')->le(10))\n    |> arrange('region', 'rank')"
+            }
+        ],
+        "results": [
+            {
+                "pipeline": "A",
+                "backend": "Frame",
+                "rows_in": 100000,
+                "rows_out": 50,
+                "seconds": 0.0796,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "A",
+                "backend": "PolarsTable",
+                "rows_in": 100000,
+                "rows_out": 50,
+                "seconds": 0.0073,
+                "fallbacks": 0,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "A",
+                "backend": "SqlTable(SQLite)",
+                "rows_in": 100000,
+                "rows_out": 50,
+                "seconds": 0.1293,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "B",
+                "backend": "Frame",
+                "rows_in": 100000,
+                "rows_out": 100000,
+                "seconds": 0.1029,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "B",
+                "backend": "PolarsTable",
+                "rows_in": 100000,
+                "rows_out": 100000,
+                "seconds": 0.0456,
+                "fallbacks": 0,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "B",
+                "backend": "SqlTable(SQLite)",
+                "rows_in": 100000,
+                "rows_out": 100000,
+                "seconds": 0.3524,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "C",
+                "backend": "Frame",
+                "rows_in": 100000,
+                "rows_out": 50,
+                "seconds": 0.1073,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "C",
+                "backend": "PolarsTable",
+                "rows_in": 100000,
+                "rows_out": 50,
+                "seconds": 0.0822,
+                "fallbacks": 1,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "C",
+                "backend": "SqlTable(SQLite)",
+                "rows_in": 100000,
+                "rows_out": 50,
+                "seconds": 0.2253,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "A",
+                "backend": "Frame",
+                "rows_in": 1000000,
+                "rows_out": 50,
+                "seconds": 0.6302,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "A",
+                "backend": "PolarsTable",
+                "rows_in": 1000000,
+                "rows_out": 50,
+                "seconds": 0.0539,
+                "fallbacks": 0,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "A",
+                "backend": "SqlTable(SQLite)",
+                "rows_in": 1000000,
+                "rows_out": 50,
+                "seconds": 1.3311,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "B",
+                "backend": "Frame",
+                "rows_in": 1000000,
+                "rows_out": 1000000,
+                "seconds": 1.3215,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "B",
+                "backend": "PolarsTable",
+                "rows_in": 1000000,
+                "rows_out": 1000000,
+                "seconds": 0.4235,
+                "fallbacks": 0,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "B",
+                "backend": "SqlTable(SQLite)",
+                "rows_in": 1000000,
+                "rows_out": 1000000,
+                "seconds": 3.6816,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "C",
+                "backend": "Frame",
+                "rows_in": 1000000,
+                "rows_out": 50,
+                "seconds": 1.0233,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "C",
+                "backend": "PolarsTable",
+                "rows_in": 1000000,
+                "rows_out": 50,
+                "seconds": 0.8756,
+                "fallbacks": 1,
+                "matches_frame": true,
+                "error": null
+            },
+            {
+                "pipeline": "C",
+                "backend": "SqlTable(SQLite)",
+                "rows_in": 1000000,
+                "rows_out": 50,
+                "seconds": 2.1698,
+                "fallbacks": null,
+                "matches_frame": true,
+                "error": null
             }
         ]
     }

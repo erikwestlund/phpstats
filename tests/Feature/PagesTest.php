@@ -187,6 +187,10 @@ class PagesTest extends TestCase
 
         $data = Benchmarks::load();
         $this->assertSame(array_keys(Benchmarks::MODELS), array_keys($data['models']));
+        $this->assertSame('phplyr-backends/1', $data['backends']['schema']);
+        foreach ($data['backends']['results'] as $result) {
+            $this->assertArrayHasKey($result['backend'], Benchmarks::BACKENDS);
+        }
 
         foreach (array_keys(Benchmarks::MODELS) as $key) {
             Livewire::test(BenchmarkResults::class)->set('model', $key)

@@ -17,7 +17,9 @@ Two committed files are generated, not hand-edited:
 - `database/data/stan/school-intercepts.json`: posterior draws for the
   Bayesian vignette. Regenerate with `php artisan stan:fit-school-posterior`
   (needs CmdStan and php_stats). Pages never run CmdStan.
-- `database/data/benchmarks.json`: php-stats benchmark results. Refresh with
+- `database/data/benchmarks.json`: benchmark results from php-stats
+  (docs/benchmarks), php-stats-polyfill (benchmarks/results.json), and phplyr
+  (docs/benchmarks/backends-results.json). Refresh with
   `php artisan benchmarks:sync` (fetches from GitHub).
 
 ## Local php_stats

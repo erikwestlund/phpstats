@@ -51,25 +51,44 @@ final class Benchmarks
         return json_decode(file_get_contents(self::path()), true, flags: JSON_THROW_ON_ERROR);
     }
 
-    public static function backends(): array
+    public const BACKENDS = [
+        'Frame' => 'phibble Frame (in memory)',
+        'PolarsTable' => 'phpolars PolarsTable',
+        'SqlTable(SQLite)' => 'SQLite table',
+    ];
+
+    /**
+     * Backend results indexed as [rows_in][pipeline][backend].
+     */
+    public static function backendGrid(array $backends): array
     {
-        return require database_path('data/backend-benchmarks.php');
+        $grid = [];
+        foreach ($backends['results'] as $result) {
+            $grid[$result['rows_in']][$result['pipeline']][$result['backend']] = $result;
+        }
+        ksort($grid);
+
+        return $grid;
     }
 
-    public static function backendChart(array $backends): Plot
+    public static function backendChart(array $backends, int $rows): Plot
     {
-        $rows = [];
-        foreach ($backends['pipelines'] as $pipeline) {
-            foreach ($pipeline['seconds'] as $backend => $seconds) {
-                $rows[] = ['pipeline' => "Pipeline {$pipeline['key']}", 'backend' => $backends['backends'][$backend], 'seconds' => $seconds];
+        $points = [];
+        foreach ($backends['results'] as $result) {
+            if ($result['rows_in'] === $rows && $result['seconds'] !== null) {
+                $points[] = [
+                    'pipeline' => "Pipeline {$result['pipeline']}",
+                    'backend' => self::BACKENDS[$result['backend']] ?? $result['backend'],
+                    'seconds' => $result['seconds'],
+                ];
             }
         }
 
-        return Plot::of($rows)
+        return Plot::of($points)
             ->aes(x: 'seconds', y: 'pipeline', color: 'backend')
             ->point(size: 90, alpha: 0.9)
             ->scaleX(type: 'log')
-            ->labs(x: 'Time for 1,000,000 rows (seconds, log scale)', y: null, color: null)
+            ->labs(x: 'Time for '.number_format($rows).' rows (seconds, log scale)', y: null, color: null)
             ->theme(legendPosition: 'bottom')
             ->tooltip()
             ->size('container', 160);

@@ -64,44 +64,79 @@
         </section>
     @endif
 
-    @php($backends = \App\Data\Benchmarks::backends())
-    <section class="mt-12">
-        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">phplyr backends</h2>
-        <p class="mt-3 max-w-3xl text-zinc-700 dark:text-zinc-300">
-            phplyr runs the same pipeline on any phibble table, so the backend determines the speed.
-            These timings run three pipelines on {{ number_format($backends['rows']) }} rows in an in-memory phibble frame, a phpolars PolarsTable, and a SQLite table.
-            Each backend returned the same rows.
-        </p>
+    @php($backends = \App\Data\Benchmarks::exists() ? (\App\Data\Benchmarks::load()['backends'] ?? null) : null)
+    @if ($backends)
+        @php($grid = \App\Data\Benchmarks::backendGrid($backends))
+        @php($method = $backends['method'])
+        @php($largest = array_key_last($grid))
+        @php($allMatch = collect($backends['results'])->every(fn ($r) => $r['matches_frame'] && $r['error'] === null))
+        <section class="mt-12">
+            <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">phplyr backends</h2>
+            <p class="mt-3 max-w-3xl text-zinc-700 dark:text-zinc-300">
+                phplyr runs the same pipeline on any phibble table, so the backend determines the speed.
+                These timings run three pipelines on an in-memory phibble frame, a phpolars PolarsTable, and a SQLite table.
+                @if ($allMatch)
+                    Every backend returned the same rows as the frame.
+                @endif
+            </p>
 
-        <x-phiz :plot="\App\Data\Benchmarks::backendChart($backends)" class="mt-6 w-full" />
+            <x-phiz :plot="\App\Data\Benchmarks::backendChart($backends, $largest)" class="mt-6 w-full" />
 
-        <div class="mt-6 overflow-x-auto">
-            <table class="w-full text-sm tabular-nums">
-                <thead class="text-left text-zinc-500">
-                    <tr class="border-b border-zinc-200 dark:border-zinc-800">
-                        <th class="py-2 pr-4 font-medium">Pipeline</th>
-                        @foreach ($backends['backends'] as $label)
-                            <th class="py-2 pr-4 text-right font-medium">{{ $label }}</th>
-                        @endforeach
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($backends['pipelines'] as $pipeline)
-                        <tr class="border-b border-zinc-100 dark:border-zinc-900">
-                            <td class="py-2 pr-4"><span class="font-medium">{{ $pipeline['key'] }}.</span> {{ $pipeline['description'] }}</td>
-                            @foreach (array_keys($backends['backends']) as $backend)
-                                <td class="py-2 pr-4 text-right">{{ number_format($pipeline['seconds'][$backend], 2) }} s</td>
+            <div class="mt-6 overflow-x-auto">
+                <table class="w-full text-sm tabular-nums">
+                    <thead class="text-left text-zinc-500">
+                        <tr class="border-b border-zinc-200 dark:border-zinc-800">
+                            <th class="py-2 pr-4 font-medium">Rows</th>
+                            <th class="py-2 pr-4 font-medium">Pipeline</th>
+                            @foreach (\App\Data\Benchmarks::BACKENDS as $label)
+                                <th class="py-2 pr-4 text-right font-medium">{{ $label }}</th>
                             @endforeach
                         </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($grid as $rows => $pipelines)
+                            @foreach ($backends['pipelines'] as $pipeline)
+                                <tr class="border-b border-zinc-100 dark:border-zinc-900">
+                                    <td class="py-2 pr-4">{{ $loop->first ? number_format($rows) : '' }}</td>
+                                    <td class="py-2 pr-4"><span class="font-medium">{{ $pipeline['id'] }}.</span> {{ ucfirst($pipeline['title']) }}</td>
+                                    @foreach (array_keys(\App\Data\Benchmarks::BACKENDS) as $backend)
+                                        @php($r = $pipelines[$pipeline['id']][$backend] ?? null)
+                                        <td class="py-2 pr-4 text-right">
+                                            @if (! $r || $r['error'] !== null || $r['seconds'] === null)
+                                                Failed
+                                            @else
+                                                {{ $r['seconds'] < 0.1 ? number_format($r['seconds'] * 1000).' ms' : number_format($r['seconds'], 2).' s' }}{{ $r['fallbacks'] ? '*' : '' }}
+                                            @endif
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 max-w-3xl space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
+                <p>
+                    PolarsTable is fastest when a pipeline reduces the data before collecting it, as pipeline A does.
+                    When every row comes back to PHP, as in pipeline B, converting the values takes much of its time.
+                    * A PHP closure makes PolarsTable fall back to an in-memory frame for that step, which is why pipeline C gains little from Polars. On a SQLite table, a closure loads the rows into PHP first.
+                </p>
+                <p>
+                    {{ ucfirst($method['statistic']) }} of {{ $method['repeats'] }} runs, timing the {{ $method['timing'] }}.
+                    Recorded on an {{ $method['machine']['cpu'] }} with PHP {{ $method['php'] }}, SQLite {{ $method['versions']['sqlite'] }}, and Polars on {{ $method['polars_threads'] }} threads; the frame and SQLite run single-threaded.
+                    phplyr {{ $method['versions']['phplyr'] }}, phibble {{ $method['versions']['phibble'] }}, phpolars {{ $method['versions']['phpolars']['sha'] }}.
+                    The data has no date or datetime columns, which would add conversion time to PolarsTable.
+                    <a href="{{ $backends['data'] }}" class="underline">Results file</a>. <a href="{{ $backends['source'] }}" class="underline">phplyr's performance page</a> discusses the results.
+                </p>
+                <details>
+                    <summary class="cursor-pointer">Pipeline code</summary>
+                    @foreach ($backends['pipelines'] as $pipeline)
+                        <p class="mt-3 font-medium">{{ $pipeline['id'] }}. {{ ucfirst($pipeline['title']) }}</p>
+                        <pre class="mt-1 overflow-x-auto rounded-lg bg-zinc-100 p-3 text-xs dark:bg-zinc-900"><code>{{ $pipeline['code'] }}</code></pre>
                     @endforeach
-                </tbody>
-            </table>
-        </div>
-        <p class="mt-3 max-w-3xl text-sm text-zinc-600 dark:text-zinc-400">
-            {{ $backends['method'] }} Recorded on an {{ $backends['machine'] }}.
-            PolarsTable is fastest when a pipeline reduces the data before collecting it, as pipeline A does. When every row comes back to PHP, as in pipeline B, converting values takes most of its time.
-            A closure makes PolarsTable and SQLite load the rows into PHP, which is why pipeline C is slower than A on both.
-            Source: <a href="{{ $backends['source'] }}" class="underline">phplyr's performance page</a>, which reports phpolars' run. <a href="{{ $backends['phpolars_source'] }}" class="underline">phpolars' performance page</a> has more detail.
-        </p>
-    </section>
+                </details>
+            </div>
+        </section>
+    @endif
 </x-layout>

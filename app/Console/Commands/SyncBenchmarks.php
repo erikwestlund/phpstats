@@ -16,7 +16,8 @@ class SyncBenchmarks extends Command
 {
     protected $signature = 'benchmarks:sync
         {--ref=main : php-stats git ref to read docs/benchmarks from}
-        {--polyfill-ref=main : php-stats-polyfill git ref to read benchmarks/results.json from}';
+        {--polyfill-ref=main : php-stats-polyfill git ref to read benchmarks/results.json from}
+        {--phplyr-ref=main : phplyr git ref to read docs/benchmarks/backends-results.json from}';
 
     protected $description = 'Fetch the php-stats and polyfill benchmark results for the benchmarks page';
 
@@ -57,6 +58,17 @@ class SyncBenchmarks extends Command
             ->throw()->json();
         $this->line('polyfill: '.count($polyfill['cases']).' cases, recorded '.$polyfill['recorded_at']);
 
+        $phplyrRef = $this->option('phplyr-ref');
+        $backends = Http::timeout(60)
+            ->get("https://raw.githubusercontent.com/erikwestlund/phplyr/{$phplyrRef}/docs/benchmarks/backends-results.json")
+            ->throw()->json();
+        if (($backends['schema'] ?? null) !== 'phplyr-backends/1') {
+            $this->error('Unexpected phplyr backends schema: '.($backends['schema'] ?? 'none'));
+
+            return self::FAILURE;
+        }
+        $this->line('phplyr backends: '.count($backends['results']).' results');
+
         File::put(Benchmarks::path(), json_encode([
             'source' => "erikwestlund/php-stats@{$ref}",
             'synced_at' => now()->toIso8601String(),
@@ -67,6 +79,16 @@ class SyncBenchmarks extends Command
                     'recorded_at', 'cpu', 'platform', 'php_version', 'opcache', 'polyfill_commit',
                     'extension_reference_commit', 'design', 'repeat', 'warmup_calls', 'cases',
                 ])),
+            ],
+            'backends' => [
+                'source' => 'https://erikwestlund.github.io/phplyr/performance.html',
+                'data' => "https://github.com/erikwestlund/phplyr/blob/{$phplyrRef}/docs/benchmarks/backends-results.json",
+                'schema' => $backends['schema'],
+                'method' => $backends['method'],
+                'pipelines' => array_map(fn (array $p) => array_intersect_key($p, array_flip(['id', 'title', 'code'])), $backends['pipelines']),
+                'results' => array_map(fn (array $r) => array_intersect_key($r, array_flip([
+                    'pipeline', 'backend', 'rows_in', 'rows_out', 'seconds', 'fallbacks', 'matches_frame', 'error',
+                ])), $backends['results']),
             ],
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_PRESERVE_ZERO_FRACTION)."\n");
 
