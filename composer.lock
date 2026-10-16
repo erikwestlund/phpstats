@@ -640,12 +640,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erikwestlund/phiz.git",
-                "reference": "d971e029fb274300aece06ea4c70ded39c27d978"
+                "reference": "f64b49113e04c2933f860d09ccbcd0662d5a14e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/d971e029fb274300aece06ea4c70ded39c27d978",
-                "reference": "d971e029fb274300aece06ea4c70ded39c27d978",
+                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/f64b49113e04c2933f860d09ccbcd0662d5a14e7",
+                "reference": "f64b49113e04c2933f860d09ccbcd0662d5a14e7",
                 "shasum": ""
             },
             "require": {
@@ -699,7 +699,7 @@
                     "name": "Erik Westlund"
                 }
             ],
-            "description": "A ggplot2-flavoured grammar of graphics for PHP that emits Vega-Lite",
+            "description": "A ggplot2-flavored grammar of graphics for PHP that emits Vega-Lite",
             "keywords": [
                 "charts",
                 "ggplot2",
@@ -712,7 +712,7 @@
                 "source": "https://github.com/erikwestlund/phiz/tree/main",
                 "issues": "https://github.com/erikwestlund/phiz/issues"
             },
-            "time": "2026-10-16T07:55:43+00:00"
+            "time": "2026-10-16T08:00:15+00:00"
         },
         {
             "name": "erikwestlund/phplyr",
