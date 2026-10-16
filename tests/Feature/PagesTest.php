@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Data\Benchmarks;
 use App\Data\SchoolPosterior;
+use App\Livewire\BenchmarkResults;
 use App\Data\SimulatedRentals;
 use App\Livewire\BayesianSchools;
 use App\Livewire\RentDashboard;
@@ -174,6 +176,20 @@ class PagesTest extends TestCase
         $allOver = Livewire::test(RentDashboard::class)->set('minBedrooms', 4)->set('budget', 1750);
         $this->assertNull($allOver->viewData('model'));
         $this->assertStringContainsString('over the budget', $allOver->viewData('error'));
+    }
+
+    public function test_benchmarks_page_shows_every_model(): void
+    {
+        $this->get('/benchmarks')->assertOk()->assertSee('Agrees with R');
+
+        $data = Benchmarks::load();
+        $this->assertSame(array_keys(Benchmarks::MODELS), array_keys($data['models']));
+
+        foreach (array_keys(Benchmarks::MODELS) as $key) {
+            Livewire::test(BenchmarkResults::class)->set('model', $key)
+                ->assertSee($data['models'][$key]['label'])
+                ->assertSee(number_format(end($data['models'][$key]['cases'])['n']));
+        }
     }
 
     public function test_sql_pipeline_matches_the_in_memory_result(): void

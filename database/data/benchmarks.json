@@ -1,0 +1,595 @@
+{
+    "source": "erikwestlund/php-stats@main",
+    "synced_at": "2026-10-16T07:49:07+00:00",
+    "models": {
+        "ols": {
+            "label": "Linear regression (OLS)",
+            "recorded_at": "2026-10-11T18:58:48.838183+00:00",
+            "cpu": "Apple M5 Ultra",
+            "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+            "repeats": 5,
+            "source": "https://erikwestlund.github.io/php-stats/benchmarks/ols.html",
+            "cases": [
+                {
+                    "n": 1000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0,
+                            "min_fit_seconds": 0
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.00021354202181100845,
+                            "min_fit_seconds": 0.00019754096865653992
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.000131959,
+                            "min_fit_seconds": 0.000129
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.010595292,
+                            "min_fit_seconds": 0.010498791
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.0050663340371102095,
+                            "min_fit_seconds": 0.005047874990850687
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.016000000000000014,
+                            "min_fit_seconds": 0.015000000000000013
+                        }
+                    }
+                },
+                {
+                    "n": 1000000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.18500000000000005,
+                            "min_fit_seconds": 0.17399999999999993
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.09331887494772673,
+                            "min_fit_seconds": 0.0924961669370532
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.113052792,
+                            "min_fit_seconds": 0.111933625
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 11,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.040014375,
+                            "min_fit_seconds": 0.038985625
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.011174291837960482,
+                            "min_fit_seconds": 0.01113533298484981
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.020999999999999908,
+                            "min_fit_seconds": 0.020999999999999908
+                        }
+                    }
+                }
+            ]
+        },
+        "logistic": {
+            "label": "Logistic regression",
+            "recorded_at": "2026-10-11T19:28:43.376263+00:00",
+            "cpu": "Apple M5 Ultra",
+            "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+            "repeats": 5,
+            "source": "https://erikwestlund.github.io/php-stats/benchmarks/logistic.html",
+            "cases": [
+                {
+                    "n": 1000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.0010000000000000009,
+                            "min_fit_seconds": 0.0010000000000000009
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.0005157501436769962,
+                            "min_fit_seconds": 0.000504292082041502
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.000242166,
+                            "min_fit_seconds": 0.000236542
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.034654791,
+                            "min_fit_seconds": 0.034531708
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.021765084005892277,
+                            "min_fit_seconds": 0.021644458873197436
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.07100000000000006,
+                            "min_fit_seconds": 0.068
+                        }
+                    }
+                },
+                {
+                    "n": 1000000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.8329999999999997,
+                            "min_fit_seconds": 0.8140000000000001
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.23687537503428757,
+                            "min_fit_seconds": 0.23589383298531175
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.288345917,
+                            "min_fit_seconds": 0.2840825
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 11,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.113464083,
+                            "min_fit_seconds": 0.112350583
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.026544125052168965,
+                            "min_fit_seconds": 0.0263972079847008
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.12399999999999989,
+                            "min_fit_seconds": 0.1100000000000001
+                        }
+                    }
+                }
+            ]
+        },
+        "probit": {
+            "label": "Probit regression",
+            "recorded_at": "2026-10-11T20:07:16.774904+00:00",
+            "cpu": "Apple M5 Ultra",
+            "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+            "repeats": 5,
+            "source": "https://erikwestlund.github.io/php-stats/benchmarks/probit.html",
+            "cases": [
+                {
+                    "n": 1000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.0020000000000000018,
+                            "min_fit_seconds": 0.0010000000000000009
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.0017919170204550028,
+                            "min_fit_seconds": 0.0017781660426408052
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.000772625,
+                            "min_fit_seconds": 0.000762708
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.128871875,
+                            "min_fit_seconds": 0.128668541
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.054365540854632854,
+                            "min_fit_seconds": 0.05409737513400614
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.135,
+                            "min_fit_seconds": 0.1270000000000001
+                        }
+                    }
+                },
+                {
+                    "n": 1000000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 1.1020000000000003,
+                            "min_fit_seconds": 1.0430000000000001
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.5645056250505149,
+                            "min_fit_seconds": 0.5545680420473218
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.58003475,
+                            "min_fit_seconds": 0.578505292
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 11,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.301860292,
+                            "min_fit_seconds": 0.299445083
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.08650645799934864,
+                            "min_fit_seconds": 0.0860419999808073
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.20700000000000007,
+                            "min_fit_seconds": 0.20100000000000007
+                        }
+                    }
+                }
+            ]
+        },
+        "poisson": {
+            "label": "Poisson regression",
+            "recorded_at": "2026-10-11T20:07:45.027082+00:00",
+            "cpu": "Apple M5 Ultra",
+            "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+            "repeats": 5,
+            "source": "https://erikwestlund.github.io/php-stats/benchmarks/poisson.html",
+            "cases": [
+                {
+                    "n": 1000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.0010000000000000009,
+                            "min_fit_seconds": 0.0010000000000000009
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.0008528339676558971,
+                            "min_fit_seconds": 0.0007880409248173237
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.000268625,
+                            "min_fit_seconds": 0.00026425
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.033534292,
+                            "min_fit_seconds": 0.033182958
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.029063082998618484,
+                            "min_fit_seconds": 0.028863375075161457
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.121,
+                            "min_fit_seconds": 0.119
+                        }
+                    }
+                },
+                {
+                    "n": 1000000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 1.33,
+                            "min_fit_seconds": 1.3020000000000005
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.313505541998893,
+                            "min_fit_seconds": 0.3132113330066204
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.306150292,
+                            "min_fit_seconds": 0.30414675
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 11,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.130703375,
+                            "min_fit_seconds": 0.129038625
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.06481937482021749,
+                            "min_fit_seconds": 0.06460549985058606
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24)",
+                            "median_fit_seconds": 0.27500000000000013,
+                            "min_fit_seconds": 0.2629999999999999
+                        }
+                    }
+                }
+            ]
+        },
+        "lmm": {
+            "label": "Linear mixed model",
+            "recorded_at": "2026-10-11T20:47:02.703831+00:00",
+            "cpu": "Apple M5 Ultra",
+            "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+            "repeats": 5,
+            "source": "https://erikwestlund.github.io/php-stats/benchmarks/lmm.html",
+            "cases": [
+                {
+                    "n": 1000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24) lme4 2.0.6",
+                            "median_fit_seconds": 0.006000000000000005,
+                            "min_fit_seconds": 0.006000000000000005
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.013778208056464791,
+                            "min_fit_seconds": 0.013577291974797845
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.000288584,
+                            "min_fit_seconds": 0.000284792
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.013142458,
+                            "min_fit_seconds": 0.012749875
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.12933333311229944,
+                            "min_fit_seconds": 0.12890674988739192
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24) lme4 2.0.6",
+                            "median_fit_seconds": 0.22899999999999998,
+                            "min_fit_seconds": 0.22599999999999998
+                        }
+                    }
+                },
+                {
+                    "n": 1000000,
+                    "p": 3,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24) lme4 2.0.6",
+                            "median_fit_seconds": 2.5409999999999986,
+                            "min_fit_seconds": 2.3840000000000003
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 1.7335795420221984,
+                            "min_fit_seconds": 1.7244221670553088
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.1375115,
+                            "min_fit_seconds": 0.133710916
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 11,
+                    "groups": null,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.03429075,
+                            "min_fit_seconds": 0.033606708
+                        },
+                        "statsmodels": {
+                            "version": "0.15.0",
+                            "median_fit_seconds": 0.24448329186998308,
+                            "min_fit_seconds": 0.24402445810846984
+                        },
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24) lme4 2.0.6",
+                            "median_fit_seconds": 0.40600000000000014,
+                            "min_fit_seconds": 0.379
+                        }
+                    }
+                }
+            ]
+        },
+        "logistic-mixed": {
+            "label": "Mixed logistic regression",
+            "recorded_at": "2026-10-11T22:59:04.029494+00:00",
+            "cpu": "Apple M5 Ultra",
+            "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+            "repeats": 3,
+            "source": "https://erikwestlund.github.io/php-stats/benchmarks/logistic-mixed.html",
+            "cases": [
+                {
+                    "n": 1000,
+                    "p": 3,
+                    "groups": 50,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24) lme4 2.0.6",
+                            "median_fit_seconds": 0.08799999999999997,
+                            "min_fit_seconds": 0.08699999999999997
+                        },
+                        "SciPy reference": {
+                            "version": "SciPy 1.18.1",
+                            "median_fit_seconds": 0.40974245802499354,
+                            "min_fit_seconds": 0.4042400838807225
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.006289458,
+                            "min_fit_seconds": 0.006262375
+                        }
+                    }
+                },
+                {
+                    "n": 10000,
+                    "p": 3,
+                    "groups": 50,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24) lme4 2.0.6",
+                            "median_fit_seconds": 0.5540000000000003,
+                            "min_fit_seconds": 0.554
+                        },
+                        "SciPy reference": {
+                            "version": "SciPy 1.18.1",
+                            "median_fit_seconds": 0.6641162089072168,
+                            "min_fit_seconds": 0.6535441670566797
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.068200292,
+                            "min_fit_seconds": 0.067866125
+                        }
+                    }
+                },
+                {
+                    "n": 100000,
+                    "p": 3,
+                    "groups": 50,
+                    "agreement_passed": true,
+                    "implementations": {
+                        "R": {
+                            "version": "R version 4.6.1 (2026-06-24) lme4 2.0.6",
+                            "median_fit_seconds": 7.698,
+                            "min_fit_seconds": 7.671999999999997
+                        },
+                        "SciPy reference": {
+                            "version": "SciPy 1.18.1",
+                            "median_fit_seconds": 2.764936124905944,
+                            "min_fit_seconds": 2.7282385830767453
+                        },
+                        "PHP": {
+                            "version": "8.5.10",
+                            "median_fit_seconds": 0.785687292,
+                            "min_fit_seconds": 0.782356083
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

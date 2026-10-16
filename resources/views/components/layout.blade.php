@@ -19,6 +19,10 @@
                     {{ $item['name'] }}
                 </a>
             @endforeach
+            <a href="{{ route('benchmarks') }}"
+               @class(['sm:ml-auto text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100', 'font-medium text-zinc-900! dark:text-zinc-100!' => request()->routeIs('benchmarks')])>
+                Benchmarks
+            </a>
         </nav>
     </header>
 

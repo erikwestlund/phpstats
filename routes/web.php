@@ -11,6 +11,8 @@ Route::view('/vignettes/sql-pipeline', 'vignettes.sql-pipeline')->name('vignette
 Route::view('/vignettes/bayesian-schools', 'vignettes.bayesian-schools')->name('vignettes.bayesian-schools');
 Route::view('/vignettes/rent-dashboard', 'vignettes.rent-dashboard')->name('vignettes.rent-dashboard');
 
+Route::view('/benchmarks', 'benchmarks')->name('benchmarks');
+
 Route::get('/{project}', function (string $project) {
     return view('project', ['project' => config("projects.{$project}")]);
 })->whereIn('project', array_keys(config('projects')))->name('project');
