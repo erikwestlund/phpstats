@@ -25,7 +25,7 @@ final class Benchmarks
      */
     public const NOTES = [
         'logistic' => [
-            'text' => 'php-stats c1bf8a2 added a QR-based solver, which makes the wider designs faster, and a compensated (Neumaier) likelihood sum, which stops the line-search failures the earlier build had on most random million-row datasets. Run in the same harness, these changes took the million-row, three-coefficient fit from 418 ms (18b430b) to 394 ms, 6% faster. The difference from the October 11 recording predates these changes and is under investigation.',
+            'text' => 'php-stats c1bf8a2 added a QR-based solver, which makes the wider designs faster, and a compensated (Neumaier) likelihood sum, which stops the line-search failures the earlier build had on most random million-row datasets. Run in the same harness, these changes took the million-row, three-coefficient fit from 418 ms (18b430b) to 394 ms, 6% faster. The October 11 recording of 288 ms could not be reproduced: the same commit (d073c15) measures 424 ms in the same harness today, so the comparison here uses runs from the same session.',
             'url' => 'https://github.com/erikwestlund/php-stats/commit/c1bf8a2',
             'link' => 'php-stats c1bf8a2',
         ],
