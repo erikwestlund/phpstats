@@ -10,6 +10,10 @@ Route::view('/vignettes/school-effects', 'vignettes.school-effects')->name('vign
 Route::view('/vignettes/sql-pipeline', 'vignettes.sql-pipeline')->name('vignettes.sql-pipeline');
 Route::view('/vignettes/bayesian-schools', 'vignettes.bayesian-schools')->name('vignettes.bayesian-schools');
 Route::view('/vignettes/rent-dashboard', 'vignettes.rent-dashboard')->name('vignettes.rent-dashboard');
+Route::view('/vignettes/glm-models', 'vignettes.glm-models')->name('vignettes.glm-models');
+Route::view('/vignettes/random-effects', 'vignettes.random-effects')->name('vignettes.random-effects');
+Route::view('/vignettes/csv-reader', 'vignettes.csv-reader')->name('vignettes.csv-reader');
+Route::view('/vignettes/polars-pipeline', 'vignettes.polars-pipeline')->name('vignettes.polars-pipeline');
 
 Route::view('/benchmarks', 'benchmarks')->name('benchmarks');
 

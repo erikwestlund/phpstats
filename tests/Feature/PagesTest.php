@@ -7,6 +7,10 @@ use App\Data\SchoolPosterior;
 use App\Livewire\BenchmarkResults;
 use App\Data\SimulatedRentals;
 use App\Livewire\BayesianSchools;
+use App\Livewire\CsvReader;
+use App\Livewire\GlmModels;
+use App\Livewire\PolarsPipeline;
+use App\Livewire\RandomEffects;
 use App\Livewire\RentDashboard;
 use App\Livewire\SchoolEffects;
 use App\Livewire\SimulatedRents;
@@ -233,5 +237,94 @@ class PagesTest extends TestCase
             $this->assertSame($rents->count(), $row['rentals']);
             $this->assertEqualsWithDelta($rents->avg(), $row['mean_rent'], 1e-9);
         }
+    }
+
+    public function test_glm_vignette_matches_r(): void
+    {
+        if (! function_exists('stats_glm')) {
+            $this->markTestSkipped('php_stats with stats_glm is not loaded.');
+        }
+
+        $this->get('/vignettes/glm-models')->assertOk()->assertSee('Odds ratio');
+
+        // R 4.6.1 glm() references from php-stats tests/fixtures/formula-r.json.
+        $logit = Livewire::test(GlmModels::class)->viewData('fit')['result'];
+        $this->assertEqualsWithDelta([-3.1709805238655515, 0.06367532072903229, 0.03424801009641754], $logit['coefficients'], 1e-9);
+        $this->assertEqualsWithDelta(104.96865011458223, $logit['aic'], 1e-9);
+
+        $probit = Livewire::test(GlmModels::class)->set('model', 'probit')->set('interaction', true)->viewData('fit')['result'];
+        $this->assertSame(['(Intercept)', 'study_hours', 'practice_score', 'study_hours:practice_score'], $probit['columns']);
+        $this->assertEqualsWithDelta([-1.5378267064499282, -0.03175571225494219, 0.014252493880737384, 0.001095948998577774], $probit['coefficients'], 1e-8);
+        $this->assertEqualsWithDelta(98.87535805695676, $probit['deviance'], 1e-9);
+
+        $poisson = Livewire::test(GlmModels::class)->set('model', 'poisson')->assertSee('Rate ratio')->viewData('fit')['result'];
+        $this->assertSame('poisson', $poisson['family']);
+        $this->assertSame(120, $poisson['n_observations']);
+    }
+
+    public function test_random_effect_intervals_use_the_conditional_variances(): void
+    {
+        if (! function_exists('stats_lmer')) {
+            $this->markTestSkipped('php_stats with stats_lmer is not loaded.');
+        }
+
+        $this->get('/vignettes/random-effects')->assertOk()->assertSee('Caterpillar plot');
+
+        $fit = Livewire::test(RandomEffects::class)->viewData('fit');
+        if (! isset($fit['term']['effects_cond_var'])) {
+            $this->markTestSkipped('This php_stats build does not report conditional variances.');
+        }
+        foreach ($fit['schools'] as $school) {
+            $this->assertEqualsWithDelta($school['closed_form_sd'], $school['effects']['(Intercept)']['sd'], 1e-9, $school['school']);
+        }
+
+        $slopes = Livewire::test(RandomEffects::class)->set('structure', 'correlated')->set('level', 80)->viewData('fit');
+        $this->assertSame(['(Intercept)', 'study_hours'], $slopes['term']['columns']);
+        $this->assertCount(2 * count($slopes['schools']), $slopes['chart']->data->rows);
+    }
+
+    public function test_csv_reader_reports_types_and_problems(): void
+    {
+        if (! function_exists('stats_read_csv')) {
+            $this->markTestSkipped('php_stats with stats_read_csv is not loaded.');
+        }
+
+        $this->get('/vignettes/csv-reader')->assertOk()->assertSee('expected 8 columns, got 5');
+
+        $page = Livewire::test(CsvReader::class);
+        $native = $page->viewData('native');
+        $types = array_combine($native['names'], array_column($native['columns'], 'type'));
+        $this->assertSame(['id' => 'int', 'zip' => 'string', 'signup' => 'date', 'last_seen' => 'datetime', 'plan' => 'string', 'active' => 'bool', 'monthly_spend' => 'float', 'visits' => 'int'], $types);
+        $this->assertSame(1, $native['columns'][2]['failed']);
+        $this->assertSame(['2026-01-15', '02139', '2026-10-01 08:30:00 UTC'], [$page->viewData('preview')[0][2], $page->viewData('preview')[0][1], $page->viewData('preview')[0][3]]);
+
+        $parity = $page->viewData('parity');
+        $this->assertTrue($parity['same_types'] && $parity['same_values'] && $parity['same_warnings']);
+
+        $semicolon = Livewire::test(CsvReader::class)->set('csv', "a;b\n1,5;x\n")->set('delimiter', ';')->viewData('native');
+        $this->assertSame(['a', 'b'], $semicolon['names']);
+
+        $this->assertSame('The text is longer than 20,000 bytes.', Livewire::test(CsvReader::class)->set('csv', str_repeat('x', 20_001))->viewData('error'));
+    }
+
+    public function test_polars_pipeline_runs_with_or_without_polars(): void
+    {
+        $page = Livewire::test(PolarsPipeline::class)->set('copies', 1)->set('minBedrooms', 3);
+        $this->assertSame(SimulatedRental::count(), $page->viewData('rowsIn'));
+        $this->assertSame(
+            SimulatedRental::where('bedrooms', '>=', 3)->count(),
+            array_sum(array_column($page->viewData('frameRows'), 'rentals')),
+        );
+
+        if (! PolarsPipeline::polarsAvailable()) {
+            $this->assertNull($page->viewData('polars'));
+            $this->get('/vignettes/polars-pipeline')->assertOk()->assertSee('runs only on the in-memory Frame');
+
+            return;
+        }
+
+        $polars = Livewire::test(PolarsPipeline::class)->set('copies', 10)->viewData('polars');
+        $this->assertNotNull($polars['max_difference']);
+        $this->assertLessThan(1e-9, $polars['max_difference']);
     }
 }
