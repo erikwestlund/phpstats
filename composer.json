@@ -9,7 +9,7 @@
         "php": "^8.5",
         "cmdstan/php": "dev-phpstats-family",
         "erikwestlund/phibble": "^0.1",
-        "erikwestlund/phiz": "^0.2",
+        "erikwestlund/phiz": "^0.3",
         "erikwestlund/phplyr": "^0.1",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",

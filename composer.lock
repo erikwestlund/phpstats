@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dcd7e1c5ce8275837a61ae29181d2bd2",
+    "content-hash": "688821979f27959aa1c2becc1d7fc4dc",
     "packages": [
         {
             "name": "brick/math",
@@ -633,16 +633,16 @@
         },
         {
             "name": "erikwestlund/phiz",
-            "version": "v0.2.0",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/erikwestlund/phiz.git",
-                "reference": "373a4579ef46ba64c43a36108e7542996977fd0d"
+                "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/373a4579ef46ba64c43a36108e7542996977fd0d",
-                "reference": "373a4579ef46ba64c43a36108e7542996977fd0d",
+                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/5d2f7a65c243abadbb9ebba22f7987d34253412e",
+                "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e",
                 "shasum": ""
             },
             "require": {
@@ -707,10 +707,10 @@
                 "visualization"
             ],
             "support": {
-                "source": "https://github.com/erikwestlund/phiz/tree/v0.2.0",
+                "source": "https://github.com/erikwestlund/phiz/tree/v0.3.0",
                 "issues": "https://github.com/erikwestlund/phiz/issues"
             },
-            "time": "2026-10-16T08:26:11+00:00"
+            "time": "2026-10-16T10:15:07+00:00"
         },
         {
             "name": "erikwestlund/phplyr",
