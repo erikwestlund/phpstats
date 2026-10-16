@@ -11,13 +11,16 @@
         @endforeach
 
         @if ($project['repo'] || $project['docs'])
-            <ul class="mt-8 flex gap-6 text-sm">
+            <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
                 @if ($project['repo'])
                     <li><a href="{{ $project['repo'] }}" class="underline">Repository</a></li>
                 @endif
                 @if ($project['docs'])
-                    <li><a href="{{ $project['docs'] }}" class="underline">Reference documentation</a></li>
+                    <li><a href="{{ $project['docs'] }}" class="underline">Documentation</a></li>
                 @endif
+                @foreach ($project['links'] ?? [] as $label => $url)
+                    <li><a href="{{ $url }}" class="underline">{{ $label }}</a></li>
+                @endforeach
             </ul>
         @else
             <p class="mt-8 text-sm text-zinc-500">The repository is not public yet.</p>

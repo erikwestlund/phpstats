@@ -3,6 +3,7 @@
 // The phpstats family. Keys are the URL paths (phpstats.org/{key}).
 // Status kinds: working, exists, in-progress, experimental.
 // docs is null until the project publishes a reference site.
+// links (optional) adds more documentation links, as label => URL.
 
 return [
     'php-stats' => [
@@ -51,7 +52,12 @@ return [
         'status' => 'in-progress',
         'status_label' => 'MVP in progress',
         'repo' => 'https://github.com/erikwestlund/phplyr',
-        'docs' => null,
+        'docs' => 'https://erikwestlund.github.io/phplyr/',
+        'links' => [
+            'Getting started' => 'https://erikwestlund.github.io/phplyr/getting-started.html',
+            'Coming from dplyr' => 'https://erikwestlund.github.io/phplyr/coming-from-dplyr.html',
+            'Gallery' => 'https://erikwestlund.github.io/phplyr/gallery.html',
+        ],
         'overview' => [
             'phplyr covers most of dplyr and tidyr. Each verb returns a closure, so verbs compose with the PHP 8.5 pipe operator.',
             'The dplyr side includes the single-table verbs, mutating and filtering joins, set operations, window functions such as lag(), lead(), and row_number(), and across() with tidyselect-style selectors.',
