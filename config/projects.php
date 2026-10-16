@@ -38,7 +38,7 @@ return [
         'status' => 'in-progress',
         'status_label' => 'MVP in progress',
         'repo' => 'https://github.com/erikwestlund/phibble',
-        'docs' => null,
+        'docs' => 'https://erikwestlund.github.io/phibble/',
         'overview' => [
             'phibble is the shared table type for phplyr, phpolars, php-stats, and cmdstanphp. Every operation returns a new frame.',
             'Columns are typed as float, int, bool, string, factor, or date, and types are inferred on load. Missing values are PHP null.',

@@ -581,12 +581,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erikwestlund/phibble.git",
-                "reference": "f6663aa795195a97e5acc1198577735caddd99ce"
+                "reference": "2cb674ce7d058dc316b72d31795010867203e538"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phibble/zipball/f6663aa795195a97e5acc1198577735caddd99ce",
-                "reference": "f6663aa795195a97e5acc1198577735caddd99ce",
+                "url": "https://api.github.com/repos/erikwestlund/phibble/zipball/2cb674ce7d058dc316b72d31795010867203e538",
+                "reference": "2cb674ce7d058dc316b72d31795010867203e538",
                 "shasum": ""
             },
             "require": {
@@ -632,7 +632,7 @@
                 "source": "https://github.com/erikwestlund/phibble/tree/main",
                 "issues": "https://github.com/erikwestlund/phibble/issues"
             },
-            "time": "2026-10-16T03:33:29+00:00"
+            "time": "2026-10-16T07:44:11+00:00"
         },
         {
             "name": "erikwestlund/phiz",
