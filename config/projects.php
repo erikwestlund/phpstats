@@ -53,14 +53,15 @@ return [
     'phplyr' => [
         'name' => 'phplyr',
         'summary' => 'dplyr-style verbs as pipe functions, with lm() and glm() formulas that call php-stats.',
-        'status' => 'in-progress',
-        'status_label' => 'MVP in progress',
+        'status' => 'working',
+        'status_label' => 'Released, v0.1.0',
         'repo' => 'https://github.com/erikwestlund/phplyr',
         'docs' => 'https://erikwestlund.github.io/phplyr/',
         'links' => [
             'Getting started' => 'https://erikwestlund.github.io/phplyr/getting-started.html',
             'Coming from dplyr' => 'https://erikwestlund.github.io/phplyr/coming-from-dplyr.html',
             'Gallery' => 'https://erikwestlund.github.io/phplyr/gallery.html',
+            'Release notes' => 'https://github.com/erikwestlund/phplyr/releases/tag/v0.1.0',
         ],
         'overview' => [
             'phplyr covers most of dplyr and tidyr. Each verb returns a closure, so verbs compose with the PHP 8.5 pipe operator.',

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2184b974222bb88b6c3b6622cf089479",
+    "content-hash": "dcd7e1c5ce8275837a61ae29181d2bd2",
     "packages": [
         {
             "name": "brick/math",
@@ -714,7 +714,7 @@
         },
         {
             "name": "erikwestlund/phplyr",
-            "version": "dev-main",
+            "version": "v0.1.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:erikwestlund/phplyr.git",
@@ -736,7 +736,6 @@
             "suggest": {
                 "ext-php_stats": "Native descriptives and model fitting (stats_*), needed for lm() and glm()"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -8702,8 +8701,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cmdstan/php": 20,
-        "erikwestlund/phplyr": 20
+        "cmdstan/php": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

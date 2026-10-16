@@ -10,7 +10,7 @@
         "cmdstan/php": "dev-phpstats-family",
         "erikwestlund/phibble": "^0.1",
         "erikwestlund/phiz": "^0.2",
-        "erikwestlund/phplyr": "dev-main",
+        "erikwestlund/phplyr": "^0.1",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^4.4"
