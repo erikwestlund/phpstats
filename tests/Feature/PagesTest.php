@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Data\SchoolPosterior;
 use App\Data\SimulatedRentals;
+use App\Livewire\BayesianSchools;
 use App\Livewire\SchoolEffects;
 use App\Livewire\SimulatedRents;
 use App\Livewire\SqlPipeline;
@@ -114,6 +116,38 @@ class PagesTest extends TestCase
             $mean = array_sum($residuals[$school['school']]) / count($residuals[$school['school']]);
             $this->assertEqualsWithDelta((1 - $school['shrinkage']) * $mean, $school['partial_pooling'] - $intercept, 1e-9);
         }
+    }
+
+    public function test_stored_posterior_is_complete_and_converged(): void
+    {
+        $posterior = SchoolPosterior::load();
+        $meta = $posterior['meta'];
+
+        $this->assertSame(SchoolPosterior::FORMULA, $meta['formula']);
+        $this->assertSame(StudentScore::distinct()->orderBy('school')->pluck('school')->all(), $meta['schools']);
+        $this->assertCount($meta['chains'] * $meta['iter_sampling'] / $meta['thin'], $posterior['draws']['tau']);
+        $this->assertEquals(0, $meta['divergent']);
+        $this->assertLessThan(1.01, max($posterior['convergence']['rhat']));
+    }
+
+    public function test_bayesian_vignette_compares_the_posterior_with_lmer(): void
+    {
+        if (! function_exists('stats_lmer')) {
+            $this->markTestSkipped('php_stats with stats_lmer is not loaded.');
+        }
+
+        $this->get('/vignettes/bayesian-schools')->assertOk()->assertSee('School SD (τ)');
+
+        $fit = Livewire::test(BayesianSchools::class)->set('level', 95)->viewData('fit');
+        foreach ($fit['parameters'] as $p) {
+            $this->assertTrue($p['lower'] <= $p['lmer'] && $p['lmer'] <= $p['upper'], $p['name']);
+        }
+
+        $narrow = Livewire::test(BayesianSchools::class)->set('level', 50)->viewData('fit');
+        $this->assertLessThan(
+            $fit['parameters'][3]['upper'] - $fit['parameters'][3]['lower'],
+            $narrow['parameters'][3]['upper'] - $narrow['parameters'][3]['lower'],
+        );
     }
 
     public function test_sql_pipeline_matches_the_in_memory_result(): void
