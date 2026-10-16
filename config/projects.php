@@ -39,6 +39,9 @@ return [
         'status_label' => 'MVP in progress',
         'repo' => 'https://github.com/erikwestlund/phibble',
         'docs' => 'https://erikwestlund.github.io/phibble/',
+        'links' => [
+            'Laravel integration' => 'https://erikwestlund.github.io/phibble/laravel.html',
+        ],
         'overview' => [
             'phibble is the shared table type for phplyr, phpolars, php-stats, and cmdstanphp. Every operation returns a new frame.',
             'Columns are typed as float, int, bool, string, factor, or date, and types are inferred on load. Missing values are PHP null.',
@@ -68,23 +71,33 @@ return [
     'phiz' => [
         'name' => 'phiz',
         'summary' => 'A ggplot-style grammar of graphics for PHP that produces Vega-Lite charts.',
-        'status' => 'in-progress',
-        'status_label' => 'In progress',
+        'status' => 'working',
+        'status_label' => 'Released, v0.1.0',
         'repo' => 'https://github.com/erikwestlund/phiz',
         'docs' => 'https://erikwestlund.github.io/phiz/',
+        'links' => [
+            'Release notes' => 'https://github.com/erikwestlund/phiz/releases/tag/v0.1.0',
+        ],
         'overview' => [
             'phiz describes charts with a grammar modeled on ggplot2 and produces Vega-Lite specifications, which the browser renders.',
+            'Plots take rows, columns, phibble frames, or Laravel collections, and support layers, scales, facets, themes, and interactive selections.',
+            'The <x-phiz> Blade component renders a plot and re-renders it when a Livewire component updates. Every chart on this site is drawn with it.',
         ],
     ],
     'phpolars' => [
         'name' => 'phpolars',
-        'summary' => 'An optional Polars engine for large data frames.',
-        'status' => 'experimental',
-        'status_label' => 'Experimental',
+        'summary' => 'Polars data frames for PHP as a native Rust extension, with a phibble table backend for phplyr.',
+        'status' => 'working',
+        'status_label' => 'Working, PIE-packaged',
         'repo' => 'https://github.com/erikwestlund/phpolars',
-        'docs' => null,
+        'docs' => 'https://erikwestlund.github.io/phpolars/',
+        'links' => [
+            'Performance' => 'https://erikwestlund.github.io/phpolars/performance.html',
+        ],
         'overview' => [
-            'phpolars runs phibble frames on the Polars columnar engine. phibble works without it.',
+            'phpolars is a native PHP extension, written in Rust, that brings the Polars columnar engine to PHP. It installs with PIE as php_polars and targets PHP 8.5 on Linux and macOS.',
+            'Its PolarsTable implements phibble\'s table contract, so phplyr pipelines run in Polars. phibble and phplyr work without it.',
+            'The verbs run 10 to 100 times faster in Polars than on an in-memory phibble frame. Converting results back to PHP values takes most of a PolarsTable pipeline\'s time, so pipelines that reduce the data before collecting gain the most.',
         ],
     ],
     'cmdstanphp' => [

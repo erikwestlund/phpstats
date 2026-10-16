@@ -182,7 +182,8 @@ class PagesTest extends TestCase
     {
         $this->get('/benchmarks')->assertOk()->assertSee('Agrees with R')
             ->assertSee('Plain PHP, normal equations (coefficients only)')
-            ->assertSee('Polyfill agrees');
+            ->assertSee('Polyfill agrees')
+            ->assertSee('phpolars PolarsTable');
 
         $data = Benchmarks::load();
         $this->assertSame(array_keys(Benchmarks::MODELS), array_keys($data['models']));

@@ -1,10 +1,10 @@
 {
     "source": "erikwestlund/php-stats@main",
-    "synced_at": "2026-10-16T07:51:36+00:00",
+    "synced_at": "2026-10-16T08:23:10+00:00",
     "models": {
         "ols": {
             "label": "Linear regression (OLS)",
-            "recorded_at": "2026-10-11T18:58:48.838183+00:00",
+            "recorded_at": "2026-10-16T07:49:59.210984+00:00",
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 5,
@@ -23,13 +23,13 @@
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.00021354202181100845,
-                            "min_fit_seconds": 0.00019754096865653992
+                            "median_fit_seconds": 0.00021245796233415604,
+                            "min_fit_seconds": 0.0002024590503424406
                         },
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.000131959,
-                            "min_fit_seconds": 0.000129
+                            "median_fit_seconds": 0.000129958,
+                            "min_fit_seconds": 0.000126875
                         }
                     }
                 },
@@ -41,18 +41,18 @@
                     "implementations": {
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.010595292,
-                            "min_fit_seconds": 0.010498791
+                            "median_fit_seconds": 0.010627291,
+                            "min_fit_seconds": 0.010328666
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.0050663340371102095,
-                            "min_fit_seconds": 0.005047874990850687
+                            "median_fit_seconds": 0.00494383298791945,
+                            "min_fit_seconds": 0.004864000016823411
                         },
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.016000000000000014,
-                            "min_fit_seconds": 0.015000000000000013
+                            "median_fit_seconds": 0.015000000000000013,
+                            "min_fit_seconds": 0.014999999999999986
                         }
                     }
                 },
@@ -64,18 +64,18 @@
                     "implementations": {
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.18500000000000005,
-                            "min_fit_seconds": 0.17399999999999993
+                            "median_fit_seconds": 0.18299999999999983,
+                            "min_fit_seconds": 0.16900000000000004
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.09331887494772673,
-                            "min_fit_seconds": 0.0924961669370532
+                            "median_fit_seconds": 0.09009991609491408,
+                            "min_fit_seconds": 0.08978870906867087
                         },
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.113052792,
-                            "min_fit_seconds": 0.111933625
+                            "median_fit_seconds": 0.113401833,
+                            "min_fit_seconds": 0.112949875
                         }
                     }
                 },
@@ -87,18 +87,18 @@
                     "implementations": {
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.040014375,
-                            "min_fit_seconds": 0.038985625
+                            "median_fit_seconds": 0.027377666,
+                            "min_fit_seconds": 0.025713334
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.011174291837960482,
-                            "min_fit_seconds": 0.01113533298484981
+                            "median_fit_seconds": 0.011210208060219884,
+                            "min_fit_seconds": 0.01111033302731812
                         },
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.020999999999999908,
-                            "min_fit_seconds": 0.020999999999999908
+                            "median_fit_seconds": 0.020000000000000018,
+                            "min_fit_seconds": 0.020000000000000018
                         }
                     }
                 }
@@ -106,7 +106,7 @@
         },
         "logistic": {
             "label": "Logistic regression",
-            "recorded_at": "2026-10-11T19:28:43.376263+00:00",
+            "recorded_at": "2026-10-16T07:50:18.018340+00:00",
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 5,
@@ -125,13 +125,13 @@
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.0005157501436769962,
-                            "min_fit_seconds": 0.000504292082041502
+                            "median_fit_seconds": 0.0005608329083770514,
+                            "min_fit_seconds": 0.0005379170179367065
                         },
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.000242166,
-                            "min_fit_seconds": 0.000236542
+                            "median_fit_seconds": 0.000345125,
+                            "min_fit_seconds": 0.000344042
                         }
                     }
                 },
@@ -143,18 +143,18 @@
                     "implementations": {
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.034654791,
-                            "min_fit_seconds": 0.034531708
+                            "median_fit_seconds": 0.037173208,
+                            "min_fit_seconds": 0.036744541
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.021765084005892277,
-                            "min_fit_seconds": 0.021644458873197436
+                            "median_fit_seconds": 0.021170832915231586,
+                            "min_fit_seconds": 0.02095158281736076
                         },
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.07100000000000006,
-                            "min_fit_seconds": 0.068
+                            "median_fit_seconds": 0.06999999999999995,
+                            "min_fit_seconds": 0.065
                         }
                     }
                 },
@@ -166,18 +166,18 @@
                     "implementations": {
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.8329999999999997,
-                            "min_fit_seconds": 0.8140000000000001
+                            "median_fit_seconds": 0.8040000000000003,
+                            "min_fit_seconds": 0.758
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.23687537503428757,
-                            "min_fit_seconds": 0.23589383298531175
+                            "median_fit_seconds": 0.24038954195566475,
+                            "min_fit_seconds": 0.23919116705656052
                         },
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.288345917,
-                            "min_fit_seconds": 0.2840825
+                            "median_fit_seconds": 0.405111416,
+                            "min_fit_seconds": 0.400008209
                         }
                     }
                 },
@@ -189,17 +189,17 @@
                     "implementations": {
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.113464083,
-                            "min_fit_seconds": 0.112350583
+                            "median_fit_seconds": 0.079360209,
+                            "min_fit_seconds": 0.078815667
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.026544125052168965,
-                            "min_fit_seconds": 0.0263972079847008
+                            "median_fit_seconds": 0.027049165917560458,
+                            "min_fit_seconds": 0.02628950006328523
                         },
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.12399999999999989,
+                            "median_fit_seconds": 0.121,
                             "min_fit_seconds": 0.1100000000000001
                         }
                     }
@@ -208,7 +208,7 @@
         },
         "probit": {
             "label": "Probit regression",
-            "recorded_at": "2026-10-11T20:07:16.774904+00:00",
+            "recorded_at": "2026-10-16T07:50:38.410477+00:00",
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 5,
@@ -223,17 +223,17 @@
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
                             "median_fit_seconds": 0.0020000000000000018,
-                            "min_fit_seconds": 0.0010000000000000009
+                            "min_fit_seconds": 0.001999999999999974
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.0017919170204550028,
-                            "min_fit_seconds": 0.0017781660426408052
+                            "median_fit_seconds": 0.0018792080227285624,
+                            "min_fit_seconds": 0.0018222089856863022
                         },
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.000772625,
-                            "min_fit_seconds": 0.000762708
+                            "median_fit_seconds": 0.001432833,
+                            "min_fit_seconds": 0.001421792
                         }
                     }
                 },
@@ -245,18 +245,18 @@
                     "implementations": {
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.128871875,
-                            "min_fit_seconds": 0.128668541
+                            "median_fit_seconds": 0.137871416,
+                            "min_fit_seconds": 0.137446791
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.054365540854632854,
-                            "min_fit_seconds": 0.05409737513400614
+                            "median_fit_seconds": 0.05924737500026822,
+                            "min_fit_seconds": 0.05853704200126231
                         },
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.135,
-                            "min_fit_seconds": 0.1270000000000001
+                            "median_fit_seconds": 0.15599999999999997,
+                            "min_fit_seconds": 0.1359999999999999
                         }
                     }
                 },
@@ -268,18 +268,18 @@
                     "implementations": {
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 1.1020000000000003,
-                            "min_fit_seconds": 1.0430000000000001
+                            "median_fit_seconds": 1.192000000000001,
+                            "min_fit_seconds": 1.1449999999999996
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.5645056250505149,
-                            "min_fit_seconds": 0.5545680420473218
+                            "median_fit_seconds": 0.591340292012319,
+                            "min_fit_seconds": 0.5881951251067221
                         },
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.58003475,
-                            "min_fit_seconds": 0.578505292
+                            "median_fit_seconds": 1.231733541,
+                            "min_fit_seconds": 1.231109209
                         }
                     }
                 },
@@ -291,18 +291,18 @@
                     "implementations": {
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.301860292,
-                            "min_fit_seconds": 0.299445083
+                            "median_fit_seconds": 0.196224917,
+                            "min_fit_seconds": 0.19363625
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.08650645799934864,
-                            "min_fit_seconds": 0.0860419999808073
+                            "median_fit_seconds": 0.08980020903982222,
+                            "min_fit_seconds": 0.08922654204070568
                         },
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.20700000000000007,
-                            "min_fit_seconds": 0.20100000000000007
+                            "median_fit_seconds": 0.20999999999999996,
+                            "min_fit_seconds": 0.20699999999999985
                         }
                     }
                 }
@@ -310,7 +310,7 @@
         },
         "poisson": {
             "label": "Poisson regression",
-            "recorded_at": "2026-10-11T20:07:45.027082+00:00",
+            "recorded_at": "2026-10-16T07:51:11.086697+00:00",
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 5,
@@ -324,18 +324,18 @@
                     "implementations": {
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.0010000000000000009,
+                            "median_fit_seconds": 0.0020000000000000018,
                             "min_fit_seconds": 0.0010000000000000009
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.0008528339676558971,
-                            "min_fit_seconds": 0.0007880409248173237
+                            "median_fit_seconds": 0.0007668340113013983,
+                            "min_fit_seconds": 0.0007427909877151251
                         },
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.000268625,
-                            "min_fit_seconds": 0.00026425
+                            "median_fit_seconds": 0.000244667,
+                            "min_fit_seconds": 0.000240708
                         }
                     }
                 },
@@ -347,18 +347,18 @@
                     "implementations": {
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.033534292,
-                            "min_fit_seconds": 0.033182958
+                            "median_fit_seconds": 0.026229333,
+                            "min_fit_seconds": 0.025544417
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.029063082998618484,
-                            "min_fit_seconds": 0.028863375075161457
+                            "median_fit_seconds": 0.031078416854143143,
+                            "min_fit_seconds": 0.03058891696855426
                         },
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.121,
-                            "min_fit_seconds": 0.119
+                            "median_fit_seconds": 0.13499999999999995,
+                            "min_fit_seconds": 0.13
                         }
                     }
                 },
@@ -370,18 +370,18 @@
                     "implementations": {
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 1.33,
-                            "min_fit_seconds": 1.3020000000000005
+                            "median_fit_seconds": 1.4369999999999998,
+                            "min_fit_seconds": 1.3219999999999992
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.313505541998893,
-                            "min_fit_seconds": 0.3132113330066204
+                            "median_fit_seconds": 0.32898266706615686,
+                            "min_fit_seconds": 0.32791608292609453
                         },
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.306150292,
-                            "min_fit_seconds": 0.30414675
+                            "median_fit_seconds": 0.277840083,
+                            "min_fit_seconds": 0.268567584
                         }
                     }
                 },
@@ -393,18 +393,18 @@
                     "implementations": {
                         "PHP": {
                             "version": "8.5.10",
-                            "median_fit_seconds": 0.130703375,
-                            "min_fit_seconds": 0.129038625
+                            "median_fit_seconds": 0.06953575,
+                            "min_fit_seconds": 0.067548459
                         },
                         "statsmodels": {
                             "version": "0.15.0",
-                            "median_fit_seconds": 0.06481937482021749,
-                            "min_fit_seconds": 0.06460549985058606
+                            "median_fit_seconds": 0.06841566599905491,
+                            "min_fit_seconds": 0.06769479205831885
                         },
                         "R": {
                             "version": "R version 4.6.1 (2026-06-24)",
-                            "median_fit_seconds": 0.27500000000000013,
-                            "min_fit_seconds": 0.2629999999999999
+                            "median_fit_seconds": 0.28300000000000014,
+                            "min_fit_seconds": 0.274
                         }
                     }
                 }

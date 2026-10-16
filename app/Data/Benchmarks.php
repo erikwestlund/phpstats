@@ -33,6 +33,30 @@ final class Benchmarks
         return json_decode(file_get_contents(self::path()), true, flags: JSON_THROW_ON_ERROR);
     }
 
+    public static function backends(): array
+    {
+        return require database_path('data/backend-benchmarks.php');
+    }
+
+    public static function backendChart(array $backends): Plot
+    {
+        $rows = [];
+        foreach ($backends['pipelines'] as $pipeline) {
+            foreach ($pipeline['seconds'] as $backend => $seconds) {
+                $rows[] = ['pipeline' => "Pipeline {$pipeline['key']}", 'backend' => $backends['backends'][$backend], 'seconds' => $seconds];
+            }
+        }
+
+        return Plot::of($rows)
+            ->aes(x: 'seconds', y: 'pipeline', color: 'backend')
+            ->point(size: 90, alpha: 0.9)
+            ->scaleX(type: 'log')
+            ->labs(x: 'Time for 1,000,000 rows (seconds, log scale)', y: null, color: null)
+            ->theme(legendPosition: 'bottom')
+            ->tooltip()
+            ->size('container', 160);
+    }
+
     public const POLYFILL_IMPLEMENTATIONS = [
         'extension' => 'php-stats extension',
         'polyfill' => 'php-stats-polyfill',
