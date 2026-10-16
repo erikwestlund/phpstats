@@ -640,12 +640,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erikwestlund/phiz.git",
-                "reference": "d67565aead4a0ef46fa996c7257a75313155e2ab"
+                "reference": "d971e029fb274300aece06ea4c70ded39c27d978"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/d67565aead4a0ef46fa996c7257a75313155e2ab",
-                "reference": "d67565aead4a0ef46fa996c7257a75313155e2ab",
+                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/d971e029fb274300aece06ea4c70ded39c27d978",
+                "reference": "d971e029fb274300aece06ea4c70ded39c27d978",
                 "shasum": ""
             },
             "require": {
@@ -712,7 +712,7 @@
                 "source": "https://github.com/erikwestlund/phiz/tree/main",
                 "issues": "https://github.com/erikwestlund/phiz/issues"
             },
-            "time": "2026-10-16T03:29:41+00:00"
+            "time": "2026-10-16T07:55:43+00:00"
         },
         {
             "name": "erikwestlund/phplyr",
