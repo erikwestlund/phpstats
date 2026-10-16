@@ -12,7 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Behind a TLS-terminating proxy (Nginx Proxy Manager on the VM), trust
+        // its X-Forwarded-* headers so generated URLs use https. TRUSTED_PROXIES
+        // is a comma-separated list of proxy IPs or CIDRs, or * for any.
+        if ($proxies = env('TRUSTED_PROXIES')) {
+            $middleware->trustProxies(at: $proxies === '*' ? '*' : array_map('trim', explode(',', $proxies)));
+        }
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
