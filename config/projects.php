@@ -72,11 +72,11 @@ return [
         'name' => 'phiz',
         'summary' => 'A ggplot-style grammar of graphics for PHP that produces Vega-Lite charts.',
         'status' => 'working',
-        'status_label' => 'Released, v0.1.0',
+        'status_label' => 'Released, v0.2.0',
         'repo' => 'https://github.com/erikwestlund/phiz',
         'docs' => 'https://erikwestlund.github.io/phiz/',
         'links' => [
-            'Release notes' => 'https://github.com/erikwestlund/phiz/releases/tag/v0.1.0',
+            'Release notes' => 'https://github.com/erikwestlund/phiz/releases/tag/v0.2.0',
         ],
         'overview' => [
             'phiz describes charts with a grammar modeled on ggplot2 and produces Vega-Lite specifications, which the browser renders.',

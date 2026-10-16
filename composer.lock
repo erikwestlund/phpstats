@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "139aa99c238b6d195ed7e2d2d4d9e560",
+    "content-hash": "f37df0384539efafe400ee30934f021b",
     "packages": [
         {
             "name": "brick/math",
@@ -146,12 +146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erikwestlund/CmdStanPHP.git",
-                "reference": "6b770f54b3f5e00970c767c8cc0023a115744088"
+                "reference": "59baa928ecc501f1d21efc79a25ff04647728a9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/CmdStanPHP/zipball/6b770f54b3f5e00970c767c8cc0023a115744088",
-                "reference": "6b770f54b3f5e00970c767c8cc0023a115744088",
+                "url": "https://api.github.com/repos/erikwestlund/CmdStanPHP/zipball/59baa928ecc501f1d21efc79a25ff04647728a9c",
+                "reference": "59baa928ecc501f1d21efc79a25ff04647728a9c",
                 "shasum": ""
             },
             "require": {
@@ -202,7 +202,7 @@
                 "source": "https://github.com/erikwestlund/CmdStanPHP/tree/phpstats-family",
                 "issues": "https://github.com/erikwestlund/CmdStanPHP/issues"
             },
-            "time": "2026-10-16T07:41:10+00:00"
+            "time": "2026-10-16T08:15:19+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -581,12 +581,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erikwestlund/phibble.git",
-                "reference": "2cb674ce7d058dc316b72d31795010867203e538"
+                "reference": "9655e2a0220d525bacc51509c6fce0a6d4eeaf81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phibble/zipball/2cb674ce7d058dc316b72d31795010867203e538",
-                "reference": "2cb674ce7d058dc316b72d31795010867203e538",
+                "url": "https://api.github.com/repos/erikwestlund/phibble/zipball/9655e2a0220d525bacc51509c6fce0a6d4eeaf81",
+                "reference": "9655e2a0220d525bacc51509c6fce0a6d4eeaf81",
                 "shasum": ""
             },
             "require": {
@@ -594,6 +594,7 @@
                 "php": "^8.5"
             },
             "require-dev": {
+                "erikwestlund/phiz": "dev-main",
                 "illuminate/database": "^12.0",
                 "pestphp/pest": "^4.0"
             },
@@ -621,7 +622,8 @@
             },
             "autoload-dev": {
                 "psr-4": {
-                    "Tests\\": "tests/"
+                    "Tests\\": "tests/",
+                    "Phibble\\Bench\\": "bench/src/"
                 }
             },
             "license": [
@@ -632,20 +634,20 @@
                 "source": "https://github.com/erikwestlund/phibble/tree/main",
                 "issues": "https://github.com/erikwestlund/phibble/issues"
             },
-            "time": "2026-10-16T07:44:11+00:00"
+            "time": "2026-10-16T09:56:11+00:00"
         },
         {
             "name": "erikwestlund/phiz",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:erikwestlund/phiz.git",
-                "reference": "84af672c2cf8d28616d59d31ba2deae23ab5a24c"
+                "url": "https://github.com/erikwestlund/phiz.git",
+                "reference": "373a4579ef46ba64c43a36108e7542996977fd0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/84af672c2cf8d28616d59d31ba2deae23ab5a24c",
-                "reference": "84af672c2cf8d28616d59d31ba2deae23ab5a24c",
+                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/373a4579ef46ba64c43a36108e7542996977fd0d",
+                "reference": "373a4579ef46ba64c43a36108e7542996977fd0d",
                 "shasum": ""
             },
             "require": {
@@ -653,6 +655,8 @@
                 "php": "^8.5"
             },
             "require-dev": {
+                "erikwestlund/phibble": "dev-main",
+                "erikwestlund/phplyr": "dev-main",
                 "opis/json-schema": "^2.4",
                 "orchestra/testbench": "^10.0",
                 "pestphp/pest": "^4.0"
@@ -707,7 +711,11 @@
                 "vega-lite",
                 "visualization"
             ],
-            "time": "2026-10-16T08:13:02+00:00"
+            "support": {
+                "source": "https://github.com/erikwestlund/phiz/tree/v0.2.0",
+                "issues": "https://github.com/erikwestlund/phiz/issues"
+            },
+            "time": "2026-10-16T08:26:11+00:00"
         },
         {
             "name": "erikwestlund/phplyr",
@@ -715,12 +723,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erikwestlund/phplyr.git",
-                "reference": "4a282a365738a7fc75ec1dfa4029517e7265eaf5"
+                "reference": "e71e0eab86d701e724285b760288324e69753812"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/4a282a365738a7fc75ec1dfa4029517e7265eaf5",
-                "reference": "4a282a365738a7fc75ec1dfa4029517e7265eaf5",
+                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/e71e0eab86d701e724285b760288324e69753812",
+                "reference": "e71e0eab86d701e724285b760288324e69753812",
                 "shasum": ""
             },
             "require": {
@@ -747,7 +755,9 @@
                     "src/functions/joins.php",
                     "src/functions/tidyr.php",
                     "src/functions/rows.php",
-                    "src/functions/scalar.php"
+                    "src/functions/scalar.php",
+                    "src/functions/strings.php",
+                    "src/functions/dates.php"
                 ]
             },
             "autoload-dev": {
@@ -763,7 +773,7 @@
                 "source": "https://github.com/erikwestlund/phplyr/tree/main",
                 "issues": "https://github.com/erikwestlund/phplyr/issues"
             },
-            "time": "2026-10-16T03:39:02+00:00"
+            "time": "2026-10-16T08:32:12+00:00"
         },
         {
             "name": "fruitcake/php-cors",
