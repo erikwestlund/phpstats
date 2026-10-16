@@ -10,6 +10,16 @@ The website for the PHP Stats family: a Laravel 13 + Livewire 4 app.
 - Example datasets come from php-stats `docs/data` and are copied to
   `database/data`, then seeded by `DatabaseSeeder`.
 
+## Generated data
+
+Two committed files are generated, not hand-edited:
+
+- `database/data/stan/school-intercepts.json`: posterior draws for the
+  Bayesian vignette. Regenerate with `php artisan stan:fit-school-posterior`
+  (needs CmdStan and php_stats). Pages never run CmdStan.
+- `database/data/benchmarks.json`: php-stats benchmark results. Refresh with
+  `php artisan benchmarks:sync` (fetches from GitHub).
+
 ## Local php_stats
 
 Herd's PHP 8.5 does not load php_stats by default. Load a local build per command:
