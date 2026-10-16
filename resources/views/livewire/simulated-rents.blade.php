@@ -70,10 +70,8 @@
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Neighborhood effects</h2>
         <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            Points are estimates with 95% confidence intervals. Red ticks mark the true values.
+            Points are estimates with 95% confidence intervals. Red diamonds mark the true values.
         </p>
-        <div class="mt-3 w-full" wire:key="chart-{{ $fit['n'] }}" wire:ignore>
-            <div class="w-full" x-data="vegaChart(@js($fit['chart']))"></div>
-        </div>
+        <x-phiz :plot="$fit['chart']" wire:key="simulated-rents-chart" class="mt-3 w-full" />
     @endif
 </div>

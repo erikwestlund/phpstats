@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa6e0745b3b5503fc530abdad9eb67ad",
+    "content-hash": "74ade5555df5a6b6f0edb8367e68c512",
     "packages": [
         {
             "name": "brick/math",
@@ -560,6 +560,86 @@
                 "issues": "https://github.com/erikwestlund/phibble/issues"
             },
             "time": "2026-10-16T03:21:10+00:00"
+        },
+        {
+            "name": "erikwestlund/phiz",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erikwestlund/phiz.git",
+                "reference": "d67565aead4a0ef46fa996c7257a75313155e2ab"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/d67565aead4a0ef46fa996c7257a75313155e2ab",
+                "reference": "d67565aead4a0ef46fa996c7257a75313155e2ab",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.5"
+            },
+            "require-dev": {
+                "opis/json-schema": "^2.4",
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^4.0"
+            },
+            "suggest": {
+                "erikwestlund/phibble": "Data frames that phiz plots directly",
+                "illuminate/view": "For the <x-phiz> Blade component (auto-discovered in Laravel)"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Phiz\\Laravel\\PhizServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Phiz\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Phiz\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "pest"
+                ],
+                "gallery": [
+                    "php examples/gallery.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Erik Westlund"
+                }
+            ],
+            "description": "A ggplot2-flavoured grammar of graphics for PHP that emits Vega-Lite",
+            "keywords": [
+                "charts",
+                "ggplot2",
+                "grammar of graphics",
+                "statistics",
+                "vega-lite",
+                "visualization"
+            ],
+            "support": {
+                "source": "https://github.com/erikwestlund/phiz/tree/main",
+                "issues": "https://github.com/erikwestlund/phiz/issues"
+            },
+            "time": "2026-10-16T03:29:41+00:00"
         },
         {
             "name": "erikwestlund/phplyr",
@@ -8553,6 +8633,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "erikwestlund/phibble": 20,
+        "erikwestlund/phiz": 20,
         "erikwestlund/phplyr": 20
     },
     "prefer-stable": true,

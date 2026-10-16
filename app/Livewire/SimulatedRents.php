@@ -7,7 +7,9 @@ use App\Models\SimulatedRental;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Phibble\Frame;
+use Phiz\Plot;
 
+use function Phiz\aes;
 use function Phplyr\{arrange, group_by, head, mean, mutate, n, summarise};
 
 /**
@@ -84,36 +86,19 @@ class SimulatedRents extends Component
     }
 
     /**
-     * Vega-Lite spec: neighborhood effects with 95% intervals and the true values.
+     * Neighborhood effects with 95% intervals, and the true values in red.
      */
-    private function chart(array $terms): array
+    private function chart(array $terms): Plot
     {
         $values = array_map(fn ($t) => [...$t, 'term' => substr($t['term'], strlen('neighborhood: '))], $terms);
-        $y = ['field' => 'term', 'type' => 'nominal', 'title' => null, 'sort' => null];
 
-        return [
-            '$schema' => 'https://vega.github.io/schema/vega-lite/v6.json',
-            'width' => 'container',
-            'height' => 220,
-            'data' => ['values' => $values],
-            'encoding' => ['y' => $y],
-            'layer' => [
-                [
-                    'mark' => 'rule',
-                    'encoding' => [
-                        'x' => ['field' => 'lower', 'type' => 'quantitative', 'title' => 'Effect relative to Riverside (per month)'],
-                        'x2' => ['field' => 'upper'],
-                    ],
-                ],
-                [
-                    'mark' => ['type' => 'point', 'filled' => true, 'size' => 60, 'tooltip' => true],
-                    'encoding' => ['x' => ['field' => 'estimate', 'type' => 'quantitative']],
-                ],
-                [
-                    'mark' => ['type' => 'tick', 'color' => 'firebrick', 'thickness' => 2],
-                    'encoding' => ['x' => ['field' => 'true', 'type' => 'quantitative']],
-                ],
-            ],
-        ];
+        return Plot::of($values)
+            ->aes(x: 'estimate', y: 'term', xmin: 'lower', xmax: 'upper')
+            ->pointrange(color: '#4c78a8', linewidth: 2)
+            ->point(aes(x: 'true'), shape: 'diamond', color: 'firebrick', size: 60)
+            ->vline(0, color: 'gray', linetype: 'dashed')
+            ->labs(x: 'Effect relative to Riverside (per month)', y: null)
+            ->tooltip()
+            ->size('container', 220);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\StudentScore;
 use Livewire\Component;
 use Phibble\Frame;
+use Phiz\Plot;
 
 /**
  * Vignette: regress test score on study hours and prior score.
@@ -53,9 +54,9 @@ class SchoolScores extends Component
     }
 
     /**
-     * Vega-Lite spec: observed score against fitted score, with the y = x line.
+     * Observed score against fitted score, with the y = x line.
      */
-    private function chart(array $observed, array $result): array
+    private function chart(array $observed, array $result): Plot
     {
         $points = array_map(
             fn (int $row, float $fitted) => ['fitted' => $fitted, 'observed' => $observed[$row]],
@@ -64,30 +65,15 @@ class SchoolScores extends Component
         );
 
         $values = [...$result['fitted'], ...array_column($points, 'observed')];
-        $domain = [floor(min($values)), ceil(max($values))];
+        $limits = [floor(min($values)), ceil(max($values))];
 
-        return [
-            '$schema' => 'https://vega.github.io/schema/vega-lite/v6.json',
-            'width' => 'container',
-            'height' => 320,
-            'layer' => [
-                [
-                    'data' => ['values' => $points],
-                    'mark' => ['type' => 'point', 'filled' => true, 'opacity' => 0.6, 'tooltip' => true],
-                    'encoding' => [
-                        'x' => ['field' => 'fitted', 'type' => 'quantitative', 'title' => 'Fitted score', 'scale' => ['domain' => $domain]],
-                        'y' => ['field' => 'observed', 'type' => 'quantitative', 'title' => 'Observed score', 'scale' => ['domain' => $domain]],
-                    ],
-                ],
-                [
-                    'data' => ['values' => [['v' => $domain[0]], ['v' => $domain[1]]]],
-                    'mark' => ['type' => 'line', 'strokeDash' => [4, 4], 'color' => 'gray'],
-                    'encoding' => [
-                        'x' => ['field' => 'v', 'type' => 'quantitative'],
-                        'y' => ['field' => 'v', 'type' => 'quantitative'],
-                    ],
-                ],
-            ],
-        ];
+        return Plot::of($points)
+            ->aes(x: 'fitted', y: 'observed')
+            ->point(alpha: 0.6)
+            ->abline(0, 1, color: 'gray', linetype: 'dashed')
+            ->coordCartesian(xlim: $limits, ylim: $limits)
+            ->labs(x: 'Fitted score', y: 'Observed score')
+            ->tooltip()
+            ->size('container', 320);
     }
 }

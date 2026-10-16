@@ -49,8 +49,6 @@
             </p>
         </div>
 
-        <div class="mt-8 w-full" wire:key="chart-{{ implode('-', $predictors) }}" wire:ignore>
-            <div class="w-full" x-data="vegaChart(@js($fit['chart']))"></div>
-        </div>
+        <x-phiz :plot="$fit['chart']" wire:key="school-scores-chart" class="mt-8 w-full" />
     @endif
 </div>
