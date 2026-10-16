@@ -29,6 +29,7 @@
                 'vignettes.simulated-rents' => ['Simulated rents', 'Linear regression with a factor, compared with the coefficients that generated the data.'],
                 'vignettes.school-scores' => ['School scores', 'Linear regression with a choice of predictors and an observed-against-fitted chart.'],
                 'vignettes.school-effects' => ['School effects', 'A linear mixed model with random school intercepts, variance components, and shrinkage.'],
+                'vignettes.sql-pipeline' => ['SQL pipeline', 'One phplyr pipeline run as a single SQL query and in memory, with the generated SQL.'],
             ] as $route => [$title, $description])
                 <li>
                     <a href="{{ route($route) }}" class="font-medium underline">{{ $title }}</a>

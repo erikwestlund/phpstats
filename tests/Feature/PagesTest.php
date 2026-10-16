@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Data\SimulatedRentals;
 use App\Livewire\SchoolEffects;
 use App\Livewire\SimulatedRents;
+use App\Livewire\SqlPipeline;
 use App\Models\SimulatedRental;
 use App\Models\StudentScore;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -112,6 +113,24 @@ class PagesTest extends TestCase
         foreach ($fit['schools'] as $school) {
             $mean = array_sum($residuals[$school['school']]) / count($residuals[$school['school']]);
             $this->assertEqualsWithDelta((1 - $school['shrinkage']) * $mean, $school['partial_pooling'] - $intercept, 1e-9);
+        }
+    }
+
+    public function test_sql_pipeline_matches_the_in_memory_result(): void
+    {
+        $this->get('/vignettes/sql-pipeline')
+            ->assertOk()
+            ->assertSee('GROUP BY &quot;neighborhood&quot;', false)
+            ->assertSee('same rows in the same order');
+
+        foreach (SqlPipeline::BEDROOMS as $bedrooms) {
+            $view = Livewire::test(SqlPipeline::class)->set('minBedrooms', $bedrooms);
+            $this->assertNotNull($view->viewData('maxDifference'), "min bedrooms {$bedrooms}");
+            $this->assertLessThan(1e-9, $view->viewData('maxDifference'));
+            $this->assertSame(
+                SimulatedRental::where('bedrooms', '>=', $bedrooms)->count(),
+                array_sum(array_column($view->viewData('sqlRows'), 'rentals')),
+            );
         }
     }
 

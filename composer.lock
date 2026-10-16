@@ -656,12 +656,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/erikwestlund/phplyr.git",
-                "reference": "19fd5177e3ff3468f17459ac5da52bce028783d3"
+                "reference": "4a282a365738a7fc75ec1dfa4029517e7265eaf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/19fd5177e3ff3468f17459ac5da52bce028783d3",
-                "reference": "19fd5177e3ff3468f17459ac5da52bce028783d3",
+                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/4a282a365738a7fc75ec1dfa4029517e7265eaf5",
+                "reference": "4a282a365738a7fc75ec1dfa4029517e7265eaf5",
                 "shasum": ""
             },
             "require": {
@@ -687,7 +687,8 @@
                     "src/functions/groups.php",
                     "src/functions/joins.php",
                     "src/functions/tidyr.php",
-                    "src/functions/rows.php"
+                    "src/functions/rows.php",
+                    "src/functions/scalar.php"
                 ]
             },
             "autoload-dev": {
@@ -703,7 +704,7 @@
                 "source": "https://github.com/erikwestlund/phplyr/tree/main",
                 "issues": "https://github.com/erikwestlund/phplyr/issues"
             },
-            "time": "2026-10-16T03:24:36+00:00"
+            "time": "2026-10-16T03:39:02+00:00"
         },
         {
             "name": "fruitcake/php-cors",
