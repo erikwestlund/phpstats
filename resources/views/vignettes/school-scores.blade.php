@@ -1,0 +1,26 @@
+<x-layout title="School scores">
+    <article class="max-w-3xl">
+        <h1 class="text-3xl font-semibold tracking-tight">School scores</h1>
+        <p class="mt-4 text-zinc-700 dark:text-zinc-300">
+            This vignette fits a linear regression of test score on study hours and prior score.
+            The data has 250 students from 12 schools and is stored in this app's database.
+            Each change to the predictors refits the model on the server with php-stats.
+        </p>
+
+        <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
+        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$scores = Frame::fromQuery(StudentScore::query());
+
+$fit = stats_ols(
+    x: $scores->toMatrix(['study_hours', 'prior_score']),
+    y: $scores->toVector('score'),
+);</code></pre>
+        <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+            When php-stats provides stats_lm(), phplyr's lm() will replace the stats_ols() call:
+        </p>
+        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = $scores |> lm('score ~ study_hours + prior_score');</code></pre>
+    </article>
+
+    <div class="mt-10">
+        <livewire:school-scores />
+    </div>
+</x-layout>

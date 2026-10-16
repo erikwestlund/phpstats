@@ -1,0 +1,26 @@
+<x-layout :title="$project['name']">
+    <article class="max-w-3xl">
+        <div class="flex items-center gap-3">
+            <h1 class="text-3xl font-semibold tracking-tight">{{ $project['name'] }}</h1>
+            <x-status :project="$project" />
+        </div>
+        <p class="mt-4 text-lg text-zinc-700 dark:text-zinc-300">{{ $project['summary'] }}</p>
+
+        @foreach ($project['overview'] as $paragraph)
+            <p class="mt-4 text-zinc-700 dark:text-zinc-300">{{ $paragraph }}</p>
+        @endforeach
+
+        @if ($project['repo'] || $project['docs'])
+            <ul class="mt-8 flex gap-6 text-sm">
+                @if ($project['repo'])
+                    <li><a href="{{ $project['repo'] }}" class="underline">Repository</a></li>
+                @endif
+                @if ($project['docs'])
+                    <li><a href="{{ $project['docs'] }}" class="underline">Reference documentation</a></li>
+                @endif
+            </ul>
+        @else
+            <p class="mt-8 text-sm text-zinc-500">The repository is not public yet.</p>
+        @endif
+    </article>
+</x-layout>
