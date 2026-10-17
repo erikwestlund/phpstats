@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ce2090a53d6ed77aac2106d7641e478",
+    "content-hash": "530f79a696834aa12e61da821476a426",
     "packages": [
         {
             "name": "brick/math",
@@ -715,16 +715,16 @@
         },
         {
             "name": "erikwestlund/phplyr",
-            "version": "dev-main",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:erikwestlund/phplyr.git",
-                "reference": "89c599cb5349220396d87dd42085c57446537606"
+                "reference": "512d3beb40e9d29b31683606c7195a60b7794d77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/89c599cb5349220396d87dd42085c57446537606",
-                "reference": "89c599cb5349220396d87dd42085c57446537606",
+                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/512d3beb40e9d29b31683606c7195a60b7794d77",
+                "reference": "512d3beb40e9d29b31683606c7195a60b7794d77",
                 "shasum": ""
             },
             "require": {
@@ -737,7 +737,6 @@
             "suggest": {
                 "ext-php_stats": "Native descriptives and model fitting (stats_*), needed for lm() and glm()"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -766,7 +765,7 @@
                 "MIT"
             ],
             "description": "A dplyr-style grammar of data manipulation for PHP 8.5 pipes",
-            "time": "2026-10-17T11:09:38+00:00"
+            "time": "2026-10-17T11:14:17+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -8704,8 +8703,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cmdstan/php": 20,
-        "erikwestlund/phplyr": 20
+        "cmdstan/php": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
