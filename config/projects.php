@@ -109,7 +109,7 @@ return [
         'status' => 'working',
         'status_label' => 'Working',
         'repo' => 'https://github.com/phpstats/cmdstanphp',
-        'docs' => null,
+        'docs' => 'https://phpstats.github.io/CmdStanPHP/',
         'overview' => [
             'cmdstanphp runs real Stan programs through CmdStan. It needs no R installation and no PHP framework.',
             'It supports compilation, parallel MCMC, optimization, ADVI, Pathfinder, and Laplace approximation, along with posterior summaries and fit persistence.',
