@@ -1,6 +1,6 @@
 # phpstats
 
-The website for PHP Stats, a family of PHP 8.5 packages for statistical work:
+The website for PHPstats, a family of PHP 8.5 packages for statistical work:
 php-stats, phibble, phplyr, phpolars, and cmdstanphp.
 
 ## Setup

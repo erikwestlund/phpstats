@@ -1,6 +1,6 @@
 # phpstats site
 
-The website for the PHP Stats family: a Laravel 13 + Livewire 4 app.
+The website for the PHPstats family: a Laravel 13 + Livewire 4 app.
 
 - Requires PHP 8.5. With Herd, use `php85`; the default `php` is 8.4.
 - Projects live at `/{project}` paths and are defined in `config/projects.php`.

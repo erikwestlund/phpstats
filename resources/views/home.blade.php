@@ -1,11 +1,14 @@
 <x-layout>
     <section class="max-w-3xl">
-        <h1 class="text-3xl font-semibold tracking-tight">PHP Stats</h1>
-        <p class="mt-4 text-lg text-zinc-700 dark:text-zinc-300">
-            PHP Stats is a small family of PHP 8.5 packages for statistical work, modeled on the tidyverse.
+        <h1 class="text-3xl font-semibold tracking-tight">PHPstats</h1>
+        <p class="mt-2 text-xl text-zinc-700 dark:text-zinc-300">Modern statistical computing for PHP.</p>
+        <p class="mt-6 text-zinc-700 dark:text-zinc-300">
+            PHPstats provides a family of libraries for data analysis in native PHP.
+            It is inspired by the Tidyverse in R.
+            Each package does one job, the packages share one data frame type, and they compose with the PHP 8.5 pipe operator.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            The packages fit real statistical models in PHP. They read data directly from the application database through PDO, Eloquent, or Doctrine.
+            The packages read data directly from the application database through PDO, Eloquent, or Doctrine, and they fit statistical models whose results are checked against R.
             Dashboards and reports run in the same Laravel app, with no R or Python server and no hand-written JavaScript.
         </p>
     </section>
@@ -19,6 +22,22 @@
         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
             phibble loads the query into a frame. phplyr filters and transforms it, and lm() fits the model with php-stats.
         </p>
+    </section>
+
+    <section class="mt-12">
+        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">Packages</h2>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach ($projects as $key => $project)
+                <a href="{{ route('project', $key) }}"
+                   class="block rounded-lg border border-zinc-200 p-5 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600">
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="font-semibold">{{ $project['name'] }}</span>
+                        <x-status :project="$project" />
+                    </div>
+                    <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{{ $project['summary'] }}</p>
+                </a>
+            @endforeach
+        </div>
     </section>
 
     <section class="mt-12">
@@ -43,21 +62,5 @@
                 </li>
             @endforeach
         </ul>
-    </section>
-
-    <section class="mt-12">
-        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">Projects</h2>
-        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            @foreach ($projects as $key => $project)
-                <a href="{{ route('project', $key) }}"
-                   class="block rounded-lg border border-zinc-200 p-5 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600">
-                    <div class="flex items-center justify-between gap-3">
-                        <span class="font-semibold">{{ $project['name'] }}</span>
-                        <x-status :project="$project" />
-                    </div>
-                    <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{{ $project['summary'] }}</p>
-                </a>
-            @endforeach
-        </div>
     </section>
 </x-layout>
