@@ -17,7 +17,20 @@
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$pipeline = fn ($rentals) => $rentals
+        <x-code-tabs class="mt-3">
+            <x-slot:chain>$pipeline = fn ($rentals) => phplyr($rentals)
+    ->filter(col('bedrooms')->ge($minBedrooms))
+    ->mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')))
+    ->group_by('neighborhood')
+    ->summarise(rentals: n(), mean_rent_per_m2: mean('rent_per_m2'))
+    ->arrange(desc('mean_rent_per_m2'))
+    ->get();
+
+$sql = $pipeline(SimulatedRental::query()->phibble());
+phplyr($sql)->show_query();
+
+$memory = $pipeline(SimulatedRental::query()->toDataFrame());</x-slot:chain>
+            <x-slot:pipe>$pipeline = fn ($rentals) => $rentals
     |> filter(col('bedrooms')->ge($minBedrooms))
     |> mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')))
     |> group_by('neighborhood')
@@ -27,7 +40,8 @@
 $sql = SimulatedRental::query()->phibble() |> $pipeline;
 $sql |> show_query();
 
-$memory = SimulatedRental::query()->toDataFrame() |> $pipeline;</code></pre>
+$memory = SimulatedRental::query()->toDataFrame() |> $pipeline;</x-slot:pipe>
+        </x-code-tabs>
     </article>
 
     <div class="mt-10">

@@ -15,10 +15,16 @@
 
     <section class="mt-10">
         <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">A pipeline</h2>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = DataFrame::fromQuery(Sale::query())
+        <x-code-tabs class="mt-3">
+            <x-slot:chain>$fit = phplyr(DataFrame::fromQuery(Sale::query()))
+    ->filter(fn ($r) => $r->price > 0)
+    ->mutate(log_price: fn ($r) => log($r->price))
+    ->lm('log_price ~ area + neighborhood');</x-slot:chain>
+            <x-slot:pipe>$fit = DataFrame::fromQuery(Sale::query())
     |> filter(fn ($r) => $r->price > 0)
     |> mutate(log_price: fn ($r) => log($r->price))
-    |> lm('log_price ~ area + neighborhood');</code></pre>
+    |> lm('log_price ~ area + neighborhood');</x-slot:pipe>
+        </x-code-tabs>
         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
             phibble loads the query into a frame. phplyr filters and transforms it, and lm() fits the model with php-stats.
         </p>

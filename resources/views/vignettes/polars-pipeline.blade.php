@@ -12,7 +12,18 @@
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$pipeline = fn (Table $rentals) => $rentals
+        <x-code-tabs class="mt-3">
+            <x-slot:chain>$pipeline = fn (Table $rentals) => phplyr($rentals)
+    ->filter(col('bedrooms')->ge($minBedrooms))
+    ->mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')))
+    ->group_by('neighborhood')
+    ->summarise(rentals: n(), mean_rent_per_m2: mean('rent_per_m2'))
+    ->arrange(desc('mean_rent_per_m2'))
+    ->get();
+
+$inMemory = $pipeline($frame);
+$inPolars = $pipeline(PolarsTable::fromTable($frame));</x-slot:chain>
+            <x-slot:pipe>$pipeline = fn (Table $rentals) => $rentals
     |> filter(col('bedrooms')->ge($minBedrooms))
     |> mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')))
     |> group_by('neighborhood')
@@ -20,7 +31,8 @@
     |> arrange(desc('mean_rent_per_m2'));
 
 $inMemory = $frame |> $pipeline;
-$inPolars = PolarsTable::fromTable($frame) |> $pipeline;</code></pre>
+$inPolars = PolarsTable::fromTable($frame) |> $pipeline;</x-slot:pipe>
+        </x-code-tabs>
     </article>
 
     <div class="mt-10">

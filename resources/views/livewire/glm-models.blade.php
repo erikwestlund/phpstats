@@ -16,8 +16,12 @@
         </fieldset>
     </div>
 
-    <pre class="mt-6 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$data = DataFrame::fromCsv('{{ $spec['file'] }}');
-$fit = $data |> glm('{{ $formula }}', family: '{{ $spec['family'] }}', link: '{{ $spec['link'] }}');</code></pre>
+    <x-code-tabs class="mt-6">
+        <x-slot:chain>$data = DataFrame::fromCsv('{{ $spec['file'] }}');
+$fit = phplyr($data)->glm('{{ $formula }}', family: '{{ $spec['family'] }}', link: '{{ $spec['link'] }}');</x-slot:chain>
+        <x-slot:pipe>$data = DataFrame::fromCsv('{{ $spec['file'] }}');
+$fit = $data |> glm('{{ $formula }}', family: '{{ $spec['family'] }}', link: '{{ $spec['link'] }}');</x-slot:pipe>
+    </x-code-tabs>
 
     @if (! $extensionLoaded)
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">

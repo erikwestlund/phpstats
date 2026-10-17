@@ -14,7 +14,34 @@
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>class RentDashboard extends Component
+        <x-code-tabs class="mt-3">
+            <x-slot:chain>class RentDashboard extends Component
+{
+    public array $neighborhoods = [...];
+    public int $minBedrooms = 1;
+    public int $maxBedrooms = 4;
+    public int $budget = 2500;
+
+    public function render()
+    {
+        $rentals = phplyr(DataFrame::fromQuery(SimulatedRental::query()))
+            ->filter(col('neighborhood')->isIn($this->neighborhoods),
+                     col('bedrooms')->between($this->minBedrooms, $this->maxBedrooms))
+            ->mutate(over_budget: col('monthly_rent')->gt($this->budget))
+            ->get();
+
+        $summary = phplyr($rentals)
+            ->group_by('neighborhood')
+            ->summarise(rentals: n(), median_rent: median('monthly_rent'),
+                        share_over_budget: mean('over_budget'))
+            ->get();
+
+        $model = phplyr($rentals)->glm('over_budget ~ area_m2 + bedrooms', family: 'binomial');
+
+        return view('livewire.rent-dashboard', compact('rentals', 'summary', 'model'));
+    }
+}</x-slot:chain>
+            <x-slot:pipe>class RentDashboard extends Component
 {
     public array $neighborhoods = [...];
     public int $minBedrooms = 1;
@@ -37,7 +64,8 @@
 
         return view('livewire.rent-dashboard', compact('rentals', 'summary', 'model'));
     }
-}</code></pre>
+}</x-slot:pipe>
+        </x-code-tabs>
         <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>&lt;input type="checkbox" value="Harbor" wire:model.live="neighborhoods"&gt;
 &lt;x-phiz :plot="$scatter" /&gt;</code></pre>
     </article>

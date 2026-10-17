@@ -20,7 +20,20 @@
             phibble reads the table through Eloquent and phplyr summarises it. phplyr's lm() passes the formula and the data to php-stats, which builds the model matrix as R does.
             Setting the factor levels makes Riverside the reference neighborhood.
         </p>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$rentals = DataFrame::fromQuery(SimulatedRental::query()->orderBy('id'))
+        <x-code-tabs class="mt-3">
+            <x-slot:chain>$rentals = phplyr(DataFrame::fromQuery(SimulatedRental::query()->orderBy('id'))
+        ->asFactor('neighborhood', ['Riverside', 'Old Town', 'Hillcrest', 'Harbor', 'University', 'Northgate']))
+    ->head($n)
+    ->get();
+
+$byNeighborhood = phplyr($rentals)
+    ->group_by('neighborhood')
+    ->summarise(rentals: n(), mean_area: mean('area_m2'), mean_rent: mean('monthly_rent'))
+    ->arrange('neighborhood')
+    ->get();
+
+$fit = phplyr($rentals)->lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');</x-slot:chain>
+            <x-slot:pipe>$rentals = DataFrame::fromQuery(SimulatedRental::query()->orderBy('id'))
     ->asFactor('neighborhood', ['Riverside', 'Old Town', 'Hillcrest', 'Harbor', 'University', 'Northgate'])
     |> head($n);
 
@@ -29,7 +42,8 @@ $byNeighborhood = $rentals
     |> summarise(rentals: n(), mean_area: mean('area_m2'), mean_rent: mean('monthly_rent'))
     |> arrange('neighborhood');
 
-$fit = $rentals |> lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');</code></pre>
+$fit = $rentals |> lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');</x-slot:pipe>
+        </x-code-tabs>
     </article>
 
     <div class="mt-10">

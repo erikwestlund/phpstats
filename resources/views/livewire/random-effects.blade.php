@@ -18,12 +18,20 @@
         </label>
     </div>
 
-    <pre class="mt-6 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = DataFrame::fromQuery(StudentScore::query()) |> lmer('{{ $formula }}');
+    <x-code-tabs class="mt-6">
+        <x-slot:chain>$fit = phplyr(DataFrame::fromQuery(StudentScore::query()))->lmer('{{ $formula }}');
 
 $fit['random'][0]['effects'];           // conditional modes, one row per school
 $fit['random'][0]['effects_cond_var'];  // their conditional covariance, one matrix per school
 
-random_effects_plot($fit, level: {{ $level / 100 }});</code></pre>
+random_effects_plot($fit, level: {{ $level / 100 }});</x-slot:chain>
+        <x-slot:pipe>$fit = DataFrame::fromQuery(StudentScore::query()) |> lmer('{{ $formula }}');
+
+$fit['random'][0]['effects'];           // conditional modes, one row per school
+$fit['random'][0]['effects_cond_var'];  // their conditional covariance, one matrix per school
+
+random_effects_plot($fit, level: {{ $level / 100 }});</x-slot:pipe>
+    </x-code-tabs>
 
     @if (! $extensionLoaded)
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
