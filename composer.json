@@ -91,18 +91,18 @@
     "repositories": [{
         "name": "cmdstanphp",
         "type": "vcs",
-        "url": "https://github.com/erikwestlund/cmdstanphp"
+        "url": "https://github.com/phpstats/cmdstanphp"
     },{
         "name": "phiz",
         "type": "vcs",
-        "url": "https://github.com/erikwestlund/phiz"
+        "url": "https://github.com/phpstats/phiz"
     },{
         "name": "phplyr",
         "type": "vcs",
-        "url": "https://github.com/erikwestlund/phplyr"
+        "url": "https://github.com/phpstats/phplyr"
     },{
         "name": "phibble",
         "type": "vcs",
-        "url": "https://github.com/erikwestlund/phibble"
+        "url": "https://github.com/phpstats/phibble"
     }]
 }

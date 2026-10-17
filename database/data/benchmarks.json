@@ -1,6 +1,6 @@
 {
-    "source": "erikwestlund/phit@main",
-    "synced_at": "2026-10-17T20:30:02+00:00",
+    "source": "phpstats/phit@main",
+    "synced_at": "2026-10-17T20:34:22+00:00",
     "models": {
         "ols": {
             "label": "Linear regression (OLS)",
@@ -8,7 +8,7 @@
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 5,
-            "source": "https://erikwestlund.github.io/phit/benchmarks/ols.html",
+            "source": "https://phpstats.github.io/phit/benchmarks/ols.html",
             "cases": [
                 {
                     "n": 1000,
@@ -110,7 +110,7 @@
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 5,
-            "source": "https://erikwestlund.github.io/phit/benchmarks/logistic.html",
+            "source": "https://phpstats.github.io/phit/benchmarks/logistic.html",
             "cases": [
                 {
                     "n": 1000,
@@ -212,7 +212,7 @@
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 5,
-            "source": "https://erikwestlund.github.io/phit/benchmarks/probit.html",
+            "source": "https://phpstats.github.io/phit/benchmarks/probit.html",
             "cases": [
                 {
                     "n": 1000,
@@ -314,7 +314,7 @@
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 5,
-            "source": "https://erikwestlund.github.io/phit/benchmarks/poisson.html",
+            "source": "https://phpstats.github.io/phit/benchmarks/poisson.html",
             "cases": [
                 {
                     "n": 1000,
@@ -416,7 +416,7 @@
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 5,
-            "source": "https://erikwestlund.github.io/phit/benchmarks/lmm.html",
+            "source": "https://phpstats.github.io/phit/benchmarks/lmm.html",
             "cases": [
                 {
                     "n": 1000,
@@ -518,7 +518,7 @@
             "cpu": "Apple M5 Ultra",
             "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
             "repeats": 3,
-            "source": "https://erikwestlund.github.io/phit/benchmarks/logistic-mixed.html",
+            "source": "https://phpstats.github.io/phit/benchmarks/logistic-mixed.html",
             "cases": [
                 {
                     "n": 1000,
@@ -593,7 +593,7 @@
         }
     },
     "polyfill": {
-        "source": "https://github.com/erikwestlund/phit-polyfill/blob/main/benchmarks/results.json",
+        "source": "https://github.com/phpstats/phit-polyfill/blob/main/benchmarks/results.json",
         "recorded_at": "2026-10-16T14:59:34Z",
         "cpu": "Apple M5 Ultra",
         "platform": "Darwin 27.0.0 arm64",
@@ -707,8 +707,8 @@
         ]
     },
     "backends": {
-        "source": "https://erikwestlund.github.io/phplyr/performance.html",
-        "data": "https://github.com/erikwestlund/phplyr/blob/main/docs/benchmarks/backends-results.json",
+        "source": "https://phpstats.github.io/phplyr/performance.html",
+        "data": "https://github.com/phpstats/phplyr/blob/main/docs/benchmarks/backends-results.json",
         "schema": "phplyr-backends/1",
         "method": {
             "statistic": "best",

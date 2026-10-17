@@ -24,7 +24,7 @@
         <section class="mt-12">
             <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">Extension, polyfill, and plain PHP</h2>
             <p class="mt-3 max-w-3xl text-zinc-700 dark:text-zinc-300">
-                php-stats-polyfill implements the same functions in PHP for hosts that cannot install the extension.
+                phit-polyfill implements the same functions in PHP for hosts that cannot install the extension.
                 These timings compare it with the extension on the same data: {{ lcfirst($polyfill['design']) }}.
                 The plain PHP figure solves the normal equations directly. It computes coefficients only, with no standard errors or rank checks, and it squares the condition number of the design, so it is faster but less accurate and is not a substitute for either library.
             </p>

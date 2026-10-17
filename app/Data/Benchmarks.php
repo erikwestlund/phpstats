@@ -26,12 +26,12 @@ final class Benchmarks
     public const NOTES = [
         'logistic' => [
             'text' => 'phit c1bf8a2 added a QR-based solver, which makes the wider designs faster, and a compensated (Neumaier) likelihood sum, which stops the line-search failures the earlier build had on most random million-row datasets. Run in the same harness, these changes took the million-row, three-coefficient fit from 418 ms (18b430b) to 394 ms, 6% faster. The October 11 recording of 288 ms could not be reproduced: the same commit (d073c15) measures 424 ms in the same harness today, so the comparison here uses runs from the same session.',
-            'url' => 'https://github.com/erikwestlund/phit/commit/c1bf8a2',
+            'url' => 'https://github.com/phpstats/phit/commit/c1bf8a2',
             'link' => 'phit c1bf8a2',
         ],
         'probit' => [
             'text' => 'phit c1bf8a2 added a QR-based solver, which makes the wider designs faster, and a compensated (Neumaier) likelihood sum, which avoids line-search failures on large datasets. Run in the same harness, these changes took the million-row, three-coefficient fit from 1,177 ms (18b430b) to 1,285 ms, 9% slower. The October 11 recording of 580 ms could not be reproduced: the same commit (d073c15) measures 1,188 ms in the same harness today, so the comparison here uses runs from the same session.',
-            'url' => 'https://github.com/erikwestlund/phit/commit/c1bf8a2',
+            'url' => 'https://github.com/phpstats/phit/commit/c1bf8a2',
             'link' => 'phit c1bf8a2',
         ],
     ];
@@ -96,7 +96,7 @@ final class Benchmarks
 
     public const POLYFILL_IMPLEMENTATIONS = [
         'extension' => 'phit extension',
-        'polyfill' => 'php-stats-polyfill',
+        'polyfill' => 'phit-polyfill',
         'plain_php_normal_equations' => 'Plain PHP, normal equations (coefficients only)',
     ];
 

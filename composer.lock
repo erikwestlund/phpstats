@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "530f79a696834aa12e61da821476a426",
+    "content-hash": "7a91fb39493f3122aeaefcb072ec2633",
     "packages": [
         {
             "name": "brick/math",
@@ -145,12 +145,12 @@
             "version": "dev-phpstats-family",
             "source": {
                 "type": "git",
-                "url": "https://github.com/erikwestlund/CmdStanPHP.git",
+                "url": "https://github.com/phpstats/CmdStanPHP.git",
                 "reference": "59baa928ecc501f1d21efc79a25ff04647728a9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/CmdStanPHP/zipball/59baa928ecc501f1d21efc79a25ff04647728a9c",
+                "url": "https://api.github.com/repos/phpstats/CmdStanPHP/zipball/59baa928ecc501f1d21efc79a25ff04647728a9c",
                 "reference": "59baa928ecc501f1d21efc79a25ff04647728a9c",
                 "shasum": ""
             },
@@ -580,12 +580,12 @@
             "version": "v0.2.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:erikwestlund/phibble.git",
+                "url": "https://github.com/phpstats/phibble.git",
                 "reference": "d88cb1df348eaa0684cb77cd8d9ea633b008395f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phibble/zipball/d88cb1df348eaa0684cb77cd8d9ea633b008395f",
+                "url": "https://api.github.com/repos/phpstats/phibble/zipball/d88cb1df348eaa0684cb77cd8d9ea633b008395f",
                 "reference": "d88cb1df348eaa0684cb77cd8d9ea633b008395f",
                 "shasum": ""
             },
@@ -637,12 +637,12 @@
             "version": "v0.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/erikwestlund/phiz.git",
+                "url": "https://github.com/phpstats/phiz.git",
                 "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phiz/zipball/5d2f7a65c243abadbb9ebba22f7987d34253412e",
+                "url": "https://api.github.com/repos/phpstats/phiz/zipball/5d2f7a65c243abadbb9ebba22f7987d34253412e",
                 "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e",
                 "shasum": ""
             },
@@ -718,12 +718,12 @@
             "version": "v0.2.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:erikwestlund/phplyr.git",
+                "url": "https://github.com/phpstats/phplyr.git",
                 "reference": "512d3beb40e9d29b31683606c7195a60b7794d77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/512d3beb40e9d29b31683606c7195a60b7794d77",
+                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/512d3beb40e9d29b31683606c7195a60b7794d77",
                 "reference": "512d3beb40e9d29b31683606c7195a60b7794d77",
                 "shasum": ""
             },
