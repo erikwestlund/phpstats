@@ -6,7 +6,7 @@
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
             This vignette is a small reactive dashboard in the style of a Shiny app.
-            Each input is a property of a Livewire component. When an input changes, the server filters the data with phplyr, summarises it, refits a logistic model with php-stats, and returns new tables and phiz charts.
+            Each input is a property of a Livewire component. When an input changes, the server filters the data with phplyr, summarises it, refits a logistic model with phit, and returns new tables and phiz charts.
             The page has no JavaScript written for it.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">

@@ -17,6 +17,9 @@ Route::view('/vignettes/polars-pipeline', 'vignettes.polars-pipeline')->name('vi
 
 Route::view('/benchmarks', 'benchmarks')->name('benchmarks');
 
+// php-stats was renamed phit.
+Route::permanentRedirect('/php-stats', '/phit');
+
 Route::get('/{project}', function (string $project) {
     return view('project', ['project' => config("projects.{$project}")]);
 })->whereIn('project', array_keys(config('projects')))->name('project');

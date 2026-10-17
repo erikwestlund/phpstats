@@ -4,7 +4,7 @@
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
             This vignette fits a linear regression of test score on study hours and prior score.
             The data has 250 students from 12 schools and is stored in this app's database.
-            Each change to the predictors refits the model on the server with php-stats.
+            Each change to the predictors refits the model on the server with phit.
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>

@@ -10,14 +10,14 @@
             Riverside is the reference neighborhood.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            The page fits a linear regression with php-stats and compares each estimate with the value used to generate the data.
+            The page fits a linear regression with phit and compares each estimate with the value used to generate the data.
             Coefficient names follow R, so the Old Town effect is neighborhoodOld Town.
             Smaller samples give wider confidence intervals.
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-            phibble reads the table through Eloquent and phplyr summarises it. phplyr's lm() passes the formula and the data to php-stats, which builds the model matrix as R does.
+            phibble reads the table through Eloquent and phplyr summarises it. phplyr's lm() passes the formula and the data to phit, which builds the model matrix as R does.
             Setting the factor levels makes Riverside the reference neighborhood.
         </p>
         <x-code-tabs class="mt-3">

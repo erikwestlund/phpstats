@@ -26,7 +26,7 @@
     |> lm('log_price ~ area + neighborhood');</x-slot:pipe>
         </x-code-tabs>
         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-            phibble loads the query into a frame. phplyr filters and transforms it, and lm() fits the model with php-stats.
+            phibble loads the query into a frame. phplyr filters and transforms it, and lm() fits the model with phit.
         </p>
     </section>
 
@@ -57,7 +57,7 @@
                 'vignettes.glm-models' => ['Binary and count outcomes', 'Logistic, probit, and Poisson regression from R formulas, with predictions and confidence bands.'],
                 'vignettes.school-effects' => ['School effects', 'A linear mixed model with random school intercepts, variance components, and shrinkage.'],
                 'vignettes.random-effects' => ['Random-effect intervals', 'A caterpillar plot of school effects with intervals from their conditional variances.'],
-                'vignettes.bayesian-schools' => ['Bayesian school effects', 'The school effects model in Stan through cmdstanphp, with posterior intervals next to stats_lmer.'],
+                'vignettes.bayesian-schools' => ['Bayesian school effects', 'The school effects model in Stan through cmdstanphp, with posterior intervals next to Phit\fit_lmer().'],
                 'vignettes.sql-pipeline' => ['SQL pipeline', 'One phplyr pipeline run as a single SQL query and in memory, with the generated SQL.'],
                 'vignettes.polars-pipeline' => ['Polars pipeline', 'The same pipeline on an in-memory frame and in Polars, with timings for up to 300,000 rows.'],
                 'vignettes.csv-reader' => ['Reading CSV files', 'The native CSV reader on editable text: guessed types, parse failures, problems, and agreement with phibble.'],

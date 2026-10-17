@@ -16,7 +16,7 @@ use function Phplyr\{arrange, group_by, head, lm, mean, n, summarise};
  * and compare the estimates with the coefficients that generated it.
  *
  * phibble reads the table, phplyr summarises it, and phplyr's lm() fits the
- * model with php_stats' stats_lm().
+ * model with Phit\fit_lm().
  */
 class SimulatedRents extends Component
 {
@@ -27,14 +27,14 @@ class SimulatedRents extends Component
     public function render()
     {
         return view('livewire.simulated-rents', [
-            'extensionLoaded' => function_exists('stats_lm'),
+            'extensionLoaded' => function_exists('Phit\\fit_lm'),
             'fit' => $this->fit(),
         ]);
     }
 
     private function fit(): ?array
     {
-        if (! function_exists('stats_lm')) {
+        if (! function_exists('Phit\\fit_lm')) {
             return null;
         }
 

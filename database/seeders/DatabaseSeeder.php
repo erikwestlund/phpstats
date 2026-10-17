@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     use WithoutModelEvents;
 
     /**
-     * Load the php-stats example datasets from database/data.
+     * Load the phit example datasets from database/data.
      */
     public function run(): void
     {

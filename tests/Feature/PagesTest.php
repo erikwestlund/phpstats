@@ -52,8 +52,8 @@ class PagesTest extends TestCase
 
     public function test_school_scores_vignette_fits_the_model(): void
     {
-        if (! function_exists('stats_lm')) {
-            $this->markTestSkipped('php_stats with stats_lm is not loaded.');
+        if (! function_exists('Phit\\fit_lm')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $this->get('/vignettes/school-scores')
@@ -74,8 +74,8 @@ class PagesTest extends TestCase
 
     public function test_simulated_rents_vignette_recovers_the_coefficients(): void
     {
-        if (! function_exists('stats_lm')) {
-            $this->markTestSkipped('php_stats with stats_lm is not loaded.');
+        if (! function_exists('Phit\\fit_lm')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $this->get('/vignettes/simulated-rents')
@@ -92,8 +92,8 @@ class PagesTest extends TestCase
 
     public function test_school_effects_vignette_reports_variance_components(): void
     {
-        if (! function_exists('stats_lmer')) {
-            $this->markTestSkipped('php_stats with stats_lmer is not loaded.');
+        if (! function_exists('Phit\\fit_lmer')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $this->get('/vignettes/school-effects')
@@ -107,8 +107,8 @@ class PagesTest extends TestCase
 
     public function test_school_intercepts_shrink_by_the_stated_share(): void
     {
-        if (! function_exists('stats_lmer')) {
-            $this->markTestSkipped('php_stats with stats_lmer is not loaded.');
+        if (! function_exists('Phit\\fit_lmer')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $fit = Livewire::test(SchoolEffects::class)->viewData('fit');
@@ -139,8 +139,8 @@ class PagesTest extends TestCase
 
     public function test_bayesian_vignette_compares_the_posterior_with_lmer(): void
     {
-        if (! function_exists('stats_lmer')) {
-            $this->markTestSkipped('php_stats with stats_lmer is not loaded.');
+        if (! function_exists('Phit\\fit_lmer')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $this->get('/vignettes/bayesian-schools')->assertOk()->assertSee('School SD (τ)');
@@ -159,8 +159,8 @@ class PagesTest extends TestCase
 
     public function test_rent_dashboard_reacts_to_its_filters(): void
     {
-        if (! function_exists('stats_glm')) {
-            $this->markTestSkipped('php_stats with stats_glm is not loaded.');
+        if (! function_exists('Phit\\fit_glm')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $this->get('/vignettes/rent-dashboard')->assertOk()->assertSee('3,000 rentals selected');
@@ -223,8 +223,8 @@ class PagesTest extends TestCase
 
     public function test_neighborhood_summary_matches_the_sample(): void
     {
-        if (! function_exists('stats_lm')) {
-            $this->markTestSkipped('php_stats with stats_lm is not loaded.');
+        if (! function_exists('Phit\\fit_lm')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $summary = Livewire::test(SimulatedRents::class)->set('n', 300)->viewData('fit')['by_neighborhood'];
@@ -241,13 +241,13 @@ class PagesTest extends TestCase
 
     public function test_glm_vignette_matches_r(): void
     {
-        if (! function_exists('stats_glm')) {
-            $this->markTestSkipped('php_stats with stats_glm is not loaded.');
+        if (! function_exists('Phit\\fit_glm')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $this->get('/vignettes/glm-models')->assertOk()->assertSee('Odds ratio');
 
-        // R 4.6.1 glm() references from php-stats tests/fixtures/formula-r.json.
+        // R 4.6.1 glm() references from phit tests/fixtures/formula-r.json.
         $logit = Livewire::test(GlmModels::class)->viewData('fit')['result'];
         $this->assertEqualsWithDelta([-3.1709805238655515, 0.06367532072903229, 0.03424801009641754], $logit['coefficients'], 1e-9);
         $this->assertEqualsWithDelta(104.96865011458223, $logit['aic'], 1e-9);
@@ -264,15 +264,15 @@ class PagesTest extends TestCase
 
     public function test_random_effect_intervals_use_the_conditional_variances(): void
     {
-        if (! function_exists('stats_lmer')) {
-            $this->markTestSkipped('php_stats with stats_lmer is not loaded.');
+        if (! function_exists('Phit\\fit_lmer')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $this->get('/vignettes/random-effects')->assertOk()->assertSee('Caterpillar plot');
 
         $fit = Livewire::test(RandomEffects::class)->viewData('fit');
         if (! isset($fit['term']['effects_cond_var'])) {
-            $this->markTestSkipped('This php_stats build does not report conditional variances.');
+            $this->markTestSkipped('This phit build does not report conditional variances.');
         }
         foreach ($fit['schools'] as $school) {
             $this->assertEqualsWithDelta($school['closed_form_sd'], $school['effects']['(Intercept)']['sd'], 1e-9, $school['school']);
@@ -285,8 +285,8 @@ class PagesTest extends TestCase
 
     public function test_csv_reader_reports_types_and_problems(): void
     {
-        if (! function_exists('stats_read_csv')) {
-            $this->markTestSkipped('php_stats with stats_read_csv is not loaded.');
+        if (! function_exists('Phit\\read_csv')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $this->get('/vignettes/csv-reader')->assertOk()->assertSee('expected 8 columns, got 5');
@@ -330,8 +330,8 @@ class PagesTest extends TestCase
 
     public function test_what_if_predictions(): void
     {
-        if (! function_exists('stats_predict')) {
-            $this->markTestSkipped('php_stats with stats_predict is not loaded.');
+        if (! function_exists('Phit\\predict')) {
+            $this->markTestSkipped('phit is not loaded.');
         }
 
         $this->get('/vignettes/rent-dashboard')->assertOk()->assertSee('Predicted rent');

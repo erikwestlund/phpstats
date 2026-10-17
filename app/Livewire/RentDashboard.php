@@ -10,6 +10,7 @@ use Phiz\Plot;
 use Throwable;
 
 use function Phplyr\{arrange, col, filter, glm, group_by, lm, mean, median, mutate, n, summarise};
+use function Phit\predict;
 
 /**
  * Vignette: a reactive dashboard over the simulated rentals. Every input is a
@@ -103,14 +104,14 @@ class RentDashboard extends Component
     }
 
     /**
-     * Predictions for the what-if rental with stats_predict(): its rent from a
+     * Predictions for the what-if rental with Phit\predict(): its rent from a
      * linear model, with a 95% prediction interval, and its chance of
      * exceeding the budget from the logistic model, with a 95% confidence
      * interval computed on the link scale.
      */
     private function whatIf(DataFrame $rentals, array $neighborhoods, int $low, int $high, ?array $model): ?array
     {
-        if (! function_exists('stats_predict')) {
+        if (! function_exists('Phit\\predict')) {
             return null;
         }
 
@@ -125,14 +126,14 @@ class RentDashboard extends Component
             .(count($neighborhoods) === 1 ? '' : ' + neighborhood');
 
         try {
-            $rent = stats_predict($rentals |> lm($formula), $newdata, interval: 'prediction', level: 0.95);
+            $rent = predict($rentals |> lm($formula), $newdata, interval: 'prediction', level: 0.95);
         } catch (Throwable $e) {
             return ['error' => 'The rent model cannot be fitted to this selection: '.$e->getMessage()];
         }
 
         $over = null;
         if ($model) {
-            $link = stats_predict($model, $newdata, se_fit: true);
+            $link = predict($model, $newdata, se_fit: true);
             $logistic = fn (float $eta) => 1 / (1 + exp(-$eta));
             [$eta, $se] = [$link['fit'][0], $link['se_fit'][0]];
             $over = ['fit' => $logistic($eta), 'lower' => $logistic($eta - 1.959964 * $se), 'upper' => $logistic($eta + 1.959964 * $se)];

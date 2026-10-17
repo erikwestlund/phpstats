@@ -3,7 +3,7 @@
         <h1 class="text-3xl font-semibold tracking-tight">Random-effect intervals</h1>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
             A mixed model estimates each school's random effect as a conditional mode, the most likely value of the effect given the data and the estimated variance components.
-            stats_lmer() also returns the conditional variance of each mode, the quantity that lme4 reports with ranef(condVar = TRUE).
+            Phit\fit_lmer() also returns the conditional variance of each mode, the quantity that lme4 reports with ranef(condVar = TRUE).
             Those variances give each school an interval.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">

@@ -2,18 +2,18 @@
     <article class="max-w-3xl">
         <h1 class="text-3xl font-semibold tracking-tight">Benchmarks</h1>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            These results come from the benchmark reports in the php-stats documentation.
-            Each report fits the same simulated data with php-stats, R, and Python (statsmodels, or a SciPy reference for mixed logistic regression).
+            These results come from the benchmark reports in the phit documentation.
+            Each report fits the same simulated data with phit, R, and Python (statsmodels, or a SciPy reference for mixed logistic regression).
             It records the fit times and checks that every implementation's estimates agree with R's.
             The timings measure model fitting only, after the data is loaded.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            Each report shows the date it was recorded. php-stats changes often, so an older report may not reflect the current code.
+            Each report shows the date it was recorded. phit changes often, so an older report may not reflect the current code.
         </p>
     </article>
 
     <section class="mt-10">
-        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">php-stats, R, and Python</h2>
+        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">phit, R, and Python</h2>
         <div class="mt-4">
             <livewire:benchmark-results />
         </div>
@@ -57,7 +57,7 @@
             </div>
             <p class="mt-3 max-w-3xl text-sm text-zinc-600 dark:text-zinc-400">
                 Median of {{ $polyfill['repeat'] }} runs after {{ $polyfill['warmup_calls'] }} warm-up call, recorded {{ \Illuminate\Support\Carbon::parse($polyfill['recorded_at'])->format('F j, Y') }} on an {{ $polyfill['cpu'] }} with PHP {{ $polyfill['php_version'] }}{{ $polyfill['opcache']['jit'] ? ' and the '.$polyfill['opcache']['jit_mode'].' JIT' : ' without JIT' }}.
-                Polyfill {{ $polyfill['polyfill_commit'] }} against php-stats {{ substr($polyfill['extension_reference_commit'], 0, 7) }}.
+                Polyfill {{ $polyfill['polyfill_commit'] }} against phit {{ substr($polyfill['extension_reference_commit'], 0, 7) }}.
                 "Agrees" means the polyfill returns the same result keys as the extension and its coefficients differ from the extension's by at most {{ sprintf('%.0e', max(array_map(fn ($c) => $c['agreement']['max_coefficient_difference_in_standard_errors'], $polyfill['cases']))) }} standard errors.
                 <a href="{{ $polyfill['source'] }}" class="underline">Results file</a>.
             </p>

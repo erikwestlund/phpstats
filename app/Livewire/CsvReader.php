@@ -7,9 +7,10 @@ use Phibble\DataFrame;
 use Phibble\Io\NativeCsv;
 use Throwable;
 use ValueError;
+use function Phit\read_csv;
 
 /**
- * Vignette: php_stats' native CSV reader on editable text, with phibble's
+ * Vignette: phit's native CSV reader on editable text, with phibble's
  * PHP reader run on the same file to show that the two agree.
  */
 class CsvReader extends Component
@@ -41,14 +42,14 @@ class CsvReader extends Component
     public function render()
     {
         return view('livewire.csv-reader', [
-            'extensionLoaded' => function_exists('stats_read_csv'),
+            'extensionLoaded' => function_exists('Phit\\read_csv'),
             ...$this->read(),
         ]);
     }
 
     private function read(): array
     {
-        if (! function_exists('stats_read_csv')) {
+        if (! function_exists('Phit\\read_csv')) {
             return [];
         }
         if (strlen($this->csv) > self::MAX_BYTES) {
@@ -62,7 +63,7 @@ class CsvReader extends Component
             file_put_contents($path, $this->csv);
 
             try {
-                $native = stats_read_csv($path, ['delimiter' => $delimiter]);
+                $native = read_csv($path, ['delimiter' => $delimiter]);
             } catch (ValueError $e) {
                 return ['error' => $e->getMessage()];
             }

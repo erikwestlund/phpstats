@@ -5,7 +5,7 @@ namespace App\Data;
 use Phiz\Plot;
 
 /**
- * Benchmark results copied from the php-stats docs by `php artisan benchmarks:sync`.
+ * Benchmark results copied from the phit docs by `php artisan benchmarks:sync`.
  */
 final class Benchmarks
 {
@@ -25,14 +25,14 @@ final class Benchmarks
      */
     public const NOTES = [
         'logistic' => [
-            'text' => 'php-stats c1bf8a2 added a QR-based solver, which makes the wider designs faster, and a compensated (Neumaier) likelihood sum, which stops the line-search failures the earlier build had on most random million-row datasets. Run in the same harness, these changes took the million-row, three-coefficient fit from 418 ms (18b430b) to 394 ms, 6% faster. The October 11 recording of 288 ms could not be reproduced: the same commit (d073c15) measures 424 ms in the same harness today, so the comparison here uses runs from the same session.',
-            'url' => 'https://github.com/erikwestlund/php-stats/commit/c1bf8a2',
-            'link' => 'php-stats c1bf8a2',
+            'text' => 'phit c1bf8a2 added a QR-based solver, which makes the wider designs faster, and a compensated (Neumaier) likelihood sum, which stops the line-search failures the earlier build had on most random million-row datasets. Run in the same harness, these changes took the million-row, three-coefficient fit from 418 ms (18b430b) to 394 ms, 6% faster. The October 11 recording of 288 ms could not be reproduced: the same commit (d073c15) measures 424 ms in the same harness today, so the comparison here uses runs from the same session.',
+            'url' => 'https://github.com/erikwestlund/phit/commit/c1bf8a2',
+            'link' => 'phit c1bf8a2',
         ],
         'probit' => [
-            'text' => 'php-stats c1bf8a2 added a QR-based solver, which makes the wider designs faster, and a compensated (Neumaier) likelihood sum, which avoids line-search failures on large datasets. Run in the same harness, these changes took the million-row, three-coefficient fit from 1,177 ms (18b430b) to 1,285 ms, 9% slower. The October 11 recording of 580 ms could not be reproduced: the same commit (d073c15) measures 1,188 ms in the same harness today, so the comparison here uses runs from the same session.',
-            'url' => 'https://github.com/erikwestlund/php-stats/commit/c1bf8a2',
-            'link' => 'php-stats c1bf8a2',
+            'text' => 'phit c1bf8a2 added a QR-based solver, which makes the wider designs faster, and a compensated (Neumaier) likelihood sum, which avoids line-search failures on large datasets. Run in the same harness, these changes took the million-row, three-coefficient fit from 1,177 ms (18b430b) to 1,285 ms, 9% slower. The October 11 recording of 580 ms could not be reproduced: the same commit (d073c15) measures 1,188 ms in the same harness today, so the comparison here uses runs from the same session.',
+            'url' => 'https://github.com/erikwestlund/phit/commit/c1bf8a2',
+            'link' => 'phit c1bf8a2',
         ],
     ];
 
@@ -95,7 +95,7 @@ final class Benchmarks
     }
 
     public const POLYFILL_IMPLEMENTATIONS = [
-        'extension' => 'php-stats extension',
+        'extension' => 'phit extension',
         'polyfill' => 'php-stats-polyfill',
         'plain_php_normal_equations' => 'Plain PHP, normal equations (coefficients only)',
     ];

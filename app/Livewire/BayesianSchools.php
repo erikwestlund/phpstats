@@ -9,6 +9,10 @@ use Phibble\DataFrame;
 use Phiz\Plot;
 
 use function Phiz\aes;
+use function Phit\fit_lmer;
+use function Phit\stat_mean;
+use function Phit\stat_quantile_array;
+use function Phit\stat_sd;
 
 /**
  * Vignette: the school random-intercept model fitted with Stan through
@@ -23,7 +27,7 @@ class BayesianSchools extends Component
 
     public function render()
     {
-        $ready = function_exists('stats_lmer') && SchoolPosterior::exists();
+        $ready = function_exists('Phit\\fit_lmer') && SchoolPosterior::exists();
 
         return view('livewire.bayesian-schools', [
             'ready' => $ready,
@@ -40,7 +44,7 @@ class BayesianSchools extends Component
         $draws = $posterior['draws'];
         $schools = $posterior['meta']['schools'];
 
-        $lmer = stats_lmer(SchoolPosterior::FORMULA, DataFrame::fromQuery(StudentScore::query()->orderBy('id')));
+        $lmer = fit_lmer(SchoolPosterior::FORMULA, DataFrame::fromQuery(StudentScore::query()->orderBy('id')));
         $random = $lmer['random'][0];
         $lmerIntercepts = [];
         foreach ($random['group_labels'] as $i => $school) {
@@ -48,9 +52,9 @@ class BayesianSchools extends Component
         }
 
         $summarise = function (array $values) use ($probs) {
-            [$lower, $median, $upper] = stats_quantile_array($values, $probs);
+            [$lower, $median, $upper] = stat_quantile_array($values, $probs);
 
-            return ['mean' => stats_mean($values), 'sd' => stats_sd($values), 'lower' => $lower, 'median' => $median, 'upper' => $upper];
+            return ['mean' => stat_mean($values), 'sd' => stat_sd($values), 'lower' => $lower, 'median' => $median, 'upper' => $upper];
         };
 
         $parameters = [

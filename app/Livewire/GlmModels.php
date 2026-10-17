@@ -11,7 +11,7 @@ use function Phplyr\glm;
 
 /**
  * Vignette: binary and count outcomes through phplyr's glm(), which passes an
- * R formula and the phibble frame to php_stats' stats_glm().
+ * R formula and the phibble frame to Phit\fit_glm().
  */
 class GlmModels extends Component
 {
@@ -56,7 +56,7 @@ class GlmModels extends Component
     public function render()
     {
         return view('livewire.glm-models', [
-            'extensionLoaded' => function_exists('stats_glm'),
+            'extensionLoaded' => function_exists('Phit\\fit_glm'),
             'spec' => $this->spec(),
             'formula' => $this->formula(),
             'fit' => $this->fit(),
@@ -78,7 +78,7 @@ class GlmModels extends Component
 
     private function fit(): ?array
     {
-        if (! function_exists('stats_glm')) {
+        if (! function_exists('Phit\\fit_glm')) {
             return null;
         }
 

@@ -8,18 +8,18 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 
 /**
- * Copy the published php-stats benchmark results into the site, keeping only
+ * Copy the published phit benchmark results into the site, keeping only
  * what the benchmarks page shows: machine, date, versions, timings, and
  * agreement with R.
  */
 class SyncBenchmarks extends Command
 {
     protected $signature = 'benchmarks:sync
-        {--ref=main : php-stats git ref to read docs/benchmarks from}
+        {--ref=main : phit git ref to read docs/benchmarks from}
         {--polyfill-ref=main : php-stats-polyfill git ref to read benchmarks/results.json from}
         {--phplyr-ref=main : phplyr git ref to read docs/benchmarks/backends-results.json from}';
 
-    protected $description = 'Fetch the php-stats and polyfill benchmark results for the benchmarks page';
+    protected $description = 'Fetch the phit and polyfill benchmark results for the benchmarks page';
 
     public function handle(): int
     {
@@ -27,7 +27,7 @@ class SyncBenchmarks extends Command
         $models = [];
 
         foreach (Benchmarks::MODELS as $key => $label) {
-            $url = "https://raw.githubusercontent.com/erikwestlund/php-stats/{$ref}/docs/benchmarks/{$key}-results.json";
+            $url = "https://raw.githubusercontent.com/erikwestlund/phit/{$ref}/docs/benchmarks/{$key}-results.json";
             $report = Http::timeout(60)->get($url)->throw()->json();
 
             $models[$key] = [
@@ -36,7 +36,7 @@ class SyncBenchmarks extends Command
                 'cpu' => $report['cpu'],
                 'platform' => $report['platform'],
                 'repeats' => $report['repeats'] ?? null,
-                'source' => "https://erikwestlund.github.io/php-stats/benchmarks/{$key}.html",
+                'source' => "https://erikwestlund.github.io/phit/benchmarks/{$key}.html",
                 'cases' => array_map(fn (array $case) => [
                     'n' => $case['n'],
                     'p' => $case['p'],
@@ -54,7 +54,7 @@ class SyncBenchmarks extends Command
 
         $polyfillRef = $this->option('polyfill-ref');
         $polyfill = Http::timeout(60)
-            ->get("https://raw.githubusercontent.com/erikwestlund/php-stats-polyfill/{$polyfillRef}/benchmarks/results.json")
+            ->get("https://raw.githubusercontent.com/erikwestlund/phit-polyfill/{$polyfillRef}/benchmarks/results.json")
             ->throw()->json();
         $this->line('polyfill: '.count($polyfill['cases']).' cases, recorded '.$polyfill['recorded_at']);
 
@@ -70,11 +70,11 @@ class SyncBenchmarks extends Command
         $this->line('phplyr backends: '.count($backends['results']).' results');
 
         File::put(Benchmarks::path(), json_encode([
-            'source' => "erikwestlund/php-stats@{$ref}",
+            'source' => "erikwestlund/phit@{$ref}",
             'synced_at' => now()->toIso8601String(),
             'models' => $models,
             'polyfill' => [
-                'source' => "https://github.com/erikwestlund/php-stats-polyfill/blob/{$polyfillRef}/benchmarks/results.json",
+                'source' => "https://github.com/erikwestlund/phit-polyfill/blob/{$polyfillRef}/benchmarks/results.json",
                 ...array_intersect_key($polyfill, array_flip([
                     'recorded_at', 'cpu', 'platform', 'php_version', 'opcache', 'polyfill_commit',
                     'extension_reference_commit', 'design', 'repeat', 'warmup_calls', 'cases',

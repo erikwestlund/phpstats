@@ -10,7 +10,7 @@
 
     @if (! $ready)
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-            This page needs the php_stats extension with stats_lmer() and the stored posterior draws.
+            This page needs the phit extension and the stored posterior draws.
         </p>
     @else
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Parameters</h2>
@@ -22,7 +22,7 @@
                         <th class="py-2 pr-4 text-right font-medium">Posterior mean</th>
                         <th class="py-2 pr-4 text-right font-medium">Posterior SD</th>
                         <th class="py-2 pr-4 text-right font-medium">{{ $fit['level_label'] }} interval</th>
-                        <th class="py-2 text-right font-medium">stats_lmer (REML)</th>
+                        <th class="py-2 text-right font-medium">fit_lmer (REML)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">School intercepts</h2>
         <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            Blue points and lines are posterior medians and {{ $fit['level_label'] }} intervals. Red diamonds are the stats_lmer intercepts (fixed intercept plus the conditional mode of the random effect).
+            Blue points and lines are posterior medians and {{ $fit['level_label'] }} intervals. Red diamonds are the fit_lmer intercepts (fixed intercept plus the conditional mode of the random effect).
         </p>
         <x-phiz :plot="$fit['intercept_chart']" wire:key="bayes-intercepts" class="mt-3 w-full" />
 

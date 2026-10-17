@@ -11,7 +11,7 @@ use function Phplyr\lmer;
 
 /**
  * Vignette: school random effects with intervals from their conditional
- * variances, which stats_lmer() reports as lme4's ranef(condVar = TRUE) does.
+ * variances, which Phit\fit_lmer() reports as lme4's ranef(condVar = TRUE) does.
  */
 class RandomEffects extends Component
 {
@@ -30,7 +30,7 @@ class RandomEffects extends Component
     public function render()
     {
         return view('livewire.random-effects', [
-            'extensionLoaded' => function_exists('stats_lmer'),
+            'extensionLoaded' => function_exists('Phit\\fit_lmer'),
             'formula' => $this->formula(),
             'fit' => $this->fit(),
         ]);
@@ -45,7 +45,7 @@ class RandomEffects extends Component
 
     private function fit(): ?array
     {
-        if (! function_exists('stats_lmer')) {
+        if (! function_exists('Phit\\fit_lmer')) {
             return null;
         }
 

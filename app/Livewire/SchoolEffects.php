@@ -8,6 +8,8 @@ use Phibble\DataFrame;
 use Phiz\Plot;
 
 use function Phplyr\lm;
+use function Phit\fit_lmer;
+use function Phit\predict;
 
 /**
  * Vignette: a random-intercept model for test scores, with the school
@@ -30,20 +32,20 @@ class SchoolEffects extends Component
     public function render()
     {
         return view('livewire.school-effects', [
-            'extensionLoaded' => function_exists('stats_lmer'),
+            'extensionLoaded' => function_exists('Phit\\fit_lmer'),
             'fit' => $this->fit(),
         ]);
     }
 
     private function fit(): ?array
     {
-        if (! function_exists('stats_lmer')) {
+        if (! function_exists('Phit\\fit_lmer')) {
             return null;
         }
 
         $scores = DataFrame::fromQuery(StudentScore::query());
 
-        $mixed = stats_lmer(self::FORMULA, $scores, reml: $this->reml);
+        $mixed = fit_lmer(self::FORMULA, $scores, reml: $this->reml);
         $noPooling = $scores |> lm(self::NO_POOLING_FORMULA);
 
         $random = $mixed['random'][0];
@@ -77,13 +79,13 @@ class SchoolEffects extends Component
     }
 
     /**
-     * stats_predict() for one student: the prediction with the school's random
+     * Phit\predict() for one student: the prediction with the school's random
      * intercept (lme4's re.form = NULL) and the population prediction without
      * it (re.form = NA). A new school predicts at the population level.
      */
     private function whatIf(array $mixed, array $schools): ?array
     {
-        if (! function_exists('stats_predict')) {
+        if (! function_exists('Phit\\predict')) {
             return null;
         }
 
@@ -94,8 +96,8 @@ class SchoolEffects extends Component
         return [
             'school' => $school,
             'hours' => $hours,
-            'conditional' => stats_predict($mixed, $newdata, allow_new_levels: true)['fit'][0],
-            'population' => stats_predict($mixed, $newdata, random: false)['fit'][0],
+            'conditional' => predict($mixed, $newdata, allow_new_levels: true)['fit'][0],
+            'population' => predict($mixed, $newdata, random: false)['fit'][0],
         ];
     }
 

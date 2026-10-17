@@ -25,7 +25,7 @@ $fit = $data |> glm('{{ $formula }}', family: '{{ $spec['family'] }}', link: '{{
 
     @if (! $extensionLoaded)
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-            This PHP process does not have the php_stats extension with stats_glm(), so the model cannot be fitted.
+            This PHP process does not have the phit extension, so the model cannot be fitted.
         </p>
     @else
         @php($result = $fit['result'])

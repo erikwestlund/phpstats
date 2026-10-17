@@ -11,7 +11,7 @@
 
     @if (! $extensionLoaded)
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-            This PHP process does not have the php_stats extension with stats_lmer(), so the model cannot be fitted.
+            This PHP process does not have the phit extension, so the model cannot be fitted.
         </p>
     @else
         @php($mixed = $fit['mixed'])
@@ -118,7 +118,7 @@
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">What if</h2>
         @if (! $fit['what_if'])
             <p class="mt-3 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-                This PHP process has a php_stats build without stats_predict(), so it cannot predict for a new student.
+                This PHP process does not have the phit extension, so it cannot predict for a new student.
             </p>
         @else
             @php($whatIf = $fit['what_if'])
@@ -149,11 +149,11 @@
                 </div>
             </dl>
             <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-                stats_predict() gives both predictions for a student who studies {{ $whatIf['hours'] }} hours.
+                Phit\predict() gives both predictions for a student who studies {{ $whatIf['hours'] }} hours.
                 The first adds the school's random intercept, as lme4's predict() does by default.
                 The second uses the fixed effects only, as predict() does with re.form = NA.
                 A school outside the data has no estimated random intercept, so with allow_new_levels it gets the population prediction.
-                lme4 does not compute standard errors for these predictions, and neither does stats_predict().
+                lme4 does not compute standard errors for these predictions, and neither does Phit\predict().
             </p>
         @endif
     @endif

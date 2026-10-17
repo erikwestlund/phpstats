@@ -47,7 +47,7 @@ class BenchmarkResults extends Component
 
     public static function name(string $implementation): string
     {
-        return $implementation === 'PHP' ? 'php-stats' : $implementation;
+        return $implementation === 'PHP' ? 'phit' : $implementation;
     }
 
     private function chart(array $rows, array $cases): Plot

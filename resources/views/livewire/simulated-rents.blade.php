@@ -10,7 +10,7 @@
 
     @if (! $extensionLoaded)
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-            This PHP process does not have the php_stats extension with stats_lm(), so the model cannot be fitted.
+            This PHP process does not have the phit extension, so the model cannot be fitted.
         </p>
     @else
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Sample by neighborhood</h2>

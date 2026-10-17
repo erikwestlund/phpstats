@@ -6,17 +6,18 @@
 // links (optional) adds more documentation links, as label => URL.
 
 return [
-    'php-stats' => [
-        'name' => 'php-stats',
+    'phit' => [
+        'name' => 'phit',
         'summary' => 'A native PHP extension, written in Rust, for regression, mixed models, distributions, and descriptive statistics.',
         'status' => 'working',
-        'status_label' => 'Working, v0.2',
-        'repo' => 'https://github.com/erikwestlund/php-stats',
-        'docs' => 'https://erikwestlund.github.io/php-stats/',
+        'status_label' => 'Working',
+        'repo' => 'https://github.com/erikwestlund/phit',
+        'docs' => 'https://erikwestlund.github.io/phit/',
         'overview' => [
-            'php-stats fits statistical models inside PHP and returns plain PHP arrays. It provides OLS, logistic, probit, and Poisson regression, linear mixed models, and mixed logistic regression.',
-            'Version 0.2 adds probability distributions, descriptive statistics, posterior-draw kernels, and a seeded random number generator. Results are verified against R.',
-            'The extension targets PHP 8.5 on Linux and macOS and installs with PIE.',
+            'phit fits statistical models inside PHP and returns plain PHP arrays. It provides OLS, logistic, probit, and Poisson regression, linear mixed models, and mixed logistic regression.',
+            'It also provides probability distributions, descriptive statistics, posterior-draw kernels, and a seeded random number generator. Results are verified against R.',
+            'Every function is in the Phit namespace, such as Phit\fit_lm(), Phit\predict(), and Phit\dist_normal_cdf(). The functions were named stats_* when the extension was called php-stats.',
+            'The extension targets PHP 8.3 to 8.5 on Linux and macOS and installs with PIE as phit.',
         ],
     ],
     'php-stats-polyfill' => [
@@ -44,15 +45,15 @@ return [
             'Release notes' => 'https://github.com/erikwestlund/phibble/releases/tag/v0.2.0',
         ],
         'overview' => [
-            'phibble is the shared table type for phplyr, phpolars, php-stats, and cmdstanphp. Every operation returns a new frame.',
+            'phibble is the shared table type for phplyr, phpolars, phit, and cmdstanphp. Every operation returns a new frame.',
             'Columns are typed as float, int, bool, string, factor, or date, and types are inferred on load. Missing values are PHP null.',
             'Frames load from CSV files, PDO statements, and Laravel, Eloquent, or Doctrine query builders, so analysis can start from the application database. phibble does not depend on Laravel or Doctrine.',
-            'toMatrix() and toVector() hand columns to php-stats functions such as stats_ols().',
+            'toMatrix() and toVector() hand columns to phit functions such as Phit\fit_ols().',
         ],
     ],
     'phplyr' => [
         'name' => 'phplyr',
-        'summary' => 'dplyr-style verbs as pipe functions, with lm() and glm() formulas that call php-stats.',
+        'summary' => 'dplyr-style verbs as pipe functions, with lm() and glm() formulas that call phit.',
         'status' => 'working',
         'status_label' => 'Released, v0.2.0',
         'repo' => 'https://github.com/erikwestlund/phplyr',
@@ -67,7 +68,7 @@ return [
             'phplyr covers most of dplyr and tidyr. Each verb returns a closure, so verbs compose with the PHP 8.5 pipe operator.',
             'The dplyr side includes the single-table verbs, mutating and filtering joins, set operations, window functions such as lag(), lead(), and row_number(), and across() with tidyselect-style selectors.',
             'The tidyr side includes pivot_longer(), pivot_wider(), separate and unite functions, nesting, and functions for completing and filling missing values.',
-            'Summary helpers such as n(), mean(), sd(), and quantile() follow R conventions for missing values and use php-stats when the extension is loaded. Model formulas such as monthly_rent ~ area_m2 + neighborhood will fit models through php-stats.',
+            'Summary helpers such as n(), mean(), sd(), and quantile() follow R conventions for missing values and use phit when the extension is loaded. Model formulas such as monthly_rent ~ area_m2 + neighborhood will fit models through phit.',
         ],
     ],
     'phiz' => [
@@ -112,7 +113,7 @@ return [
         'overview' => [
             'cmdstanphp runs real Stan programs through CmdStan. It needs no R installation and no PHP framework.',
             'It supports compilation, parallel MCMC, optimization, ADVI, Pathfinder, and Laplace approximation, along with posterior summaries and fit persistence.',
-            'MCMC fits compute PSIS-LOO and WAIC. Moment matching for PSIS-LOO uses the php-stats draw kernels when the extension is loaded.',
+            'MCMC fits compute PSIS-LOO and WAIC. Moment matching for PSIS-LOO uses the phit draw kernels when the extension is loaded.',
             'Trace, density, interval, rank, and Pareto k figures render as ASCII text, Vega-Lite charts, HTML, or SVG.',
             'cmdstanphp covers most of CmdStanR but not all of it. Its compatibility contract lists the differences.',
         ],

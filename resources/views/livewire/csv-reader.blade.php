@@ -22,7 +22,7 @@
 
     @if (! $extensionLoaded)
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-            This PHP process does not have the php_stats extension with stats_read_csv(), so the text cannot be read.
+            This PHP process does not have the phit extension, so the text cannot be read.
         </p>
     @elseif (isset($error))
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">{{ $error }}</p>

@@ -77,9 +77,9 @@
             </div>
 
             <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">What if</h2>
-            @if (! function_exists('stats_predict'))
+            @if (! function_exists('Phit\\predict'))
                 <p class="mt-3 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
-                    This PHP process has a php_stats build without stats_predict(), so it cannot predict for a new rental.
+                    This PHP process does not have the phit extension, so it cannot predict for a new rental.
                 </p>
             @else
                 <div class="mt-3 flex flex-wrap items-end gap-6 text-sm">
@@ -126,7 +126,7 @@
                         </div>
                     </dl>
                     <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-                        stats_predict() predicts both values for one {{ $whatIf['area'] }} m², {{ $whatIf['bedrooms'] }}-bedroom rental in {{ $whatIf['neighborhood'] }}, using models fitted to the selected rentals.
+                        Phit\predict() predicts both values for one {{ $whatIf['area'] }} m², {{ $whatIf['bedrooms'] }}-bedroom rental in {{ $whatIf['neighborhood'] }}, using models fitted to the selected rentals.
                         The rent comes from the linear model {{ $whatIf['formula'] }}.
                         Its prediction interval covers a single rental's rent, so it is wider than an interval for the average rent.
                         The chance of exceeding the budget comes from the logistic model below, and its interval is computed on the log-odds scale.

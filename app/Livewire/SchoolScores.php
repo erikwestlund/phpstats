@@ -12,7 +12,7 @@ use function Phplyr\lm;
 /**
  * Vignette: regress test score on study hours and prior score.
  *
- * phibble reads the table and phplyr's lm() fits it with php_stats' stats_lm().
+ * phibble reads the table and phplyr's lm() fits it with Phit\fit_lm().
  */
 class SchoolScores extends Component
 {
@@ -27,7 +27,7 @@ class SchoolScores extends Component
     public function render()
     {
         return view('livewire.school-scores', [
-            'extensionLoaded' => function_exists('stats_lm'),
+            'extensionLoaded' => function_exists('Phit\\fit_lm'),
             'fit' => $this->fit(),
         ]);
     }
@@ -36,7 +36,7 @@ class SchoolScores extends Component
     {
         $predictors = array_values(array_intersect(array_keys(self::PREDICTORS), $this->predictors));
 
-        if (! function_exists('stats_lm') || $predictors === []) {
+        if (! function_exists('Phit\\fit_lm') || $predictors === []) {
             return null;
         }
 
