@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Phibble\Frame;
+use Phibble\DataFrame;
 use Phibble\Io\NativeCsv;
 use Throwable;
 use ValueError;
@@ -104,7 +104,7 @@ class CsvReader extends Component
     }
 
     /**
-     * Read the file through Frame::fromCsv() with the native reader and with
+     * Read the file through DataFrame::fromCsv() with the native reader and with
      * phibble's PHP reader, and compare types, values, and warnings.
      */
     private function parity(string $path, string $delimiter): array
@@ -117,7 +117,7 @@ class CsvReader extends Component
                 return true;
             }, E_USER_WARNING);
             try {
-                $frame = Frame::fromCsv($path, delimiter: $delimiter);
+                $frame = DataFrame::fromCsv($path, delimiter: $delimiter);
 
                 return ['types' => $frame->types(), 'columns' => $frame->toColumns(), 'warnings' => $warnings];
             } catch (Throwable $e) {

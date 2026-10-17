@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "688821979f27959aa1c2becc1d7fc4dc",
+    "content-hash": "8ce2090a53d6ed77aac2106d7641e478",
     "packages": [
         {
             "name": "brick/math",
@@ -577,16 +577,16 @@
         },
         {
             "name": "erikwestlund/phibble",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:erikwestlund/phibble.git",
-                "reference": "2a6e457f5e9a255f5b3cd8eb9cdef577593248b8"
+                "reference": "d88cb1df348eaa0684cb77cd8d9ea633b008395f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phibble/zipball/2a6e457f5e9a255f5b3cd8eb9cdef577593248b8",
-                "reference": "2a6e457f5e9a255f5b3cd8eb9cdef577593248b8",
+                "url": "https://api.github.com/repos/erikwestlund/phibble/zipball/d88cb1df348eaa0684cb77cd8d9ea633b008395f",
+                "reference": "d88cb1df348eaa0684cb77cd8d9ea633b008395f",
                 "shasum": ""
             },
             "require": {
@@ -600,7 +600,8 @@
             },
             "suggest": {
                 "ext-pdo_sqlite": "Used by the test suite for the PDO source",
-                "illuminate/database": "Laravel integration: Collection::toFrame() and query builder ->phibble() / ->toFrame() macros (auto-discovered)"
+                "ext-php_polars": "The Polars backend (Phibble\\Polars\\PolarsTable), from erikwestlund/phpolars",
+                "illuminate/database": "Laravel integration: Collection::toDataFrame() and query builder ->phibble() / ->toDataFrame() macros (auto-discovered)"
             },
             "type": "library",
             "extra": {
@@ -629,7 +630,7 @@
                 "MIT"
             ],
             "description": "A typed, immutable in-memory data frame for PHP.",
-            "time": "2026-10-16T10:49:25+00:00"
+            "time": "2026-10-17T11:06:50+00:00"
         },
         {
             "name": "erikwestlund/phiz",
@@ -714,20 +715,20 @@
         },
         {
             "name": "erikwestlund/phplyr",
-            "version": "v0.1.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "git@github.com:erikwestlund/phplyr.git",
-                "reference": "88b9c78cfcee64f1f5e17c02ce034c42acf22496"
+                "reference": "89c599cb5349220396d87dd42085c57446537606"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/88b9c78cfcee64f1f5e17c02ce034c42acf22496",
-                "reference": "88b9c78cfcee64f1f5e17c02ce034c42acf22496",
+                "url": "https://api.github.com/repos/erikwestlund/phplyr/zipball/89c599cb5349220396d87dd42085c57446537606",
+                "reference": "89c599cb5349220396d87dd42085c57446537606",
                 "shasum": ""
             },
             "require": {
-                "erikwestlund/phibble": "^0.1",
+                "erikwestlund/phibble": "^0.2",
                 "php": "^8.5"
             },
             "require-dev": {
@@ -736,6 +737,7 @@
             "suggest": {
                 "ext-php_stats": "Native descriptives and model fitting (stats_*), needed for lm() and glm()"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -748,6 +750,7 @@
                     "src/functions/groups.php",
                     "src/functions/joins.php",
                     "src/functions/tidyr.php",
+                    "src/functions/lists.php",
                     "src/functions/rows.php",
                     "src/functions/scalar.php",
                     "src/functions/strings.php",
@@ -763,7 +766,7 @@
                 "MIT"
             ],
             "description": "A dplyr-style grammar of data manipulation for PHP 8.5 pipes",
-            "time": "2026-10-16T10:50:49+00:00"
+            "time": "2026-10-17T11:09:38+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -8701,7 +8704,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cmdstan/php": 20
+        "cmdstan/php": 20,
+        "erikwestlund/phplyr": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Models\StudentScore;
 use Livewire\Component;
-use Phibble\Frame;
+use Phibble\DataFrame;
 use Phiz\Plot;
 
 use function Phplyr\lm;
@@ -41,7 +41,7 @@ class SchoolEffects extends Component
             return null;
         }
 
-        $scores = Frame::fromQuery(StudentScore::query());
+        $scores = DataFrame::fromQuery(StudentScore::query());
 
         $mixed = stats_lmer(self::FORMULA, $scores, reml: $this->reml);
         $noPooling = $scores |> lm(self::NO_POOLING_FORMULA);

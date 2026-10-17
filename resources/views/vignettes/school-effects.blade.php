@@ -12,7 +12,7 @@
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$scores = Frame::fromQuery(StudentScore::query());
+        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$scores = DataFrame::fromQuery(StudentScore::query());
 
 $mixed = stats_lmer('{{ \App\Livewire\SchoolEffects::FORMULA }}', $scores, reml: true);
 $noPooling = $scores |> lm('{{ \App\Livewire\SchoolEffects::NO_POOLING_FORMULA }}');

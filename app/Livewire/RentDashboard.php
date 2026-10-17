@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Data\SimulatedRentals;
 use App\Models\SimulatedRental;
 use Livewire\Component;
-use Phibble\Frame;
+use Phibble\DataFrame;
 use Phiz\Plot;
 use Throwable;
 
@@ -56,7 +56,7 @@ class RentDashboard extends Component
             return ['rentals' => 0, 'budget' => $budget, 'summary' => [], 'model' => null, 'error' => 'Select at least one neighborhood.'];
         }
 
-        $rentals = Frame::fromQuery(SimulatedRental::query()->orderBy('id'))
+        $rentals = DataFrame::fromQuery(SimulatedRental::query()->orderBy('id'))
             |> filter(col('neighborhood')->isIn($neighborhoods), col('bedrooms')->between($low, $high))
             |> mutate(over_budget: col('monthly_rent')->gt($budget));
 
@@ -108,7 +108,7 @@ class RentDashboard extends Component
      * exceeding the budget from the logistic model, with a 95% confidence
      * interval computed on the link scale.
      */
-    private function whatIf(Frame $rentals, array $neighborhoods, int $low, int $high, ?array $model): ?array
+    private function whatIf(DataFrame $rentals, array $neighborhoods, int $low, int $high, ?array $model): ?array
     {
         if (! function_exists('stats_predict')) {
             return null;

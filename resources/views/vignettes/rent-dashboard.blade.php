@@ -23,7 +23,7 @@
 
     public function render()
     {
-        $rentals = Frame::fromQuery(SimulatedRental::query())
+        $rentals = DataFrame::fromQuery(SimulatedRental::query())
             |> filter(col('neighborhood')->isIn($this->neighborhoods),
                       col('bedrooms')->between($this->minBedrooms, $this->maxBedrooms))
             |> mutate(over_budget: col('monthly_rent')->gt($this->budget));

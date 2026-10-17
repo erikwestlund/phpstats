@@ -318,7 +318,7 @@ class PagesTest extends TestCase
 
         if (! PolarsPipeline::polarsAvailable()) {
             $this->assertNull($page->viewData('polars'));
-            $this->get('/vignettes/polars-pipeline')->assertOk()->assertSee('runs only on the in-memory Frame');
+            $this->get('/vignettes/polars-pipeline')->assertOk()->assertSee('runs only on the in-memory DataFrame');
 
             return;
         }

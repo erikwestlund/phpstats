@@ -8,7 +8,7 @@
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = Frame::fromQuery(StudentScore::query())
+        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = DataFrame::fromQuery(StudentScore::query())
     |> lm('score ~ study_hours + prior_score');</code></pre>
     </article>
 

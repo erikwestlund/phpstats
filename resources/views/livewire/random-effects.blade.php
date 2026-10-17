@@ -18,7 +18,7 @@
         </label>
     </div>
 
-    <pre class="mt-6 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = Frame::fromQuery(StudentScore::query()) |> lmer('{{ $formula }}');
+    <pre class="mt-6 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = DataFrame::fromQuery(StudentScore::query()) |> lmer('{{ $formula }}');
 
 $fit['random'][0]['effects'];           // conditional modes, one row per school
 $fit['random'][0]['effects_cond_var'];  // their conditional covariance, one matrix per school

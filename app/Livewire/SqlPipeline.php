@@ -10,7 +10,7 @@ use function Phplyr\{arrange, col, desc, filter, group_by, mean, mutate, n, show
 
 /**
  * Vignette: one phplyr pipeline run two ways. On a lazy phibble SqlTable the
- * verbs compile to a single SQL query; on an in-memory Frame they run in PHP.
+ * verbs compile to a single SQL query; on an in-memory DataFrame they run in PHP.
  */
 class SqlPipeline extends Component
 {
@@ -23,7 +23,7 @@ class SqlPipeline extends Component
         $min = in_array($this->minBedrooms, self::BEDROOMS, true) ? $this->minBedrooms : 1;
 
         $sql = SimulatedRental::query()->phibble() |> $this->pipeline($min);
-        $memory = SimulatedRental::query()->toFrame() |> $this->pipeline($min);
+        $memory = SimulatedRental::query()->toDataFrame() |> $this->pipeline($min);
 
         $sqlRows = $sql->toRows();
         $memoryRows = $memory->toRows();

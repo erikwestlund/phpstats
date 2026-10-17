@@ -4,7 +4,7 @@
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
             php-stats includes a native CSV reader, stats_read_csv(), that tokenizes a file, guesses each column's type, and parses the values in Rust.
             Its rules follow readr 2 and match phibble's PHP reader.
-            When the extension is loaded, phibble's Frame::fromCsv() uses it.
+            When the extension is loaded, phibble's DataFrame::fromCsv() uses it.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
             Edit the text below and the page reads it again.
@@ -20,10 +20,10 @@ $result['names'];     // column names
 $result['columns'];   // per column: type, values, and the count that failed to parse
 $result['problems'];  // ragged rows and unterminated quotes
 
-$frame = Frame::fromCsv($path);  // phibble, through the same reader</code></pre>
+$frame = DataFrame::fromCsv($path);  // phibble, through the same reader</code></pre>
         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
             The php-stats documentation lists every option and guessing rule.
-            In phibble's 1,000,000-row benchmark on an Apple Silicon Mac, Frame::fromCsv() takes 0.12 seconds with the extension and 1.0 seconds with the PHP reader.
+            In phibble's 1,000,000-row benchmark on an Apple Silicon Mac, DataFrame::fromCsv() takes 0.12 seconds with the extension and 1.0 seconds with the PHP reader.
         </p>
     </article>
 

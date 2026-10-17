@@ -7,7 +7,7 @@
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
             This vignette runs one phplyr pipeline in two ways.
             On a lazy phibble table, created with ->phibble() on an Eloquent query, the verbs build a single SQL query that the database runs.
-            On an in-memory frame, created with ->toFrame(), the same verbs run in PHP.
+            On an in-memory frame, created with ->toDataFrame(), the same verbs run in PHP.
             The page shows the generated SQL and both results.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
@@ -27,7 +27,7 @@
 $sql = SimulatedRental::query()->phibble() |> $pipeline;
 $sql |> show_query();
 
-$memory = SimulatedRental::query()->toFrame() |> $pipeline;</code></pre>
+$memory = SimulatedRental::query()->toDataFrame() |> $pipeline;</code></pre>
     </article>
 
     <div class="mt-10">

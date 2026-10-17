@@ -95,7 +95,7 @@
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Agreement with phibble's PHP reader</h2>
         @if ($parity['error'])
-            <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">Frame::fromCsv() raised an error: {{ $parity['error'] }}</p>
+            <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">DataFrame::fromCsv() raised an error: {{ $parity['error'] }}</p>
         @else
             <ul class="mt-3 space-y-1 text-sm">
                 <li>Column types: {{ $parity['same_types'] ? 'identical' : 'different' }}</li>

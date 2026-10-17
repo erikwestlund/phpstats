@@ -7,7 +7,7 @@ use App\Models\StudentScore;
 use CmdStan\StanData;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Phibble\Frame;
+use Phibble\DataFrame;
 
 use function CmdStan\cmdstan_model;
 use function CmdStan\cmdstan_version;
@@ -29,7 +29,7 @@ class FitSchoolPosterior extends Command
         File::ensureDirectoryExists($workdir);
         File::copy(resource_path('stan/school_intercepts.stan'), "{$workdir}/school_intercepts.stan");
 
-        $frame = Frame::fromQuery(StudentScore::query()->orderBy('id'));
+        $frame = DataFrame::fromQuery(StudentScore::query()->orderBy('id'));
         $data = StanData::fromFormula(SchoolPosterior::FORMULA, $frame);
 
         $this->info('Compiling and sampling with CmdStan '.cmdstan_version().'...');

@@ -6,15 +6,15 @@ use App\Models\SimulatedRental;
 use Closure;
 use Livewire\Component;
 use Phibble\Contracts\Table;
-use Phibble\Frame;
+use Phibble\DataFrame;
 
 use function Phplyr\{arrange, col, desc, filter, group_by, mean, mutate, n, summarise};
 
 /**
- * Vignette: one phplyr pipeline run on an in-memory phibble Frame and on a
+ * Vignette: one phplyr pipeline run on an in-memory phibble DataFrame and on a
  * Polars-backed PolarsTable. The Polars side needs the php_polars extension
  * and a phibble release with Phibble\Polars; without them the page runs the
- * Frame side only.
+ * DataFrame side only.
  */
 class PolarsPipeline extends Component
 {
@@ -37,8 +37,8 @@ class PolarsPipeline extends Component
         $copies = in_array($this->copies, self::COPIES, true) ? $this->copies : 1;
         $min = in_array($this->minBedrooms, SqlPipeline::BEDROOMS, true) ? $this->minBedrooms : 1;
 
-        $base = SimulatedRental::query()->select(['neighborhood', 'area_m2', 'bedrooms', 'monthly_rent'])->toFrame();
-        $frame = $copies === 1 ? $base : Frame::concat(array_fill(0, $copies, $base));
+        $base = SimulatedRental::query()->select(['neighborhood', 'area_m2', 'bedrooms', 'monthly_rent'])->toDataFrame();
+        $frame = $copies === 1 ? $base : DataFrame::concat(array_fill(0, $copies, $base));
         $pipeline = $this->pipeline($min);
 
         [$frameRows, $frameSeconds] = $this->timed(fn () => ($frame |> $pipeline)->toRows());

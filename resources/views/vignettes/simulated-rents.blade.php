@@ -20,7 +20,7 @@
             phibble reads the table through Eloquent and phplyr summarises it. phplyr's lm() passes the formula and the data to php-stats, which builds the model matrix as R does.
             Setting the factor levels makes Riverside the reference neighborhood.
         </p>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$rentals = Frame::fromQuery(SimulatedRental::query()->orderBy('id'))
+        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$rentals = DataFrame::fromQuery(SimulatedRental::query()->orderBy('id'))
     ->asFactor('neighborhood', ['Riverside', 'Old Town', 'Hillcrest', 'Harbor', 'University', 'Northgate'])
     |> head($n);
 

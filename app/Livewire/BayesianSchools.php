@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Data\SchoolPosterior;
 use App\Models\StudentScore;
 use Livewire\Component;
-use Phibble\Frame;
+use Phibble\DataFrame;
 use Phiz\Plot;
 
 use function Phiz\aes;
@@ -40,7 +40,7 @@ class BayesianSchools extends Component
         $draws = $posterior['draws'];
         $schools = $posterior['meta']['schools'];
 
-        $lmer = stats_lmer(SchoolPosterior::FORMULA, Frame::fromQuery(StudentScore::query()->orderBy('id')));
+        $lmer = stats_lmer(SchoolPosterior::FORMULA, DataFrame::fromQuery(StudentScore::query()->orderBy('id')));
         $random = $lmer['random'][0];
         $lmerIntercepts = [];
         foreach ($random['group_labels'] as $i => $school) {

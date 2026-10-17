@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Data\SimulatedRentals;
 use App\Models\SimulatedRental;
 use Livewire\Component;
-use Phibble\Frame;
+use Phibble\DataFrame;
 use Phiz\Plot;
 
 use function Phiz\aes;
@@ -41,7 +41,7 @@ class SimulatedRents extends Component
         $n = in_array($this->n, self::SIZES, true) ? $this->n : max(self::SIZES);
 
         // Riverside first, so it is the reference level.
-        $rentals = Frame::fromQuery(SimulatedRental::query()->orderBy('id'))
+        $rentals = DataFrame::fromQuery(SimulatedRental::query()->orderBy('id'))
             ->asFactor('neighborhood', array_keys(SimulatedRentals::NEIGHBORHOODS))
             |> head($n);
 

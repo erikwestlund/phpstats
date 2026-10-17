@@ -21,9 +21,9 @@
     @unless ($available)
         <p class="mt-6 rounded-lg bg-amber-50 p-4 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
             @if (! $extensionLoaded)
-                This PHP process does not have the php_polars extension, so the pipeline runs only on the in-memory Frame.
+                This PHP process does not have the php_polars extension, so the pipeline runs only on the in-memory DataFrame.
             @else
-                php_polars is loaded, but the installed phibble release does not include Phibble\Polars\PolarsTable, so the pipeline runs only on the in-memory Frame.
+                php_polars is loaded, but the installed phibble release does not include Phibble\Polars\PolarsTable, so the pipeline runs only on the in-memory DataFrame.
             @endif
         </p>
     @endunless
@@ -34,7 +34,7 @@
                 <tr class="border-b border-zinc-200 dark:border-zinc-800">
                     <th class="py-2 pr-4 font-medium">Neighborhood</th>
                     <th class="py-2 pr-4 text-right font-medium">Rentals</th>
-                    <th class="py-2 pr-4 text-right font-medium">Frame: rent per m²</th>
+                    <th class="py-2 pr-4 text-right font-medium">DataFrame: rent per m²</th>
                     @if ($polars)
                         <th class="py-2 text-right font-medium">Polars: rent per m²</th>
                     @endif
@@ -58,9 +58,9 @@
     <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">This request</h2>
     <ul class="mt-3 space-y-1 text-sm tabular-nums">
         <li>Input: {{ number_format($rowsIn) }} rows.</li>
-        <li>Frame pipeline: {{ number_format(1000 * $frameSeconds, 1) }} ms.</li>
+        <li>DataFrame pipeline: {{ number_format(1000 * $frameSeconds, 1) }} ms.</li>
         @if ($polars)
-            <li>Copying the Frame into Polars: {{ number_format(1000 * $polars['load_seconds'], 1) }} ms.</li>
+            <li>Copying the DataFrame into Polars: {{ number_format(1000 * $polars['load_seconds'], 1) }} ms.</li>
             <li>PolarsTable pipeline, including collecting the result: {{ number_format(1000 * $polars['seconds'], 1) }} ms.</li>
             <li>
                 @if ($polars['max_difference'] === null)

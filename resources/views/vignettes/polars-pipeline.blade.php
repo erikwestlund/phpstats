@@ -3,7 +3,7 @@
         <h1 class="text-3xl font-semibold tracking-tight">Polars pipeline</h1>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
             phplyr verbs work on any phibble table.
-            This vignette runs the pipeline from the SQL vignette on an in-memory Frame and on a PolarsTable, which holds the data in Polars through the php_polars extension from phpolars.
+            This vignette runs the pipeline from the SQL vignette on an in-memory DataFrame and on a PolarsTable, which holds the data in Polars through the php_polars extension from phpolars.
             The verbs use col() expressions, so the Polars side runs them in Polars instead of in PHP.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">

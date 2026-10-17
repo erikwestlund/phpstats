@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Phibble\Frame;
+use Phibble\DataFrame;
 use Phiz\Plot;
 
 use function Phiz\effect_plot;
@@ -83,7 +83,7 @@ class GlmModels extends Component
         }
 
         $spec = $this->spec();
-        $data = Frame::fromCsv(database_path("data/{$spec['file']}"));
+        $data = DataFrame::fromCsv(database_path("data/{$spec['file']}"));
         $result = $data |> glm($this->formula(), family: $spec['family'], link: $spec['link']);
 
         return [
@@ -95,7 +95,7 @@ class GlmModels extends Component
         ];
     }
 
-    private function chart(array $result, Frame $data, array $spec): Plot
+    private function chart(array $result, DataFrame $data, array $spec): Plot
     {
         $label = $spec['family'] === 'poisson' ? 'Expected calls' : 'Probability of passing';
 

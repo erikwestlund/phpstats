@@ -1,6 +1,6 @@
 {
     "source": "erikwestlund/php-stats@main",
-    "synced_at": "2026-10-16T08:30:13+00:00",
+    "synced_at": "2026-10-17T11:10:52+00:00",
     "models": {
         "ols": {
             "label": "Linear regression (OLS)",
@@ -594,7 +594,7 @@
     },
     "polyfill": {
         "source": "https://github.com/erikwestlund/php-stats-polyfill/blob/main/benchmarks/results.json",
-        "recorded_at": "2026-10-16T07:50:53Z",
+        "recorded_at": "2026-10-16T14:59:34Z",
         "cpu": "Apple M5 Ultra",
         "platform": "Darwin 27.0.0 arm64",
         "php_version": "8.5.10",
@@ -604,8 +604,8 @@
             "jit_mode": "tracing",
             "jit_buffer_size": "64M"
         },
-        "polyfill_commit": "bd9d24a",
-        "extension_reference_commit": "4ba33e489c39cfeddeab0b32903f9c81ff7f8157",
+        "polyfill_commit": "04110a9",
+        "extension_reference_commit": "91ee538253e3ecf7b3f086441305c3f7237200fc",
         "design": "10 standard normal predictors plus an intercept; seed 5",
         "repeat": 5,
         "warmup_calls": 1,
@@ -617,21 +617,21 @@
                 "p": 10,
                 "implementations": {
                     "polyfill": {
-                        "median_seconds": 0.00665075,
-                        "min_seconds": 0.006462333
+                        "median_seconds": 0.00727325,
+                        "min_seconds": 0.007197667
                     },
                     "extension": {
-                        "median_seconds": 0.0027825,
-                        "min_seconds": 0.002745542
+                        "median_seconds": 0.002635333,
+                        "min_seconds": 0.002582708
                     },
                     "plain_php_normal_equations": {
-                        "median_seconds": 0.002035208,
-                        "min_seconds": 0.002028625,
+                        "median_seconds": 0.002011542,
+                        "min_seconds": 0.001972584,
                         "note": "coefficients only, by Cholesky on X'X; no inference or rank checks"
                     }
                 },
                 "agreement": {
-                    "max_coefficient_difference_in_standard_errors": 1.07708933277985e-13,
+                    "max_coefficient_difference_in_standard_errors": 0.0,
                     "same_result_keys": true,
                     "agrees": true
                 }
@@ -643,16 +643,16 @@
                 "p": 10,
                 "implementations": {
                     "polyfill": {
-                        "median_seconds": 0.0378475,
-                        "min_seconds": 0.037356084
+                        "median_seconds": 0.045827167,
+                        "min_seconds": 0.044501083
                     },
                     "extension": {
-                        "median_seconds": 0.006931584,
-                        "min_seconds": 0.006908125
+                        "median_seconds": 0.006607917,
+                        "min_seconds": 0.00655975
                     }
                 },
                 "agreement": {
-                    "max_coefficient_difference_in_standard_errors": 3.533921075723016e-15,
+                    "max_coefficient_difference_in_standard_errors": 0.0,
                     "same_result_keys": true,
                     "agrees": true
                 }
@@ -664,21 +664,21 @@
                 "p": 10,
                 "implementations": {
                     "polyfill": {
-                        "median_seconds": 0.07243025,
-                        "min_seconds": 0.07102475
+                        "median_seconds": 0.077674,
+                        "min_seconds": 0.077179042
                     },
                     "extension": {
-                        "median_seconds": 0.027915375,
-                        "min_seconds": 0.027566042
+                        "median_seconds": 0.027208709,
+                        "min_seconds": 0.026678792
                     },
                     "plain_php_normal_equations": {
-                        "median_seconds": 0.020413625,
-                        "min_seconds": 0.020251542,
+                        "median_seconds": 0.020156125,
+                        "min_seconds": 0.019951041,
                         "note": "coefficients only, by Cholesky on X'X; no inference or rank checks"
                     }
                 },
                 "agreement": {
-                    "max_coefficient_difference_in_standard_errors": 1.669256421239438e-12,
+                    "max_coefficient_difference_in_standard_errors": 0.0,
                     "same_result_keys": true,
                     "agrees": true
                 }
@@ -690,16 +690,16 @@
                 "p": 10,
                 "implementations": {
                     "polyfill": {
-                        "median_seconds": 0.391616667,
-                        "min_seconds": 0.379536375
+                        "median_seconds": 0.45580425,
+                        "min_seconds": 0.452062042
                     },
                     "extension": {
-                        "median_seconds": 0.069930667,
-                        "min_seconds": 0.069290292
+                        "median_seconds": 0.068462125,
+                        "min_seconds": 0.068146792
                     }
                 },
                 "agreement": {
-                    "max_coefficient_difference_in_standard_errors": 1.1894722242642468e-14,
+                    "max_coefficient_difference_in_standard_errors": 0.0,
                     "same_result_keys": true,
                     "agrees": true
                 }
@@ -715,9 +715,9 @@
             "repeats": 3,
             "timing": "pipeline through collect(); data preloaded and not timed",
             "verification": "rows canonicalised (floats to 9 significant digits, sorted) and hashed, then compared with the reference backend",
-            "reference": "Frame",
+            "reference": "DataFrame",
             "polars_threads": 2,
-            "threads_note": "polars_threads applies to PolarsTable only; Frame and SqlTable(SQLite) run single-threaded",
+            "threads_note": "polars_threads applies to PolarsTable only; DataFrame and SqlTable(SQLite) run single-threaded",
             "machine": {
                 "os": "Darwin 27.0.0 arm64",
                 "cpu": "Apple M5 Ultra",
@@ -726,12 +726,12 @@
             },
             "php": "8.5.10",
             "versions": {
-                "phplyr": "3836131",
-                "phibble": "042ebb8",
+                "phplyr": "e71e0ea",
+                "phibble": "9655e2a",
                 "phpolars": {
-                    "sha": "f97eaeb",
+                    "sha": "27099f7",
                     "extension": "0.1.0",
-                    "polars": null,
+                    "polars": "0.55.2",
                     "profile": "release"
                 },
                 "sqlite": "3.53.4"
@@ -766,10 +766,10 @@
         "results": [
             {
                 "pipeline": "A",
-                "backend": "Frame",
+                "backend": "DataFrame",
                 "rows_in": 100000,
                 "rows_out": 50,
-                "seconds": 0.0796,
+                "seconds": 0.0772,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
@@ -779,7 +779,7 @@
                 "backend": "PolarsTable",
                 "rows_in": 100000,
                 "rows_out": 50,
-                "seconds": 0.0073,
+                "seconds": 0.0067,
                 "fallbacks": 0,
                 "matches_frame": true,
                 "error": null
@@ -789,17 +789,17 @@
                 "backend": "SqlTable(SQLite)",
                 "rows_in": 100000,
                 "rows_out": 50,
-                "seconds": 0.1293,
+                "seconds": 0.0446,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
             },
             {
                 "pipeline": "B",
-                "backend": "Frame",
+                "backend": "DataFrame",
                 "rows_in": 100000,
                 "rows_out": 100000,
-                "seconds": 0.1029,
+                "seconds": 0.0972,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
@@ -809,7 +809,7 @@
                 "backend": "PolarsTable",
                 "rows_in": 100000,
                 "rows_out": 100000,
-                "seconds": 0.0456,
+                "seconds": 0.044,
                 "fallbacks": 0,
                 "matches_frame": true,
                 "error": null
@@ -819,17 +819,17 @@
                 "backend": "SqlTable(SQLite)",
                 "rows_in": 100000,
                 "rows_out": 100000,
-                "seconds": 0.3524,
+                "seconds": 0.323,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
             },
             {
                 "pipeline": "C",
-                "backend": "Frame",
+                "backend": "DataFrame",
                 "rows_in": 100000,
                 "rows_out": 50,
-                "seconds": 0.1073,
+                "seconds": 0.1014,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
@@ -839,7 +839,7 @@
                 "backend": "PolarsTable",
                 "rows_in": 100000,
                 "rows_out": 50,
-                "seconds": 0.0822,
+                "seconds": 0.0812,
                 "fallbacks": 1,
                 "matches_frame": true,
                 "error": null
@@ -849,17 +849,17 @@
                 "backend": "SqlTable(SQLite)",
                 "rows_in": 100000,
                 "rows_out": 50,
-                "seconds": 0.2253,
+                "seconds": 0.1894,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
             },
             {
                 "pipeline": "A",
-                "backend": "Frame",
+                "backend": "DataFrame",
                 "rows_in": 1000000,
                 "rows_out": 50,
-                "seconds": 0.6302,
+                "seconds": 0.6178,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
@@ -869,7 +869,7 @@
                 "backend": "PolarsTable",
                 "rows_in": 1000000,
                 "rows_out": 50,
-                "seconds": 0.0539,
+                "seconds": 0.056,
                 "fallbacks": 0,
                 "matches_frame": true,
                 "error": null
@@ -879,17 +879,17 @@
                 "backend": "SqlTable(SQLite)",
                 "rows_in": 1000000,
                 "rows_out": 50,
-                "seconds": 1.3311,
+                "seconds": 0.4693,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
             },
             {
                 "pipeline": "B",
-                "backend": "Frame",
+                "backend": "DataFrame",
                 "rows_in": 1000000,
                 "rows_out": 1000000,
-                "seconds": 1.3215,
+                "seconds": 1.3197,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
@@ -899,7 +899,7 @@
                 "backend": "PolarsTable",
                 "rows_in": 1000000,
                 "rows_out": 1000000,
-                "seconds": 0.4235,
+                "seconds": 0.433,
                 "fallbacks": 0,
                 "matches_frame": true,
                 "error": null
@@ -909,17 +909,17 @@
                 "backend": "SqlTable(SQLite)",
                 "rows_in": 1000000,
                 "rows_out": 1000000,
-                "seconds": 3.6816,
+                "seconds": 3.515,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
             },
             {
                 "pipeline": "C",
-                "backend": "Frame",
+                "backend": "DataFrame",
                 "rows_in": 1000000,
                 "rows_out": 50,
-                "seconds": 1.0233,
+                "seconds": 1.0912,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null
@@ -929,7 +929,7 @@
                 "backend": "PolarsTable",
                 "rows_in": 1000000,
                 "rows_out": 50,
-                "seconds": 0.8756,
+                "seconds": 0.8919,
                 "fallbacks": 1,
                 "matches_frame": true,
                 "error": null
@@ -939,7 +939,7 @@
                 "backend": "SqlTable(SQLite)",
                 "rows_in": 1000000,
                 "rows_out": 50,
-                "seconds": 2.1698,
+                "seconds": 1.9667,
                 "fallbacks": null,
                 "matches_frame": true,
                 "error": null

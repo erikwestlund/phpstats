@@ -12,7 +12,7 @@
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$frame = Frame::fromQuery(StudentScore::query());
+        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$frame = DataFrame::fromQuery(StudentScore::query());
 $data = StanData::fromFormula('{{ \App\Data\SchoolPosterior::FORMULA }}', $frame);
 // N, K, X (with the intercept column), y, J, and school_id
 

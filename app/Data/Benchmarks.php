@@ -52,7 +52,7 @@ final class Benchmarks
     }
 
     public const BACKENDS = [
-        'Frame' => 'phibble Frame (in memory)',
+        'DataFrame' => 'phibble DataFrame (in memory)',
         'PolarsTable' => 'phpolars PolarsTable',
         'SqlTable(SQLite)' => 'SQLite table',
     ];

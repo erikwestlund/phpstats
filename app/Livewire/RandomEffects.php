@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Models\StudentScore;
 use Livewire\Component;
-use Phibble\Frame;
+use Phibble\DataFrame;
 
 use function Phiz\random_effects_plot;
 use function Phplyr\lmer;
@@ -50,7 +50,7 @@ class RandomEffects extends Component
         }
 
         $level = in_array($this->level, self::LEVELS, true) ? $this->level : 95;
-        $result = Frame::fromQuery(StudentScore::query()) |> lmer($this->formula());
+        $result = DataFrame::fromQuery(StudentScore::query()) |> lmer($this->formula());
         $term = $result['random'][0];
         $sigma2 = $result['residual_variance'];
 

@@ -16,7 +16,7 @@
         </fieldset>
     </div>
 
-    <pre class="mt-6 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$data = Frame::fromCsv('{{ $spec['file'] }}');
+    <pre class="mt-6 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$data = DataFrame::fromCsv('{{ $spec['file'] }}');
 $fit = $data |> glm('{{ $formula }}', family: '{{ $spec['family'] }}', link: '{{ $spec['link'] }}');</code></pre>
 
     @if (! $extensionLoaded)

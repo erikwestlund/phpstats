@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Models\StudentScore;
 use Livewire\Component;
-use Phibble\Frame;
+use Phibble\DataFrame;
 use Phiz\Plot;
 
 use function Phplyr\lm;
@@ -40,7 +40,7 @@ class SchoolScores extends Component
             return null;
         }
 
-        $scores = Frame::fromQuery(StudentScore::query()->select([...$predictors, 'score']));
+        $scores = DataFrame::fromQuery(StudentScore::query()->select([...$predictors, 'score']));
 
         $result = $scores |> lm('score ~ '.implode(' + ', $predictors));
 

@@ -12,7 +12,7 @@
 
     <section class="mt-10">
         <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">A pipeline</h2>
-        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = Frame::fromQuery(Sale::query())
+        <pre class="mt-3 overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>$fit = DataFrame::fromQuery(Sale::query())
     |> filter(fn ($r) => $r->price > 0)
     |> mutate(log_price: fn ($r) => log($r->price))
     |> lm('log_price ~ area + neighborhood');</code></pre>
