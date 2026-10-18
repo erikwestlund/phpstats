@@ -13,7 +13,7 @@
                 @foreach ($layer['packages'] as $key => $description)
                     @php $package = \App\Content\Package::find($key); @endphp
                     <tr>
-                        <td class="px-4 py-3 align-top"><div class="flex flex-wrap gap-1.5"><x-package-chip :package="$package" />@foreach ($package->companions() as $companion)<x-package-chip :package="$companion" />@endforeach</div></td>
+                        <td class="px-4 py-3 align-top"><x-package-chip :package="$package" /></td>
                         <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">{{ $description }}</td>
                         <td class="hidden px-4 py-3 align-top font-mono text-xs text-zinc-500 sm:table-cell dark:text-zinc-400">{{ $package->project['from_r'] ?? '' }}</td>
                     </tr>

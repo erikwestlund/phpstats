@@ -11,9 +11,6 @@
                     @foreach (array_keys($layer['packages']) as $key)
                         <li>
                             <a href="{{ \App\Content\Package::find($key)->url() }}" class="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">{{ \App\Content\Package::find($key)->name() }}</a>
-                            @foreach (\App\Content\Package::find($key)->companions() as $companion)
-                                <a href="{{ $companion->url() }}" class="mt-1.5 block border-l border-zinc-200 pl-3 text-xs text-zinc-500 hover:text-zinc-900 dark:border-white/10 dark:hover:text-white">{{ $companion->name() }}</a>
-                            @endforeach
                         </li>
                     @endforeach
                 </ul>

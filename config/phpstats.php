@@ -50,8 +50,9 @@ return [
     ],
 
     /*
-     * Packages listed inside another package's entry instead of on their own,
-     * as [companion => parent]. A companion's host takes the parent's layer.
+     * Packages that are part of another package on this site, as
+     * [companion => parent]. A companion has no pages or menu entry of its
+     * own: its host redirects to the parent, whose overview mentions it.
      */
     'companions' => [
         'phit-polyfill' => 'phit',
@@ -78,7 +79,6 @@ return [
         ['phpolars', 'phibble', 'phpolars\' PolarsTable implements phibble\'s table contract.'],
         ['phibble', 'phit', 'phibble\'s toMatrix() and toVector() hand columns to phit functions such as Phit\\fit_ols().'],
         ['phiz', 'phibble', 'phiz plots take phibble frames as data.'],
-        ['phit-polyfill', 'phit', 'phit-polyfill defines the phit functions in plain PHP when the extension is not loaded.'],
         ['cmdstanphp', 'phit', 'cmdstanphp uses phit\'s draw kernels for PSIS-LOO moment matching when the extension is loaded.'],
     ],
 

@@ -156,11 +156,6 @@ $chart = Plot::of($rentals)
                                         <x-status :project="$package->project" />
                                     </span>
                                     <span class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{{ $description }}</span>
-                                    @foreach ($package->companions() as $companion)
-                                        <a href="{{ $companion->url() }}" class="relative z-10 mt-3 block rounded-lg bg-(--l50) px-3 py-2 text-xs text-zinc-600 ring-1 ring-(--l100) hover:ring-(--l300) dark:bg-(--l400)/10 dark:text-zinc-400 dark:ring-(--l400)/20">
-                                            <span class="font-semibold text-zinc-900 dark:text-white">{{ $companion->name() }}</span>. {{ $companion->project['summary'] }}
-                                        </a>
-                                    @endforeach
                                     <span class="mt-auto flex items-center gap-1 pt-3 text-xs font-medium text-(--l600) dark:text-(--l300)">
                                         {{ preg_replace('#^https?://#', '', $package->url()) }}
                                         <x-heroicon-m-arrow-right class="size-3.5 transition group-hover:translate-x-0.5" />

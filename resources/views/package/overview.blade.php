@@ -51,6 +51,11 @@
                             @endforeach
                         </ul>
                     @endif
+                    @foreach ($package->companions() as $companion)
+                        <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
+                            Can't install extensions? <a href="{{ $companion->repository() }}" class="font-medium text-(--l700) underline decoration-(--l300) underline-offset-2 dark:text-(--l300)">{{ $companion->name() }}</a> defines the same functions in plain PHP.
+                        </p>
+                    @endforeach
                 @else
                     @php
                         $links = array_filter([

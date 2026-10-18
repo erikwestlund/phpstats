@@ -7,8 +7,7 @@
 
 @php
     $layers = array_intersect_key(config('phpstats.layers'), array_flip($menu['layers']));
-    $currentKey = $current ? (config("phpstats.companions.{$current->key}") ?? $current->key) : null;
-    $holdsCurrent = $currentKey && collect($layers)->contains(fn ($layer) => isset($layer['packages'][$currentKey]));
+    $holdsCurrent = $current && collect($layers)->contains(fn ($layer) => isset($layer['packages'][$current->key]));
 @endphp
 
 <div x-data="{ open: false }" x-on:keydown.escape.window="open = false" x-on:click.outside="open = false" class="relative">
@@ -38,13 +37,6 @@
                                 <span class="text-sm font-semibold text-zinc-900 dark:text-white">{{ $item->name() }}</span>
                                 <span class="mt-0.5 block text-xs leading-5 text-zinc-500 dark:text-zinc-400">{{ $layer['packages'][$key] }}</span>
                             </a>
-                            @foreach ($item->companions() as $companion)
-                                <a href="{{ $companion->url() }}" @if ($current?->key === $companion->key) aria-current="page" @endif
-                                   class="-mt-1 ml-2.5 block rounded-lg border-l-2 border-(--l200) px-2.5 py-1.5 transition hover:bg-(--l50) aria-[current]:bg-(--l50) dark:border-(--l400)/30 dark:hover:bg-(--l400)/10 dark:aria-[current]:bg-(--l400)/10">
-                                    <span class="text-xs font-semibold text-zinc-800 dark:text-zinc-100">{{ $companion->name() }}</span>
-                                    <span class="mt-0.5 block text-xs leading-5 text-zinc-500 dark:text-zinc-400">{{ $companion->project['summary'] }}</span>
-                                </a>
-                            @endforeach
                         </li>
                     @endforeach
                 </ul>

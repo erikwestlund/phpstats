@@ -5,12 +5,21 @@ use App\Content\Package;
 use App\Http\Controllers\PackageController;
 use Illuminate\Support\Facades\Route;
 
-$packages = implode('|', array_map(fn (string $key) => preg_quote($key, '#'), array_keys(config('projects'))));
+$packages = implode('|', array_map(fn (string $key) => preg_quote($key, '#'), Package::keys()));
+$companions = config('phpstats.companions');
 
 // One host per package: {package}.phpstats.org, or phpstats-{package}.pequod.sh on
 // staging. In path mode, for previews behind a single tunnel URL, each package
 // is served under /{package} on whatever host the request came in on.
 $paths = config('phpstats.paths');
+
+// Companions, such as phit-polyfill, are part of their parent's pages.
+Route::domain($paths ? null : config('phpstats.package_host'))
+    ->prefix($paths ? '{package}' : '')
+    ->whereIn('package', array_keys($companions))
+    ->group(function () use ($companions) {
+        Route::get('/{any?}', fn (string $package) => redirect()->away(Package::find($companions[$package])->url(), 301))->where('any', '.*');
+    });
 
 Route::domain($paths ? null : config('phpstats.package_host'))
     ->prefix($paths ? '{package}' : '')
@@ -30,10 +39,10 @@ Route::domain($paths ? null : config('phpstats.root_host'))->group(function () u
     Route::view('/', 'home')->name('home');
 
     // Paths from the single-host site.
-    $renamed = ['php-stats' => 'phit', 'php-stats-polyfill' => 'phit-polyfill', 'school-effects' => 'school-shrinkage'];
+    $renamed = ['php-stats' => 'phit', 'php-stats-polyfill' => 'phit', 'school-effects' => 'school-shrinkage'];
     Route::get('/{project}', fn (string $project) => redirect()->away(
         Package::find($renamed[$project] ?? $project)->url(), 301,
-    ))->whereIn('project', $paths ? ['php-stats', 'php-stats-polyfill'] : [...array_keys(config('projects')), 'php-stats', 'php-stats-polyfill']);
+    ))->whereIn('project', $paths ? ['php-stats', 'php-stats-polyfill'] : [...Package::keys(), 'php-stats', 'php-stats-polyfill']);
     Route::get('/vignettes/{slug}', function (string $slug) use ($renamed) {
         $slug = $renamed[$slug] ?? $slug;
         $owner = config("phpstats.vignettes.{$slug}.packages.0") ?? abort(404);

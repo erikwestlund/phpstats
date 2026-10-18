@@ -33,10 +33,23 @@ class Package
         return self::$cache[$key] ??= new self($key, $project);
     }
 
-    /** @return array<string, self> */
+    /**
+     * Every package with its own pages: all of config/projects.php except
+     * the companions in config/phpstats.php.
+     *
+     * @return array<string, self>
+     */
     public static function all(): array
     {
-        return array_map(fn (string $key) => self::find($key), array_combine(array_keys(config('projects')), array_keys(config('projects'))));
+        $keys = self::keys();
+
+        return array_map(fn (string $key) => self::find($key), array_combine($keys, $keys));
+    }
+
+    /** @return list<string> */
+    public static function keys(): array
+    {
+        return array_values(array_diff(array_keys(config('projects')), array_keys(config('phpstats.companions'))));
     }
 
     public static function flush(): void
@@ -117,16 +130,12 @@ class Package
             }
         }
 
-        $parent = config("phpstats.companions.{$this->key}");
-        if ($parent !== null && ($parent = self::find($parent))) {
-            return [...$parent->layer(), 'description' => $this->project['summary']];
-        }
-
         return ['key' => 'other', 'title' => 'Other', 'role' => '', 'color' => 'purple', 'description' => $this->project['summary']];
     }
 
     /**
-     * Packages listed inside this one's entry, such as phit-polyfill in phit's.
+     * Packages that are part of this one on the site, such as phit-polyfill
+     * in phit.
      *
      * @return list<self>
      */

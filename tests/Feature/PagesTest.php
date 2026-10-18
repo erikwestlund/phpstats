@@ -38,7 +38,7 @@ class PagesTest extends TestCase
     {
         $response = $this->get('http://phpstats.test/')->assertOk()->assertSee('Modern statistical computing for PHP.');
 
-        foreach (array_keys(config('projects')) as $key) {
+        foreach (Package::keys() as $key) {
             $response->assertSee("http://{$key}.phpstats.test", false);
         }
     }
@@ -79,7 +79,7 @@ class PagesTest extends TestCase
         $response = $this->get('http://phplyr.phpstats.test/')->assertOk();
 
         // The two menus link every package, and the mark links the landing page.
-        foreach (array_keys(config('projects')) as $key) {
+        foreach (Package::keys() as $key) {
             $response->assertSee("http://{$key}.phpstats.test", false);
         }
         $response->assertSee('Data Frames &amp; Visualization', false)
@@ -103,7 +103,7 @@ class PagesTest extends TestCase
 
     public function test_each_package_has_an_overview_on_its_own_host(): void
     {
-        foreach (array_keys(config('projects')) as $key) {
+        foreach (Package::keys() as $key) {
             $package = Package::find($key);
             $this->get("http://{$key}.phpstats.test/")->assertOk()->assertSee($package->tagline());
             foreach (['vignettes', 'benchmarks', 'verification'] as $section) {
@@ -118,6 +118,15 @@ class PagesTest extends TestCase
         $this->get('http://phit.phpstats.test/vignettes/not-a-vignette')->assertNotFound();
         $this->get('http://phit.phpstats.test/docs/not-a-page')->assertNotFound();
         $this->get('http://phpstats.test/not-a-project')->assertNotFound();
+    }
+
+    public function test_companions_are_part_of_their_parent(): void
+    {
+        $this->assertArrayNotHasKey('phit-polyfill', Package::all());
+        $this->get('http://phit-polyfill.phpstats.test/docs')->assertRedirect('http://phit.phpstats.test');
+        $this->get('http://phpstats.test/php-stats-polyfill')->assertRedirect('http://phit.phpstats.test');
+        $this->get('http://phit.phpstats.test/')->assertSee('defines the same functions in plain PHP');
+        $this->get('http://phpstats.test/')->assertDontSee('phit-polyfill.phpstats.test');
     }
 
     public function test_old_paths_redirect_to_package_hosts(): void
