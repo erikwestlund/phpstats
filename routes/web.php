@@ -1,5 +1,6 @@
 <?php
 
+use App\Content\Markdown;
 use App\Content\Package;
 use App\Http\Controllers\PackageController;
 use Illuminate\Support\Facades\Route;
@@ -35,4 +36,12 @@ Route::domain(config('phpstats.root_host'))->group(function () {
         return redirect()->away(Package::find($owner)->url('vignette', ['slug' => $slug]), 301);
     });
     Route::get('/benchmarks', fn () => redirect()->away(Package::find('phit')->url('benchmarks'), 301));
+
+    // Markdown pages in resources/pages, such as /about from about.md.
+    Route::get('/{page}', function (string $page) {
+        $file = resource_path("pages/{$page}.md");
+        abort_unless(is_file($file), 404);
+
+        return view('page', Markdown::page($file));
+    })->where('page', '[a-z0-9-]+')->name('page');
 });

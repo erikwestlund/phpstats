@@ -1,25 +1,30 @@
-<x-layout title="Vignettes">
-    <h1 class="text-3xl font-semibold tracking-tight">Vignettes</h1>
+<x-layout title="Vignettes" :wide="true">
+    <x-page-header :eyebrow="$package->name()" title="Vignettes">
+        Each vignette runs on this server when the page loads and again when an input changes.
+    </x-page-header>
 
     @php $vignettes = $package->vignettes(); @endphp
     @if ($vignettes === [])
-        <p class="mt-4 text-zinc-600 dark:text-zinc-400">{{ $package->name() }} has no vignettes yet.</p>
+        <p class="mt-8 text-zinc-600 dark:text-zinc-400">{{ $package->name() }} has no vignettes yet.</p>
     @else
-        <p class="mt-4 max-w-3xl text-zinc-700 dark:text-zinc-300">
-            Each vignette runs on this server when the page loads or an input changes.
-        </p>
-        <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+        <ul class="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             @foreach ($vignettes as $vignette)
                 @php $owner = \App\Content\Package::find($vignette['owner']); @endphp
-                <li>
-                    <a href="{{ $owner->url('vignette', ['slug' => $vignette['slug']]) }}"
-                       class="block h-full rounded-lg border border-zinc-200 p-5 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600">
-                        <span class="font-semibold">{{ $vignette['title'] }}</span>
-                        <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{{ $vignette['summary'] }}</p>
-                        <p class="mt-3 text-xs text-zinc-500">
-                            Uses {{ implode(', ', $vignette['uses']) }}@if ($owner->key !== $package->key) · on the {{ $owner->name() }} site @endif
-                        </p>
-                    </a>
+                <li class="group relative flex flex-col rounded-2xl bg-white p-6 ring-1 ring-zinc-200 transition hover:-translate-y-0.5 hover:shadow-lg hover:shadow-(--l500)/10 hover:ring-(--l300) dark:bg-white/[0.03] dark:ring-white/10 dark:hover:ring-(--l400)/40">
+                    <span class="flex items-center gap-2 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                        <span class="relative flex size-2"><span class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60"></span><span class="relative inline-flex size-2 rounded-full bg-emerald-500"></span></span>
+                        Live
+                        @if ($owner->key !== $package->key)
+                            <span class="text-zinc-500">· on the {{ $owner->name() }} site</span>
+                        @endif
+                    </span>
+                    <a href="{{ $owner->url('vignette', ['slug' => $vignette['slug']]) }}" class="mt-3 text-lg font-semibold tracking-tight text-zinc-950 after:absolute after:inset-0 group-hover:text-(--l700) dark:text-white dark:group-hover:text-(--l300)">{{ $vignette['title'] }}</a>
+                    <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{{ $vignette['summary'] }}</p>
+                    <div class="relative z-10 mt-auto flex flex-wrap gap-1.5 pt-5">
+                        @foreach ($vignette['uses'] as $use)
+                            <x-package-chip :package="$use === 'php_polars' ? 'phpolars' : $use" />
+                        @endforeach
+                    </div>
                 </li>
             @endforeach
         </ul>

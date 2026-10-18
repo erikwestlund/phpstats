@@ -4,10 +4,12 @@
 // Status kinds: working, exists, in-progress, experimental.
 // docs is null until the project publishes a reference site.
 // links (optional) adds more documentation links, as label => URL.
+// from_r names the R packages it corresponds to, or null.
 
 return [
     'phit' => [
         'name' => 'phit',
+        'from_r' => 'stats and lme4',
         'summary' => 'A native PHP extension, written in Rust, for regression, mixed models, distributions, and descriptive statistics.',
         'status' => 'working',
         'status_label' => 'Working',
@@ -22,6 +24,7 @@ return [
     ],
     'phit-polyfill' => [
         'name' => 'phit-polyfill',
+        'from_r' => null,
         'summary' => 'A pure-PHP fallback for the phit functions, for hosts that cannot install the extension.',
         'status' => 'in-progress',
         'status_label' => 'In progress',
@@ -35,6 +38,7 @@ return [
     ],
     'phibble' => [
         'name' => 'phibble',
+        'from_r' => 'tibble and readr',
         'summary' => 'A typed, immutable data frame that loads from CSV files, PDO, and Eloquent or Doctrine queries.',
         'status' => 'working',
         'status_label' => 'Released, v0.2.0',
@@ -53,6 +57,7 @@ return [
     ],
     'phplyr' => [
         'name' => 'phplyr',
+        'from_r' => 'dplyr and tidyr',
         'summary' => 'dplyr-style verbs as pipe functions, with lm() and glm() formulas that call phit.',
         'status' => 'working',
         'status_label' => 'Released, v0.2.0',
@@ -73,6 +78,7 @@ return [
     ],
     'phiz' => [
         'name' => 'phiz',
+        'from_r' => 'ggplot2',
         'summary' => 'A ggplot-style grammar of graphics for PHP that produces Vega-Lite charts.',
         'status' => 'working',
         'status_label' => 'Released, v0.3.0',
@@ -89,6 +95,7 @@ return [
     ],
     'phpolars' => [
         'name' => 'phpolars',
+        'from_r' => 'polars',
         'summary' => 'Polars data frames for PHP as a native Rust extension, with a phibble table backend for phplyr.',
         'status' => 'working',
         'status_label' => 'Working, PIE-packaged',
@@ -105,6 +112,7 @@ return [
     ],
     'cmdstanphp' => [
         'name' => 'cmdstanphp',
+        'from_r' => 'cmdstanr',
         'summary' => 'Bayesian models in Stan, run from PHP through CmdStan, with an API patterned after CmdStanR.',
         'status' => 'working',
         'status_label' => 'Working',

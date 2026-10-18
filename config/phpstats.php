@@ -22,6 +22,45 @@ return [
         'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'b57bff8076647093f4b2a4a3f2fe3ef02cb5f96a'],
     ],
 
+    /*
+     * How the packages fit together, from data to graphics. The landing page
+     * draws these layers, and each package host shows its layer and color.
+     * Colors are Tailwind color names.
+     */
+    'layers' => [
+        'data' => ['title' => 'Data', 'role' => 'Tables from CSV files, the database, or Polars', 'color' => 'indigo', 'packages' => [
+            'phibble' => 'The shared data frame: typed, immutable, and loaded from CSV, PDO, Eloquent, or Doctrine',
+            'phpolars' => 'Polars data frames in a Rust extension, and a fast backend for phibble',
+        ]],
+        'verbs' => ['title' => 'Verbs', 'role' => 'Filter, mutate, group, summarise, join, and reshape', 'color' => 'violet', 'packages' => [
+            'phplyr' => 'dplyr and tidyr verbs that run in memory, as SQL, or in Polars',
+        ]],
+        'models' => ['title' => 'Models', 'role' => 'Estimation, verified against R', 'color' => 'purple', 'packages' => [
+            'phit' => 'Regression, mixed models, distributions, and descriptive statistics in a Rust extension',
+            'phit-polyfill' => 'The phit functions in plain PHP, for hosts that cannot install extensions',
+            'cmdstanphp' => 'Bayesian models in Stan through CmdStan',
+        ]],
+        'graphics' => ['title' => 'Graphics', 'role' => 'A grammar of graphics', 'color' => 'fuchsia', 'packages' => [
+            'phiz' => 'ggplot2-style charts that render as Vega-Lite, with a Blade component for Livewire',
+        ]],
+    ],
+
+    /*
+     * Where one package builds on another, as [from, to, sentence]. Both
+     * package hosts list the link: "Uses" on the first and "Used by" on the
+     * second.
+     */
+    'relations' => [
+        ['phplyr', 'phibble', 'phplyr verbs take phibble frames and return new ones.'],
+        ['phplyr', 'phit', 'phplyr\'s lm() and glm() fit their formulas with phit, and its summary helpers use phit when it is loaded.'],
+        ['phplyr', 'phpolars', 'phplyr verbs run in Polars when the frame is a phpolars PolarsTable.'],
+        ['phpolars', 'phibble', 'phpolars\' PolarsTable implements phibble\'s table contract.'],
+        ['phibble', 'phit', 'phibble\'s toMatrix() and toVector() hand columns to phit functions such as Phit\\fit_ols().'],
+        ['phiz', 'phibble', 'phiz plots take phibble frames as data.'],
+        ['phit-polyfill', 'phit', 'phit-polyfill defines the phit functions in plain PHP when the extension is not loaded.'],
+        ['cmdstanphp', 'phit', 'cmdstanphp uses phit\'s draw kernels for PSIS-LOO moment matching when the extension is loaded.'],
+    ],
+
     'content_path' => resource_path('content'),
 
     /*

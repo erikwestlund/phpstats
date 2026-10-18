@@ -1,35 +1,35 @@
-@props(['title' => null, 'wide' => false])
+{{--
+    The page frame. Package hosts get the package bar; the landing host gets
+    the site bar. bare drops the content container, for full-width pages.
+--}}
+@props(['title' => null, 'wide' => false, 'bare' => false])
 
 @php $current = $currentPackage ?? null; @endphp
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ collect([$title, $current?->name(), 'PHPstats'])->filter()->unique()->implode(' · ') }}</title>
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|jetbrains-mono:400,500&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @stack('head')
 </head>
-<body class="min-h-screen bg-white text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
-    <header class="border-b border-zinc-200 dark:border-zinc-800">
-        <nav class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-4 text-sm">
-            <a href="{{ route('home') }}" class="font-semibold">PHPstats</a>
-            @foreach (\App\Content\Package::all() as $item)
-                <a href="{{ $item->url() }}"
-                   @class(['text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100', 'font-medium text-zinc-900! dark:text-zinc-100!' => $current?->key === $item->key])>
-                    {{ $item->name() }}
-                </a>
-            @endforeach
-        </nav>
-        @if ($current)
-            <x-package-tabs :package="$current" />
-        @endif
-    </header>
+<body @class(['flex min-h-screen flex-col bg-white text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100', 'layer-'.$current?->layer()['color'] => $current])>
+    @if ($current)
+        <x-package-header :package="$current" />
+    @else
+        <x-site-header />
+    @endif
 
-    <main @class(['mx-auto px-4 py-10', 'max-w-6xl' => $wide, 'max-w-5xl' => ! $wide])>
+    <main @class(['flex-1', 'mx-auto w-full px-4 py-10 sm:px-6 lg:px-8' => ! $bare, 'max-w-[88rem]' => $wide && ! $bare, 'max-w-5xl' => ! $wide && ! $bare])>
         {{ $slot }}
     </main>
+
+    <x-site-footer />
 
     @livewireScriptConfig
 </body>

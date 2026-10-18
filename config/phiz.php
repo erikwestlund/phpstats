@@ -21,6 +21,11 @@ return [
     'embed_options' => [
         'actions' => false,
         'theme' => 'auto',
-        'config' => ['background' => 'transparent'],
+        // The site's palette: PHP purple first, then violet, pink, indigo, and contrasting accents.
+        'config' => [
+            'background' => 'transparent',
+            'font' => 'Inter, ui-sans-serif, system-ui, sans-serif',
+            'range' => ['category' => ['#777bb4', '#a855f7', '#ec4899', '#6366f1', '#f59e0b', '#14b8a6', '#0ea5e9', '#84cc16']],
+        ],
     ],
 ];

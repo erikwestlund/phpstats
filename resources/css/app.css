@@ -3,37 +3,146 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+/*
+ * Each layer's color, from config/phpstats.php, as --l50 to --l950. Markup
+ * sets class="layer-violet" and uses bg-(--l100), text-(--l700), and so on.
+ */
+.layer-indigo { --l50: var(--color-indigo-50); --l100: var(--color-indigo-100); --l200: var(--color-indigo-200); --l300: var(--color-indigo-300); --l400: var(--color-indigo-400); --l500: var(--color-indigo-500); --l600: var(--color-indigo-600); --l700: var(--color-indigo-700); --l800: var(--color-indigo-800); --l900: var(--color-indigo-900); --l950: var(--color-indigo-950); }
+.layer-violet { --l50: var(--color-violet-50); --l100: var(--color-violet-100); --l200: var(--color-violet-200); --l300: var(--color-violet-300); --l400: var(--color-violet-400); --l500: var(--color-violet-500); --l600: var(--color-violet-600); --l700: var(--color-violet-700); --l800: var(--color-violet-800); --l900: var(--color-violet-900); --l950: var(--color-violet-950); }
+.layer-purple { --l50: var(--color-purple-50); --l100: var(--color-purple-100); --l200: var(--color-purple-200); --l300: var(--color-purple-300); --l400: var(--color-purple-400); --l500: var(--color-purple-500); --l600: var(--color-purple-600); --l700: var(--color-purple-700); --l800: var(--color-purple-800); --l900: var(--color-purple-900); --l950: var(--color-purple-950); }
+.layer-fuchsia { --l50: var(--color-fuchsia-50); --l100: var(--color-fuchsia-100); --l200: var(--color-fuchsia-200); --l300: var(--color-fuchsia-300); --l400: var(--color-fuchsia-400); --l500: var(--color-fuchsia-500); --l600: var(--color-fuchsia-600); --l700: var(--color-fuchsia-700); --l800: var(--color-fuchsia-800); --l900: var(--color-fuchsia-900); --l950: var(--color-fuchsia-950); }
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* PHP's elephant purple (#777bb4), from light to dark. */
+    --color-php-50: #f5f5fb;
+    --color-php-100: #ebebf6;
+    --color-php-200: #d7d8ee;
+    --color-php-300: #b8bae0;
+    --color-php-400: #9397cb;
+    --color-php-500: #777bb4;
+    --color-php-600: #5f63a0;
+    --color-php-700: #4f5385;
+    --color-php-800: #42456c;
+    --color-php-900: #383a59;
+    --color-php-950: #232438;
+
+    /* The site's grays lean toward the purple, so zinc is redefined here. */
+    --color-zinc-50: #f8f8fb;
+    --color-zinc-100: #f0f0f5;
+    --color-zinc-200: #e3e3ec;
+    --color-zinc-300: #cbcbd9;
+    --color-zinc-400: #9c9cb2;
+    --color-zinc-500: #717189;
+    --color-zinc-600: #56566d;
+    --color-zinc-700: #434357;
+    --color-zinc-800: #2c2c3d;
+    --color-zinc-900: #1d1d2b;
+    --color-zinc-950: #12121c;
+
+    /* Code blocks are dark in both color schemes. */
+    --color-ink: #17152b;
+    --color-ink-line: #2a2745;
 }
 
 [x-cloak] {
     display: none !important;
 }
 
+html {
+    scroll-padding-top: 6rem;
+}
+
+/* PHP's -> and => read better without the mono font's ligatures. */
+code,
+pre,
+.font-mono {
+    font-variant-ligatures: none;
+    font-feature-settings: 'liga' 0, 'calt' 0;
+}
+
 @plugin '@tailwindcss/typography';
+
+@utility prose-php {
+    --tw-prose-links: var(--color-php-600);
+    --tw-prose-invert-links: var(--color-php-300);
+    --tw-prose-code: var(--color-php-700);
+    --tw-prose-invert-code: var(--color-php-200);
+    --tw-prose-bullets: var(--color-php-400);
+    --tw-prose-counters: var(--color-php-500);
+    --tw-prose-quote-borders: var(--color-php-300);
+}
+
+/* Inline code gets a tinted chip; typography's backticks are dropped. */
+.prose :where(:not(pre) > code) {
+    background: var(--color-php-50);
+    border: 1px solid var(--color-php-100);
+    border-radius: 0.3rem;
+    padding: 0.1em 0.35em;
+    font-weight: 500;
+    font-size: 0.85em;
+}
+.prose code::before,
+.prose code::after {
+    content: none;
+}
+.prose a {
+    text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+    text-underline-offset: 3px;
+}
+.prose a:hover {
+    text-decoration-color: currentColor;
+}
+@media (prefers-color-scheme: dark) {
+    .prose :where(:not(pre) > code) {
+        background: color-mix(in oklab, var(--color-php-900) 60%, transparent);
+        border-color: var(--color-php-900);
+    }
+}
+
+/* Highlighted code (tempest/highlight and pandoc), on the dark ink background. */
+.code-ink {
+    background: var(--color-ink);
+    color: #e4e2f4;
+}
+.code-ink .hl-keyword,
+.docs-content code span.kw, .docs-content code span.cf, .docs-content code span.im, .docs-content code span.pp { color: #c792ea; }
+.code-ink .hl-property,
+.docs-content code span.fu { color: #82aaff; }
+.code-ink .hl-variable,
+.docs-content code span.va, .docs-content code span.at { color: #f2a7cf; }
+.code-ink .hl-value,
+.docs-content code span.st, .docs-content code span.ch, .docs-content code span.ss, .docs-content code span.vs, .docs-content code span.sc { color: #b5e48c; }
+.code-ink .hl-number, .code-ink .hl-literal,
+.docs-content code span.dv, .docs-content code span.fl, .docs-content code span.bn, .docs-content code span.cn { color: #f9b872; }
+.code-ink .hl-type, .code-ink .hl-generic,
+.docs-content code span.dt, .docs-content code span.bu { color: #ffd580; }
+.code-ink .hl-operator,
+.docs-content code span.op, .docs-content code span.ot { color: #89ddff; }
+.code-ink .hl-comment,
+.docs-content code span.co, .docs-content code span.do, .docs-content code span.an, .docs-content code span.cv, .docs-content code span.in { color: #8582a8; font-style: italic; }
+.docs-content code span.er, .docs-content code span.al { color: #ff8a8a; font-weight: 600; }
 
 /* Docs synced from the packages' rendered Quarto pages. */
 .docs-content pre,
 .docs-content div.sourceCode {
-    background: var(--color-zinc-100);
-    color: var(--color-zinc-900);
-    border-radius: 0.5rem;
+    background: var(--color-ink);
+    color: #e4e2f4;
+    border-radius: 0.75rem;
 }
 .docs-content div.sourceCode {
-    margin: 1.25em 0;
+    margin: 1.5em 0;
+    box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 8px 24px -12px rgb(35 36 56 / 0.35);
 }
 .docs-content div.sourceCode pre {
     margin: 0;
     background: transparent;
+    overflow-x: auto;
 }
 .docs-content pre code {
     color: inherit;
-}
-.docs-content code::before,
-.docs-content code::after {
-    content: none;
 }
 .docs-content pre code > span > a:first-child {
     /* pandoc line anchors */
@@ -41,8 +150,10 @@
 }
 .docs-content .cell-output pre,
 .docs-content .cell-output-stdout pre {
-    background: transparent;
+    background: var(--color-zinc-50);
+    color: var(--color-zinc-800);
     border: 1px solid var(--color-zinc-200);
+    box-shadow: none;
 }
 .docs-content table {
     display: block;
@@ -55,23 +166,27 @@
 }
 .docs-content .callout {
     margin: 1.5em 0;
-    border-left: 4px solid var(--color-sky-400);
-    background: var(--color-sky-50);
-    border-radius: 0.375rem;
+    border: 1px solid var(--color-php-200);
+    border-left: 4px solid var(--color-php-500);
+    background: var(--color-php-50);
+    border-radius: 0.5rem;
     padding: 0.75rem 1rem;
 }
 .docs-content .callout-warning,
 .docs-content .callout-caution {
+    border-color: var(--color-amber-200);
     border-left-color: var(--color-amber-400);
     background: var(--color-amber-50);
 }
 .docs-content .callout-important {
-    border-left-color: var(--color-red-400);
-    background: var(--color-red-50);
+    border-color: var(--color-rose-200);
+    border-left-color: var(--color-rose-400);
+    background: var(--color-rose-50);
 }
 .docs-content .callout-tip {
-    border-left-color: var(--color-emerald-400);
-    background: var(--color-emerald-50);
+    border-color: var(--color-fuchsia-200);
+    border-left-color: var(--color-fuchsia-400);
+    background: var(--color-fuchsia-50);
 }
 .docs-content .callout-header {
     font-weight: 600;
@@ -88,7 +203,7 @@
     gap: 0.25rem;
     list-style: none;
     padding: 0;
-    margin: 1em 0 0;
+    margin: 1.5em 0 0;
 }
 .docs-content .panel-tabset .nav-tabs li {
     padding: 0;
@@ -99,16 +214,16 @@
 }
 .docs-content .panel-tabset .nav-link {
     display: block;
-    padding: 0.375rem 0.75rem;
-    border-radius: 0.375rem 0.375rem 0 0;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem 0.5rem 0 0;
     text-decoration: none;
     color: var(--color-zinc-600);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
 }
 .docs-content .panel-tabset .nav-link.active {
-    background: var(--color-zinc-100);
-    color: var(--color-zinc-900);
-    font-weight: 500;
+    background: var(--color-ink);
+    color: #e4e2f4;
 }
 .docs-content .panel-tabset .tab-pane {
     display: none;
@@ -129,51 +244,30 @@
     clip: rect(0 0 0 0);
 }
 
-/* pandoc highlighting, after GitHub's light and dark themes */
-.docs-content code span.kw, .docs-content code span.cf { color: #cf222e; }
-.docs-content code span.dt, .docs-content code span.bu { color: #953800; }
-.docs-content code span.dv, .docs-content code span.fl, .docs-content code span.bn, .docs-content code span.cn { color: #0550ae; }
-.docs-content code span.st, .docs-content code span.ch, .docs-content code span.ss, .docs-content code span.vs, .docs-content code span.sc { color: #0a3069; }
-.docs-content code span.co, .docs-content code span.do, .docs-content code span.an, .docs-content code span.cv, .docs-content code span.in { color: #6e7781; font-style: italic; }
-.docs-content code span.fu { color: #8250df; }
-.docs-content code span.va, .docs-content code span.at { color: #953800; }
-.docs-content code span.op, .docs-content code span.ot { color: #24292f; }
-.docs-content code span.im, .docs-content code span.pp { color: #cf222e; }
-.docs-content code span.er, .docs-content code span.al { color: #82071e; font-weight: 600; }
-
 @media (prefers-color-scheme: dark) {
-    .docs-content pre,
-    .docs-content div.sourceCode,
-    .docs-content .panel-tabset .nav-link.active {
-        background: var(--color-zinc-900);
-        color: var(--color-zinc-100);
+    .docs-content div.sourceCode {
+        box-shadow: 0 0 0 1px var(--color-ink-line);
     }
     .docs-content .cell-output pre,
     .docs-content .cell-output-stdout pre {
+        background: var(--color-zinc-900);
+        color: var(--color-zinc-200);
         border-color: var(--color-zinc-800);
     }
     .docs-content .panel-tabset .nav-link {
         color: var(--color-zinc-400);
     }
-    .docs-content .callout { background: color-mix(in oklab, var(--color-sky-950) 50%, transparent); }
-    .docs-content .callout-warning, .docs-content .callout-caution { background: color-mix(in oklab, var(--color-amber-950) 50%, transparent); }
-    .docs-content .callout-important { background: color-mix(in oklab, var(--color-red-950) 50%, transparent); }
-    .docs-content .callout-tip { background: color-mix(in oklab, var(--color-emerald-950) 50%, transparent); }
-    .docs-content code span.kw, .docs-content code span.cf, .docs-content code span.im, .docs-content code span.pp { color: #ff7b72; }
-    .docs-content code span.dt, .docs-content code span.bu, .docs-content code span.va, .docs-content code span.at { color: #ffa657; }
-    .docs-content code span.dv, .docs-content code span.fl, .docs-content code span.bn, .docs-content code span.cn { color: #79c0ff; }
-    .docs-content code span.st, .docs-content code span.ch, .docs-content code span.ss, .docs-content code span.vs, .docs-content code span.sc { color: #a5d6ff; }
-    .docs-content code span.co, .docs-content code span.do, .docs-content code span.an, .docs-content code span.cv, .docs-content code span.in { color: #8b949e; }
-    .docs-content code span.fu { color: #d2a8ff; }
-    .docs-content code span.op, .docs-content code span.ot { color: #e6edf3; }
-    .docs-content code span.er, .docs-content code span.al { color: #ffa198; }
+    .docs-content .callout { background: color-mix(in oklab, var(--color-php-950) 70%, transparent); border-color: var(--color-php-900); }
+    .docs-content .callout-warning, .docs-content .callout-caution { background: color-mix(in oklab, var(--color-amber-950) 50%, transparent); border-color: var(--color-amber-900); }
+    .docs-content .callout-important { background: color-mix(in oklab, var(--color-rose-950) 50%, transparent); border-color: var(--color-rose-900); }
+    .docs-content .callout-tip { background: color-mix(in oklab, var(--color-fuchsia-950) 50%, transparent); border-color: var(--color-fuchsia-900); }
 }
 
-/* Typography adds backticks around inline code; the code style is enough. */
-.prose code::before,
-.prose code::after {
-    content: none;
-}
-.docs-content div.sourceCode pre {
-    overflow-x: auto;
+/* The landing hero's faint grid. */
+.hero-grid {
+    background-image:
+        linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
 }

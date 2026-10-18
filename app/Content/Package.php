@@ -103,6 +103,43 @@ class Package
         return ['chain' => $example['chain'] ?: null, 'pipe' => $example['pipe'] ?? null, 'output' => $example['output'] ?? null];
     }
 
+    public function status(): string
+    {
+        return $this->project['status_label'];
+    }
+
+    /** @return array{key: string, title: string, role: string, color: string, description: string} */
+    public function layer(): array
+    {
+        foreach (config('phpstats.layers') as $key => $layer) {
+            if (isset($layer['packages'][$this->key])) {
+                return ['key' => $key, 'title' => $layer['title'], 'role' => $layer['role'], 'color' => $layer['color'], 'description' => $layer['packages'][$this->key]];
+            }
+        }
+
+        return ['key' => 'other', 'title' => 'Other', 'role' => '', 'color' => 'purple', 'description' => $this->project['summary']];
+    }
+
+    /**
+     * Packages this one uses or is used by, from config/phpstats.php.
+     *
+     * @return list<array{package: self, kind: 'uses'|'used_by', text: string}>
+     */
+    public function relations(): array
+    {
+        $relations = [];
+        foreach (config('phpstats.relations') as [$from, $to, $text]) {
+            if ($from === $this->key && ($package = self::find($to))) {
+                $relations[] = ['package' => $package, 'kind' => 'uses', 'text' => $text];
+            } elseif ($to === $this->key && ($package = self::find($from))) {
+                $relations[] = ['package' => $package, 'kind' => 'used_by', 'text' => $text];
+            }
+        }
+        usort($relations, fn (array $a, array $b) => ($a['kind'] === 'uses' ? 0 : 1) <=> ($b['kind'] === 'uses' ? 0 : 1));
+
+        return $relations;
+    }
+
     public function url(string $section = 'overview', array $parameters = []): string
     {
         return route("package.{$section}", ['package' => $this->key, ...$parameters]);
@@ -125,6 +162,36 @@ class Package
     public function docsNav(): array
     {
         return $this->docs['nav'] ?? [];
+    }
+
+    /**
+     * The docs nav in groups. An entry's own section key wins; otherwise
+     * pages in a folder, such as reference/series, are grouped by the folder
+     * and the rest form the Guide.
+     *
+     * @return array<string, list<array{title: string, path: string}>>
+     */
+    public function docsGroups(): array
+    {
+        $groups = [];
+        foreach ($this->docsNav() as $item) {
+            $group = $item['section'] ?? (str_contains($item['path'], '/') ? ucfirst(str_replace('-', ' ', strstr($item['path'], '/', true))) : 'Guide');
+            $groups[$group][] = $item;
+        }
+
+        return $groups;
+    }
+
+    /** The group a docs page is in, for the page eyebrow. */
+    public function docsGroupOf(string $path): ?string
+    {
+        foreach ($this->docsGroups() as $group => $items) {
+            if (in_array($path, array_column($items, 'path'), true)) {
+                return $group;
+            }
+        }
+
+        return str_contains($path, '/') ? ucfirst(str_replace('-', ' ', strstr($path, '/', true))) : null;
     }
 
     /** @return array{title: string, headings: list<array>, math: bool, html: string}|null */

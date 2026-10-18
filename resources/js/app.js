@@ -29,6 +29,22 @@ Alpine.data('syntaxTabs', () => ({
     },
 }));
 
+// "On this page" in the docs: highlight the last heading scrolled past.
+Alpine.data('tocSpy', () => ({
+    active: null,
+    init() {
+        const headings = [...this.$el.querySelectorAll('[data-toc]')]
+            .map((link) => document.getElementById(link.dataset.toc))
+            .filter(Boolean);
+        const update = () => {
+            const passed = headings.filter((heading) => heading.getBoundingClientRect().top < 120);
+            this.active = (passed.at(-1) ?? headings[0])?.id ?? null;
+        };
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+    },
+}));
+
 // Quarto tabsets in synced docs pages. Tabs labeled as the method chain or the
 // pipe follow the same remembered syntax choice as <x-code-tabs>.
 function syntaxOf(link) {

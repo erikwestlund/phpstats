@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Content\Markdown;
 use App\Content\Package;
+use App\Content\Stats;
 use App\Data\SchoolPosterior;
 use App\Data\SimulatedRentals;
 use App\Livewire\BayesianSchools;
@@ -39,6 +41,62 @@ class PagesTest extends TestCase
         foreach (array_keys(config('projects')) as $key) {
             $response->assertSee("http://{$key}.phpstats.test", false);
         }
+    }
+
+    public function test_landing_tabs_come_from_markdown_pages_that_call_php(): void
+    {
+        $stats = Stats::family();
+
+        $this->get('http://phpstats.test/')->assertOk()
+            ->assertSee('Fit models, checked against R')
+            ->assertSee('&lt;float&gt;', false)            // phibble's inferred column types
+            ->assertSee(number_format($stats['verified']))
+            ->assertDontSee('<!--blade:', false);
+    }
+
+    public function test_markdown_pages_render_blade_outside_code_only(): void
+    {
+        $html = Markdown::render(<<<'MD'
+            Total: {{ 2 + 3 }}.
+
+            <x-package-chip package="phit" />
+
+            ```php
+            echo "{{ not blade }}";
+            ```
+            MD);
+
+        $this->assertStringContainsString('Total: 5.', $html);
+        $this->assertStringContainsString('http://phit.phpstats.test', $html);
+        $this->assertStringContainsString('{{ not blade }}', html_entity_decode(strip_tags($html)));
+
+        $this->get('http://phpstats.test/about')->assertOk()->assertSee('Why PHPstats')->assertSee('dplyr and tidyr');
+        $this->get('http://phpstats.test/no-such-page')->assertNotFound();
+    }
+
+    public function test_package_pages_link_the_family_and_related_packages(): void
+    {
+        $response = $this->get('http://phplyr.phpstats.test/')->assertOk();
+
+        // The PHPstats menu links every package and the landing page.
+        foreach (array_keys(config('projects')) as $key) {
+            $response->assertSee("http://{$key}.phpstats.test", false);
+        }
+        $response->assertSee('phpstats.org home')
+            ->assertSee('Connected packages')
+            ->assertSee('phplyr verbs take phibble frames and return new ones.');
+
+        // The other side of the relation lists it too.
+        $this->get('http://phibble.phpstats.test/')->assertSee('Used by')->assertSee('phplyr verbs take phibble frames');
+    }
+
+    public function test_docs_nav_is_grouped_by_folder(): void
+    {
+        $groups = Package::find('phpolars')->docsGroups();
+
+        $this->assertSame(['Guide', 'Reference'], array_keys($groups));
+        $this->assertContains('reference/series', array_column($groups['Reference'], 'path'));
+        $this->assertSame('Notebooks', Package::find('phit')->docsGroupOf('notebooks/lmm-math'));
     }
 
     public function test_each_package_has_an_overview_on_its_own_host(): void

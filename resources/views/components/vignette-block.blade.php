@@ -3,15 +3,15 @@
 @php $block = \App\Content\Blocks::normalize($block); @endphp
 <section>
     @if (! empty($block['title']))
-        <h2 class="mb-3 text-sm font-medium uppercase tracking-wide text-zinc-500">{{ $block['title'] }}</h2>
+        <h2 class="mb-3 text-xs font-semibold uppercase tracking-wider text-zinc-500">{{ $block['title'] }}</h2>
     @endif
 
     @switch($block['type'])
         @case('text')
-            <div class="prose prose-zinc max-w-3xl dark:prose-invert">{!! \Illuminate\Support\Str::markdown($block['markdown'], ['html_input' => 'escape', 'allow_unsafe_links' => false]) !!}</div>
+            <div class="prose prose-zinc prose-php max-w-3xl dark:prose-invert">{!! \Illuminate\Support\Str::markdown($block['markdown'], ['html_input' => 'escape', 'allow_unsafe_links' => false]) !!}</div>
             @break
         @case('note')
-            <div class="prose prose-zinc max-w-3xl rounded-lg border-l-4 border-sky-400 bg-sky-50 px-4 py-3 text-sm dark:prose-invert dark:bg-sky-950/40">{!! \Illuminate\Support\Str::markdown($block['markdown'], ['html_input' => 'escape', 'allow_unsafe_links' => false]) !!}</div>
+            <div class="prose prose-zinc prose-php max-w-3xl rounded-xl border-l-4 border-(--l400) bg-(--l50) px-4 py-3 text-sm ring-1 ring-(--l100) dark:prose-invert dark:bg-(--l400)/10 dark:ring-(--l400)/15">{!! \Illuminate\Support\Str::markdown($block['markdown'], ['html_input' => 'escape', 'allow_unsafe_links' => false]) !!}</div>
             @break
         @case('code')
             @if ($block['chain'] && $block['pipe'])
@@ -20,38 +20,38 @@
                     <x-slot:pipe>{{ $block['pipe'] }}</x-slot:pipe>
                 </x-code-tabs>
             @else
-                <pre class="overflow-x-auto rounded-lg bg-zinc-100 p-4 text-sm dark:bg-zinc-900"><code>{{ $block['chain'] ?? $block['pipe'] ?? $block['code'] }}</code></pre>
+                <x-code :code="$block['chain'] ?? $block['pipe'] ?? $block['code']" />
             @endif
             @break
         @case('output')
-            <pre class="overflow-x-auto rounded-lg border border-zinc-200 p-4 text-sm dark:border-zinc-800"><code>{{ $block['content'] }}</code></pre>
+            <pre class="overflow-x-auto rounded-xl bg-zinc-50 p-4 font-mono text-[0.8125rem] leading-6 text-zinc-700 ring-1 ring-zinc-200 dark:bg-white/[0.03] dark:text-zinc-300 dark:ring-white/10"><code>{{ $block['content'] }}</code></pre>
             @break
         @case('metrics')
             <dl class="grid gap-4 text-sm sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($block['items'] as $item)
-                    <div class="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+                    <div class="rounded-2xl bg-gradient-to-br from-(--l50) to-white p-4 ring-1 ring-(--l100) dark:from-(--l400)/10 dark:to-transparent dark:ring-(--l400)/15">
                         <dt class="text-zinc-500">{{ $item['label'] }}</dt>
-                        <dd class="mt-1 text-2xl font-semibold tabular-nums">{{ $item['value'] }}</dd>
+                        <dd class="mt-1 text-2xl font-semibold tracking-tight text-zinc-950 tabular-nums dark:text-white">{{ $item['value'] }}</dd>
                     </div>
                 @endforeach
             </dl>
             @break
         @case('table')
         @case('model')
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto rounded-xl ring-1 ring-zinc-200 dark:ring-white/10">
                 <table class="w-full text-sm tabular-nums">
-                    <thead class="text-left text-zinc-500">
-                        <tr class="border-b border-zinc-200 dark:border-zinc-800">
+                    <thead class="bg-zinc-50 text-left text-xs uppercase tracking-wider text-zinc-500 dark:bg-white/[0.03]">
+                        <tr class="border-b border-zinc-200 dark:border-white/10">
                             @foreach ($block['columns'] as $c => $column)
-                                <th @class(['py-2 pr-4 font-medium', 'text-right' => $c > 0])>{{ $column }}</th>
+                                <th @class(['px-4 py-2.5 font-semibold', 'text-right' => $c > 0])>{{ $column }}</th>
                             @endforeach
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($block['rows'] as $row)
-                            <tr class="border-b border-zinc-100 dark:border-zinc-900">
+                            <tr class="border-b border-zinc-100 last:border-0 dark:border-white/5">
                                 @foreach ($row as $c => $cell)
-                                    <td @class(['py-2 pr-4', 'text-right' => $c > 0])>{{ $cell }}</td>
+                                    <td @class(['px-4 py-2', 'text-right' => $c > 0, 'font-medium' => $c === 0])>{{ $cell }}</td>
                                 @endforeach
                             </tr>
                         @endforeach
@@ -66,7 +66,7 @@
             @endif
             @break
         @case('chart')
-            <x-phiz :plot="$block['plot']" wire:key="{{ $key }}" class="w-full" />
+            <div class="rounded-2xl bg-white p-4 ring-1 ring-zinc-200 dark:bg-white/[0.03] dark:ring-white/10"><x-phiz :plot="$block['plot']" wire:key="{{ $key }}" class="w-full" /></div>
             @break
     @endswitch
 </section>
