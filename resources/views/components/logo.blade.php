@@ -1,13 +1,14 @@
 {{--
-    The PHPstats mark: a PHP-purple elephant with a white line graph in its
-    body. The thin line starts at a hollow dot, goes up, down, and up, and
-    ends at the eye, another hollow dot.
+    The PHPstats mark: a PHP-purple elephant with a small white line graph
+    on its side. The line starts and ends at hollow dots and goes up, down,
+    and up.
 --}}
 @props(['size' => 28])
 
 <svg width="{{ round($size * 1.2) }}" height="{{ $size }}" viewBox="0 0 48 40" fill="none" aria-hidden="true" {{ $attributes }}>
 <path d="M5.6 17.8C3.8 18.6 2.9 20.2 2.9 22" stroke="#777bb4" stroke-width="1.4" stroke-linecap="round"/>
 <path fill="#777bb4" d="M5 25C3.5 15 10 6 20 6c6 0 10 1 13.5 3.5C39 10 43 14 43 19.5c0 3-.8 5.5-1.6 8-.6 1.8-.2 3 1.4 3.6 1.3.5 1.1 2.6-.6 2.6-3.6 0-5.2-3-5.2-6.4l-.4-1.3-.6 8H30v-6H16v6h-6.4v-7.4C7 30.6 5.3 28.3 5 25z"/>
-<path d="M10 24 17 14.5 25 21 36.5 14.5" stroke="#fff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="10" cy="24" r="1.6" fill="#777bb4" stroke="#fff" stroke-width="0.8"/><circle cx="36.5" cy="14.5" r="1.6" fill="#777bb4" stroke="#fff" stroke-width="0.8"/>
+<path d="M13 21 17.5 16.5 21.5 19.5 26 15" stroke="#fff" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="13" cy="21" r="1.2" fill="#777bb4" stroke="#fff" stroke-width="0.7"/><circle cx="26" cy="15" r="1.2" fill="#777bb4" stroke="#fff" stroke-width="0.7"/>
+<circle cx="37.4" cy="15.2" r="1.05" fill="#2a2850"/>
 </svg>
