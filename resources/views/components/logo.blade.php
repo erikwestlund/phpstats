@@ -1,13 +1,11 @@
-{{-- The PHPstats mark: an elephant whose raised trunk is a rising chart line. --}}
+{{-- The PHPstats mark: a PHP-purple elephant with a rising line graph on its side. --}}
 @props(['size' => 28])
 
-<svg width="{{ $size }}" height="{{ $size }}" viewBox="0 0 32 32" fill="none" aria-hidden="true" {{ $attributes }}>
-    <defs>
-        <linearGradient id="phpstats-mark" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#8d91c7" />
-            <stop offset="1" stop-color="#5b4bb7" />
-        </linearGradient>
-    </defs>
-    <rect width="32" height="32" rx="8" fill="url(#phpstats-mark)" />
-    <g fill="#fff"><path d="M4.5 19.5c0-4.4 3.4-7.5 8-7.5h4.5v13h-2.2v-3.2h-6v3.2H6.6v-3.6c-1.3-.5-2.1-1.4-2.1-1.9z"/><circle cx="19.5" cy="15" r="5.5"/><rect x="15" y="17" width="5" height="8" rx="1.2"/></g><path d="M5.2 17.6c-1.2.4-1.9 1.4-2 2.6" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/><path d="M16.6 12.6c-1.6.2-2.6 1.6-2.6 3.3 0 1.9 1.3 3.3 3 3.4.4-1.9.4-4.6-.4-6.7z" fill="#d9daf0"/><circle cx="21.6" cy="13.6" r=".95" fill="#3b2f80"/><path d="M24.2 17 25.5 12.6 27.2 14.3 28.5 8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="28.5" cy="7.6" r="1.7" fill="#fcd34d"/>
+<svg width="{{ round($size * 1.2) }}" height="{{ $size }}" viewBox="0 0 48 40" fill="none" aria-hidden="true" {{ $attributes }}>
+<path fill="#777bb4" d="M5 25C3.5 15 10 6 20 6c6 0 10 1 13.5 3.5C39 10 43 14 43 19.5c0 3-.8 5.5-1.6 8-.6 1.8-.2 3 1.4 3.6 1.3.5 1.1 2.6-.6 2.6-3.6 0-5.2-3-5.2-6.4l-.4-1.3-.6 8H30v-6H16v6h-6.4v-7.4C7 30.6 5.3 28.3 5 25z"/>
+<path fill="#5a5e9a" d="M30 11.5c-4 .4-6.3 4.2-5.6 8.2.5 3 3 4.6 6 4.2 1.6-3.6 1.6-8.6-.4-12.4z"/>
+<circle cx="37.6" cy="15.6" r="1.3" fill="#2a2850"/>
+<path d="M8.5 21.5 13 17.5l4 2.5 5-6.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="22" cy="13.5" r="1.9" fill="#fcd34d"/>
+</svg>
 </svg>

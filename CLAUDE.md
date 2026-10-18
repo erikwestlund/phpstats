@@ -9,6 +9,9 @@ The website for the PHPstats family: a Laravel 13 + Livewire 4 app.
   phpstats.pequod.sh and phpstats-{package}.pequod.sh. The local defaults are
   phpstats.test and {package}.phpstats.test, and `*.localhost` names work with
   `PHPSTATS_ROOT_HOST=phpstats.localhost PHPSTATS_PACKAGE_HOST={package}.phpstats.localhost`.
+- `PHPSTATS_PATHS=true` serves everything on one host, with each package under
+  `/{package}`, for previews behind one tunnel URL (Polyscope or Expose). Add
+  `TRUSTED_PROXIES=*` so links use the tunnel's host.
 - Each package host has Overview, Docs, Vignettes, Benchmarks, and
   Verification sections, built from the package's synced content.
 - Vignettes are either Livewire components in this app, listed under
@@ -20,7 +23,7 @@ The website for the PHPstats family: a Laravel 13 + Livewire 4 app.
   (```` ```r label ````), and Blade components and `{{ }}` echoes outside code,
   with `$stats` and `$meta` in scope. `about.md` serves /about, and the
   landing page's "What you can do" tabs are `resources/pages/home/*.md`.
-- `config/phpstats.php` defines the layers (data, verbs, models, graphics)
+- `config/phpstats.php` defines the layers (data frames and manipulation, visualization, and statistical modeling)
   with their colors, and the relations between packages that package pages
   list as "Uses" and "Used by". Its `menus` group the layers into the bar's
   two dropdowns, Data & Visualization and Statistical Modeling. Layer colors reach the markup as CSS

@@ -58,7 +58,7 @@ return [
     'phplyr' => [
         'name' => 'phplyr',
         'from_r' => 'dplyr and tidyr',
-        'summary' => 'dplyr-style verbs as pipe functions, with lm() and glm() formulas that call phit.',
+        'summary' => 'dplyr-style data manipulation with pipe functions, with lm() and glm() formulas that call phit.',
         'status' => 'working',
         'status_label' => 'Released, v0.2.0',
         'repo' => 'https://github.com/phpstats/phplyr',
@@ -70,8 +70,8 @@ return [
             'Release notes' => 'https://github.com/phpstats/phplyr/releases/tag/v0.2.0',
         ],
         'overview' => [
-            'phplyr covers most of dplyr and tidyr. Each verb returns a closure, so verbs compose with the PHP 8.5 pipe operator.',
-            'The dplyr side includes the single-table verbs, mutating and filtering joins, set operations, window functions such as lag(), lead(), and row_number(), and across() with tidyselect-style selectors.',
+            'phplyr covers most of dplyr and tidyr. Each function returns a closure, so steps compose with the PHP 8.5 pipe operator.',
+            'The dplyr side includes the single-table functions, mutating and filtering joins, set operations, window functions such as lag(), lead(), and row_number(), and across() with tidyselect-style selectors.',
             'The tidyr side includes pivot_longer(), pivot_wider(), separate and unite functions, nesting, and functions for completing and filling missing values.',
             'Summary helpers such as n(), mean(), sd(), and quantile() follow R conventions for missing values and use phit when the extension is loaded. Model formulas such as monthly_rent ~ area_m2 + neighborhood will fit models through phit.',
         ],
@@ -107,7 +107,7 @@ return [
         'overview' => [
             'phpolars is a native PHP extension, written in Rust, that brings the Polars columnar engine to PHP. It installs with PIE as php_polars and targets PHP 8.5 on Linux and macOS.',
             'Its PolarsTable implements phibble\'s table contract, so phplyr pipelines run in Polars. phibble and phplyr work without it.',
-            'The verbs run 10 to 100 times faster in Polars than on an in-memory phibble frame. Converting results back to PHP values takes most of a PolarsTable pipeline\'s time, so pipelines that reduce the data before collecting gain the most.',
+            'phplyr pipelines run 10 to 100 times faster in Polars than on an in-memory phibble frame. Converting results back to PHP values takes most of a PolarsTable pipeline\'s time, so pipelines that reduce the data before collecting gain the most.',
         ],
     ],
     'cmdstanphp' => [

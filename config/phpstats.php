@@ -13,6 +13,13 @@ return [
     'package_host' => env('PHPSTATS_PACKAGE_HOST', '{package}.phpstats.test'),
 
     /*
+     * Path mode serves the whole site on one host, with each package under
+     * /{package}, and ignores the hosts above. Use it for previews behind a
+     * single tunnel URL, such as Polyscope's or Expose's.
+     */
+    'paths' => (bool) env('PHPSTATS_PATHS', false),
+
+    /*
      * Package content synced from each repo's site/ folder and rendered docs
      * by `php artisan site:sync`. The ref is the pinned commit. Packages
      * without an entry show the overview from config/projects.php only.
@@ -23,25 +30,23 @@ return [
     ],
 
     /*
-     * How the packages fit together, from data to graphics. The landing page
+     * How the packages fit together. The landing page
      * draws these layers, and each package host shows its layer and color.
      * Colors are Tailwind color names.
      */
     'layers' => [
-        'data' => ['title' => 'Data', 'role' => 'Tables from CSV files, the database, or Polars', 'color' => 'indigo', 'packages' => [
+        'data' => ['title' => 'Data Frames & Manipulation', 'role' => 'Read, filter, mutate, group, summarise, join, and reshape tables', 'color' => 'indigo', 'packages' => [
             'phibble' => 'The shared data frame: typed, immutable, and loaded from CSV, PDO, Eloquent, or Doctrine',
             'phpolars' => 'Polars data frames in a Rust extension, and a fast backend for phibble',
+            'phplyr' => 'dplyr and tidyr for PHP, run in memory, as SQL, or in Polars',
         ]],
-        'verbs' => ['title' => 'Verbs', 'role' => 'Filter, mutate, group, summarise, join, and reshape', 'color' => 'violet', 'packages' => [
-            'phplyr' => 'dplyr and tidyr verbs that run in memory, as SQL, or in Polars',
+        'visualization' => ['title' => 'Visualization', 'role' => 'A grammar of graphics', 'color' => 'fuchsia', 'packages' => [
+            'phiz' => 'ggplot2-style charts that render as Vega-Lite, with a Blade component for Livewire',
         ]],
-        'models' => ['title' => 'Models', 'role' => 'Estimation, verified against R', 'color' => 'purple', 'packages' => [
+        'models' => ['title' => 'Statistical Modeling', 'role' => 'Estimation, verified against R', 'color' => 'purple', 'packages' => [
             'phit' => 'Regression, mixed models, distributions, and descriptive statistics in a Rust extension',
             'phit-polyfill' => 'The phit functions in plain PHP, for hosts that cannot install extensions',
             'cmdstanphp' => 'Bayesian models in Stan through CmdStan',
-        ]],
-        'graphics' => ['title' => 'Graphics', 'role' => 'A grammar of graphics', 'color' => 'fuchsia', 'packages' => [
-            'phiz' => 'ggplot2-style charts that render as Vega-Lite, with a Blade component for Livewire',
         ]],
     ],
 
@@ -50,7 +55,7 @@ return [
      * package is in one menu. short is the label on narrow screens.
      */
     'menus' => [
-        'data' => ['title' => 'Data & Visualization', 'short' => 'Data', 'layers' => ['data', 'verbs', 'graphics']],
+        'data' => ['title' => 'Data & Visualization', 'short' => 'Data', 'layers' => ['data', 'visualization']],
         'modeling' => ['title' => 'Statistical Modeling', 'short' => 'Modeling', 'layers' => ['models']],
     ],
 
@@ -60,9 +65,9 @@ return [
      * second.
      */
     'relations' => [
-        ['phplyr', 'phibble', 'phplyr verbs take phibble frames and return new ones.'],
+        ['phplyr', 'phibble', 'phplyr functions take phibble frames and return new ones.'],
         ['phplyr', 'phit', 'phplyr\'s lm() and glm() fit their formulas with phit, and its summary helpers use phit when it is loaded.'],
-        ['phplyr', 'phpolars', 'phplyr verbs run in Polars when the frame is a phpolars PolarsTable.'],
+        ['phplyr', 'phpolars', 'phplyr pipelines run in Polars when the frame is a phpolars PolarsTable.'],
         ['phpolars', 'phibble', 'phpolars\' PolarsTable implements phibble\'s table contract.'],
         ['phibble', 'phit', 'phibble\'s toMatrix() and toVector() hand columns to phit functions such as Phit\\fit_ols().'],
         ['phiz', 'phibble', 'phiz plots take phibble frames as data.'],

@@ -16,7 +16,6 @@
         <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 pb-20 pt-16 *:min-w-0 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:px-8 lg:pb-28 lg:pt-24">
             <div>
                 <p class="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-php-200 ring-1 ring-white/10">
-                    <span class="size-1.5 rounded-full bg-fuchsia-400"></span>
                     Inspired by the Tidyverse in R
                 </p>
                 <h1 class="mt-6 text-4xl font-semibold tracking-tight sm:text-6xl">
@@ -135,7 +134,7 @@ $chart = Plot::of($rentals)
                 <p class="text-sm font-semibold text-php-600 dark:text-php-300">The family</p>
                 <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">One job per package</h2>
                 <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-                    The packages share one data frame type and stack from data to graphics.
+                    The packages share one data frame type.
                     Use one, or use them together.
                 </p>
             </div>
@@ -144,8 +143,7 @@ $chart = Plot::of($rentals)
                 @foreach (config('phpstats.layers') as $layer)
                     <div class="layer-{{ $layer['color'] }} grid gap-4 rounded-2xl bg-(--l50)/60 p-4 ring-1 ring-(--l100) sm:p-5 lg:grid-cols-[13rem_1fr] dark:bg-(--l400)/5 dark:ring-(--l400)/15">
                         <div class="px-1 lg:py-2">
-                            <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-(--l700) dark:text-(--l300)">
-                                <span class="size-2 rounded-full bg-(--l500)"></span>{{ $layer['title'] }}
+                            <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-(--l700) dark:text-(--l300)">{{ $layer['title'] }}
                             </p>
                             <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{{ $layer['role'] }}</p>
                         </div>

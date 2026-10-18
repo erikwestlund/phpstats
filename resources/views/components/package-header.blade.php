@@ -20,8 +20,7 @@
     <div class="mx-auto flex h-14 max-w-[88rem] items-center gap-1 px-4 sm:px-6 lg:px-8">
         <x-site-menus :current="$package" />
         <span class="mx-1 h-5 w-px bg-zinc-200 dark:bg-white/10" aria-hidden="true"></span>
-        <a href="{{ $package->url() }}" class="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-white/5">
-            <span class="size-2 rounded-full bg-(--l500)"></span>{{ $package->name() }}
+        <a href="{{ $package->url() }}" class="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-white/5">{{ $package->name() }}
         </a>
 
         <nav class="ml-2 hidden items-center gap-1 text-sm lg:flex" aria-label="{{ $package->name() }} sections">

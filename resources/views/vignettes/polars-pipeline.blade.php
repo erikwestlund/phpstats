@@ -2,13 +2,13 @@
     <article class="max-w-3xl">
         <h1 class="text-3xl font-semibold tracking-tight">Polars pipeline</h1>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            phplyr verbs work on any phibble table.
+            phplyr works on any phibble table.
             This vignette runs the pipeline from the SQL vignette on an in-memory DataFrame and on a PolarsTable, which holds the data in Polars through the php_polars extension from phpolars.
-            The verbs use col() expressions, so the Polars side runs them in Polars instead of in PHP.
+            The steps use col() expressions, so the Polars side runs them in Polars instead of in PHP.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
             The input stacks copies of the 3,000 simulated rentals, up to 300,000 rows.
-            Polars runs the verbs quickly, and the time to copy data in and out of Polars matters more at small sizes.
+            Polars runs the steps quickly, and the time to copy data in and out of Polars matters more at small sizes.
         </p>
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>

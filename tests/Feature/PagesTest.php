@@ -86,10 +86,10 @@ class PagesTest extends TestCase
             ->assertSee('Statistical Modeling')
             ->assertSee('aria-label="PHPstats home"', false)
             ->assertSee('Connected packages')
-            ->assertSee('phplyr verbs take phibble frames and return new ones.');
+            ->assertSee('phplyr functions take phibble frames and return new ones.');
 
         // The other side of the relation lists it too.
-        $this->get('http://phibble.phpstats.test/')->assertSee('Used by')->assertSee('phplyr verbs take phibble frames');
+        $this->get('http://phibble.phpstats.test/')->assertSee('Used by')->assertSee('phplyr functions take phibble frames');
     }
 
     public function test_docs_nav_is_grouped_by_folder(): void

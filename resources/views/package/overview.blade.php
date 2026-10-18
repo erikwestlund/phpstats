@@ -14,8 +14,7 @@
         <div class="absolute -right-40 -top-40 -z-10 size-[32rem] rounded-full bg-(--l300)/30 blur-3xl dark:bg-(--l500)/10" aria-hidden="true"></div>
         <div class="mx-auto grid max-w-7xl gap-12 px-4 py-14 *:min-w-0 sm:px-6 lg:grid-cols-[1.15fr_1fr] lg:px-8 lg:py-20">
             <div>
-                <p class="flex items-center gap-2 text-sm font-semibold text-(--l700) dark:text-(--l300)">
-                    <span class="size-2 rounded-full bg-(--l500)"></span>{{ $layer['title'] }}
+                <p class="flex items-center gap-2 text-sm font-semibold text-(--l700) dark:text-(--l300)">{{ $layer['title'] }}
                     <span class="font-normal text-zinc-500 dark:text-zinc-400">· {{ $layer['role'] }}</span>
                 </p>
                 <div class="mt-4 flex flex-wrap items-center gap-4">

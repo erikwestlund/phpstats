@@ -1,5 +1,5 @@
 ---
-title: Transform with familiar verbs
+title: Transform data as in dplyr
 icon: adjustments-horizontal
 packages: [phplyr]
 ---
@@ -12,4 +12,4 @@ phplyr covers most of dplyr and tidyr: filtering, mutating, grouping and summari
 | SQL | In the database, as one query | Tables that stay in the database |
 | phpolars | In the Polars engine | Large tables and heavy grouping |
 
-The verbs keep their R names, so `group_by()`, `summarise()`, `pivot_longer()`, and `across()` work as they do in dplyr and tidyr.
+The functions keep their R names, so `group_by()`, `summarise()`, `pivot_longer()`, and `across()` work as they do in dplyr and tidyr.

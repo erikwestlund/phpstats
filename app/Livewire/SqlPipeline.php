@@ -10,7 +10,7 @@ use function Phplyr\{arrange, col, desc, filter, group_by, mean, mutate, n, show
 
 /**
  * Vignette: one phplyr pipeline run two ways. On a lazy phibble SqlTable the
- * verbs compile to a single SQL query; on an in-memory DataFrame they run in PHP.
+ * pipeline compiles to a single SQL query; on an in-memory DataFrame they run in PHP.
  */
 class SqlPipeline extends Component
 {

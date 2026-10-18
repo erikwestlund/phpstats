@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "97b403f13a611b86c53a856b2dc4ee2b",
+    "content-hash": "48d3f4a9710079260b004dd57ca26764",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -726,63 +726,6 @@
             "time": "2025-03-06T22:45:56+00:00"
         },
         {
-            "name": "erikwestlund/phibble",
-            "version": "v0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstats/phibble.git",
-                "reference": "d88cb1df348eaa0684cb77cd8d9ea633b008395f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phibble/zipball/d88cb1df348eaa0684cb77cd8d9ea633b008395f",
-                "reference": "d88cb1df348eaa0684cb77cd8d9ea633b008395f",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pdo": "*",
-                "php": "^8.5"
-            },
-            "require-dev": {
-                "erikwestlund/phiz": "dev-main",
-                "illuminate/database": "^12.0",
-                "pestphp/pest": "^4.0"
-            },
-            "suggest": {
-                "ext-pdo_sqlite": "Used by the test suite for the PDO source",
-                "ext-php_polars": "The Polars backend (Phibble\\Polars\\PolarsTable), from erikwestlund/phpolars",
-                "illuminate/database": "Laravel integration: Collection::toDataFrame() and query builder ->phibble() / ->toDataFrame() macros (auto-discovered)"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Phibble\\Laravel\\PhibbleServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Phibble\\": "src/"
-                },
-                "files": [
-                    "src/functions.php",
-                    "src/Expr/helpers.php"
-                ]
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Tests\\": "tests/",
-                    "Phibble\\Bench\\": "bench/src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A typed, immutable in-memory data frame for PHP.",
-            "time": "2026-10-17T11:06:50+00:00"
-        },
-        {
             "name": "erikwestlund/phiz",
             "version": "v0.3.0",
             "source": {
@@ -862,60 +805,6 @@
                 "issues": "https://github.com/erikwestlund/phiz/issues"
             },
             "time": "2026-10-16T10:15:07+00:00"
-        },
-        {
-            "name": "erikwestlund/phplyr",
-            "version": "v0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstats/phplyr.git",
-                "reference": "512d3beb40e9d29b31683606c7195a60b7794d77"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/512d3beb40e9d29b31683606c7195a60b7794d77",
-                "reference": "512d3beb40e9d29b31683606c7195a60b7794d77",
-                "shasum": ""
-            },
-            "require": {
-                "erikwestlund/phibble": "^0.2",
-                "php": "^8.5"
-            },
-            "require-dev": {
-                "pestphp/pest": "^4.0"
-            },
-            "suggest": {
-                "ext-php_stats": "Native descriptives and model fitting (stats_*), needed for lm() and glm()"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Phplyr\\": "src/"
-                },
-                "files": [
-                    "src/functions/verbs.php",
-                    "src/functions/vectors.php",
-                    "src/functions/select.php",
-                    "src/functions/groups.php",
-                    "src/functions/joins.php",
-                    "src/functions/tidyr.php",
-                    "src/functions/lists.php",
-                    "src/functions/rows.php",
-                    "src/functions/scalar.php",
-                    "src/functions/strings.php",
-                    "src/functions/dates.php"
-                ]
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Phplyr\\Tests\\": "tests/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A dplyr-style grammar of data manipulation for PHP 8.5 pipes",
-            "time": "2026-10-17T11:14:17+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -3104,6 +2993,120 @@
                 }
             ],
             "time": "2026-08-24T00:54:40+00:00"
+        },
+        {
+            "name": "phpstats/phibble",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:phpstats/phibble.git",
+                "reference": "b12503e32f462e7f1f8d19d31f2332055daa2407"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstats/phibble/zipball/b12503e32f462e7f1f8d19d31f2332055daa2407",
+                "reference": "b12503e32f462e7f1f8d19d31f2332055daa2407",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "php": "^8.3",
+                "symfony/polyfill-php84": "^1.31"
+            },
+            "require-dev": {
+                "erikwestlund/phiz": "dev-main",
+                "illuminate/database": "^12.0",
+                "pestphp/pest": "^4.0"
+            },
+            "suggest": {
+                "ext-pdo_sqlite": "Used by the test suite for the PDO source",
+                "ext-php_polars": "The Polars backend (Phibble\\Polars\\PolarsTable), from erikwestlund/phpolars",
+                "illuminate/database": "Laravel integration: Collection::toDataFrame() and query builder ->phibble() / ->toDataFrame() macros (auto-discovered)"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Phibble\\Laravel\\PhibbleServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Phibble\\": "src/"
+                },
+                "files": [
+                    "src/functions.php",
+                    "src/Expr/helpers.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/",
+                    "Phibble\\Bench\\": "bench/src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A typed, immutable in-memory data frame for PHP.",
+            "time": "2026-10-17T19:17:14+00:00"
+        },
+        {
+            "name": "phpstats/phplyr",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:phpstats/phplyr.git",
+                "reference": "ed999d8a69ef83555a0dde24925bbee237f541f1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/ed999d8a69ef83555a0dde24925bbee237f541f1",
+                "reference": "ed999d8a69ef83555a0dde24925bbee237f541f1",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3",
+                "phpstats/phibble": "^0.3",
+                "symfony/polyfill-php84": "^1.31"
+            },
+            "require-dev": {
+                "pestphp/pest": "^4.0"
+            },
+            "suggest": {
+                "ext-phit": "Native descriptives (Phit\\stat_*) and model fitting (Phit\\fit_*), needed for lm(), glm(), lmer(), and glmer()"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Phplyr\\": "src/"
+                },
+                "files": [
+                    "src/functions/verbs.php",
+                    "src/functions/chain.php",
+                    "src/functions/vectors.php",
+                    "src/functions/select.php",
+                    "src/functions/groups.php",
+                    "src/functions/joins.php",
+                    "src/functions/tidyr.php",
+                    "src/functions/lists.php",
+                    "src/functions/rows.php",
+                    "src/functions/scalar.php",
+                    "src/functions/strings.php",
+                    "src/functions/dates.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Phplyr\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A dplyr-style grammar of data manipulation for PHP 8.3+, with method chains or PHP 8.5 pipes",
+            "time": "2026-10-18T22:51:31+00:00"
         },
         {
             "name": "psr/clock",
