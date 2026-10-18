@@ -79,7 +79,7 @@ return [
         ['phpolars', 'phibble', 'phpolars\' PolarsTable implements phibble\'s table contract.'],
         ['phibble', 'phit', 'phibble\'s toMatrix() and toVector() hand columns to phit functions such as Phit\\fit_ols().'],
         ['phiz', 'phibble', 'phiz plots take phibble frames as data.'],
-        ['cmdstanphp', 'phit', 'cmdstanphp uses phit\'s draw kernels for PSIS-LOO moment matching when the extension is loaded.'],
+        ['cmdstanphp', 'phit', 'CmdStanPHP uses phit\'s draw kernels for PSIS-LOO moment matching when the extension is loaded.'],
     ],
 
     'content_path' => resource_path('content'),
@@ -99,7 +99,7 @@ return [
         'sql-pipeline' => ['packages' => ['phibble', 'phplyr'], 'title' => 'SQL pipeline', 'summary' => 'One phplyr pipeline run as a single SQL query and in memory, with the generated SQL.'],
         'rent-dashboard' => ['packages' => ['phplyr', 'phiz', 'phit'], 'title' => 'Rent dashboard', 'summary' => 'A reactive Livewire dashboard: filters, a phplyr summary, two phiz charts, a logistic model, and what-if predictions.'],
         'polars-pipeline' => ['packages' => ['phpolars', 'phibble', 'phplyr'], 'title' => 'Polars pipeline', 'summary' => 'The same pipeline on an in-memory data frame and in Polars, with timings for up to 300,000 rows.'],
-        'bayesian-schools' => ['packages' => ['cmdstanphp', 'phit'], 'title' => 'Bayesian school effects', 'summary' => 'The school effects model in Stan through cmdstanphp, with posterior intervals next to Phit\fit_lmer().'],
+        'bayesian-schools' => ['packages' => ['cmdstanphp', 'phit'], 'title' => 'Bayesian school effects', 'summary' => 'The school effects model in Stan through CmdStanPHP, with posterior intervals next to Phit\fit_lmer().'],
     ],
 
 ];

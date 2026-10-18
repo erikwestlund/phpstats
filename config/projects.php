@@ -49,7 +49,7 @@ return [
             'Release notes' => 'https://github.com/phpstats/phibble/releases/tag/v0.3.0',
         ],
         'overview' => [
-            'phibble is the shared table type for phplyr, phpolars, phit, and cmdstanphp. Every operation returns a new frame.',
+            'phibble is the shared table type for phplyr, phpolars, phit, and CmdStanPHP. Every operation returns a new frame.',
             'Columns are typed as float, int, bool, string, factor, or date, and types are inferred on load. Missing values are PHP null.',
             'Frames load from CSV files, PDO statements, and Laravel, Eloquent, or Doctrine query builders, so analysis can start from the application database. phibble does not depend on Laravel or Doctrine.',
             'toMatrix() and toVector() hand columns to phit functions such as Phit\fit_ols().',
@@ -111,7 +111,7 @@ return [
         ],
     ],
     'cmdstanphp' => [
-        'name' => 'cmdstanphp',
+        'name' => 'CmdStanPHP',
         'from_r' => 'cmdstanr',
         'summary' => 'Bayesian models in Stan, run from PHP through CmdStan, with an API patterned after CmdStanR.',
         'status' => 'working',
@@ -119,11 +119,11 @@ return [
         'repo' => 'https://github.com/phpstats/cmdstanphp',
         'docs' => 'https://phpstats.github.io/CmdStanPHP/',
         'overview' => [
-            'cmdstanphp runs real Stan programs through CmdStan. It needs no R installation and no PHP framework.',
+            'CmdStanPHP runs real Stan programs through CmdStan. It needs no R installation and no PHP framework.',
             'It supports compilation, parallel MCMC, optimization, ADVI, Pathfinder, and Laplace approximation, along with posterior summaries and fit persistence.',
             'MCMC fits compute PSIS-LOO and WAIC. Moment matching for PSIS-LOO uses the phit draw kernels when the extension is loaded.',
             'Trace, density, interval, rank, and Pareto k figures render as ASCII text, Vega-Lite charts, HTML, or SVG.',
-            'cmdstanphp covers most of CmdStanR but not all of it. Its compatibility contract lists the differences.',
+            'CmdStanPHP covers most of CmdStanR but not all of it. Its compatibility contract lists the differences.',
         ],
     ],
 ];
