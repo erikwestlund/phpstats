@@ -1,5 +1,5 @@
 {{--
-    A package host's bar: the PHPstats menu, this package, and its sections.
+    A package host's bar: the PHPstats mark and menus, this package, and its sections.
     It replaces the site bar, so package pages show one bar.
 --}}
 @props(['package'])
@@ -17,14 +17,14 @@
 @endphp
 
 <header class="layer-{{ $layer['color'] }} sticky top-0 z-40 border-b border-zinc-200/80 bg-white/85 backdrop-blur-lg dark:border-white/5 dark:bg-zinc-950/85">
-    <div class="mx-auto flex h-14 max-w-[88rem] items-center gap-2 px-4 sm:px-6 lg:px-8">
-        <x-family-menu :current="$package" />
-        <span class="text-zinc-300 dark:text-zinc-700" aria-hidden="true">/</span>
+    <div class="mx-auto flex h-14 max-w-[88rem] items-center gap-1 px-4 sm:px-6 lg:px-8">
+        <x-site-menus :current="$package" />
+        <span class="mx-1 h-5 w-px bg-zinc-200 dark:bg-white/10" aria-hidden="true"></span>
         <a href="{{ $package->url() }}" class="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-white/5">
             <span class="size-2 rounded-full bg-(--l500)"></span>{{ $package->name() }}
         </a>
 
-        <nav class="ml-6 hidden items-center gap-1 text-sm md:flex" aria-label="{{ $package->name() }} sections">
+        <nav class="ml-2 hidden items-center gap-1 text-sm lg:flex" aria-label="{{ $package->name() }} sections">
             @foreach ($sections as $key => $label)
                 @php $external = $key === 'docs' && ! $package->hasDocs(); @endphp
                 @if ($key !== 'docs' || $package->hasDocs() || $package->externalDocs())
@@ -45,7 +45,7 @@
     </div>
 
     {{-- Sections on small screens --}}
-    <nav class="flex gap-1 overflow-x-auto border-t border-zinc-100 px-3 py-1.5 text-sm md:hidden dark:border-white/5" aria-label="{{ $package->name() }} sections">
+    <nav class="flex gap-1 overflow-x-auto border-t border-zinc-100 px-3 py-1.5 text-sm lg:hidden dark:border-white/5" aria-label="{{ $package->name() }} sections">
         @foreach ($sections as $key => $label)
             @if ($key !== 'docs' || $package->hasDocs() || $package->externalDocs())
                 <a href="{{ $key === 'docs' && ! $package->hasDocs() ? $package->externalDocs() : $package->url($key) }}" @if ($active === $key) aria-current="page" @endif

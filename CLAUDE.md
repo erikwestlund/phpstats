@@ -22,7 +22,8 @@ The website for the PHPstats family: a Laravel 13 + Livewire 4 app.
   landing page's "What you can do" tabs are `resources/pages/home/*.md`.
 - `config/phpstats.php` defines the layers (data, verbs, models, graphics)
   with their colors, and the relations between packages that package pages
-  list as "Uses" and "Used by". Layer colors reach the markup as CSS
+  list as "Uses" and "Used by". Its `menus` group the layers into the bar's
+  two dropdowns, Data & Visualization and Statistical Modeling. Layer colors reach the markup as CSS
   variables: `class="layer-violet"` sets `--l50` to `--l950`.
 - Colors: `php-*` is PHP's elephant purple, and the `zinc` grays are
   redefined in `resources/css/app.css` to lean purple. Code is highlighted on

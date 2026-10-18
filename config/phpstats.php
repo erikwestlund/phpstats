@@ -46,6 +46,15 @@ return [
     ],
 
     /*
+     * The site bar's menus. Each lists the packages of its layers, so every
+     * package is in one menu. short is the label on narrow screens.
+     */
+    'menus' => [
+        'data' => ['title' => 'Data & Visualization', 'short' => 'Data', 'layers' => ['data', 'verbs', 'graphics']],
+        'modeling' => ['title' => 'Statistical Modeling', 'short' => 'Modeling', 'layers' => ['models']],
+    ],
+
+    /*
      * Where one package builds on another, as [from, to, sentence]. Both
      * package hosts list the link: "Uses" on the first and "Used by" on the
      * second.

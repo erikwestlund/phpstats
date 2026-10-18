@@ -78,11 +78,13 @@ class PagesTest extends TestCase
     {
         $response = $this->get('http://phplyr.phpstats.test/')->assertOk();
 
-        // The PHPstats menu links every package and the landing page.
+        // The two menus link every package, and the mark links the landing page.
         foreach (array_keys(config('projects')) as $key) {
             $response->assertSee("http://{$key}.phpstats.test", false);
         }
-        $response->assertSee('phpstats.org home')
+        $response->assertSee('Data &amp; Visualization', false)
+            ->assertSee('Statistical Modeling')
+            ->assertSee('aria-label="PHPstats home"', false)
             ->assertSee('Connected packages')
             ->assertSee('phplyr verbs take phibble frames and return new ones.');
 
