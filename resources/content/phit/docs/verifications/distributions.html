@@ -1,0 +1,169 @@
+<p>The <a href="phpstats://phit/docs/distributions">probability API</a> has independent base-R, SciPy and 60-digit mpmath reference evidence. This page reads no runtime models; its tables are generated from the <a href="/content/phit/docs/verifications/distributions-results.json">saved comparison report</a> by <code>python3 scripts/distribution-docs.py</code>. The report records the native refresh date, versions, per-point errors and unavailable reference points. Tests use immutable expected values and never select a reference by looking at the native result.</p>
+<section id="executed-reference-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="executed-reference-comparison">Executed reference comparison</h2>
+<!-- BEGIN REFERENCE EVIDENCE -->
+<p>Native refresh: <strong>2026-10-12T15:18:49.923101+00:00</strong>. PHP 8.5.10; R version 4.6.1 (2026-06-24); SciPy 1.18.1; mpmath 1.4.1 at 60 digits.</p>
+<p>553 cases, 8,661 points, 27 unavailable independent reference points.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Family</th>
+<th>Worst native error</th>
+<th>Worst R error</th>
+<th>Worst SciPy error</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>beta</td>
+<td>1.49e-13</td>
+<td>1.49e-13</td>
+<td>1.6e+100</td>
+</tr>
+<tr class="even">
+<td>binomial</td>
+<td>3.28e-14</td>
+<td>0.0588</td>
+<td>4.94e-05</td>
+</tr>
+<tr class="odd">
+<td>chisquare</td>
+<td>8.34e-13</td>
+<td>1.5e-11</td>
+<td>8.16e-09</td>
+</tr>
+<tr class="even">
+<td>exponential</td>
+<td>5.64e-14</td>
+<td>5.64e-14</td>
+<td>5.64e-14</td>
+</tr>
+<tr class="odd">
+<td>f</td>
+<td>1.58e-13</td>
+<td>1</td>
+<td>2.17e-09</td>
+</tr>
+<tr class="even">
+<td>gamma</td>
+<td>7.5e-13</td>
+<td>4.24e-14</td>
+<td>1.47e-11</td>
+</tr>
+<tr class="odd">
+<td>logistic</td>
+<td>1.45e-15</td>
+<td>1.45e-15</td>
+<td>1.45e-15</td>
+</tr>
+<tr class="even">
+<td>lognormal</td>
+<td>9.13e-14</td>
+<td>1</td>
+<td>2.25e-14</td>
+</tr>
+<tr class="odd">
+<td>nbinom</td>
+<td>6.84e-14</td>
+<td>0.0656</td>
+<td>0.0556</td>
+</tr>
+<tr class="even">
+<td>nbinom_mu</td>
+<td>5.1e-14</td>
+<td>0.0652</td>
+<td>0.00798</td>
+</tr>
+<tr class="odd">
+<td>normal</td>
+<td>2.86e-14</td>
+<td>4.21e-09</td>
+<td>4.3e-10</td>
+</tr>
+<tr class="even">
+<td>poisson</td>
+<td>3.71e-13</td>
+<td>0.0714</td>
+<td>0.02</td>
+</tr>
+<tr class="odd">
+<td>t</td>
+<td>1.8e-13</td>
+<td>0.392</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<!-- END REFERENCE EVIDENCE -->
+<p>The table uses finite, nonzero mpmath reference values and excludes quantile endpoints. Logs use error divided by max(1, |reference|), ordinary densities and probabilities use relative error (a normal-range floor for subnormal references), and quantiles use relative error with a <code>1e-300</code> floor. Zero/support/degenerate endpoints are checked separately below, rather than exaggerated by dividing a small absolute difference by an artificial tiny scale.</p>
+<p>Typical native errors are below <code>1e-13</code>. The worst saved native case is about <code>8.34e-13</code>, in a large-df chi-square log tail; cdflib’s large-shape regime sets the tested accuracy there. R is somewhat better on that case. These are observed errors on specified inputs, not a guarantee for every shape/scale or tail.</p>
+</section>
+<section id="reference-generation-and-limitations" class="level2">
+<h2 class="anchored" data-anchor-id="reference-generation-and-limitations">Reference generation and limitations</h2>
+<p><code>tests/generate-distribution-fixtures.R</code> produces 553 distribution cases: R d/p/q functions at saved explicit parameter sets and evaluation points, including tiny probabilities, large counts/shapes, support boundaries and point masses. The same generator writes eight univariate, three paired and two weighted descriptive cases using seed 20261012. Numeric JSON inputs are parsed with serde_json float-roundtrip support so that Rust and PHP use the intended binary64 values.</p>
+<p><code>docs/verifications/compare_distributions.py</code> evaluates closed-form densities and regularized incomplete-beta/gamma tails using mpmath at 60 digits. Continuous reference quantiles use independently evaluated log-tail Newton iterations, starting from native/R/SciPy candidates but accepting only a high-precision tail residual. Discrete references verify the CDF-step inequality. Values are rounded once to binary64. A computation timeout or unavailable reference is recorded as null, never replaced by the native value. The 27 unavailable points remain visible in the report; their ordinary tests use the saved R reference and explicit identities. Subnormal values have fewer significant bits, so relative-error claims are limited.</p>
+<p>The <a href="/content/phit/docs/verifications/reference-manifest.json">provenance manifest</a> indexes all R/SciPy/mpmath and descriptive inputs, quantities, versions, generators, tolerance policies and hashes. The independent reference fixture SHA-256 values are also recorded in the native refresh report. <code>--stored-references</code> re-evaluates PHP without changing those values.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Intentional independent reference regeneration (may take substantial time):</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> tests/generate-distribution-fixtures.R</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="ex">.context/v02/python/bin/python</span> docs/verifications/compare_distributions.py</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Routine native refresh against existing references:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="ex">.context/v02/python/bin/python</span> docs/verifications/compare_distributions.py <span class="at">--stored-references</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/reference-manifest.py</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/distribution-docs.py</span></code></pre></div></div>
+<p>The optional Python environment needs NumPy, SciPy and mpmath; pins are in <code>tests/benchmarks/distribution-requirements.txt</code>. None are extension runtime or offline-test dependencies.</p>
+</section>
+<section id="release-gate-tolerances-and-checks" class="level2">
+<h2 class="anchored" data-anchor-id="release-gate-tolerances-and-checks">Release-gate tolerances and checks</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th>Absolute/relative test tolerance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Density, mass, CDF and SF</td>
+<td><code>1e-300 + 1e-12 * abs(reference)</code></td>
+</tr>
+<tr class="even">
+<td>Log density/mass/tails</td>
+<td><code>1e-12 * max(1, abs(reference))</code></td>
+</tr>
+<tr class="odd">
+<td>Distribution quantiles</td>
+<td><code>1e-15 + 1e-12 * abs(reference)</code></td>
+</tr>
+<tr class="even">
+<td>Descriptive R quantities</td>
+<td>Relative <code>1e-12</code>, exact zero</td>
+</tr>
+</tbody>
+</table>
+<p><code>tests/distributions.php</code> performs 8,618 comparisons under these original tolerances. When saved R and mpmath differ beyond tolerance, it uses the immutable mpmath value (25 independently adjudicated points). Forty-three documented boundary differences have separate conventions/identity checks. Scalar/batch values must be identical, including NAN/INF conventions where applicable. The suite also checks CDF/SF sums, quantile inverses and monotonicity, direct log functions, degenerate cases, argument names/defaults, array order and invalid input/error categories. An overflowing size-plus-mean NB conversion is checked to avoid a false point mass.</p>
+<p>Rust independently checks extreme Student-t quantiles against mpmath, probability identities, validation and scaled-density underflow. The diagnostic R-comparison test reports raw worst errors including intended differences; it is not the sole correctness gate. PHP’s strict reference/identity suite is required as well.</p>
+<p><code>tests/descriptive.php</code> adds 145 R comparisons and missing/error checks. <code>crates/stats-core/tests/descriptive.rs</code> covers the same stored examples plus overflow and degenerate cases. The release gate includes both PHP suites, the Rust tests and the runnable distribution example. <a href="phpstats://phit/docs/descriptive">Descriptive conventions</a> explain sample/population and frequency/reliability definitions.</p>
+</section>
+<section id="documented-reference-differences" class="level2">
+<h2 class="anchored" data-anchor-id="documented-reference-differences">Documented reference differences</h2>
+<ul>
+<li>Discrete quantile p=1 for a point mass returns its mass location. R/SciPy may instead return the generic upper-support bound, including infinity.</li>
+<li>R’s F density at +INF is NAN; the native API returns zero there.</li>
+<li>R F quantiles can round to zero for tiny probabilities and small numerator df, where the native/mpmath value is a representable positive value.</li>
+<li>R’s Student-t quantile at df=0.5 has a small nonzero center and selected far-tail inaccuracies. Native centering and high-precision tail checks establish the chosen values.</li>
+<li>R’s discrete-quantile probability adjustment near <code>1 - 2^-52</code> can shift the returned count. Native uses a relative <code>64*EPSILON</code> allowance on the smaller tail.</li>
+<li>R’s mean-form negative-binomial mass approximation for size much larger than the observed count differs from the independent high-precision calculation.</li>
+<li>SciPy’s large-df chi-square CDF has about <code>8.16e-9</code> relative error at the saved five-standard-deviation lower-tail point. The native and R results match mpmath much more closely. The <a href="phpstats://phit/docs/benchmarks/distributions">benchmark</a> records the same peer discrepancy without weakening native comparison tolerances.</li>
+</ul>
+<p>Raw values and per-point errors remain in the fixtures/report. Intentional conventions and peer-library errors are distinct from unsupported reference points.</p>
+</section>
+<section id="backend-and-model-path-audit" class="level2">
+<h2 class="anchored" data-anchor-id="backend-and-model-path-audit">Backend and model-path audit</h2>
+<p>The <a href="/content/phit/docs/verifications/distributions-audit.json">raw statrs report</a> and executable <code>crates/stats-core/examples/statrs_audit.rs</code> document why statrs alone is not used for the new distribution API. The <a href="/content/phit/docs/verifications/distributions-reuse.json">reuse experiment</a> compares the public Normal log-CDF and Student-t quantile with the existing probit and OLS formulas. Candidate t quantiles improve large-df reference error, but all six tested critical values and 17 tested normal log-CDF values differ in rounding. The current release retains the established regression paths and their behavior. This is an evaluated compatibility decision, not an untested refactor.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> run <span class="at">-p</span> stats-core <span class="at">--release</span> <span class="at">--locked</span> <span class="at">--example</span> statrs_audit</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> run <span class="at">-p</span> stats-core <span class="at">--release</span> <span class="at">--locked</span> <span class="at">--example</span> distribution_reuse_audit</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="va">PHP_CONFIG</span><span class="op">=</span>/path/to/php-config <span class="ex">./scripts/check</span></span></code></pre></div></div>
+<p>The <a href="phpstats://phit/docs/v0.2">v0.2 assessment</a> records completed scope, RNG deferral and the remaining external release/platform gates.</p>
+
+
+</section>

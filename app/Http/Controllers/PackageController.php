@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Content\Package;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\View as ViewFactory;
+
+class PackageController extends Controller
+{
+    public function overview(string $package): View
+    {
+        return $this->page($package, 'overview');
+    }
+
+    public function docs(string $package, ?string $path = null)
+    {
+        $item = $this->package($package);
+        if (! $item->hasDocs()) {
+            return $item->externalDocs() ? redirect()->away($item->externalDocs()) : abort(404);
+        }
+        $page = $item->docsPage($path ?? 'index') ?? abort(404);
+
+        return $this->page($package, 'docs', ['page' => $page, 'path' => $path ?? 'index']);
+    }
+
+    public function vignettes(string $package): View
+    {
+        return $this->page($package, 'vignettes');
+    }
+
+    public function vignette(string $package, string $slug): View
+    {
+        $item = $this->package($package);
+        $vignette = $item->vignette($slug) ?? abort(404);
+
+        if ($vignette['kind'] === 'livewire') {
+            ViewFactory::share('currentPackage', $item);
+
+            return view("vignettes.{$slug}");
+        }
+
+        return $this->page($package, 'vignette', ['vignette' => $vignette]);
+    }
+
+    public function benchmarks(string $package): View
+    {
+        return $this->page($package, 'benchmarks');
+    }
+
+    public function verification(string $package): View
+    {
+        return $this->page($package, 'verification');
+    }
+
+    private function package(string $key): Package
+    {
+        return Package::find($key) ?? abort(404);
+    }
+
+    private function page(string $key, string $section, array $data = []): View
+    {
+        $package = $this->package($key);
+        ViewFactory::share('currentPackage', $package);
+
+        return view("package.{$section}", ['package' => $package, ...$data]);
+    }
+}

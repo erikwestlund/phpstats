@@ -1,0 +1,268 @@
+{
+  "figures": {
+    "benchmarks/figures/ols-fit-time.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/ols-results.json",
+          "md5": "95885b050fbda3fc5fb620f0d55523ef"
+        }
+      ],
+      "svg_md5": "604fc04c9e3ec7999f91ec0e60173db7",
+      "png_md5": "51b47f42c3475c16b2a878ef65ba1320"
+    },
+    "benchmarks/figures/ols-memory.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/ols-results.json",
+          "md5": "95885b050fbda3fc5fb620f0d55523ef"
+        }
+      ],
+      "svg_md5": "3b7c9618fdfefc9fe834f778dca99824",
+      "png_md5": "b068dcb99c358444392f33031d63caaa"
+    },
+    "figures/logistic-mixed-integration-error.svg": {
+      "width_inches": 10,
+      "height_inches": 5.5,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "verifications/logistic-mixed-results.json",
+          "md5": "483711cd24c2f49aaad21e210f729222"
+        }
+      ],
+      "svg_md5": "484d041908ab5266b630a27465803efc",
+      "png_md5": "2106221faf00f2b73993cbc030c3c0a2"
+    },
+    "figures/logistic-mixed-node-sensitivity.svg": {
+      "width_inches": 9,
+      "height_inches": 4.6,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "verifications/logistic-mixed-results.json",
+          "md5": "483711cd24c2f49aaad21e210f729222"
+        }
+      ],
+      "svg_md5": "e74873cd0ea3d8f177af8850d4d483cf",
+      "png_md5": "5e3839631163fcdd1a1fee82402b32c3"
+    },
+    "figures/v01-preservation.svg": {
+      "width_inches": 10,
+      "height_inches": 10,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/v01-preservation-results.json",
+          "md5": "30f926148a962d95f92be033899d4f06"
+        }
+      ],
+      "svg_md5": "7a92ef6d1a57d9c24de825ec3951bdc1",
+      "png_md5": "4f7de6c6441f0a827e1e0577decb610c"
+    },
+    "figures/lmm-public-agreement.svg": {
+      "width_inches": 10,
+      "height_inches": 6.5,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "verifications/lmm-public-results.json",
+          "md5": "ac02394d8e0ff6a6a5f65eded73d53ff"
+        }
+      ],
+      "svg_md5": "7e42986b2a2b7fe56d4b31b61d28f08a",
+      "png_md5": "ab10ca410e47433f1052e73d8357e3a3"
+    },
+    "figures/sleepstudy-slopes.svg": {
+      "width_inches": 11,
+      "height_inches": 6,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "verifications/r-compatibility-results.json",
+          "md5": "55ff7f405954f044877e03fd4bbd1c9f"
+        },
+        {
+          "path": "../tests/fixtures/lmm-expanded-r.json",
+          "md5": "27feab4f191e7dac286019da0b1565bf"
+        },
+        {
+          "path": "data/lmm/sleepstudy.csv",
+          "md5": "22004b6706cc06f501edc10d4d4478bf"
+        }
+      ],
+      "svg_md5": "89393119d36f016ff916bd61dd3867e9",
+      "png_md5": "4d5ea61c4c7aef20f29600faa5669af7"
+    },
+    "figures/lmm-profile.svg": {
+      "width_inches": 9,
+      "height_inches": 4.5,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "figures/data/lmm-profile.json",
+          "md5": "f69ee26e904edce81b2c3f342395e2fe"
+        }
+      ],
+      "svg_md5": "398a12ff9aa584382413a9c69f381909",
+      "png_md5": "a48d9ebca490ff088f2708f2a358b0dd"
+    },
+    "figures/logistic-mixed-posterior.svg": {
+      "width_inches": 10,
+      "height_inches": 4.8,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "figures/data/logistic-mixed-posterior.json",
+          "md5": "7f1d728c994a1a42518fbdb9233568e6"
+        }
+      ],
+      "svg_md5": "77c290cc495dbf6417377499d3f63e54",
+      "png_md5": "4fa504a75b4afa0726cfecd618ba820c"
+    },
+    "benchmarks/figures/logistic-fit-time.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/logistic-results.json",
+          "md5": "e3971b2e569c48839ef09d9180e5b4a5"
+        }
+      ],
+      "svg_md5": "902666738af7277ead47e7214224fdc6",
+      "png_md5": "326c024c8ba5903ab8247525fbd70914"
+    },
+    "benchmarks/figures/logistic-memory.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/logistic-results.json",
+          "md5": "e3971b2e569c48839ef09d9180e5b4a5"
+        }
+      ],
+      "svg_md5": "a90b54a1fe68666b724fcc31b843389d",
+      "png_md5": "92d99eab0baf46cde1b84bccb560fec9"
+    },
+    "benchmarks/figures/probit-fit-time.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/probit-results.json",
+          "md5": "27112d6a5b023b9ac5168460a56232d4"
+        }
+      ],
+      "svg_md5": "fe1f699da0b22c09c60d1cd1d08c337a",
+      "png_md5": "96930b4b1220cbbbeb758122e96e70b6"
+    },
+    "benchmarks/figures/probit-memory.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/probit-results.json",
+          "md5": "27112d6a5b023b9ac5168460a56232d4"
+        }
+      ],
+      "svg_md5": "a142c9dfe4d7e8d1a59174474ec893f0",
+      "png_md5": "8a5438ebe7fa48d4fc3d4d296115ad02"
+    },
+    "benchmarks/figures/poisson-fit-time.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/poisson-results.json",
+          "md5": "e37a6af7522fbda5b78791d018fccae8"
+        }
+      ],
+      "svg_md5": "76a571dfac63c465a9e7a0e4146d9aad",
+      "png_md5": "708f37b0c03c3200864e97515d5c8fc2"
+    },
+    "benchmarks/figures/poisson-memory.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/poisson-results.json",
+          "md5": "e37a6af7522fbda5b78791d018fccae8"
+        }
+      ],
+      "svg_md5": "bd0bcd006daf13a6fa406265724a9284",
+      "png_md5": "187de659e5d6cb99762270c3aaabc805"
+    },
+    "benchmarks/figures/lmm-fit-time.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/lmm-results.json",
+          "md5": "1fc023ef4d29afd354c00b61e9c83b62"
+        }
+      ],
+      "svg_md5": "3f95a3301c205444f1f21808ae30a2f3",
+      "png_md5": "3320a50bc99ca52f5cd86b0ee26b2da2"
+    },
+    "benchmarks/figures/lmm-memory.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/lmm-results.json",
+          "md5": "1fc023ef4d29afd354c00b61e9c83b62"
+        }
+      ],
+      "svg_md5": "9e34e0bf011cad5f35cea4b94645d338",
+      "png_md5": "66b72a57f85f2f028465cd4d41f140a3"
+    },
+    "benchmarks/figures/logistic-mixed-fit-time.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/logistic-mixed-results.json",
+          "md5": "2483bab410d87dee27590ec7a3bf4fff"
+        }
+      ],
+      "svg_md5": "cbc1662638947aa899584d99f3029c36",
+      "png_md5": "a195d6d2ffb0aa349ad3b8ffd6c6e2cf"
+    },
+    "benchmarks/figures/logistic-mixed-memory.svg": {
+      "width_inches": 10,
+      "height_inches": 7.3,
+      "png_dpi": 160,
+      "inputs": [
+        {
+          "path": "benchmarks/logistic-mixed-results.json",
+          "md5": "2483bab410d87dee27590ec7a3bf4fff"
+        }
+      ],
+      "svg_md5": "208c431c3d4429d5074cedf7765355f5",
+      "png_md5": "561bcd1690fa611fa9f2e6ce51310d89"
+    }
+  },
+  "renderer_md5": "3ec3a1386bad9017b7f7c4d8a1b86b27",
+  "theme_md5": "b436da401b43e19efcbffbe31d02295d",
+  "R": "R version 4.6.1 (2026-06-24)",
+  "platform": "aarch64-apple-darwin27.0.0",
+  "packages": {
+    "ggplot2": "4.0.3",
+    "jsonlite": "2.0.0",
+    "svglite": "2.2.2"
+  }
+}

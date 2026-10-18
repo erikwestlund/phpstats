@@ -1,26 +1,38 @@
 <?php
 
+use App\Content\Package;
+use App\Http\Controllers\PackageController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'home', ['projects' => config('projects')])->name('home');
+$packages = implode('|', array_map(fn (string $key) => preg_quote($key, '#'), array_keys(config('projects'))));
 
-Route::view('/vignettes/school-scores', 'vignettes.school-scores')->name('vignettes.school-scores');
-Route::view('/vignettes/simulated-rents', 'vignettes.simulated-rents')->name('vignettes.simulated-rents');
-Route::view('/vignettes/school-effects', 'vignettes.school-effects')->name('vignettes.school-effects');
-Route::view('/vignettes/sql-pipeline', 'vignettes.sql-pipeline')->name('vignettes.sql-pipeline');
-Route::view('/vignettes/bayesian-schools', 'vignettes.bayesian-schools')->name('vignettes.bayesian-schools');
-Route::view('/vignettes/rent-dashboard', 'vignettes.rent-dashboard')->name('vignettes.rent-dashboard');
-Route::view('/vignettes/glm-models', 'vignettes.glm-models')->name('vignettes.glm-models');
-Route::view('/vignettes/random-effects', 'vignettes.random-effects')->name('vignettes.random-effects');
-Route::view('/vignettes/csv-reader', 'vignettes.csv-reader')->name('vignettes.csv-reader');
-Route::view('/vignettes/polars-pipeline', 'vignettes.polars-pipeline')->name('vignettes.polars-pipeline');
+// One host per package: {package}.phpstats.org, or phpstats-{package}.pequod.sh on staging.
+Route::domain(config('phpstats.package_host'))
+    ->where(['package' => $packages])
+    ->name('package.')
+    ->controller(PackageController::class)
+    ->group(function () {
+        Route::get('/', 'overview')->name('overview');
+        Route::get('/docs/{path?}', 'docs')->where('path', '[A-Za-z0-9._/-]+')->name('docs');
+        Route::get('/vignettes', 'vignettes')->name('vignettes');
+        Route::get('/vignettes/{slug}', 'vignette')->where('slug', '[a-z0-9-]+')->name('vignette');
+        Route::get('/benchmarks', 'benchmarks')->name('benchmarks');
+        Route::get('/verification', 'verification')->name('verification');
+    });
 
-Route::view('/benchmarks', 'benchmarks')->name('benchmarks');
+Route::domain(config('phpstats.root_host'))->group(function () {
+    Route::view('/', 'home')->name('home');
 
-// php-stats and php-stats-polyfill were renamed phit and phit-polyfill.
-Route::permanentRedirect('/php-stats', '/phit');
-Route::permanentRedirect('/php-stats-polyfill', '/phit-polyfill');
+    // Paths from the single-host site.
+    $renamed = ['php-stats' => 'phit', 'php-stats-polyfill' => 'phit-polyfill', 'school-effects' => 'school-shrinkage'];
+    Route::get('/{project}', fn (string $project) => redirect()->away(
+        Package::find($renamed[$project] ?? $project)->url(), 301,
+    ))->whereIn('project', [...array_keys(config('projects')), 'php-stats', 'php-stats-polyfill']);
+    Route::get('/vignettes/{slug}', function (string $slug) use ($renamed) {
+        $slug = $renamed[$slug] ?? $slug;
+        $owner = config("phpstats.vignettes.{$slug}.packages.0") ?? abort(404);
 
-Route::get('/{project}', function (string $project) {
-    return view('project', ['project' => config("projects.{$project}")]);
-})->whereIn('project', array_keys(config('projects')))->name('project');
+        return redirect()->away(Package::find($owner)->url('vignette', ['slug' => $slug]), 301);
+    });
+    Route::get('/benchmarks', fn () => redirect()->away(Package::find('phit')->url('benchmarks'), 301));
+});

@@ -1,0 +1,446 @@
+{
+    "nav": [
+        {
+            "title": "Overview",
+            "path": "index"
+        },
+        {
+            "title": "Getting started",
+            "path": "getting-started"
+        },
+        {
+            "title": "Coming from py-polars",
+            "path": "coming-from-python"
+        },
+        {
+            "title": "DataFrame and LazyFrame",
+            "path": "reference/dataframe"
+        },
+        {
+            "title": "Expressions",
+            "path": "reference/expressions"
+        },
+        {
+            "title": "Series",
+            "path": "reference/series"
+        },
+        {
+            "title": "Input and output",
+            "path": "reference/io"
+        },
+        {
+            "title": "Data types",
+            "path": "reference/types"
+        },
+        {
+            "title": "phibble and phplyr",
+            "path": "phibble"
+        },
+        {
+            "title": "Deployment",
+            "path": "deployment"
+        },
+        {
+            "title": "Performance",
+            "path": "performance"
+        },
+        {
+            "title": "Development",
+            "path": "development"
+        }
+    ],
+    "pages": {
+        "coming-from-python": {
+            "title": "Coming from py-polars",
+            "headings": [
+                {
+                    "id": "naming",
+                    "text": "Naming",
+                    "level": 2
+                },
+                {
+                    "id": "variadic-arguments-and-named",
+                    "text": "Variadic arguments and **named",
+                    "level": 2
+                },
+                {
+                    "id": "values",
+                    "text": "Values",
+                    "level": 2
+                },
+                {
+                    "id": "names-php-reserves",
+                    "text": "Names PHP reserves",
+                    "level": 2
+                },
+                {
+                    "id": "python-callables",
+                    "text": "Python callables",
+                    "level": 2
+                },
+                {
+                    "id": "small-differences",
+                    "text": "Small differences",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "deployment": {
+            "title": "Deployment",
+            "headings": [
+                {
+                    "id": "installing-with-pie",
+                    "text": "Installing with PIE",
+                    "level": 2
+                },
+                {
+                    "id": "prebuilt-binaries",
+                    "text": "Prebuilt binaries",
+                    "level": 2
+                },
+                {
+                    "id": "threads-under-php-fpm",
+                    "text": "Threads under PHP-FPM",
+                    "level": 2
+                },
+                {
+                    "id": "memory",
+                    "text": "Memory",
+                    "level": 2
+                },
+                {
+                    "id": "checking-an-installation",
+                    "text": "Checking an installation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "development": {
+            "title": "Development",
+            "headings": [
+                {
+                    "id": "building-and-testing",
+                    "text": "Building and testing",
+                    "level": 2
+                },
+                {
+                    "id": "comparing-with-py-polars",
+                    "text": "Comparing with py-polars",
+                    "level": 2
+                },
+                {
+                    "id": "documentation",
+                    "text": "Documentation",
+                    "level": 2
+                },
+                {
+                    "id": "stubs",
+                    "text": "Stubs",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "getting-started": {
+            "title": "Getting started",
+            "headings": [
+                {
+                    "id": "installing",
+                    "text": "Installing",
+                    "level": 2
+                },
+                {
+                    "id": "imports",
+                    "text": "Imports",
+                    "level": 2
+                },
+                {
+                    "id": "a-first-query",
+                    "text": "A first query",
+                    "level": 2
+                },
+                {
+                    "id": "filtering",
+                    "text": "Filtering",
+                    "level": 2
+                },
+                {
+                    "id": "grouping",
+                    "text": "Grouping",
+                    "level": 2
+                },
+                {
+                    "id": "lazy-queries",
+                    "text": "Lazy queries",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "index": {
+            "title": "phpolars",
+            "headings": [
+                {
+                    "id": "what-it-includes",
+                    "text": "What it includes",
+                    "level": 2
+                },
+                {
+                    "id": "the-family",
+                    "text": "The family",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "performance": {
+            "title": "Performance",
+            "headings": [
+                {
+                    "id": "a-csv-pipeline",
+                    "text": "A CSV pipeline",
+                    "level": 2
+                },
+                {
+                    "id": "phplyr-pipelines-on-three-backends",
+                    "text": "phplyr pipelines on three backends",
+                    "level": 2
+                },
+                {
+                    "id": "where-the-time-goes",
+                    "text": "Where the time goes",
+                    "level": 2
+                },
+                {
+                    "id": "binary-size",
+                    "text": "Binary size",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "phibble": {
+            "title": "phibble and phplyr",
+            "headings": [
+                {
+                    "id": "what-runs-in-polars",
+                    "text": "What runs in Polars",
+                    "level": 2
+                },
+                {
+                    "id": "moving-data-directly",
+                    "text": "Moving data directly",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/dataframe": {
+            "title": "DataFrame and LazyFrame",
+            "headings": [
+                {
+                    "id": "creating-frames",
+                    "text": "Creating frames",
+                    "level": 2
+                },
+                {
+                    "id": "joins",
+                    "text": "Joins",
+                    "level": 2
+                },
+                {
+                    "id": "iterating-over-groups",
+                    "text": "Iterating over groups",
+                    "level": 2
+                },
+                {
+                    "id": "time-series",
+                    "text": "Time series",
+                    "level": 2
+                },
+                {
+                    "id": "reshaping",
+                    "text": "Reshaping",
+                    "level": 2
+                },
+                {
+                    "id": "getting-values-out",
+                    "text": "Getting values out",
+                    "level": 2
+                },
+                {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
+                    "id": "phpolarsdataframe",
+                    "text": "Phpolars\\DataFrame",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarslazyframe",
+                    "text": "Phpolars\\LazyFrame",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarsgroupby",
+                    "text": "Phpolars\\GroupBy",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarslazygroupby",
+                    "text": "Phpolars\\LazyGroupBy",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/expressions": {
+            "title": "Expressions",
+            "headings": [
+                {
+                    "id": "windows-and-order",
+                    "text": "Windows and order",
+                    "level": 2
+                },
+                {
+                    "id": "strings",
+                    "text": "Strings",
+                    "level": 2
+                },
+                {
+                    "id": "dates-and-times",
+                    "text": "Dates and times",
+                    "level": 2
+                },
+                {
+                    "id": "lists-and-structs",
+                    "text": "Lists and structs",
+                    "level": 2
+                },
+                {
+                    "id": "selectors",
+                    "text": "Selectors",
+                    "level": 2
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
+                    "id": "phpolarsexpr",
+                    "text": "Phpolars\\Expr",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarswhen",
+                    "text": "Phpolars\\When",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarsthen",
+                    "text": "Phpolars\\Then",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarsstrnamespace",
+                    "text": "Phpolars\\StrNameSpace",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarsdtnamespace",
+                    "text": "Phpolars\\DtNameSpace",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarslistnamespace",
+                    "text": "Phpolars\\ListNameSpace",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarsstructnamespace",
+                    "text": "Phpolars\\StructNameSpace",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarsnamenamespace",
+                    "text": "Phpolars\\NameNameSpace",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarscatnamespace",
+                    "text": "Phpolars\\CatNameSpace",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarsarraynamespace",
+                    "text": "Phpolars\\ArrayNameSpace",
+                    "level": 3
+                },
+                {
+                    "id": "phpolarsbinarynamespace",
+                    "text": "Phpolars\\BinaryNameSpace",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/io": {
+            "title": "Reading and writing",
+            "headings": [
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/series": {
+            "title": "Series",
+            "headings": [
+                {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
+                    "id": "phpolarsseries",
+                    "text": "Phpolars\\Series",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/types": {
+            "title": "Types and values",
+            "headings": [
+                {
+                    "id": "data-types",
+                    "text": "Data types",
+                    "level": 2
+                },
+                {
+                    "id": "values",
+                    "text": "Values",
+                    "level": 2
+                },
+                {
+                    "id": "errors",
+                    "text": "Errors",
+                    "level": 2
+                }
+            ],
+            "math": false
+        }
+    }
+}

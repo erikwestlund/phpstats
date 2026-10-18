@@ -1,0 +1,98 @@
+<p>Every supported distribution has a <code>dist_{family}_rng()</code> function that returns ordinary PHP numeric arrays. Sampling uses mature Rust RNG libraries already in the dependency graph: pinned <code>rand 0.9.5</code> and <code>rand_chacha 0.9.0</code>, now explicit stats-core dependencies. No package versions were upgraded. Each call owns and restarts its own ChaCha20 state from the supplied seed.</p>
+<section id="api-and-state-ownership" class="level2">
+<h2 class="anchored" data-anchor-id="api-and-state-ownership">API and state ownership</h2>
+<p>The signature is <code>dist_{family}_rng(int $n, int $seed, ...distribution parameters): array</code>. The family parameters and defaults are exactly those of the corresponding <a href="phpstats://phit/docs/distributions#families-and-parameterizations">probability API</a>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$normal</span> <span class="op">=</span> Phit\dist_normal_rng(n<span class="ot">:</span> <span class="dv">5</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">42</span>)<span class="ot">;</span> <span class="co">// Default mean 0, SD 1.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">$measurements</span> <span class="op">=</span> Phit\dist_normal_rng(n<span class="ot">:</span> <span class="dv">8</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">20261012</span><span class="ot">,</span> mean<span class="ot">:</span> <span class="dv">10</span><span class="ot">,</span> sd<span class="ot">:</span> <span class="op">.</span><span class="dv">5</span>)<span class="ot">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">$counts</span> <span class="op">=</span> Phit\dist_poisson_rng(n<span class="ot">:</span> <span class="dv">8</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">20261013</span><span class="ot">,</span> lambda<span class="ot">:</span> <span class="fl">3.2</span>)<span class="ot">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">$beta</span> <span class="op">=</span> Phit\dist_beta_rng(n<span class="ot">:</span> <span class="dv">8</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">17</span><span class="ot">,</span> alpha<span class="ot">:</span> <span class="dv">2</span><span class="ot">,</span> beta<span class="ot">:</span> <span class="dv">5</span>)<span class="ot">;</span></span></code></pre></div></div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Parameters after n and seed</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dist_normal_rng</code></td>
+<td>mean = 0, sd = 1</td>
+</tr>
+<tr class="even">
+<td><code>dist_t_rng</code></td>
+<td>df</td>
+</tr>
+<tr class="odd">
+<td><code>dist_chisquare_rng</code></td>
+<td>df</td>
+</tr>
+<tr class="even">
+<td><code>dist_f_rng</code></td>
+<td>df1, df2</td>
+</tr>
+<tr class="odd">
+<td><code>dist_beta_rng</code></td>
+<td>alpha, beta</td>
+</tr>
+<tr class="even">
+<td><code>dist_gamma_rng</code></td>
+<td>shape, scale = 1</td>
+</tr>
+<tr class="odd">
+<td><code>dist_exponential_rng</code></td>
+<td>rate = 1</td>
+</tr>
+<tr class="even">
+<td><code>dist_lognormal_rng</code></td>
+<td>meanlog = 0, sdlog = 1</td>
+</tr>
+<tr class="odd">
+<td><code>dist_logistic_rng</code></td>
+<td>location = 0, scale = 1</td>
+</tr>
+<tr class="even">
+<td><code>dist_binomial_rng</code></td>
+<td>size, prob</td>
+</tr>
+<tr class="odd">
+<td><code>dist_poisson_rng</code></td>
+<td>lambda</td>
+</tr>
+<tr class="even">
+<td><code>dist_nbinom_rng</code></td>
+<td>size, prob</td>
+</tr>
+<tr class="odd">
+<td><code>dist_nbinom_mu_rng</code></td>
+<td>size, mu</td>
+</tr>
+</tbody>
+</table>
+<p><code>n</code> is an integer in <code>[0,1000000]</code>; <code>seed</code> is a nonnegative PHP integer, including zero, up to PHP_INT_MAX (2^63−1 on the supported 64-bit platforms). Both arguments are required. Every successful result is a packed <code>list&lt;float&gt;</code> of exactly n finite values; discrete counts are also floats. There is no scalar sampling form or additional <code>_array</code> suffix because sampling is already a batch operation.</p>
+<p>The same seed and parameters reproduce exactly the same result within the same build. Asking for fewer samples returns the prefix of a longer call. Calls for other families or seeds do not advance a shared stream. PHP’s <code>mt_srand()</code> and application RNG state are not read or changed.</p>
+<p>Because a seed selects the same underlying uniform sequence across families, reusing it deliberately couples results through their quantiles. Use distinct seeds for separate batches when independent streams are intended. There is no implicit time-based seed, OS entropy lookup, retained RNG object or hidden global state. The runnable <code>examples/rng.php</code> verifies repeatability and prefix behavior.</p>
+</section>
+<section id="numerical-method-and-reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="numerical-method-and-reproducibility">Numerical method and reproducibility</h2>
+<p>For every output, ChaCha20 provides a 64-bit word; rand’s <code>Open01&lt;f64&gt;</code> maps its upper 52 bits to a midpoint strictly inside <code>(0,1)</code>. The value is transformed by the existing validated inverse CDF. The algorithm consumes one uniform per sample, including point masses. This uses the established numerical quantile kernels for all 13 parameterizations, without introducing a separate distribution backend.</p>
+<p>The open interval excludes infinite support endpoints. The finite uniform grid also limits represented tail probabilities: its minimum is 2^-53 and its maximum is 1−2^-53. This implementation favors a small, consistent numerical path over distribution-specific rejection samplers; <a href="phpstats://phit/docs/benchmarks/rng">benchmarks</a> record the cost for normal, beta and Poisson batches.</p>
+<p>The pinned rand_core <code>seed_from_u64</code> expands the integer with its documented PCG32 mapping into the 256-bit ChaCha key. Exact uniform vectors are checked independently in Python. Dependency or quantile-algorithm changes can change seeded samples and must be reviewed as reproducibility changes. Bitwise transformed-sample agreement across different library versions, compilers or platform math libraries is not promised; seeds are not claimed to match R or NumPy’s unrelated default engines. The full dependency lock and algorithm are recorded for reproducible runs.</p>
+</section>
+<section id="validation" class="level2">
+<h2 class="anchored" data-anchor-id="validation">Validation</h2>
+<p>Distribution parameter domains match probability evaluation. They are validated even when n is zero; valid empty requests return <code>[]</code>. Negative n/seed raises 1001, a request above one million raises 1007, and nonfinite distribution parameters raise 1003. Scalar argument conversion/type failures follow the repository’s runtime-error convention (code zero) rather than StatsError categories.</p>
+<p>A quantile that exceeds binary64 range raises 1003 and rejects the entire batch; no partial results, dropped samples or replacement infinities are returned. Very heavy tails/extreme scales can therefore fail even with finite parameters. Count precision follows the existing discrete-quantile convention and binary64 limits. The sampling limit bounds a single output allocation; callers retain control of overall workload and parameter coordinates.</p>
+</section>
+<section id="independent-verification" class="level2">
+<h2 class="anchored" data-anchor-id="independent-verification">Independent verification</h2>
+<p><code>tests/generate-rng-fixtures.py</code> independently implements the ChaCha20 block equations, PCG seed expansion and Open01 mapping. It never calls the extension or rand. <code>tests/generate-rng-fixtures.R</code> maps those saved uniforms through base-R quantiles. Python preserves full integer seeds and exact uniform bits while R supplies the independent transformed reference values.</p>
+<p>The saved <code>tests/fixtures/rng-python-r.json</code> contains <strong>25 cases, 2,000 values</strong>: 384 exact uniform values at four seeds (including zero and PHP_INT_MAX), all 13 families, three additional normal seed cases, and five point masses. Rust checks all values; PHP checks the 1,616 transformed references. Uniform/discrete values match exactly; continuous reference tolerance is <code>1e-15 + 1e-12*abs(reference)</code>. Both suites check repeatability, prefixes, state isolation, domains/limits and nonfinite samples. Deterministic normal/Poisson moment checks complement the reference vectors. PHP additionally verifies parameter names/defaults and strict seed/count types.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> tests/generate-rng-fixtures.py <span class="co"># Intentional Python/R reference refresh</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/reference-manifest.py</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> test <span class="at">-p</span> stats-core <span class="at">--locked</span> <span class="at">--test</span> rng</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$STATS_EXTENSION</span><span class="st">"</span> tests/rng.php</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="va">PHP_CONFIG</span><span class="op">=</span>/path/to/php-config <span class="ex">./scripts/check</span></span></code></pre></div></div>
+<p>The offline release gate needs neither Python RNG packages nor R for sampling tests. Fixture provenance includes the Python and R generators, versions, seeds, uniform inputs, expected quantities and hashes. The MIT license notices for the new direct dependencies are retained under <code>third-party/</code>.</p>
+
+
+</section>

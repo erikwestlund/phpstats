@@ -1,0 +1,39 @@
+<p>phpolars brings <a href="https://pola.rs">Polars</a> to PHP as a native extension written in Rust. It follows the py-polars API: the same classes, methods, and semantics, with camelCase method names and snake_case functions. A test suite compares 314 cases against py-polars 1.43.2, and all of them match.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$sales</span> <span class="op">=</span> read_csv(<span class="st">'sales.csv'</span><span class="ot">,</span> tryParseDates<span class="ot">:</span> <span class="kw">true</span>)<span class="ot">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">$top</span> <span class="op">=</span> <span class="va">$sales</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(col(<span class="st">'units'</span>)-&gt;gt(<span class="dv">0</span>))</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    -&gt;withColumns(col(<span class="st">'units'</span>)-&gt;mul(col(<span class="st">'price'</span>))-&gt;alias(<span class="st">'revenue'</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    -&gt;groupBy(<span class="st">'product'</span><span class="ot">,</span> maintainOrder<span class="ot">:</span> <span class="kw">true</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    -&gt;agg(col(<span class="st">'revenue'</span>)-&gt;sum()-&gt;<span class="fu">round</span>(<span class="dv">2</span>)<span class="ot">,</span> [<span class="st">'orders'</span> =&gt; len()]<span class="ot">,</span> col(<span class="st">'price'</span>)-&gt;mean()-&gt;<span class="fu">round</span>(<span class="dv">2</span>)-&gt;alias(<span class="st">'avg_price'</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    -&gt;<span class="fu">sort</span>(<span class="st">'revenue'</span><span class="ot">,</span> descending<span class="ot">:</span> <span class="kw">true</span>)<span class="ot">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$top</span><span class="ot">;</span></span></code></pre></div></div>
+<pre class="text output"><code>shape: (4, 4)
+┌─────────┬─────────┬────────┬───────────┐
+│ product ┆ revenue ┆ orders ┆ avg_price │
+│ ---     ┆ ---     ┆ ---    ┆ ---       │
+│ str     ┆ f64     ┆ u32    ┆ f64       │
+╞═════════╪═════════╪════════╪═══════════╡
+│ cherry  ┆ 1307.38 ┆ 44     ┆ 4.09      │
+│ banana  ┆ 1285.76 ┆ 48     ┆ 4.35      │
+│ apple   ┆ 1227.68 ┆ 42     ┆ 4.38      │
+│ date    ┆ 1153.58 ┆ 41     ┆ 4.46      │
+└─────────┴─────────┴────────┴───────────┘</code></pre>
+<section id="what-it-includes" class="level2">
+<h2 class="anchored" data-anchor-id="what-it-includes">What it includes</h2>
+<ul>
+<li><code>DataFrame</code> and <code>LazyFrame</code> with py-polars’ verbs: <code>select</code>, <code>withColumns</code>, <code>filter</code>, <code>sort</code>, <code>groupBy</code>/<code>agg</code>, <code>join</code>, <code>unique</code>, <code>pivot</code>, <code>unpivot</code>, <code>explode</code>, <code>describe</code>, and more.</li>
+<li>Expressions with arithmetic, three-valued logic, aggregations, window functions (<code>over</code>), <code>when</code>/<code>then</code>/<code>otherwise</code>, and the <code>str</code>, <code>dt</code>, <code>list</code>, <code>struct</code>, and <code>name</code> namespaces.</li>
+<li><code>Series</code>, with the same expression methods.</li>
+<li>CSV, Parquet, JSON, NDJSON, and Arrow IPC reading and writing, with lazy scans and streaming sinks.</li>
+<li>A thread-pool cap for PHP-FPM (<code>php_polars.max_threads</code>).</li>
+<li>A backend for <a href="phpstats://phibble/docs/index">phibble</a>, <code>Phibble\Polars\PolarsTable</code>, that runs <a href="phpstats://phplyr/docs/index">phplyr</a> pipelines in Polars. It ships with phibble ^0.2; see phibble’s <a href="phpstats://phibble/docs/backends">Backends</a> page.</li>
+</ul>
+</section>
+<section id="the-family" class="level2">
+<h2 class="anchored" data-anchor-id="the-family">The family</h2>
+<p>phpolars is one of a set of PHP 8.3+ packages for data work. phibble is a pure-PHP data frame and the shared table contract. phplyr adds dplyr verbs on top of it. <a href="https://github.com/phpstats/phit">phit</a> fits regression and mixed models. phpolars is the optional fast backend: install it when the data is large or the pipeline is heavy, and keep using phplyr’s verbs.</p>
+
+
+</section>

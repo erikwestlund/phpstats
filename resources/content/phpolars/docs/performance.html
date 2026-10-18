@@ -1,0 +1,191 @@
+<p>All timings are on an Apple M5 Ultra with Homebrew PHP 8.5.10 and Polars limited to its default 2 threads, unless noted.</p>
+<section id="a-csv-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="a-csv-pipeline">A CSV pipeline</h2>
+<p><code>bench/pipeline.php</code> reads a 1M-row, 16 MB CSV, filters it, groups and aggregates it, and returns PHP arrays. Each implementation runs five times and the fastest run is reported. All produce the same result.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Implementation</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>phpolars, 1 thread</td>
+<td>49 ms</td>
+</tr>
+<tr class="even">
+<td>phpolars, 2 threads (default)</td>
+<td>27 ms</td>
+</tr>
+<tr class="odd">
+<td>phpolars, 4 threads</td>
+<td>17 ms</td>
+</tr>
+<tr class="even">
+<td>plain PHP arrays (<code>fgetcsv</code> loop)</td>
+<td>342 ms</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="phplyr-pipelines-on-three-backends" class="level2">
+<h2 class="anchored" data-anchor-id="phplyr-pipelines-on-three-backends">phplyr pipelines on three backends</h2>
+<p><code>bench/phplyr.php</code> runs phplyr pipelines on phibble’s in-memory <code>DataFrame</code>, <code>PolarsTable</code>, and phibble’s <code>SqlTable</code> over SQLite. The data is a sales table (store, product, day, units with 2% NA and 5% zeros, price) and a 100-row store lookup. Loading is not timed; each pipeline is timed through <code>collect()</code>, best of three. The results of all backends are compared.</p>
+<ul>
+<li><strong>A:</strong> filter, left join, grouped summary, then a ranked window within regions.</li>
+<li><strong>B:</strong> per-store windows over every row: <code>lag(order_by: day)</code>, <code>cumsum</code>, and a share of the group sum.</li>
+<li><strong>C:</strong> pipeline A with a PHP closure in <code>filter()</code>.</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Pipeline</th>
+<th>Rows</th>
+<th>phibble DataFrame</th>
+<th>PolarsTable</th>
+<th>SqlTable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td>100k</td>
+<td>0.166 s</td>
+<td>0.009 s</td>
+<td>0.044 s</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>100k</td>
+<td>0.212 s</td>
+<td>0.048 s</td>
+<td>0.279 s</td>
+</tr>
+<tr class="odd">
+<td>C</td>
+<td>100k</td>
+<td>0.180 s</td>
+<td>0.088 s</td>
+<td>0.291 s</td>
+</tr>
+<tr class="even">
+<td>A</td>
+<td>1M</td>
+<td>1.517 s</td>
+<td>0.062 s</td>
+<td>0.456 s</td>
+</tr>
+<tr class="odd">
+<td>B</td>
+<td>1M</td>
+<td>2.677 s</td>
+<td>0.438 s</td>
+<td>3.571 s</td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td>1M</td>
+<td>1.670 s</td>
+<td>0.909 s</td>
+<td>2.875 s</td>
+</tr>
+</tbody>
+</table>
+<p>These runs used phibble at dbd8b1e. SqlTable’s pipeline B results differed from the other backends then; phibble fixed this in ccafa98.</p>
+</section>
+<section id="where-the-time-goes" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-time-goes">Where the time goes</h2>
+<p>Polars runs the verbs themselves 10 to 100 times faster than the in-memory frame. Returning rows to PHP is the cost that remains. Collecting 1M rows into PHP takes about 0.2 s for plain columns, plus about 0.5 s per datetime column, because each <code>DateTimeImmutable</code> is a PHP object.</p>
+<p>PolarsTable is the faster backend when a pipeline reduces the data (summaries, filters, joins followed by summaries) or chains several verbs before collecting. Reading files with <code>Phpolars\read_csv()</code> or <code>read_parquet()</code> and wrapping the result with <code>PolarsTable::fromPolars()</code> also avoids parsing the file in PHP.</p>
+<p>A verb given a PHP closure converts the table to a phibble <code>DataFrame</code> and back, about 1 s per million rows with a datetime column. On large data, use expressions, or use phibble’s in-memory <code>DataFrame</code> for closure-heavy pipelines.</p>
+</section>
+<section id="binary-size" class="level2">
+<h2 class="anchored" data-anchor-id="binary-size">Binary size</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Build</th>
+<th>opt-level</th>
+<th>Size</th>
+<th>Benchmark, 1 / 4 threads</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>all features (<code>dist</code> default)</td>
+<td>s</td>
+<td>64.5 MB</td>
+<td>47 / 23 ms</td>
+</tr>
+<tr class="even">
+<td>without <code>sql</code></td>
+<td>s</td>
+<td>60.4 MB</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>v0.1.0, all features, <code>release</code> profile (no LTO)</td>
+<td>3</td>
+<td>117 MB</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>v0.1.0, all features</td>
+<td>3</td>
+<td>57.3 MB</td>
+<td>44 / 23 ms</td>
+</tr>
+<tr class="odd">
+<td>v0.1.0, all features (<code>dist</code> default)</td>
+<td>s</td>
+<td>40.2 MB</td>
+<td>45 / 21 ms</td>
+</tr>
+<tr class="even">
+<td>v0.1.0, all features</td>
+<td>z</td>
+<td>23.9 MB</td>
+<td>86 / 33 ms</td>
+</tr>
+<tr class="odd">
+<td>v0.1.0, without <code>fmt</code></td>
+<td>3</td>
+<td>57.2 MB</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>v0.1.0, without <code>json</code></td>
+<td>3</td>
+<td>56.8 MB</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>v0.1.0, without <code>ipc</code></td>
+<td>3</td>
+<td>56.9 MB</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>v0.1.0, without <code>parquet</code> and <code>ipc</code></td>
+<td>3</td>
+<td>52.4 MB</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>v0.1.0, CSV only (no optional features)</td>
+<td>3</td>
+<td>51.8 MB</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>v0.1.0, CSV only (no optional features)</td>
+<td>s</td>
+<td>35.9 MB</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+</section>

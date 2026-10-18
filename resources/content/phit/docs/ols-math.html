@@ -1,0 +1,51 @@
+<p>Follow the <a href="phpstats://phit/docs/notebooks/ols-math">executed OLS walkthrough</a> for intermediate matrices and calculations, and the <a href="phpstats://phit/docs/verifications/ols">three-way verification</a> for equivalent fits in R, statsmodels and PHP. Missing-data deletion happens in the binding before estimation; all formulas below use the retained sample.</p>
+<section id="least-squares" class="level2">
+<h2 class="anchored" data-anchor-id="least-squares">Least squares</h2>
+<p>For an <span class="math inline">\(n \times p\)</span> design matrix <span class="math inline">\(X\)</span> and outcome vector <span class="math inline">\(y\)</span>, choose</p>
+<p><span class="math display">\[
+\hat\beta=\operatorname*{arg\,min}_{\beta}(y-X\beta)^\top(y-X\beta).
+\]</span></p>
+<p>Differentiating the quadratic gives gradient <span class="math inline">\(-2X^\top(y-X\beta)\)</span>. Setting it to zero produces the normal equations:</p>
+<p><span class="math display">\[
+X^\top X\hat\beta=X^\top y.
+\]</span></p>
+<p>This characterizes the answer, but computing the inverse of <span class="math inline">\(X^\top X\)</span> squares the condition number and can lose accuracy. In <code>crates/stats-core/src/ols.rs</code>, we scale columns with a diagonal matrix <span class="math inline">\(D\)</span> and decompose <span class="math inline">\(A=XD^{-1}=USV^\top\)</span>. The least-squares solution is <span class="math inline">\(\hat\beta=D^{-1}VS^{-1}U^\top y\)</span>. nalgebra’s SVD <code>solve</code> performs this calculation. Singular values at numerical zero indicate a rank failure. Scaling makes the rank decision less dependent on predictor units.</p>
+<p>The numerical engine uses nalgebra’s Rust-native decomposition. External BLAS/LAPACK dependencies are deferred until a concrete need justifies them; the <a href="phpstats://phit/docs/benchmarks/ols#apple-accelerate-experiment">past experiment</a> is kept as historical evidence.</p>
+<p>Fitted values are <span class="math inline">\(X\hat\beta\)</span>, residuals are <span class="math inline">\(y-X\hat\beta\)</span>, and <span class="math inline">\(\mathrm{RSS}\)</span> is the squared residual norm. Full rank uses <span class="math inline">\(p\)</span> estimated coefficients and leaves <span class="math inline">\(n-p\)</span> residual degrees of freedom. The unbiased estimate of error variance is <span class="math inline">\(s^2=\mathrm{RSS}/(n-p)\)</span>. The conventional covariance is</p>
+<p><span class="math display">\[
+\widehat{\operatorname{Var}}(\hat\beta)
+=s^2(X^\top X)^{-1}
+=s^2D^{-1}VS^{-2}V^\top D^{-1}.
+\]</span></p>
+<p>The code computes the final expression directly from the SVD. Standard errors are square roots of its diagonal. Under Gaussian independent errors, <span class="math inline">\((\hat\beta_j-\beta_j)/\mathrm{SE}_j\)</span> has a Student <span class="math inline">\(t\)</span> distribution with <span class="math inline">\(n-p\)</span> degrees of freedom. For the null <span class="math inline">\(\beta_j=0\)</span>, the reported statistic is <span class="math inline">\(\hat\beta_j/\mathrm{SE}_j\)</span>. Two-sided p-values use twice the upper tail at its absolute value. Confidence limits are <span class="math inline">\(\hat\beta_j\pm t_{0.975,n-p}\,\mathrm{SE}_j\)</span>. The survival function preserves precision for small p-values.</p>
+<p>With an explicit ones column, <span class="math inline">\(\mathrm{TSS}=\sum_i(y_i-\bar y)^2\)</span>; otherwise <span class="math inline">\(\mathrm{TSS}=\sum_i y_i^2\)</span>. We report <span class="math inline">\(R^2=1-\mathrm{RSS}/\mathrm{TSS}\)</span>. Adjusted <span class="math inline">\(R^2\)</span> is <span class="math inline">\(1-(1-R^2)(n-1)/(n-p)\)</span> with an intercept, or <span class="math inline">\(1-(1-R^2)n/(n-p)\)</span> without one. See the <a href="phpstats://phit/docs/contracts">contracts</a> for zero-variance and perfect-fit conventions.</p>
+</section>
+<section id="gaussian-likelihood" class="level2">
+<h2 class="anchored" data-anchor-id="gaussian-likelihood">Gaussian likelihood</h2>
+<p>Assume independent observations</p>
+<p><span class="math display">\[
+y_i\sim N(x_i^\top\beta,\sigma^2).
+\]</span></p>
+<p>Multiplying their densities and taking logs turns the product into a sum:</p>
+<p><span class="math display">\[
+\ell(\beta,\sigma^2)
+=-\frac n2\log(2\pi\sigma^2)
+-\frac{1}{2\sigma^2}\sum_i(y_i-x_i^\top\beta)^2.
+\]</span></p>
+<p>For any positive fixed variance, maximizing this expression with respect to <span class="math inline">\(\beta\)</span> minimizes <span class="math inline">\(\mathrm{RSS}\)</span>, giving the OLS coefficients. Differentiating with respect to the variance gives <span class="math inline">\(-n/(2\sigma^2)+\mathrm{RSS}/(2\sigma^4)=0\)</span>, so the ML estimate is <span class="math inline">\(\mathrm{RSS}/n\)</span>. Substitution yields</p>
+<p><span class="math display">\[
+\ell(\hat\beta,\hat\sigma^2_{\mathrm{ML}})
+=-\frac n2\left[\log(2\pi)+\log(\mathrm{RSS}/n)+1\right].
+\]</span></p>
+<p>This is the likelihood returned by the code. ML variance differs from <span class="math inline">\(\mathrm{RSS}/(n-p)\)</span>: estimating coefficients consumes <span class="math inline">\(p\)</span> degrees of freedom, so dividing by <span class="math inline">\(n-p\)</span> corrects the downward bias for inference. At <span class="math inline">\(\mathrm{RSS}=0\)</span>, the positive-variance model has no finite maximum: likelihood grows without bound as variance approaches zero. The code reports positive infinity as the limiting log-likelihood.</p>
+</section>
+<section id="rust-constructs-in-this-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="rust-constructs-in-this-implementation">Rust constructs in this implementation</h2>
+<p><code>fit_ols</code> takes ownership of <code>Vec&lt;Vec&lt;f64&gt;&gt;</code> and <code>Vec&lt;f64&gt;</code>: it can consume them with <code>into_iter()</code> without copying. Validation uses borrowed iterators (<code>iter()</code>) to inspect values before moving them. The binding borrows PHP’s <code>ZendHashTable</code> for the duration of the call, copying numeric values into Rust-owned vectors.</p>
+<p><code>OlsResult</code> is a struct grouping named outputs. <code>StatsError</code> holds a readable message and implements Display and Error. <code>Result&lt;OlsResult, StatsError&gt;</code> forces the caller to handle failure. The <code>?</code> operator returns early on an error; the PHP binding uses <code>map_err</code> to convert it into a <code>PhpException</code>. No PHP types appear in stats-core.</p>
+<p>Vectors own variable-length data. Borrowed slices and iterators let us inspect that data without taking ownership. <code>map</code>, <code>collect</code>, <code>any</code> and <code>sum</code> express the coefficient, validation and scalar calculations. <code>Vec&lt;[f64; 2]&gt;</code> stores each confidence interval as a fixed-size pair.</p>
+<p>nalgebra’s <code>DMatrix</code> and <code>DVector</code> have runtime dimensions and own their storage. <code>from_row_iterator</code> accepts the flattened row-wise design; nalgebra stores its matrix column-wise internally. Indexing <code>(i,j)</code> accesses a row and column. Borrowing <code>&amp;design</code> and <code>&amp;beta</code> during multiplication keeps them available for later calculations. SVD consumes the scaled matrix, and its singular values and right singular vectors provide both the fit and covariance.</p>
+<p>In <code>crates/php-extension/src/lib.rs</code>, <code>#[php_function]</code> exports functions and <code>#[php_module]</code> registers them. Input values are inspected explicitly so strings and booleans cannot silently become numbers. The binding filters null/NAN rows listwise, reports original positions and warns on successful omission; strict mode rejects missingness. Rust still receives complete finite vectors. <code>ZendHashTable::insert</code> and the crate’s <code>IntoZval</code> conversions turn Rust floats, vectors and nested vectors into PHP values. The owned <code>ZBox&lt;ZendHashTable&gt;</code> uses PHP-managed allocation. The binding has no statistical calculations beyond selecting the result fields.</p>
+
+
+</section>

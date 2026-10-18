@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Data\Benchmarks;
+use App\Content\Package;
 use App\Data\SchoolPosterior;
-use App\Livewire\BenchmarkResults;
 use App\Data\SimulatedRentals;
 use App\Livewire\BayesianSchools;
 use App\Livewire\CsvReader;
@@ -13,6 +12,7 @@ use App\Livewire\PolarsPipeline;
 use App\Livewire\RandomEffects;
 use App\Livewire\RentDashboard;
 use App\Livewire\SchoolEffects;
+use App\Livewire\ScriptVignette;
 use App\Livewire\SimulatedRents;
 use App\Livewire\SqlPipeline;
 use App\Models\SimulatedRental;
@@ -27,27 +27,113 @@ class PagesTest extends TestCase
 
     protected bool $seed = true;
 
-    public function test_landing_page_lists_every_project(): void
+    private function vignette(string $slug): string
     {
-        $response = $this->get('/');
+        return Package::find(config("phpstats.vignettes.{$slug}.packages.0"))->url('vignette', ['slug' => $slug]);
+    }
 
-        $response->assertOk();
+    public function test_landing_page_links_every_package(): void
+    {
+        $response = $this->get('http://phpstats.test/')->assertOk()->assertSee('Modern statistical computing for PHP.');
 
-        foreach (config('projects') as $project) {
-            $response->assertSee($project['name'])->assertSee($project['status_label']);
+        foreach (array_keys(config('projects')) as $key) {
+            $response->assertSee("http://{$key}.phpstats.test", false);
         }
     }
 
-    public function test_each_project_has_a_page(): void
+    public function test_each_package_has_an_overview_on_its_own_host(): void
     {
         foreach (array_keys(config('projects')) as $key) {
-            $this->get("/{$key}")->assertOk()->assertSee(config("projects.{$key}.summary"));
+            $package = Package::find($key);
+            $this->get("http://{$key}.phpstats.test/")->assertOk()->assertSee($package->tagline());
+            foreach (['vignettes', 'benchmarks', 'verification'] as $section) {
+                $this->get("http://{$key}.phpstats.test/{$section}")->assertOk();
+            }
         }
     }
 
-    public function test_unknown_project_is_not_found(): void
+    public function test_unknown_hosts_and_paths_are_not_found(): void
     {
-        $this->get('/not-a-project')->assertNotFound();
+        $this->get('http://not-a-package.phpstats.test/')->assertNotFound();
+        $this->get('http://phit.phpstats.test/vignettes/not-a-vignette')->assertNotFound();
+        $this->get('http://phit.phpstats.test/docs/not-a-page')->assertNotFound();
+        $this->get('http://phpstats.test/not-a-project')->assertNotFound();
+    }
+
+    public function test_old_paths_redirect_to_package_hosts(): void
+    {
+        $this->get('http://phpstats.test/php-stats')->assertRedirect('http://phit.phpstats.test');
+        $this->get('http://phpstats.test/phibble')->assertRedirect('http://phibble.phpstats.test');
+        $this->get('http://phpstats.test/vignettes/school-effects')->assertRedirect('http://phit.phpstats.test/vignettes/school-shrinkage');
+        $this->get('http://phpstats.test/vignettes/sql-pipeline')->assertRedirect('http://phibble.phpstats.test/vignettes/sql-pipeline');
+        $this->get('http://phpstats.test/benchmarks')->assertRedirect('http://phit.phpstats.test/benchmarks');
+    }
+
+    public function test_synced_docs_render_with_resolved_links(): void
+    {
+        $package = Package::find('phit');
+        $this->assertTrue($package->hasDocs());
+
+        $index = $this->get('http://phit.phpstats.test/docs')->assertOk();
+        foreach ($package->docsNav() as $item) {
+            $index->assertSee($item['title']);
+            $page = $this->get($package->url('docs', ['path' => $item['path'] === 'index' ? null : $item['path']]))->assertOk();
+            $this->assertStringNotContainsString('phpstats://', $page->getContent());
+        }
+
+        $this->get('http://phit.phpstats.test/docs/notebooks/lmm-math')->assertOk()
+            ->assertSee('class="math inline"', false)
+            ->assertSee('mathjax@4', false);
+    }
+
+    public function test_benchmarks_and_verification_render_every_file(): void
+    {
+        foreach (['phit', 'phpolars'] as $key) {
+            $package = Package::find($key);
+            $this->assertNotEmpty($package->benchmarks());
+            $this->assertNotEmpty($package->verifications());
+
+            $benchmarks = $this->get($package->url('benchmarks'))->assertOk();
+            foreach ($package->benchmarks() as $benchmark) {
+                $benchmarks->assertSee($benchmark['title']);
+            }
+            $verification = $this->get($package->url('verification'))->assertOk();
+            foreach ($package->verifications() as $report) {
+                $verification->assertSee($report['title']);
+            }
+        }
+    }
+
+    public function test_script_vignettes_run_or_explain_what_is_missing(): void
+    {
+        foreach (['phit', 'phpolars'] as $key) {
+            $package = Package::find($key);
+            foreach ($package->vignettes() as $vignette) {
+                if ($vignette['kind'] !== 'script') {
+                    continue;
+                }
+                $response = $this->get($package->url('vignette', ['slug' => $vignette['slug']]))->assertOk()->assertSee($vignette['title']);
+                $missing = array_filter($vignette['uses'], fn ($use) => ! ScriptVignette::available($use));
+                if ($missing !== []) {
+                    $response->assertSee('which this server does not have');
+                } else {
+                    $response->assertDontSee('The vignette failed to run')->assertDontSee('bg-red-50', false);
+                }
+            }
+        }
+    }
+
+    public function test_script_vignette_inputs_are_validated(): void
+    {
+        $inputs = [
+            'rows' => ['type' => 'select', 'options' => [1000 => 'a', 5000 => 'b'], 'default' => 1000],
+            'hours' => ['type' => 'number', 'min' => 0, 'max' => 20, 'default' => 8],
+            'flag' => ['type' => 'checkbox', 'default' => false],
+        ];
+        $this->assertSame(['rows' => 5000, 'hours' => 20, 'flag' => true],
+            ScriptVignette::cleanInputs($inputs, ['rows' => '5000', 'hours' => '999', 'flag' => '1']));
+        $this->assertSame(['rows' => 1000, 'hours' => 8, 'flag' => false],
+            ScriptVignette::cleanInputs($inputs, ['rows' => 'DROP', 'hours' => 'x']));
     }
 
     public function test_school_scores_vignette_fits_the_model(): void
@@ -56,7 +142,7 @@ class PagesTest extends TestCase
             $this->markTestSkipped('phit is not loaded.');
         }
 
-        $this->get('/vignettes/school-scores')
+        $this->get($this->vignette('school-scores'))
             ->assertOk()
             ->assertSee('Study hours')
             ->assertSee('n = 250');
@@ -78,7 +164,7 @@ class PagesTest extends TestCase
             $this->markTestSkipped('phit is not loaded.');
         }
 
-        $this->get('/vignettes/simulated-rents')
+        $this->get($this->vignette('simulated-rents'))
             ->assertOk()
             ->assertSee('simulated')
             ->assertSee('n = 3,000');
@@ -96,7 +182,7 @@ class PagesTest extends TestCase
             $this->markTestSkipped('phit is not loaded.');
         }
 
-        $this->get('/vignettes/school-effects')
+        $this->get($this->vignette('school-shrinkage'))
             ->assertOk()
             ->assertSee('Variance components')
             ->assertSee('REML fit on 250 students in 12 schools');
@@ -143,7 +229,7 @@ class PagesTest extends TestCase
             $this->markTestSkipped('phit is not loaded.');
         }
 
-        $this->get('/vignettes/bayesian-schools')->assertOk()->assertSee('School SD (τ)');
+        $this->get($this->vignette('bayesian-schools'))->assertOk()->assertSee('School SD (τ)');
 
         $fit = Livewire::test(BayesianSchools::class)->set('level', 95)->viewData('fit');
         foreach ($fit['parameters'] as $p) {
@@ -163,7 +249,7 @@ class PagesTest extends TestCase
             $this->markTestSkipped('phit is not loaded.');
         }
 
-        $this->get('/vignettes/rent-dashboard')->assertOk()->assertSee('3,000 rentals selected');
+        $this->get($this->vignette('rent-dashboard'))->assertOk()->assertSee('3,000 rentals selected');
 
         $harbor = Livewire::test(RentDashboard::class)->set('neighborhoods', ['Harbor'])->set('budget', 2500);
         $this->assertSame(SimulatedRental::where('neighborhood', 'Harbor')->count(), $harbor->viewData('rentals'));
@@ -182,30 +268,9 @@ class PagesTest extends TestCase
         $this->assertStringContainsString('over the budget', $allOver->viewData('error'));
     }
 
-    public function test_benchmarks_page_shows_every_model(): void
-    {
-        $this->get('/benchmarks')->assertOk()->assertSee('Agrees with R')
-            ->assertSee('Plain PHP, normal equations (coefficients only)')
-            ->assertSee('Polyfill agrees')
-            ->assertSee('phpolars PolarsTable');
-
-        $data = Benchmarks::load();
-        $this->assertSame(array_keys(Benchmarks::MODELS), array_keys($data['models']));
-        $this->assertSame('phplyr-backends/1', $data['backends']['schema']);
-        foreach ($data['backends']['results'] as $result) {
-            $this->assertArrayHasKey($result['backend'], Benchmarks::BACKENDS);
-        }
-
-        foreach (array_keys(Benchmarks::MODELS) as $key) {
-            Livewire::test(BenchmarkResults::class)->set('model', $key)
-                ->assertSee($data['models'][$key]['label'])
-                ->assertSee(number_format(end($data['models'][$key]['cases'])['n']));
-        }
-    }
-
     public function test_sql_pipeline_matches_the_in_memory_result(): void
     {
-        $this->get('/vignettes/sql-pipeline')
+        $this->get($this->vignette('sql-pipeline'))
             ->assertOk()
             ->assertSee('GROUP BY &quot;neighborhood&quot;', false)
             ->assertSee('same rows in the same order');
@@ -245,7 +310,7 @@ class PagesTest extends TestCase
             $this->markTestSkipped('phit is not loaded.');
         }
 
-        $this->get('/vignettes/glm-models')->assertOk()->assertSee('Odds ratio');
+        $this->get($this->vignette('glm-models'))->assertOk()->assertSee('Odds ratio');
 
         // R 4.6.1 glm() references from phit tests/fixtures/formula-r.json.
         $logit = Livewire::test(GlmModels::class)->viewData('fit')['result'];
@@ -268,7 +333,7 @@ class PagesTest extends TestCase
             $this->markTestSkipped('phit is not loaded.');
         }
 
-        $this->get('/vignettes/random-effects')->assertOk()->assertSee('Caterpillar plot');
+        $this->get($this->vignette('random-effects'))->assertOk()->assertSee('Caterpillar plot');
 
         $fit = Livewire::test(RandomEffects::class)->viewData('fit');
         if (! isset($fit['term']['effects_cond_var'])) {
@@ -289,7 +354,7 @@ class PagesTest extends TestCase
             $this->markTestSkipped('phit is not loaded.');
         }
 
-        $this->get('/vignettes/csv-reader')->assertOk()->assertSee('expected 8 columns, got 5');
+        $this->get($this->vignette('csv-reader'))->assertOk()->assertSee('expected 8 columns, got 5');
 
         $page = Livewire::test(CsvReader::class);
         $native = $page->viewData('native');
@@ -318,7 +383,7 @@ class PagesTest extends TestCase
 
         if (! PolarsPipeline::polarsAvailable()) {
             $this->assertNull($page->viewData('polars'));
-            $this->get('/vignettes/polars-pipeline')->assertOk()->assertSee('runs only on the in-memory DataFrame');
+            $this->get($this->vignette('polars-pipeline'))->assertOk()->assertSee('runs only on the in-memory DataFrame');
 
             return;
         }
@@ -334,8 +399,8 @@ class PagesTest extends TestCase
             $this->markTestSkipped('phit is not loaded.');
         }
 
-        $this->get('/vignettes/rent-dashboard')->assertOk()->assertSee('Predicted rent');
-        $this->get('/vignettes/school-effects')->assertOk()->assertSee('Population prediction');
+        $this->get($this->vignette('rent-dashboard'))->assertOk()->assertSee('Predicted rent');
+        $this->get($this->vignette('school-shrinkage'))->assertOk()->assertSee('Population prediction');
 
         $page = Livewire::test(RentDashboard::class)->set('whatIfNeighborhood', 'Harbor')->set('whatIfArea', 80)->set('whatIfBedrooms', 3);
         $whatIf = $page->viewData('whatIf');

@@ -1,0 +1,506 @@
+<p>We compare the native binomial random-intercept fitter with <strong>R lme4</strong>, and independently evaluate its likelihood with <strong>SciPy</strong>. The model uses marginal maximum likelihood, a logit link and a Gaussian random intercept. Inputs remain plain design/outcome/group arrays. See the <a href="phpstats://phit/docs/notebooks/logistic-mixed-math">math walkthrough</a> and <a href="phpstats://phit/docs/contracts#binomial-random-intercept-ml">contract</a>.</p>
+<section id="execute-the-comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="execute-the-comparisons">Execute the comparisons</h2>
+<div id="06cb651c" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json,sys</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>ROOT<span class="op">=</span><span class="bu">next</span>(p <span class="cf">for</span> p <span class="kw">in</span> [Path.cwd(),<span class="op">*</span>Path.cwd().parents] <span class="cf">if</span> (p<span class="op">/</span><span class="st">'Cargo.toml'</span>).exists())</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>,<span class="bu">str</span>(ROOT<span class="op">/</span><span class="st">'docs/figures'</span>))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bridge <span class="im">import</span> render_figure</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>,<span class="bu">str</span>(ROOT<span class="op">/</span><span class="st">'docs/verifications'</span>))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> compare_logistic_mixed <span class="im">import</span> run</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>report<span class="op">=</span>run()</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(report[<span class="st">'versions'</span>])</span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Passed 28 R/PHP comparisons, independent likelihood/integration checks, and statsmodels zero-variance reduction.
+Independent cbpp marginal ML fit: {'dataset': 'cbpp', 'coefficients': [-1.399230360516453, -0.9914039350112828, -1.1278198196624616, -1.579470750553407], 'random_intercept_sd': 0.6475184370023838, 'log_likelihood': -91.98336903731132, 'converged': True, 'evaluations': 120, 'message': 'CONVERGENCE: RELATIVE REDUCTION OF F &lt;= FACTR*EPSMCH', 'method': 'SciPy L-BFGS-B + QUADPACK integration', 'start': 'statsmodels binomial GLM, SD=1'}
+{'R': 'R version 4.6.1 (2026-06-24)', 'lme4': '2.0.6', 'PHP': '8.5.10', 'python': '3.14.7', 'numpy': '2.5.4', 'scipy': '1.18.1', 'statsmodels': '0.15.0'}</code></pre>
+</div>
+</div>
+<p>Seven input datasets are fitted with 1, 9, 25 and 61 nodes: <strong>28 comparisons</strong>. They cover binary outcomes, grouped counts with offsets, no fixed intercept, small/unbalanced groups with rare events, large group variation, a zero random variance boundary, and the published cbpp model. R references use BOBYQA with rhoend=1e-9 and tolPwrss=1e-12. Codes must be zero and saved warnings empty. Rust/PHP tests compare every coefficient, covariance/inference value, observation prediction/residual, conditional group mode, scale, normalized likelihood and AIC/BIC.</p>
+<p>The independent Python evaluator uses Brent root finding for conditional modes, NumPy Hermite nodes for the same approximation, and QUADPACK adaptive integration for a separate numerical accuracy check. Its matched-approximation likelihood must agree with native output within <strong>2e-8 absolute</strong>. QUADPACK error estimates are recorded; they are numerical estimates, not mathematical error guarantees.</p>
+</section>
+<section id="published-cbpp-matching-estimation-methods" class="level2">
+<h2 class="anchored" data-anchor-id="published-cbpp-matching-estimation-methods">Published cbpp: matching estimation methods</h2>
+<div id="da046174" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rows<span class="op">=</span>[]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r <span class="kw">in</span> report[<span class="st">'results'</span>]:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r[<span class="st">'dataset'</span>]<span class="op">!=</span><span class="st">'cbpp'</span>:<span class="cf">continue</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> implementation,fit <span class="kw">in</span> [(<span class="st">'R: lme4'</span>,r[<span class="st">'R'</span>]),(<span class="st">'PHP'</span>,r[<span class="st">'PHP'</span>])]:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        rows.append(<span class="bu">dict</span>(nodes<span class="op">=</span>r[<span class="st">'quadrature_points'</span>],implementation<span class="op">=</span>implementation,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                         intercept<span class="op">=</span>fit[<span class="st">'coefficients'</span>][<span class="dv">0</span>],group_SD<span class="op">=</span>fit[<span class="st">'random_intercept_sd'</span>],</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                         log_likelihood<span class="op">=</span>fit[<span class="st">'log_likelihood'</span>],AIC<span class="op">=</span>fit[<span class="st">'aic'</span>]))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Independent marginal ML fit using SciPy optimization and QUADPACK:'</span>,report[<span class="st">'exact_fit'</span>])</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">nodes</th>
+<th data-quarto-table-cell-role="th">implementation</th>
+<th data-quarto-table-cell-role="th">intercept</th>
+<th data-quarto-table-cell-role="th">group_SD</th>
+<th data-quarto-table-cell-role="th">log_likelihood</th>
+<th data-quarto-table-cell-role="th">AIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>1</td>
+<td>R: lme4</td>
+<td>-1.398532</td>
+<td>0.642261</td>
+<td>-92.026282</td>
+<td>194.052564</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>1</td>
+<td>PHP</td>
+<td>-1.398532</td>
+<td>0.642261</td>
+<td>-92.026282</td>
+<td>194.052564</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>9</td>
+<td>R: lme4</td>
+<td>-1.399230</td>
+<td>0.647518</td>
+<td>-91.983372</td>
+<td>193.966744</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>9</td>
+<td>PHP</td>
+<td>-1.399230</td>
+<td>0.647518</td>
+<td>-91.983372</td>
+<td>193.966744</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>25</td>
+<td>R: lme4</td>
+<td>-1.399230</td>
+<td>0.647518</td>
+<td>-91.983369</td>
+<td>193.966738</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>25</td>
+<td>PHP</td>
+<td>-1.399230</td>
+<td>0.647518</td>
+<td>-91.983369</td>
+<td>193.966738</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>61</td>
+<td>R: lme4</td>
+<td>-1.399230</td>
+<td>0.647518</td>
+<td>-91.983369</td>
+<td>193.966738</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>61</td>
+<td>PHP</td>
+<td>-1.399230</td>
+<td>0.647518</td>
+<td>-91.983369</td>
+<td>193.966738</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Independent marginal ML fit using SciPy optimization and QUADPACK: {'dataset': 'cbpp', 'coefficients': [-1.399230360516453, -0.9914039350112828, -1.1278198196624616, -1.579470750553407], 'random_intercept_sd': 0.6475184370023838, 'log_likelihood': -91.98336903731132, 'converged': True, 'evaluations': 120, 'message': 'CONVERGENCE: RELATIVE REDUCTION OF F &lt;= FACTR*EPSMCH', 'method': 'SciPy L-BFGS-B + QUADPACK integration', 'start': 'statsmodels binomial GLM, SD=1'}</code></pre>
+</div>
+</div>
+<p>The independent SciPy optimizer starts from a <strong>statsmodels binomial GLM and SD=1</strong>, not from native mixed estimates. It optimizes the numerically integrated cbpp likelihood and checks its estimates against high-node native output.</p>
+<p><a href="https://www.statsmodels.org/stable/generated/statsmodels.genmod.bayes_mixed_glm.BinomialBayesMixedGLM.html">statsmodels BinomialBayesMixedGLM</a> uses Bayesian posterior estimation with priors on fixed effects and variance parameters. That is a different objective, so we do not claim equivalent mixed ML estimates from it. statsmodels <strong>GLM</strong> verifies the exact zero-random-variance reduction instead. The full mixed-model Python reference here is explicitly SciPy.</p>
+</section>
+<section id="likelihood-normalization-matters" class="level2">
+<h2 class="anchored" data-anchor-id="likelihood-normalization-matters">Likelihood normalization matters</h2>
+<div id="b609d925" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame([<span class="bu">dict</span>(nodes<span class="op">=</span>r[<span class="st">'quadrature_points'</span>],</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                         R_reported_log_likelihood<span class="op">=</span>r[<span class="st">'R_reference'</span>][<span class="st">'reported_log_likelihood'</span>],</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                         R_additive_correction<span class="op">=</span>r[<span class="st">'R_reference'</span>][<span class="st">'log_likelihood_correction'</span>],</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                         R_normalized_log_likelihood<span class="op">=</span>r[<span class="st">'R'</span>][<span class="st">'log_likelihood'</span>],</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                         PHP_normalized_log_likelihood<span class="op">=</span>r[<span class="st">'PHP'</span>][<span class="st">'log_likelihood'</span>])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> r <span class="kw">in</span> report[<span class="st">'results'</span>] <span class="cf">if</span> r[<span class="st">'dataset'</span>]<span class="op">==</span><span class="st">'cbpp'</span>]))</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">nodes</th>
+<th data-quarto-table-cell-role="th">R_reported_log_likelihood</th>
+<th data-quarto-table-cell-role="th">R_additive_correction</th>
+<th data-quarto-table-cell-role="th">R_normalized_log_likelihood</th>
+<th data-quarto-table-cell-role="th">PHP_normalized_log_likelihood</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>1</td>
+<td>-92.026282</td>
+<td>0.000000</td>
+<td>-92.026282</td>
+<td>-92.026282</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>9</td>
+<td>-50.005018</td>
+<td>-41.978354</td>
+<td>-91.983372</td>
+<td>-91.983372</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>25</td>
+<td>-50.005015</td>
+<td>-41.978354</td>
+<td>-91.983369</td>
+<td>-91.983369</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>61</td>
+<td>-50.005015</td>
+<td>-41.978354</td>
+<td>-91.983369</td>
+<td>-91.983369</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>For grouped-binomial responses, lme4 nAGQ&gt;1 computes its reported criterion using conditional deviance relative to the saturated model. Its additive constant differs from nAGQ=1. We retain the raw R value and restore the saturated log likelihood, <code>sum(dbinom(successes, trials, successes/trials, log=TRUE))</code>, before comparing normalized likelihoods and AIC/BIC. For binary observations this constant is zero. This convention is disclosed in the <a href="https://lme4.github.io/lme4/reference/glmer.html">glmer documentation</a>.</p>
+<p>The native likelihood always includes binomial coefficients and Gaussian normalization. Changing node counts does not change its additive convention.</p>
+</section>
+<section id="approximation-error-separately-from-implementation-agreement" class="level2">
+<h2 class="anchored" data-anchor-id="approximation-error-separately-from-implementation-agreement">Approximation error, separately from implementation agreement</h2>
+<div id="8816ae24" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>accuracy<span class="op">=</span>pd.DataFrame([<span class="bu">dict</span>(dataset<span class="op">=</span>r[<span class="st">'dataset'</span>],nodes<span class="op">=</span>r[<span class="st">'quadrature_points'</span>],</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                           approximation_error<span class="op">=</span>r[<span class="st">'approximation_log_likelihood_error'</span>],</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                           group_SD<span class="op">=</span>r[<span class="st">'PHP'</span>][<span class="st">'random_intercept_sd'</span>],</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                           max_coefficient_difference_vs_R<span class="op">=</span>r[<span class="st">'max_coefficient_difference'</span>])</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                      <span class="cf">for</span> r <span class="kw">in</span> report[<span class="st">'results'</span>]])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>display(accuracy)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>render_figure(<span class="st">'approximation'</span>)</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">dataset</th>
+<th data-quarto-table-cell-role="th">nodes</th>
+<th data-quarto-table-cell-role="th">approximation_error</th>
+<th data-quarto-table-cell-role="th">group_SD</th>
+<th data-quarto-table-cell-role="th">max_coefficient_difference_vs_R</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>binary</td>
+<td>1</td>
+<td>-9.166328e-02</td>
+<td>1.024953</td>
+<td>3.149782e-07</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>binary</td>
+<td>9</td>
+<td>-1.964821e-06</td>
+<td>1.036172</td>
+<td>8.375431e-08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>binary</td>
+<td>25</td>
+<td>-7.105427e-14</td>
+<td>1.036174</td>
+<td>1.261185e-07</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>binary</td>
+<td>61</td>
+<td>0.000000e+00</td>
+<td>1.036174</td>
+<td>4.001991e-08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>no_intercept</td>
+<td>1</td>
+<td>-1.884312e-01</td>
+<td>1.822757</td>
+<td>2.977063e-08</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">5</th>
+<td>no_intercept</td>
+<td>9</td>
+<td>-9.394904e-05</td>
+<td>1.843266</td>
+<td>7.561876e-09</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>no_intercept</td>
+<td>25</td>
+<td>-1.719187e-09</td>
+<td>1.843343</td>
+<td>2.678783e-08</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">7</th>
+<td>no_intercept</td>
+<td>61</td>
+<td>0.000000e+00</td>
+<td>1.843343</td>
+<td>2.235931e-08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">8</th>
+<td>grouped_offset</td>
+<td>1</td>
+<td>-2.160278e-02</td>
+<td>1.428117</td>
+<td>1.769598e-06</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>grouped_offset</td>
+<td>9</td>
+<td>-5.012076e-06</td>
+<td>1.428642</td>
+<td>1.350418e-06</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
+<td>grouped_offset</td>
+<td>25</td>
+<td>-1.972467e-11</td>
+<td>1.428643</td>
+<td>7.443581e-07</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">11</th>
+<td>grouped_offset</td>
+<td>61</td>
+<td>5.684342e-14</td>
+<td>1.428643</td>
+<td>8.173894e-08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">12</th>
+<td>rare_events</td>
+<td>1</td>
+<td>2.214320e+00</td>
+<td>7.298560</td>
+<td>1.152076e-06</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">13</th>
+<td>rare_events</td>
+<td>9</td>
+<td>4.719648e-02</td>
+<td>3.499107</td>
+<td>4.137237e-08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">14</th>
+<td>rare_events</td>
+<td>25</td>
+<td>2.923269e-04</td>
+<td>3.356057</td>
+<td>1.316197e-07</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">15</th>
+<td>rare_events</td>
+<td>61</td>
+<td>1.345489e-07</td>
+<td>3.356287</td>
+<td>2.813783e-08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">16</th>
+<td>large_group_variation</td>
+<td>1</td>
+<td>-2.962600e-01</td>
+<td>1.771035</td>
+<td>1.523664e-06</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">17</th>
+<td>large_group_variation</td>
+<td>9</td>
+<td>3.002809e-05</td>
+<td>1.830570</td>
+<td>5.192793e-08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">18</th>
+<td>large_group_variation</td>
+<td>25</td>
+<td>6.515599e-09</td>
+<td>1.830524</td>
+<td>4.205289e-08</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">19</th>
+<td>large_group_variation</td>
+<td>61</td>
+<td>2.131628e-14</td>
+<td>1.830524</td>
+<td>4.595027e-08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">20</th>
+<td>boundary</td>
+<td>1</td>
+<td>3.552714e-14</td>
+<td>0.000000</td>
+<td>8.247378e-09</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">21</th>
+<td>boundary</td>
+<td>9</td>
+<td>3.552714e-14</td>
+<td>0.000000</td>
+<td>4.832885e-09</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">22</th>
+<td>boundary</td>
+<td>25</td>
+<td>3.552714e-14</td>
+<td>0.000000</td>
+<td>4.836544e-09</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">23</th>
+<td>boundary</td>
+<td>61</td>
+<td>3.552714e-14</td>
+<td>0.000000</td>
+<td>4.842138e-09</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">24</th>
+<td>cbpp</td>
+<td>1</td>
+<td>-4.248342e-02</td>
+<td>0.642261</td>
+<td>7.570788e-08</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">25</th>
+<td>cbpp</td>
+<td>9</td>
+<td>-2.759014e-06</td>
+<td>0.647518</td>
+<td>5.221275e-08</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">26</th>
+<td>cbpp</td>
+<td>25</td>
+<td>6.679102e-13</td>
+<td>0.647518</td>
+<td>7.137462e-08</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">27</th>
+<td>cbpp</td>
+<td>61</td>
+<td>7.389644e-13</td>
+<td>0.647518</td>
+<td>8.575106e-08</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>figures/logistic-mixed-integration-error.svg 
+figures/logistic-mixed-node-sensitivity.svg </code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="/content/phit/docs/notebooks/logistic-mixed-verification_files/figure-html/cell-5-output-3.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="/content/phit/docs/notebooks/logistic-mixed-verification_files/figure-html/cell-5-output-4.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The likelihood errors are measured <strong>at each approximation’s own fitted parameter vector</strong>, using independent integration. They are not differences between log likelihoods at different parameters. The rare-event fixture makes the distinction visible: Laplace agrees with R but substantially changes estimated group variance. Higher node counts improve this example; 61 nodes is still an approximation. Check estimate sensitivity to node counts when groups are small or events rare.</p>
+</section>
+<section id="numerical-tolerance-and-failure-policy" class="level2">
+<h2 class="anchored" data-anchor-id="numerical-tolerance-and-failure-policy">Numerical tolerance and failure policy</h2>
+<ul>
+<li>Estimates/predictions/group modes: absolute 2e-5 plus relative 2e-4.</li>
+<li>Covariance, standard errors, z tests, p-values and intervals: absolute 2e-5 plus relative 2e-3; R and native use independently computed finite-difference Hessians.</li>
+<li>Likelihood/AIC/BIC: absolute 1e-6 plus relative 1e-8.</li>
+<li>Independent matched-approximation likelihood: absolute 2e-8.</li>
+<li>Sample metadata, group ordering, integer counts and singular flags are exact where checked. Boundary reduction also checks equality with the native GLM.</li>
+</ul>
+<p>The coefficient covariance is the fixed block of inverse <strong>joint marginal observed information</strong>, including scale coupling. A nonpositive Hessian, excessive final score, invalid/aliased design, fixed separation, invalid counts or exhausted budget throws an error. Controls have explicit parameter bounds; convergence is local and does not prove global optimality. Missingness follows the existing listwise policy with one warning and original retained/dropped positions.</p>
+</section>
+<section id="reproduce" class="level2">
+<h2 class="anchored" data-anchor-id="reproduce">Reproduce</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> test <span class="at">--workspace</span> <span class="at">--locked</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> php-stats <span class="at">--release</span> <span class="at">--locked</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$PWD</span><span class="st">/target/release/libphp_stats.dylib"</span> tests/logistic-mixed.php</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$PWD</span><span class="st">/target/release/libphp_stats.dylib"</span> examples/logistic-mixed.php</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/opt/homebrew/bin/php <span class="ex">.context/notebooks-venv/bin/python</span> docs/verifications/compare_logistic_mixed.py</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Explicit reference refresh, not needed by ordinary Rust/PHP tests:</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> tests/generate-logistic-mixed-fixtures.R</span></code></pre></div></div>
+<p>Use <code>.so</code> on Linux and select matching PHP/php-config as in the development guide. The <a href="/content/phit/docs/verifications/logistic-mixed-results.json">saved full audit</a> includes versions, fixture/data/extension hashes, original R likelihoods and corrections, all actual fit outputs, integration error measurements and the independent SciPy fit.</p>
+
+
+</section>

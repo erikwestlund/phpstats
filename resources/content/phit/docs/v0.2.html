@@ -1,0 +1,87 @@
+<p>The distribution and statistical utility implementation includes probability evaluation, descriptive/draw kernels and explicitly seeded batch sampling. The native release gate passes on this Apple Silicon/macOS workstation with PHP 8.5.10 and matching headers: <strong>68 Rust tests, 14 PHP suites and eleven executed examples passed</strong>, along with clippy, signatures, provenance and evidence-table checks. This is a source/readiness record; no tag, registry submission, binary publication or deployment was performed. Cargo/PIE version metadata still identifies the existing 0.1.0 baseline until the project’s separate release/versioning step.</p>
+<section id="delivered-scope" class="level2">
+<h2 class="anchored" data-anchor-id="delivered-scope">Delivered scope</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Area</th>
+<th>Delivered evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Backend audit</td>
+<td>Executable statrs 0.19 audit against R; saved <a href="/content/phit/docs/verifications/distributions-audit.json">findings</a>; MIT cdflib chosen over GPL nmath ports</td>
+</tr>
+<tr class="even">
+<td>Probability kernels</td>
+<td>All planned Tier 1/2 families, 13 parameterizations, seven operations, scalar/batch PHP APIs: 182 functions</td>
+</tr>
+<tr class="odd">
+<td>Statistical utilities</td>
+<td>Ten descriptive functions; corrected moments, type-7 quantiles and explicit weighted definitions</td>
+</tr>
+<tr class="even">
+<td>Posterior draws</td>
+<td>Strict weighted moments, Cholesky covariance maps and affine transforms, with independent <a href="phpstats://phit/docs/draw-numerics">verification</a></td>
+</tr>
+<tr class="odd">
+<td>Reference accuracy</td>
+<td>R/SciPy/60-digit mpmath fixtures; native <a href="phpstats://phit/docs/verifications/distributions">comparison report</a>; no runtime reference dependency</td>
+</tr>
+<tr class="even">
+<td>PHP verification</td>
+<td>8,618 distribution comparisons, 25 independent adjudications, 43 boundary conventions; 145 descriptive R quantities and missing/error checks</td>
+</tr>
+<tr class="odd">
+<td>Examples</td>
+<td>Executed t test, confidence interval, Poisson likelihood, normal tail/central probability, equivalent NB forms; draw moment transport</td>
+</tr>
+<tr class="even">
+<td>Performance</td>
+<td>27 input cases over 1,000/100,000/one million values; PHP scalar/batch, Rust/R/SciPy, full-output consumption, raw times and peak RSS</td>
+</tr>
+<tr class="odd">
+<td>Regression preservation</td>
+<td>Seven fitters against rebuilt pre-v0.2 revision <code>6342562</code>; every compared quantity identical; observed median ratios 0.967×–1.024×</td>
+</tr>
+<tr class="even">
+<td>Contracts/provenance</td>
+<td>Reflection-generated PHP stubs/signature snapshot, detailed family/utility contracts, hashes for all four distribution/descriptive fixtures, checked evidence tables</td>
+</tr>
+<tr class="odd">
+<td>RNG</td>
+<td>13 seeded batch functions, local ChaCha20 state, 25 independent Python/R cases, prefix/state/type checks and reproducible benchmarks</td>
+</tr>
+<tr class="even">
+<td>Estimator reuse</td>
+<td>Assessed public kernel replacements; retained established OLS/probit paths to preserve existing regression behavior</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="phpstats://phit/docs/contracts">contracts</a>, <a href="phpstats://phit/docs/distributions">distribution guide</a>, <a href="phpstats://phit/docs/descriptive">utility guide</a>, <a href="phpstats://phit/docs/verifications/distributions">verification record</a> and <a href="phpstats://phit/docs/benchmarks/distributions">benchmarks</a> provide the definitions and limits.</p>
+</section>
+<section id="numerical-findings-and-fixes" class="level2">
+<h2 class="anchored" data-anchor-id="numerical-findings-and-fixes">Numerical findings and fixes</h2>
+<p>The saved native/mpmath errors are typically below <code>1e-13</code>; the largest is about <code>8.34e-13</code> in a large-df chi-square log tail. Native tests keep the original operation-specific <code>1e-12</code> tolerances. R and SciPy have documented endpoint and tail differences, with an independent reference used only when the saved references justify it. In particular, SciPy’s large-df chi-square lower-tail error is visible in both the reference record and benchmarks. Unavailable high-precision values are recorded as null, and reduced subnormal precision is disclosed.</p>
+<p>Additional verification fixed two arithmetic bugs: overflowing descriptive variance no longer becomes zero through <code>max(NAN, 0)</code>, and finite large NB size/mean values whose sum overflows no longer become a false point mass. Negative descriptive weights are rejected before missing-value deletion. R reference values at ordinary scales remain within the established tolerances; existing regression APIs and numerical paths are preserved.</p>
+</section>
+<section id="reuse-and-rng-decisions" class="level2">
+<h2 class="anchored" data-anchor-id="reuse-and-rng-decisions">Reuse and RNG decisions</h2>
+<p>The executable <a href="/content/phit/docs/verifications/distributions-reuse.json">reuse experiment</a> found that the new Student-t quantile improves R agreement for the six tested OLS critical values, but changes their rounding. The public normal log-CDF differs at 17 saved points from the established probit calculation. This task also requires preserving regression behavior, so neither path is replaced in this release. A future refactor can use this evidence to make an explicit model compatibility decision.</p>
+<p>Random sampling is implemented with <code>dist_{family}_rng(n, seed, ...parameters)</code>. Each call owns a pinned ChaCha20 stream and transforms open-interval uniforms through the existing inverse CDF. The <a href="phpstats://phit/docs/rng">sampling contract</a> defines seed ownership, count/type/range policies and reproducibility limits. Independent Python ChaCha/PCG/Open01 equations and base-R quantiles verify the stream and samples; <a href="phpstats://phit/docs/benchmarks/rng">benchmarks</a> verify sampled points and full-vector moments before recording seeded-call timings. The earlier handoff recommendation to defer RNG has been superseded by this implementation.</p>
+</section>
+<section id="verification-and-maintenance" class="level2">
+<h2 class="anchored" data-anchor-id="verification-and-maintenance">Verification and maintenance</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="va">PHP_CONFIG</span><span class="op">=</span>/path/to/php-config <span class="ex">./scripts/check</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/reference-manifest.py <span class="at">--check</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/distribution-docs.py <span class="at">--check</span></span></code></pre></div></div>
+<p>The gate runs formatting, clippy with warnings denied, all Rust tests, the release extension build, reflected signature/default/stub checks, every PHP integration suite, examples and offline provenance/documentation checks. The benchmark and independent-reference generation commands are separate and documented alongside their reports. Quarto renders the new guides, contracts, comparison and benchmark pages into the local <code>_site</code> output without publishing them.</p>
+</section>
+<section id="release-and-platform-limits" class="level2">
+<h2 class="anchored" data-anchor-id="release-and-platform-limits">Release and platform limits</h2>
+<p>The new completion run verifies macOS arm64/PHP 8.5.10. Earlier packaging evidence in <a href="phpstats://phit/docs/deployment#deployment-verification">deployment</a> covers Linux arm64 PHP 8.3/8.4/8.5 for the preceding source snapshot. That historical evidence does not establish that the latest hardening changes passed those environments. The configured remote amd64/PHP matrix and updated binary/container builds must run as part of the separate release process. Windows/ZTS remain outside the supported package matrix. Benchmarks do not establish performance bounds on other machines or all finite/extreme arguments.</p>
+<p>Version/tag selection, Packagist registration and release/binary publication remain external release steps. No commit, push, PR or publication is part of this work.</p>
+
+
+</section>

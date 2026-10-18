@@ -1,72 +1,118 @@
-<x-layout>
+@php $packages = \App\Content\Package::all(); @endphp
+<x-layout :wide="true">
     <section class="max-w-3xl">
-        <h1 class="text-3xl font-semibold tracking-tight">PHPstats</h1>
+        <h1 class="text-4xl font-semibold tracking-tight">PHPstats</h1>
         <p class="mt-2 text-xl text-zinc-700 dark:text-zinc-300">Modern statistical computing for PHP.</p>
         <p class="mt-6 text-zinc-700 dark:text-zinc-300">
-            PHPstats provides a family of libraries for data analysis in native PHP.
+            PHPstats is a family of libraries for data analysis in native PHP.
             It is inspired by the Tidyverse in R.
-            Each package does one job, the packages share one data frame type, and they compose with the PHP 8.5 pipe operator.
+            Each package does one job, the packages share one data frame type, and they compose with method chains or the PHP 8.5 pipe operator.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            The packages read data directly from the application database through PDO, Eloquent, or Doctrine, and they fit statistical models whose results are checked against R.
-            Dashboards and reports run in the same Laravel app, with no R or Python server and no hand-written JavaScript.
+            Many teams already keep their data in a PHP application.
+            To analyze it, they export it to R or Python, or they run a separate service next to the app.
+            PHPstats fits the models where the data already is.
+            It reads tables from the application database through Eloquent, Doctrine, or PDO, and it fits regression and mixed models whose results are checked against R.
+        </p>
+        <p class="mt-4 text-zinc-700 dark:text-zinc-300">
+            With Laravel and Livewire, the same code drives interactive dashboards and reports, which makes PHPstats an alternative to Shiny for PHP teams.
+            Inputs are component properties, the server refits the model when one changes, and phiz draws the charts.
+            The page needs no separate R or Python server and no hand-written JavaScript.
         </p>
     </section>
 
-    <section class="mt-10">
-        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">A pipeline</h2>
-        <x-code-tabs class="mt-3">
-            <x-slot:chain>$fit = phplyr(DataFrame::fromQuery(Sale::query()))
-    ->filter(fn ($r) => $r->price > 0)
-    ->mutate(log_price: fn ($r) => log($r->price))
-    ->lm('log_price ~ area + neighborhood');</x-slot:chain>
-            <x-slot:pipe>$fit = DataFrame::fromQuery(Sale::query())
-    |> filter(fn ($r) => $r->price > 0)
-    |> mutate(log_price: fn ($r) => log($r->price))
-    |> lm('log_price ~ area + neighborhood');</x-slot:pipe>
-        </x-code-tabs>
-        <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-            phibble loads the query into a frame. phplyr filters and transforms it, and lm() fits the model with phit.
-        </p>
-    </section>
-
-    <section class="mt-12">
-        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">Packages</h2>
-        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            @foreach ($projects as $key => $project)
-                <a href="{{ route('project', $key) }}"
-                   class="block rounded-lg border border-zinc-200 p-5 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600">
-                    <div class="flex items-center justify-between gap-3">
-                        <span class="font-semibold">{{ $project['name'] }}</span>
-                        <x-status :project="$project" />
+    <section class="mt-14">
+        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">How the packages fit together</h2>
+        @php
+            $layers = [
+                ['Data', 'Tables from CSV files, the database, or Polars', ['phibble' => 'The shared data frame: typed, immutable, and loaded from CSV, PDO, Eloquent, or Doctrine', 'phpolars' => 'Polars data frames in a Rust extension, and a fast backend for phibble']],
+                ['Verbs', 'Filter, mutate, group, summarise, join, and reshape', ['phplyr' => 'dplyr and tidyr verbs that run in memory, as SQL, or in Polars']],
+                ['Models', 'Estimation, verified against R', ['phit' => 'Regression, mixed models, distributions, and descriptive statistics in a Rust extension', 'phit-polyfill' => 'The phit functions in plain PHP, for hosts that cannot install extensions', 'cmdstanphp' => 'Bayesian models in Stan through CmdStan']],
+                ['Graphics', 'A grammar of graphics', ['phiz' => 'ggplot2-style charts that render as Vega-Lite, with a Blade component for Livewire']],
+            ];
+        @endphp
+        <div class="mt-4 space-y-3">
+            @foreach ($layers as $i => [$layer, $role, $members])
+                <div class="grid gap-3 rounded-lg border border-zinc-200 p-4 sm:grid-cols-[10rem_1fr] dark:border-zinc-800">
+                    <div>
+                        <p class="font-semibold">{{ $layer }}</p>
+                        <p class="text-sm text-zinc-500">{{ $role }}</p>
                     </div>
-                    <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{{ $project['summary'] }}</p>
-                </a>
+                    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        @foreach ($members as $key => $description)
+                            <a href="{{ $packages[$key]->url() }}" class="block rounded-md bg-zinc-50 px-3 py-2 hover:bg-zinc-100 dark:bg-zinc-900 dark:hover:bg-zinc-800">
+                                <span class="font-medium">{{ $packages[$key]->name() }}</span>
+                                <span class="block text-sm text-zinc-600 dark:text-zinc-400">{{ $description }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                <p class="text-center text-zinc-400" aria-hidden="true">↓</p>
             @endforeach
+            <div class="rounded-lg border border-dashed border-zinc-300 p-4 text-center text-sm text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
+                Your application: Laravel controllers, Livewire dashboards, reports, and jobs
+            </div>
         </div>
     </section>
 
-    <section class="mt-12">
-        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">Vignettes</h2>
-        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Each vignette fits its models on the server when the page loads or an input changes.</p>
-        <ul class="mt-4 space-y-3">
-            @foreach ([
-                'vignettes.rent-dashboard' => ['Rent dashboard', 'A reactive Livewire dashboard: filters, a phplyr summary, two phiz charts, and a logistic model.'],
-                'vignettes.simulated-rents' => ['Simulated rents', 'Linear regression with a factor, compared with the coefficients that generated the data.'],
-                'vignettes.school-scores' => ['School scores', 'Linear regression with a choice of predictors and an observed-against-fitted chart.'],
-                'vignettes.glm-models' => ['Binary and count outcomes', 'Logistic, probit, and Poisson regression from R formulas, with predictions and confidence bands.'],
-                'vignettes.school-effects' => ['School effects', 'A linear mixed model with random school intercepts, variance components, and shrinkage.'],
-                'vignettes.random-effects' => ['Random-effect intervals', 'A caterpillar plot of school effects with intervals from their conditional variances.'],
-                'vignettes.bayesian-schools' => ['Bayesian school effects', 'The school effects model in Stan through cmdstanphp, with posterior intervals next to Phit\fit_lmer().'],
-                'vignettes.sql-pipeline' => ['SQL pipeline', 'One phplyr pipeline run as a single SQL query and in memory, with the generated SQL.'],
-                'vignettes.polars-pipeline' => ['Polars pipeline', 'The same pipeline on an in-memory frame and in Polars, with timings for up to 300,000 rows.'],
-                'vignettes.csv-reader' => ['Reading CSV files', 'The native CSV reader on editable text: guessed types, parse failures, problems, and agreement with phibble.'],
-            ] as $route => [$title, $description])
-                <li>
-                    <a href="{{ route($route) }}" class="font-medium underline">{{ $title }}</a>
-                    <span class="text-zinc-600 dark:text-zinc-400"> {{ $description }}</span>
-                </li>
+    <section class="mt-14 max-w-3xl">
+        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">From the database to a chart</h2>
+        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            phibble reads the query, phplyr filters and transforms it, phit fits the model, and phiz draws the chart.
+        </p>
+        <x-code-tabs class="mt-3">
+            <x-slot:chain>use Phibble\DataFrame;
+use Phiz\Plot;
+use function Phplyr\{col, phplyr};
+
+$rentals = phplyr(DataFrame::fromQuery(Rental::query()))
+    ->filter(col('bedrooms')->le(3))
+    ->mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')))
+    ->get();
+
+$fit = phplyr($rentals)->lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');
+$fit['named'];  // coefficients by term, as in R's coef()
+
+$chart = Plot::of($rentals)
+    ->aes(x: 'area_m2', y: 'monthly_rent', color: 'neighborhood')
+    ->point(alpha: 0.5)
+    ->smooth(method: 'lm');
+
+// In a Blade view: &lt;x-phiz :plot="$chart" /&gt;</x-slot:chain>
+            <x-slot:pipe>use Phibble\DataFrame;
+use Phiz\Plot;
+use function Phplyr\{col, filter, lm, mutate};
+
+$rentals = DataFrame::fromQuery(Rental::query())
+    |> filter(col('bedrooms')->le(3))
+    |> mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')));
+
+$fit = $rentals |> lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');
+$fit['named'];  // coefficients by term, as in R's coef()
+
+$chart = Plot::of($rentals)
+    ->aes(x: 'area_m2', y: 'monthly_rent', color: 'neighborhood')
+    ->point(alpha: 0.5)
+    ->smooth(method: 'lm');
+
+// In a Blade view: &lt;x-phiz :plot="$chart" /&gt;</x-slot:pipe>
+        </x-code-tabs>
+    </section>
+
+    <section class="mt-14">
+        <h2 class="text-sm font-medium uppercase tracking-wide text-zinc-500">Packages</h2>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach ($packages as $package)
+                <a href="{{ $package->url() }}"
+                   class="block rounded-lg border border-zinc-200 p-5 hover:border-zinc-400 dark:border-zinc-800 dark:hover:border-zinc-600">
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="font-semibold">{{ $package->name() }}</span>
+                        <x-status :project="$package->project" />
+                    </div>
+                    <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{{ $package->tagline() }}</p>
+                    <p class="mt-3 text-xs text-zinc-500">{{ preg_replace('#^https?://#', '', $package->url()) }}</p>
+                </a>
             @endforeach
-        </ul>
+        </div>
     </section>
 </x-layout>

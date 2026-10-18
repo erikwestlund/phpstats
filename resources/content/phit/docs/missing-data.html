@@ -1,0 +1,77 @@
+<p>fit_ols() now defaults to listwise deletion: if any supplied predictor or the outcome is missing, omit the entire observation from both x and y. This applies to the supplied model columns, not unrelated fields in an application’s records. The raw API remains ordinary PHP arrays with an optional string policy:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$result</span> <span class="op">=</span> Phit\fit_ols(x<span class="ot">:</span> <span class="va">$x</span><span class="ot">,</span> y<span class="ot">:</span> <span class="va">$y</span>)<span class="ot">;</span> <span class="co">// missing: 'drop'</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">$result</span> <span class="op">=</span> Phit\fit_ols(x<span class="ot">:</span> <span class="va">$x</span><span class="ot">,</span> y<span class="ot">:</span> <span class="va">$y</span><span class="ot">,</span> missing<span class="ot">:</span> <span class="st">'raise'</span>)<span class="ot">;</span> <span class="co">// reject missing values</span></span></code></pre></div></div>
+<section id="what-counts-as-missing" class="level2">
+<h2 class="anchored" data-anchor-id="what-counts-as-missing">What counts as missing</h2>
+<p>PHP null and floating-point NAN represent missing values. Positive and negative infinity are invalid numerical input, not missingness. Strings (including empty strings and ‘NA’), booleans, objects and absent/ragged matrix elements remain errors. Numeric zero is a valid value. No value is imputed or coerced from text.</p>
+<p>Validation inspects all original values and shapes before deletion. A missing value cannot hide an invalid value or ragged row. After deletion, the retained fixed design must still have n &gt; p (including the automatically added intercept) and full numerical rank. If no usable fit remains, the call throws. The Rust fit_ols() contract continues to require complete finite numeric vectors; the PHP binding implements the omission policy before calling it.</p>
+</section>
+<section id="warning-and-accounting" class="level2">
+<h2 class="anchored" data-anchor-id="warning-and-accounting">Warning and accounting</h2>
+<p>Every successful fit that omits observations emits one native PHP E_WARNING including the number dropped and original sample size. Complete data emits no warning. missing: ‘raise’ throws when missing values are found, without fitting. An unsuccessful fit throws rather than returning deletion metadata. Warning text is descriptive and is not a stable machine-readable interface.</p>
+<p>Every successful result also includes:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>n_input</td>
+<td>int: original observations</td>
+</tr>
+<tr class="even">
+<td>n_observations</td>
+<td>int: retained observations used in estimation</td>
+</tr>
+<tr class="odd">
+<td>n_dropped</td>
+<td>int: omitted observations</td>
+</tr>
+<tr class="even">
+<td>retained_rows</td>
+<td>list<int>: original zero-based iteration positions retained</int></td>
+</tr>
+<tr class="odd">
+<td>dropped_rows</td>
+<td>list<int>: original zero-based iteration positions omitted</int></td>
+</tr>
+</tbody>
+</table>
+<p>These positions refer to input iteration order, not PHP array keys. Each list is in ascending original order. fitted and residuals contain retained observations only, in retained_rows order; they are not padded with null. All statistics use the retained sample, including df_residual = n_observations - p.&nbsp;Metadata remains available even if warning display is disabled by PHP configuration.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">foreach</span> (<span class="va">$result</span>[<span class="st">'retained_rows'</span>] <span class="kw">as</span> <span class="va">$outputPosition</span> =&gt; <span class="va">$inputPosition</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">$residualForOriginalPosition</span>[<span class="va">$inputPosition</span>] <span class="op">=</span> <span class="va">$result</span>[<span class="st">'residuals'</span>][<span class="va">$outputPosition</span>]<span class="ot">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></div>
+<p>Applications should use their normal warning handling to log or display the message and use the structured counts for reporting. PHP error handlers that promote warnings to exceptions can abort this call; use missing: ‘raise’ when omission should be prohibited explicitly. Warnings may be suppressed by PHP settings, so user-facing applications should also inspect n_dropped rather than rely only on display_errors. Do not suppress deletion without recording it.</p>
+</section>
+<section id="statistical-interpretation-and-reference-behavior" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-interpretation-and-reference-behavior">Statistical interpretation and reference behavior</h2>
+<p>Listwise deletion is simple and preserves aligned observations, but changes the estimation sample. It does not guarantee unbiased results for arbitrary missingness. Report the excluded count and investigate why values are missing; this policy implements neither imputation nor a missing-data model.</p>
+<p>R’s explicit <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/lm.html">na.action = na.omit</a> and statsmodels’ explicit <a href="https://www.statsmodels.org/stable/missing.html">missing=‘drop’</a> provide comparable complete-case fits. Do not assume that every reference library warns on omission by default: warnings and metadata are our explicit contract. The <a href="phpstats://phit/docs/verifications/ols">three implementation verification</a> checks identical retained samples and numerical results, with the PHP warning captured as evidence.</p>
+<p>This changes the initial API, which rejected null and NAN. Existing callers that need that strict behavior should pass missing: ‘raise’. Other invalid inputs continue to be rejected. Helpers can still perform their own explicit preparation; when they omit data before the call, they must report it themselves because the extension can account only for rows it actually receives.</p>
+</section>
+<section id="logistic-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="logistic-outcomes">Logistic outcomes</h2>
+<p><code>fit_logistic()</code> follows the same deletion, warning and row-accounting policy as <code>fit_ols()</code>. With default unit trial weights, numeric outcomes must be exactly 0 or 1, including rows with missing predictors. After deletion both classes must remain and n must exceed p; otherwise fitting fails. Its residuals are response residuals y - probability, and both residuals and fitted probabilities follow retained_rows order.</p>
+</section>
+<section id="probit-and-poisson-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="probit-and-poisson-outcomes">Probit and Poisson outcomes</h2>
+<p>Probit follows the binary rules above. Poisson validates nonnegative integer counts before deletion; after deletion at least one positive count must remain. All estimators warn once on a successful fit that dropped rows, expose original row positions, and support missing: ‘raise’. Zero Poisson counts are observed values, not missingness. Returned mean counts and residuals follow retained_rows.</p>
+</section>
+<section id="mixed-model-group-ids" class="level2">
+<h2 class="anchored" data-anchor-id="mixed-model-group-ids">Mixed-model group IDs</h2>
+<p>fit_mixed_intercept() deletes a row if x, y or the group ID is missing. Group missingness means null; NAN/float group IDs are invalid categorical labels and are rejected. Validation still covers every original value before deletion. Group labels and sizes describe the retained sample, and groups completely removed by deletion are absent from results. If deletion leaves only one group, all singletons or insufficient fixed-design observations, fitting fails. Inspect retained_rows to align conditional/population fits and both residual definitions with original data.</p>
+</section>
+<section id="expanded-inputs" class="level2">
+<h2 class="anchored" data-anchor-id="expanded-inputs">Expanded inputs</h2>
+<p>Optional weights/offsets and every random term’s z/groups participate in the same listwise deletion mask. Validate original lengths, types and values before deletion; preserve aligned rows across all vectors and terms. The fixed-model contracts now permit grouped-binomial proportions with positive integer trial weights. Invalid success/trial counts remain errors, even in rows that would otherwise be dropped. General mixed fits return one warning and original row positions just like the existing functions. These cases are tested in <code>tests/r-compatibility.php</code> and <code>tests/lmm-expanded.php</code>.</p>
+<p><code>fit_logistic_mixed</code> applies the same policy across x, proportions, groups, trial counts and offsets. Trial counts above 1,000,000 are rejected before deleting rows. Near-integer success encodings within tolerance are canonicalized only after original validation and deletion; zero-success/zero-failure samples then fail as required for a finite unpenalized fit.</p>
+
+
+</section>

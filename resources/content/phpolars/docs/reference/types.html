@@ -1,0 +1,128 @@
+<section id="data-types" class="level2">
+<h2 class="anchored" data-anchor-id="data-types">Data types</h2>
+<p>Data types are written as py-polars names: <code>'Int8'</code> … <code>'Int64'</code>, <code>'UInt8'</code> … <code>'UInt64'</code>, <code>'Float32'</code>, <code>'Float64'</code>, <code>'Boolean'</code>, <code>'String'</code>, <code>'Binary'</code>, <code>'Date'</code>, <code>'Datetime'</code> (microseconds), <code>'Datetime(ms, UTC)'</code>, <code>'Duration(us)'</code>, <code>'Time'</code>, <code>'Categorical'</code>, <code>'Null'</code>, <code>'Decimal(10, 2)'</code>, <code>'List(Int64)'</code>, <code>'Array(Int64, 3)'</code>, and <code>'Struct(a: Int64, b: String)'</code>, plus <code>'Int128'</code> and <code>'UInt128'</code>. <code>Phpolars\DataType</code> has the same names as constants (<code>DataType::Int64</code>), and <code>DataType::datetime('ms', 'UTC')</code> builds the parameterized names.</p>
+</section>
+<section id="values" class="level2">
+<h2 class="anchored" data-anchor-id="values">Values</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$df</span> <span class="op">=</span> <span class="kw">new</span> DataFrame([</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n'</span> =&gt; [<span class="dv">1</span><span class="ot">,</span> <span class="kw">null</span>]<span class="ot">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'x'</span> =&gt; [<span class="fl">1.5</span><span class="ot">,</span> <span class="fl">2.0</span>]<span class="ot">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'ok'</span> =&gt; [<span class="kw">true</span><span class="ot">,</span> <span class="kw">false</span>]<span class="ot">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'when'</span> =&gt; [<span class="kw">new</span> <span class="bu">DateTimeImmutable</span>(<span class="st">'2024-05-01 12:30:00'</span>)<span class="ot">,</span> <span class="kw">null</span>]<span class="ot">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'tags'</span> =&gt; [[<span class="st">'a'</span><span class="ot">,</span> <span class="st">'b'</span>]<span class="ot">,</span> []]<span class="ot">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>])<span class="ot">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print_r</span>(<span class="va">$df</span>-&gt;schema())<span class="ot">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">var_dump</span>(<span class="va">$df</span>-&gt;toDicts()[<span class="dv">0</span>])<span class="ot">;</span></span></code></pre></div></div>
+<pre class="text output"><code>Array
+(
+    [n] =&gt; Int64
+    [x] =&gt; Float64
+    [ok] =&gt; Boolean
+    [when] =&gt; Datetime(us)
+    [tags] =&gt; List(String)
+)
+array(5) {
+  ["n"]=&gt;
+  int(1)
+  ["x"]=&gt;
+  float(1.5)
+  ["ok"]=&gt;
+  bool(true)
+  ["when"]=&gt;
+  object(DateTimeImmutable)#3 (3) {
+    ["date"]=&gt;
+    string(26) "2024-05-01 12:30:00.000000"
+    ["timezone_type"]=&gt;
+    int(3)
+    ["timezone"]=&gt;
+    string(3) "UTC"
+  }
+  ["tags"]=&gt;
+  array(2) {
+    [0]=&gt;
+    string(1) "a"
+    [1]=&gt;
+    string(1) "b"
+  }
+}</code></pre>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Polars</th>
+<th>PHP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>integer types</td>
+<td><code>int</code> (UInt64 values beyond <code>PHP_INT_MAX</code> become <code>float</code>)</td>
+</tr>
+<tr class="even">
+<td>Float32, Float64</td>
+<td><code>float</code></td>
+</tr>
+<tr class="odd">
+<td>Boolean</td>
+<td><code>bool</code></td>
+</tr>
+<tr class="even">
+<td>String, Categorical</td>
+<td><code>string</code></td>
+</tr>
+<tr class="odd">
+<td>Date, Datetime</td>
+<td><code>DateTimeImmutable</code> (naive values in UTC, zoned values in their zone)</td>
+</tr>
+<tr class="even">
+<td>Time</td>
+<td><code>string</code>, <code>"HH:MM:SS.ffffff"</code></td>
+</tr>
+<tr class="odd">
+<td>Duration</td>
+<td><code>int</code> in the column’s time unit</td>
+</tr>
+<tr class="even">
+<td>Decimal</td>
+<td><code>string</code></td>
+</tr>
+<tr class="odd">
+<td>List, Array</td>
+<td>list</td>
+</tr>
+<tr class="even">
+<td>Struct</td>
+<td>associative array</td>
+</tr>
+</tbody>
+</table>
+<p>From PHP, each column gets one inferred type. Integers widen to floats, nulls fit any type, <code>DateTimeInterface</code> values become naive <code>Datetime(us)</code> on their wall-clock time (the zone is not kept; use <code>dt()-&gt;replaceTimeZone()</code> to attach one), lists become <code>List</code>, and associative arrays become <code>Struct</code>. Any other mix raises <code>SchemaError</code>; pass a <code>schema</code> to set types.</p>
+</section>
+<section id="errors" class="level2">
+<h2 class="anchored" data-anchor-id="errors">Errors</h2>
+<p>Polars errors are thrown as subclasses of <code>Phpolars\PolarsError</code>, named after the py-polars exceptions: <code>ColumnNotFoundError</code>, <code>ComputeError</code>, <code>DuplicateError</code>, <code>InvalidOperationError</code>, <code>NoDataError</code>, <code>OutOfBoundsError</code>, <code>SchemaError</code>, <code>SchemaFieldNotFoundError</code>, <code>ShapeError</code>, and <code>StructFieldNotFoundError</code>, all in <code>Phpolars\Exception</code>. Invalid arguments raise PHP’s <code>ValueError</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> Phpolars\<span class="bu">Exception</span>\{ColumnNotFoundError<span class="ot">,</span> SchemaError}<span class="ot">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">$df</span> <span class="op">=</span> <span class="kw">new</span> DataFrame([<span class="st">'a'</span> =&gt; [<span class="dv">1</span><span class="ot">,</span> <span class="dv">2</span>]])<span class="ot">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">$df</span>-&gt;select(<span class="st">'b'</span>)<span class="ot">;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>} <span class="cf">catch</span> (ColumnNotFoundError <span class="va">$e</span>) {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="fu">get_class</span>(<span class="va">$e</span>)<span class="ot">,</span> <span class="st">': '</span><span class="ot">,</span> <span class="fu">strtok</span>(<span class="va">$e</span>-&gt;getMessage()<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span> {</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">new</span> DataFrame([<span class="st">'a'</span> =&gt; [<span class="dv">1</span><span class="ot">,</span> <span class="st">'two'</span>]])<span class="ot">;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>} <span class="cf">catch</span> (SchemaError <span class="va">$e</span>) {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">echo</span> <span class="fu">get_class</span>(<span class="va">$e</span>)<span class="ot">,</span> <span class="st">': '</span><span class="ot">,</span> <span class="va">$e</span>-&gt;getMessage()<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$e</span> <span class="kw">instanceof</span> Phpolars\PolarsError <span class="ot">?</span> <span class="st">"both extend Phpolars</span><span class="sc">\\</span><span class="st">PolarsError</span><span class="sc">\n</span><span class="st">"</span> <span class="ot">:</span> <span class="st">''</span><span class="ot">;</span></span></code></pre></div></div>
+<pre class="text output"><code>Phpolars\Exception\ColumnNotFoundError: not found: unable to find column "b"; valid columns: ["a"]
+Phpolars\Exception\SchemaError: column 'a' mixes incompatible types; pass a dtype or cast first
+both extend Phpolars\PolarsError</code></pre>
+
+
+</section>

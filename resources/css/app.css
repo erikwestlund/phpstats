@@ -11,3 +11,169 @@
 [x-cloak] {
     display: none !important;
 }
+
+@plugin '@tailwindcss/typography';
+
+/* Docs synced from the packages' rendered Quarto pages. */
+.docs-content pre,
+.docs-content div.sourceCode {
+    background: var(--color-zinc-100);
+    color: var(--color-zinc-900);
+    border-radius: 0.5rem;
+}
+.docs-content div.sourceCode {
+    margin: 1.25em 0;
+}
+.docs-content div.sourceCode pre {
+    margin: 0;
+    background: transparent;
+}
+.docs-content pre code {
+    color: inherit;
+}
+.docs-content code::before,
+.docs-content code::after {
+    content: none;
+}
+.docs-content pre code > span > a:first-child {
+    /* pandoc line anchors */
+    display: none;
+}
+.docs-content .cell-output pre,
+.docs-content .cell-output-stdout pre {
+    background: transparent;
+    border: 1px solid var(--color-zinc-200);
+}
+.docs-content table {
+    display: block;
+    overflow-x: auto;
+    font-variant-numeric: tabular-nums;
+}
+.docs-content img {
+    max-width: 100%;
+    height: auto;
+}
+.docs-content .callout {
+    margin: 1.5em 0;
+    border-left: 4px solid var(--color-sky-400);
+    background: var(--color-sky-50);
+    border-radius: 0.375rem;
+    padding: 0.75rem 1rem;
+}
+.docs-content .callout-warning,
+.docs-content .callout-caution {
+    border-left-color: var(--color-amber-400);
+    background: var(--color-amber-50);
+}
+.docs-content .callout-important {
+    border-left-color: var(--color-red-400);
+    background: var(--color-red-50);
+}
+.docs-content .callout-tip {
+    border-left-color: var(--color-emerald-400);
+    background: var(--color-emerald-50);
+}
+.docs-content .callout-header {
+    font-weight: 600;
+}
+.docs-content .callout-icon-container,
+.docs-content .callout-btn-toggle {
+    display: none;
+}
+.docs-content .callout .callout-body-container > :first-child {
+    margin-top: 0.25em;
+}
+.docs-content .panel-tabset .nav-tabs {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 1em 0 0;
+}
+.docs-content .panel-tabset .nav-tabs li {
+    padding: 0;
+    margin: 0;
+}
+.docs-content .panel-tabset .nav-tabs li::marker {
+    content: none;
+}
+.docs-content .panel-tabset .nav-link {
+    display: block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem 0.375rem 0 0;
+    text-decoration: none;
+    color: var(--color-zinc-600);
+    font-size: 0.875rem;
+}
+.docs-content .panel-tabset .nav-link.active {
+    background: var(--color-zinc-100);
+    color: var(--color-zinc-900);
+    font-weight: 500;
+}
+.docs-content .panel-tabset .tab-pane {
+    display: none;
+}
+.docs-content .panel-tabset .tab-pane.active {
+    display: block;
+}
+.docs-content .panel-tabset .tab-pane > div.sourceCode:first-child {
+    margin-top: 0;
+    border-top-left-radius: 0;
+}
+.docs-content .visually-hidden,
+.docs-content .screen-reader-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+/* pandoc highlighting, after GitHub's light and dark themes */
+.docs-content code span.kw, .docs-content code span.cf { color: #cf222e; }
+.docs-content code span.dt, .docs-content code span.bu { color: #953800; }
+.docs-content code span.dv, .docs-content code span.fl, .docs-content code span.bn, .docs-content code span.cn { color: #0550ae; }
+.docs-content code span.st, .docs-content code span.ch, .docs-content code span.ss, .docs-content code span.vs, .docs-content code span.sc { color: #0a3069; }
+.docs-content code span.co, .docs-content code span.do, .docs-content code span.an, .docs-content code span.cv, .docs-content code span.in { color: #6e7781; font-style: italic; }
+.docs-content code span.fu { color: #8250df; }
+.docs-content code span.va, .docs-content code span.at { color: #953800; }
+.docs-content code span.op, .docs-content code span.ot { color: #24292f; }
+.docs-content code span.im, .docs-content code span.pp { color: #cf222e; }
+.docs-content code span.er, .docs-content code span.al { color: #82071e; font-weight: 600; }
+
+@media (prefers-color-scheme: dark) {
+    .docs-content pre,
+    .docs-content div.sourceCode,
+    .docs-content .panel-tabset .nav-link.active {
+        background: var(--color-zinc-900);
+        color: var(--color-zinc-100);
+    }
+    .docs-content .cell-output pre,
+    .docs-content .cell-output-stdout pre {
+        border-color: var(--color-zinc-800);
+    }
+    .docs-content .panel-tabset .nav-link {
+        color: var(--color-zinc-400);
+    }
+    .docs-content .callout { background: color-mix(in oklab, var(--color-sky-950) 50%, transparent); }
+    .docs-content .callout-warning, .docs-content .callout-caution { background: color-mix(in oklab, var(--color-amber-950) 50%, transparent); }
+    .docs-content .callout-important { background: color-mix(in oklab, var(--color-red-950) 50%, transparent); }
+    .docs-content .callout-tip { background: color-mix(in oklab, var(--color-emerald-950) 50%, transparent); }
+    .docs-content code span.kw, .docs-content code span.cf, .docs-content code span.im, .docs-content code span.pp { color: #ff7b72; }
+    .docs-content code span.dt, .docs-content code span.bu, .docs-content code span.va, .docs-content code span.at { color: #ffa657; }
+    .docs-content code span.dv, .docs-content code span.fl, .docs-content code span.bn, .docs-content code span.cn { color: #79c0ff; }
+    .docs-content code span.st, .docs-content code span.ch, .docs-content code span.ss, .docs-content code span.vs, .docs-content code span.sc { color: #a5d6ff; }
+    .docs-content code span.co, .docs-content code span.do, .docs-content code span.an, .docs-content code span.cv, .docs-content code span.in { color: #8b949e; }
+    .docs-content code span.fu { color: #d2a8ff; }
+    .docs-content code span.op, .docs-content code span.ot { color: #e6edf3; }
+    .docs-content code span.er, .docs-content code span.al { color: #ffa198; }
+}
+
+/* Typography adds backticks around inline code; the code style is enough. */
+.prose code::before,
+.prose code::after {
+    content: none;
+}
+.docs-content div.sourceCode pre {
+    overflow-x: auto;
+}

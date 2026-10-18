@@ -1,0 +1,104 @@
+<p>These are published observations distributed with R packages, separate from our synthetic teaching and benchmark data. The repository keeps CSV snapshots so verification never depends on a network download. SHA-256 checksums, exported package versions, column selection, formulas and original references are recorded in <a href="/content/phit/docs/data/lmm/sources.json">sources.json</a>.</p>
+<div id="85294314" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hashlib,json</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>ROOT<span class="op">=</span><span class="bu">next</span>(p <span class="cf">for</span> p <span class="kw">in</span> [Path.cwd(),<span class="op">*</span>Path.cwd().parents] <span class="cf">if</span> (p<span class="op">/</span><span class="st">'Cargo.toml'</span>).exists())</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>HERE<span class="op">=</span>ROOT<span class="op">/</span><span class="st">'docs/data/lmm'</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>sources<span class="op">=</span>json.loads((HERE<span class="op">/</span><span class="st">'sources.json'</span>).read_text())[<span class="st">'datasets'</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> source <span class="kw">in</span> sources:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> hashlib.sha256((HERE<span class="op">/</span>source[<span class="st">'file'</span>]).read_bytes()).hexdigest()<span class="op">==</span>source[<span class="st">'sha256'</span>]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame([<span class="bu">dict</span>(dataset<span class="op">=</span>s[<span class="st">'name'</span>],package<span class="op">=</span>s[<span class="st">'package'</span>],version<span class="op">=</span>s[<span class="st">'package_version'</span>],</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>                           observations<span class="op">=</span>s[<span class="st">'n'</span>],groups<span class="op">=</span>s[<span class="st">'n_groups'</span>],</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>                           smallest_group<span class="op">=</span>s[<span class="st">'minimum_group_size'</span>],largest_group<span class="op">=</span>s[<span class="st">'maximum_group_size'</span>]) <span class="cf">for</span> s <span class="kw">in</span> sources]))</span></code></pre></div></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">dataset</th>
+<th data-quarto-table-cell-role="th">package</th>
+<th data-quarto-table-cell-role="th">version</th>
+<th data-quarto-table-cell-role="th">observations</th>
+<th data-quarto-table-cell-role="th">groups</th>
+<th data-quarto-table-cell-role="th">smallest_group</th>
+<th data-quarto-table-cell-role="th">largest_group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>sleepstudy</td>
+<td>lme4</td>
+<td>2.0.6</td>
+<td>180</td>
+<td>18</td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Orthodont</td>
+<td>nlme</td>
+<td>3.1.169</td>
+<td>108</td>
+<td>27</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Machines</td>
+<td>nlme</td>
+<td>3.1.169</td>
+<td>54</td>
+<td>6</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Hsb82</td>
+<td>mlmRev</td>
+<td>1.0.9</td>
+<td>7185</td>
+<td>160</td>
+<td>14</td>
+<td>67</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="sleep-deprivation" class="level2">
+<h2 class="anchored" data-anchor-id="sleep-deprivation">Sleep deprivation</h2>
+<p><a href="/content/phit/docs/data/lmm/sleepstudy.csv">sleepstudy.csv</a> contains reaction times in milliseconds over ten days for eighteen subjects. All 180 rows are retained. Our verification model uses a fixed intercept, Days and a random intercept by Subject. <a href="https://lme4.github.io/lme4/reference/sleepstudy.html">The lme4 dataset documentation</a> attributes the data to Belenky et al.&nbsp;(2003). Its example uses random slopes; our chosen random-intercept comparison is a different, deliberately simpler model.</p>
+</section>
+<section id="orthodontic-growth" class="level2">
+<h2 class="anchored" data-anchor-id="orthodontic-growth">Orthodontic growth</h2>
+<p><a href="/content/phit/docs/data/lmm/Orthodont.csv">Orthodont.csv</a> contains 108 measurements from 27 children. We use age, an explicitly constructed female indicator and age × female, with a random intercept by Subject. All observations and original columns are retained. Female=1 for Sex equal to ‘Female’; Male is the reference category. <a href="https://stat.ethz.ch/R-manual/R-devel/library/nlme/html/Orthodont.html">The nlme dataset documentation</a> describes the measurements and cites Potthoff and Roy (1964), and Pinheiro and Bates (2000), Appendix A.17.</p>
+</section>
+<section id="worker-and-machine-productivity" class="level2">
+<h2 class="anchored" data-anchor-id="worker-and-machine-productivity">Worker and machine productivity</h2>
+<p><a href="/content/phit/docs/data/lmm/Machines.csv">Machines.csv</a> contains 54 observations: six workers each operated three machine brands three times. We construct separate B and C indicators, with A as the reference brand, and a random intercept by Worker. All rows and original columns are retained. This comparison has no worker-by-machine random interaction. <a href="https://stat.ethz.ch/R-manual/R-devel/library/nlme/html/Machines.html">The nlme documentation</a> cites Milliken and Johnson (1992), and Pinheiro and Bates (2000), Appendix A.14.</p>
+</section>
+<section id="high-school-and-beyond" class="level2">
+<h2 class="anchored" data-anchor-id="high-school-and-beyond">High School and Beyond</h2>
+<p><a href="/content/phit/docs/data/lmm/Hsb82.csv">Hsb82.csv</a> contains all 7,185 observations in the package’s 1982 High School and Beyond sample. We retain the five columns used by the model: school, individual SES, school mean SES, school sector and mathematics achievement. The fixed columns are intercept, SES, mean SES and Catholic=1 for sector equal to ‘Catholic’; Public is the reference. School is the grouping variable, with 160 schools and 14–67 students per school. <a href="https://cran.r-project.org/web/packages/mlmRev/mlmRev.pdf#page=11">The mlmRev reference manual</a> describes the data and cites Raudenbush and Bryk (2002), chapter 4.</p>
+</section>
+<section id="snapshot-and-model-construction" class="level2">
+<h2 class="anchored" data-anchor-id="snapshot-and-model-construction">Snapshot and model construction</h2>
+<p>The exporter <code>tests/export-lmm-public-data.R</code> reads installed package data and writes UTF-8 CSVs with original row order and no row-name column. The fixture generator <code>tests/generate-lmm-public-fixtures.py</code> constructs the numeric designs listed above, maps first-appearance group labels to integer core IDs, and saves lme4 and nlme ML reference outputs. The PHP verification also exercises original string labels. No rows are sampled or silently removed. The matrix-building code is an explicit test helper; the native API still accepts vanilla arrays and adds no categorical encoder or formula parser.</p>
+<p>The snapshots are distributed from packages declaring GPL (&gt;= 2); package source links and study citations are in sources.json, and <a href="/content/phit/docs/data/lmm/COPYING">COPYING</a> contains GPL version 2. These package distribution notices do not claim new ownership of the original studies. R and these data packages are development dependencies.</p>
+<p>To intentionally refresh snapshots and expectations:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> <span class="at">-e</span> <span class="st">'install.packages(c("lme4", "nlme", "mlmRev"), repos="https://cloud.r-project.org")'</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/notebooks-venv/bin/python</span> tests/generate-lmm-public-fixtures.py <span class="at">--export</span></span></code></pre></div></div>
+<p>To regenerate expectations from the existing, checksum-verified snapshots, omit <code>--export</code>; only lme4 and nlme are needed in R. Review CSVs, sources.json, <code>tests/fixtures/lmm-public-r.json</code> and the <a href="phpstats://phit/docs/notebooks/lmm-public-verification">executed comparison</a> together. A changed source snapshot must never be accepted solely by changing its hash.</p>
+
+
+</section>

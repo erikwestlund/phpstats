@@ -1,0 +1,1865 @@
+{
+    "nav": [
+        {
+            "title": "Overview",
+            "path": "index"
+        },
+        {
+            "title": "Formulas: fit_lm, fit_glm, fit_lmer, predict",
+            "path": "formulas"
+        },
+        {
+            "title": "Function reference and contracts",
+            "path": "contracts"
+        },
+        {
+            "title": "Probability distributions",
+            "path": "distributions"
+        },
+        {
+            "title": "Descriptive statistics",
+            "path": "descriptive"
+        },
+        {
+            "title": "Random numbers",
+            "path": "rng"
+        },
+        {
+            "title": "Posterior draws",
+            "path": "draw-numerics"
+        },
+        {
+            "title": "Reading CSV files",
+            "path": "io"
+        },
+        {
+            "title": "Missing data",
+            "path": "missing-data"
+        },
+        {
+            "title": "R compatibility",
+            "path": "r-compatibility"
+        },
+        {
+            "title": "Installation and deployment",
+            "path": "deployment"
+        },
+        {
+            "title": "Building from source",
+            "path": "development"
+        },
+        {
+            "title": "Math walkthroughs",
+            "path": "notebooks/index"
+        },
+        {
+            "title": "Verification approach",
+            "path": "verification"
+        },
+        {
+            "title": "Design philosophy",
+            "path": "design-philosophy"
+        },
+        {
+            "title": "Licensing",
+            "path": "licensing"
+        }
+    ],
+    "pages": {
+        "benchmarks/distributions": {
+            "title": "Distribution performance and regression preservation",
+            "headings": [
+                {
+                    "id": "numerical-comparisons-before-timings",
+                    "text": "Numerical comparisons before timings",
+                    "level": 2
+                },
+                {
+                    "id": "timing-boundaries-and-interpretation",
+                    "text": "Timing boundaries and interpretation",
+                    "level": 2
+                },
+                {
+                    "id": "seven-model-preservation",
+                    "text": "Seven-model preservation",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "benchmarks/draws": {
+            "title": "Posterior-draw scale validation and performance",
+            "headings": [
+                {
+                    "id": "numerical-agreement-first",
+                    "text": "Numerical agreement first",
+                    "level": 2
+                },
+                {
+                    "id": "recorded-timings",
+                    "text": "Recorded timings",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction-and-timing-boundaries",
+                    "text": "Reproduction and timing boundaries",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "benchmarks/lmm": {
+            "title": "Random-intercept Gaussian ML scale validation and performance",
+            "headings": [
+                {
+                    "id": "recorded-results",
+                    "text": "Recorded results",
+                    "level": 2
+                },
+                {
+                    "id": "visual-comparison",
+                    "text": "Visual comparison",
+                    "level": 2
+                },
+                {
+                    "id": "native-rust-optimization",
+                    "text": "Native Rust optimization",
+                    "level": 2
+                },
+                {
+                    "id": "timing-boundaries-and-methods",
+                    "text": "Timing boundaries and methods",
+                    "level": 2
+                },
+                {
+                    "id": "simulation-and-numerical-checks",
+                    "text": "Simulation and numerical checks",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "benchmarks/logistic": {
+            "title": "Logistic regression scale validation and performance",
+            "headings": [
+                {
+                    "id": "recorded-results",
+                    "text": "Recorded results",
+                    "level": 2
+                },
+                {
+                    "id": "visual-comparison",
+                    "text": "Visual comparison",
+                    "level": 2
+                },
+                {
+                    "id": "what-is-timed",
+                    "text": "What is timed?",
+                    "level": 2
+                },
+                {
+                    "id": "simulation-and-agreement",
+                    "text": "Simulation and agreement",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "benchmarks/logistic-mixed": {
+            "title": "Binomial random-intercept scale checks and performance",
+            "headings": [
+                {
+                    "id": "timing-boundaries-and-correctness",
+                    "text": "Timing boundaries and correctness",
+                    "level": 2
+                },
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "benchmarks/ols": {
+            "title": "OLS scale validation and performance",
+            "headings": [
+                {
+                    "id": "recorded-results",
+                    "text": "Recorded results",
+                    "level": 2
+                },
+                {
+                    "id": "visual-comparison",
+                    "text": "Visual comparison",
+                    "level": 2
+                },
+                {
+                    "id": "timing-boundaries",
+                    "text": "Timing boundaries",
+                    "level": 2
+                },
+                {
+                    "id": "simulation-and-numerical-agreement",
+                    "text": "Simulation and numerical agreement",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce-and-maintain",
+                    "text": "Reproduce and maintain",
+                    "level": 2
+                },
+                {
+                    "id": "apple-accelerate-experiment",
+                    "text": "Apple Accelerate experiment",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "benchmarks/poisson": {
+            "title": "Poisson regression scale validation and performance",
+            "headings": [
+                {
+                    "id": "recorded-results",
+                    "text": "Recorded results",
+                    "level": 2
+                },
+                {
+                    "id": "visual-comparison",
+                    "text": "Visual comparison",
+                    "level": 2
+                },
+                {
+                    "id": "what-is-timed",
+                    "text": "What is timed?",
+                    "level": 2
+                },
+                {
+                    "id": "simulation-and-agreement",
+                    "text": "Simulation and agreement",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "benchmarks/probit": {
+            "title": "Probit regression scale validation and performance",
+            "headings": [
+                {
+                    "id": "recorded-results",
+                    "text": "Recorded results",
+                    "level": 2
+                },
+                {
+                    "id": "visual-comparison",
+                    "text": "Visual comparison",
+                    "level": 2
+                },
+                {
+                    "id": "what-is-timed",
+                    "text": "What is timed?",
+                    "level": 2
+                },
+                {
+                    "id": "simulation-and-agreement",
+                    "text": "Simulation and agreement",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "benchmarks/rng": {
+            "title": "Seeded sampling verification and performance",
+            "headings": [
+                {
+                    "id": "independent-verification-first",
+                    "text": "Independent verification first",
+                    "level": 2
+                },
+                {
+                    "id": "timing-interpretation",
+                    "text": "Timing interpretation",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "contracts": {
+            "title": "Public contracts",
+            "headings": [
+                {
+                    "id": "php-entry-points",
+                    "text": "PHP entry points",
+                    "level": 2
+                },
+                {
+                    "id": "formula-interfaces",
+                    "text": "Formula interfaces",
+                    "level": 2
+                },
+                {
+                    "id": "probability-distributions-and-descriptive-statistics",
+                    "text": "Probability distributions and descriptive statistics",
+                    "level": 2
+                },
+                {
+                    "id": "posterior-draw-numerical-kernels",
+                    "text": "Posterior-draw numerical kernels",
+                    "level": 2
+                },
+                {
+                    "id": "csv-input",
+                    "text": "CSV input",
+                    "level": 2
+                },
+                {
+                    "id": "fixed-intercept-convention-and-migration",
+                    "text": "Fixed-intercept convention and migration",
+                    "level": 2
+                },
+                {
+                    "id": "ols-input-and-output",
+                    "text": "OLS input and output",
+                    "level": 2
+                },
+                {
+                    "id": "errors-and-conversion",
+                    "text": "Errors and conversion",
+                    "level": 2
+                },
+                {
+                    "id": "rust-boundary",
+                    "text": "Rust boundary",
+                    "level": 2
+                },
+                {
+                    "id": "binary-logistic-regression",
+                    "text": "Binary logistic regression",
+                    "level": 2
+                },
+                {
+                    "id": "probit-regression",
+                    "text": "Probit regression",
+                    "level": 2
+                },
+                {
+                    "id": "poisson-regression",
+                    "text": "Poisson regression",
+                    "level": 2
+                },
+                {
+                    "id": "gaussian-random-intercept-mixed-model",
+                    "text": "Gaussian random-intercept mixed model",
+                    "level": 2
+                },
+                {
+                    "id": "weights-offsets-and-grouped-binomial-responses",
+                    "text": "Weights, offsets and grouped binomial responses",
+                    "level": 2
+                },
+                {
+                    "id": "poisson-exposure-example",
+                    "text": "Poisson exposure example",
+                    "level": 3
+                },
+                {
+                    "id": "general-gaussian-mixed-model-call",
+                    "text": "General Gaussian mixed-model call",
+                    "level": 2
+                },
+                {
+                    "id": "binomial-random-intercept-ml",
+                    "text": "Binomial random-intercept ML",
+                    "level": 2
+                },
+                {
+                    "id": "v01-diagnostics-and-errors",
+                    "text": "v0.1 diagnostics and errors",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "data/lmm/index": {
+            "title": "Published mixed-model verification data: provenance",
+            "headings": [
+                {
+                    "id": "sleep-deprivation",
+                    "text": "Sleep deprivation",
+                    "level": 2
+                },
+                {
+                    "id": "orthodontic-growth",
+                    "text": "Orthodontic growth",
+                    "level": 2
+                },
+                {
+                    "id": "worker-and-machine-productivity",
+                    "text": "Worker and machine productivity",
+                    "level": 2
+                },
+                {
+                    "id": "high-school-and-beyond",
+                    "text": "High School and Beyond",
+                    "level": 2
+                },
+                {
+                    "id": "snapshot-and-model-construction",
+                    "text": "Snapshot and model construction",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "deployment": {
+            "title": "Installation, containers and releases",
+            "headings": [
+                {
+                    "id": "names-and-supported-packaging-targets",
+                    "text": "Names and supported packaging targets",
+                    "level": 2
+                },
+                {
+                    "id": "build-a-ready-to-use-php-fpm-image",
+                    "text": "Build a ready-to-use PHP-FPM image",
+                    "level": 2
+                },
+                {
+                    "id": "build-pins-and-reproducibility",
+                    "text": "Build pins and reproducibility",
+                    "level": 3
+                },
+                {
+                    "id": "install-through-pie",
+                    "text": "Install through PIE",
+                    "level": 2
+                },
+                {
+                    "id": "manual-source-installation-and-staging",
+                    "text": "Manual source installation and staging",
+                    "level": 2
+                },
+                {
+                    "id": "binary-artifacts",
+                    "text": "Binary artifacts",
+                    "level": 2
+                },
+                {
+                    "id": "versioned-release-process",
+                    "text": "Versioned release process",
+                    "level": 2
+                },
+                {
+                    "id": "deployment-verification",
+                    "text": "Deployment verification",
+                    "level": 2
+                },
+                {
+                    "id": "results-from-this-packaging-pass",
+                    "text": "Results from this packaging pass",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "descriptive": {
+            "title": "Descriptive statistics",
+            "headings": [
+                {
+                    "id": "calls-and-conventions",
+                    "text": "Calls and conventions",
+                    "level": 2
+                },
+                {
+                    "id": "weight-definitions",
+                    "text": "Weight definitions",
+                    "level": 2
+                },
+                {
+                    "id": "missing-values-and-errors",
+                    "text": "Missing values and errors",
+                    "level": 2
+                },
+                {
+                    "id": "example-and-verification",
+                    "text": "Example and verification",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "design-philosophy": {
+            "title": "Design philosophy",
+            "headings": [
+                {
+                    "id": "a-plain-numerical-interface",
+                    "text": "A plain numerical interface",
+                    "level": 2
+                },
+                {
+                    "id": "convenience-belongs-around-the-raw-call",
+                    "text": "Convenience belongs around the raw call",
+                    "level": 2
+                },
+                {
+                    "id": "implementation-boundaries",
+                    "text": "Implementation boundaries",
+                    "level": 2
+                },
+                {
+                    "id": "current-scope-and-change-decisions",
+                    "text": "Current scope and change decisions",
+                    "level": 2
+                },
+                {
+                    "id": "learning-examples-use-meaningful-simulated-data",
+                    "text": "Learning examples use meaningful simulated data",
+                    "level": 2
+                },
+                {
+                    "id": "performance-evidence",
+                    "text": "Performance evidence",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "development": {
+            "title": "Development and installation",
+            "headings": [
+                {
+                    "id": "environment",
+                    "text": "Environment",
+                    "level": 2
+                },
+                {
+                    "id": "build-and-run",
+                    "text": "Build and run",
+                    "level": 2
+                },
+                {
+                    "id": "running-in-an-application",
+                    "text": "Running in an application",
+                    "level": 2
+                },
+                {
+                    "id": "numerical-dependency-policy",
+                    "text": "Numerical dependency policy",
+                    "level": 2
+                },
+                {
+                    "id": "changing-the-implementation",
+                    "text": "Changing the implementation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "distributions": {
+            "title": "Probability distributions",
+            "headings": [
+                {
+                    "id": "families-and-parameterizations",
+                    "text": "Families and parameterizations",
+                    "level": 2
+                },
+                {
+                    "id": "scalar-and-batch-operations",
+                    "text": "Scalar and batch operations",
+                    "level": 2
+                },
+                {
+                    "id": "tails-and-likelihoods",
+                    "text": "Tails and likelihoods",
+                    "level": 2
+                },
+                {
+                    "id": "boundaries-and-errors",
+                    "text": "Boundaries and errors",
+                    "level": 2
+                },
+                {
+                    "id": "numerical-implementation-and-dependency-audit",
+                    "text": "Numerical implementation and dependency audit",
+                    "level": 2
+                },
+                {
+                    "id": "reference-evidence-and-release-scope",
+                    "text": "Reference evidence and release scope",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "documentation": {
+            "title": "Building and maintaining the documentation",
+            "headings": [
+                {
+                    "id": "render-or-preview-saved-results",
+                    "text": "Render or preview saved results",
+                    "level": 2
+                },
+                {
+                    "id": "polyscope-workspace-preview",
+                    "text": "Polyscope workspace preview",
+                    "level": 2
+                },
+                {
+                    "id": "recompute-the-walkthroughs",
+                    "text": "Recompute the walkthroughs",
+                    "level": 2
+                },
+                {
+                    "id": "authoring-and-verification",
+                    "text": "Authoring and verification",
+                    "level": 2
+                },
+                {
+                    "id": "standard-figures",
+                    "text": "Standard figures",
+                    "level": 2
+                },
+                {
+                    "id": "publish-github-pages",
+                    "text": "Publish GitHub Pages",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "draw-numerics": {
+            "title": "Posterior-draw numerical kernels",
+            "headings": [
+                {
+                    "id": "weighted-moments",
+                    "text": "Weighted moments",
+                    "level": 2
+                },
+                {
+                    "id": "covariance-map-and-tolerances",
+                    "text": "Covariance map and tolerances",
+                    "level": 2
+                },
+                {
+                    "id": "affine-transformation-and-determinant",
+                    "text": "Affine transformation and determinant",
+                    "level": 2
+                },
+                {
+                    "id": "using-the-php-api",
+                    "text": "Using the PHP API",
+                    "level": 2
+                },
+                {
+                    "id": "independent-verification",
+                    "text": "Independent verification",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "formulas": {
+            "title": "Model formulas",
+            "headings": [
+                {
+                    "id": "example",
+                    "text": "Example",
+                    "level": 2
+                },
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "formula-syntax",
+                    "text": "Formula syntax",
+                    "level": 2
+                },
+                {
+                    "id": "inline-transforms",
+                    "text": "Inline transforms",
+                    "level": 3
+                },
+                {
+                    "id": "contrasts",
+                    "text": "Contrasts",
+                    "level": 3
+                },
+                {
+                    "id": "missing-values-and-unused-levels",
+                    "text": "Missing values and unused levels",
+                    "level": 2
+                },
+                {
+                    "id": "model_matrix",
+                    "text": "model_matrix",
+                    "level": 2
+                },
+                {
+                    "id": "fit_lm-and-fit_glm",
+                    "text": "fit_lm and fit_glm",
+                    "level": 2
+                },
+                {
+                    "id": "fit_lmer-and-fit_glmer",
+                    "text": "fit_lmer and fit_glmer",
+                    "level": 2
+                },
+                {
+                    "id": "prediction-predict",
+                    "text": "Prediction: predict",
+                    "level": 2
+                },
+                {
+                    "id": "differences-from-r",
+                    "text": "Differences from R",
+                    "level": 2
+                },
+                {
+                    "id": "verification",
+                    "text": "Verification",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "index": {
+            "title": "Project documentation",
+            "headings": [
+                {
+                    "id": "probability-distributions-and-statistical-utilities",
+                    "text": "Probability distributions and statistical utilities",
+                    "level": 2
+                },
+                {
+                    "id": "binary-logistic-regression",
+                    "text": "Binary logistic regression",
+                    "level": 2
+                },
+                {
+                    "id": "probit-regression",
+                    "text": "Probit regression",
+                    "level": 2
+                },
+                {
+                    "id": "poisson-regression",
+                    "text": "Poisson regression",
+                    "level": 2
+                },
+                {
+                    "id": "gaussian-random-intercept-mixed-model",
+                    "text": "Gaussian random-intercept mixed model",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "io": {
+            "title": "Reading CSV files",
+            "headings": [
+                {
+                    "id": "options",
+                    "text": "Options",
+                    "level": 2
+                },
+                {
+                    "id": "result",
+                    "text": "Result",
+                    "level": 2
+                },
+                {
+                    "id": "records",
+                    "text": "Records",
+                    "level": 2
+                },
+                {
+                    "id": "guessing",
+                    "text": "Guessing",
+                    "level": 2
+                },
+                {
+                    "id": "parsing",
+                    "text": "Parsing",
+                    "level": 2
+                },
+                {
+                    "id": "errors",
+                    "text": "Errors",
+                    "level": 2
+                },
+                {
+                    "id": "differences-from-readr",
+                    "text": "Differences from readr",
+                    "level": 2
+                },
+                {
+                    "id": "performance",
+                    "text": "Performance",
+                    "level": 2
+                },
+                {
+                    "id": "verification",
+                    "text": "Verification",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "licensing": {
+            "title": "Licensing",
+            "headings": [],
+            "math": false
+        },
+        "missing-data": {
+            "title": "Missing data and listwise deletion",
+            "headings": [
+                {
+                    "id": "what-counts-as-missing",
+                    "text": "What counts as missing",
+                    "level": 2
+                },
+                {
+                    "id": "warning-and-accounting",
+                    "text": "Warning and accounting",
+                    "level": 2
+                },
+                {
+                    "id": "statistical-interpretation-and-reference-behavior",
+                    "text": "Statistical interpretation and reference behavior",
+                    "level": 2
+                },
+                {
+                    "id": "logistic-outcomes",
+                    "text": "Logistic outcomes",
+                    "level": 2
+                },
+                {
+                    "id": "probit-and-poisson-outcomes",
+                    "text": "Probit and Poisson outcomes",
+                    "level": 2
+                },
+                {
+                    "id": "mixed-model-group-ids",
+                    "text": "Mixed-model group IDs",
+                    "level": 2
+                },
+                {
+                    "id": "expanded-inputs",
+                    "text": "Expanded inputs",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/index": {
+            "title": "Estimation walkthrough notebooks",
+            "headings": [
+                {
+                    "id": "render-and-recompute",
+                    "text": "Render and recompute",
+                    "level": 2
+                },
+                {
+                    "id": "writing-future-walkthroughs",
+                    "text": "Writing future walkthroughs",
+                    "level": 2
+                },
+                {
+                    "id": "binary-logistic-regression",
+                    "text": "Binary logistic regression",
+                    "level": 2
+                },
+                {
+                    "id": "probit-regression",
+                    "text": "Probit regression",
+                    "level": 2
+                },
+                {
+                    "id": "poisson-regression",
+                    "text": "Poisson regression",
+                    "level": 2
+                },
+                {
+                    "id": "gaussian-random-intercept-mixed-model",
+                    "text": "Gaussian random-intercept mixed model",
+                    "level": 2
+                },
+                {
+                    "id": "expanded-mixed-designs-and-r-compatibility",
+                    "text": "Expanded mixed designs and R compatibility",
+                    "level": 2
+                },
+                {
+                    "id": "binomial-random-intercept-likelihoods",
+                    "text": "Binomial random-intercept likelihoods",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/lmm-general-math": {
+            "title": "Gaussian random slopes, penalized least squares and REML",
+            "headings": [
+                {
+                    "id": "observations-and-matrices",
+                    "text": "Observations and matrices",
+                    "level": 2
+                },
+                {
+                    "id": "covariance-through-a-cholesky-factor",
+                    "text": "Covariance through a Cholesky factor",
+                    "level": 2
+                },
+                {
+                    "id": "penalized-least-squares-profiles-out-beta-and-random-effects",
+                    "text": "Penalized least squares profiles out beta and random effects",
+                    "level": 2
+                },
+                {
+                    "id": "ml-and-reml-are-different-objectives",
+                    "text": "ML and REML are different objectives",
+                    "level": 2
+                },
+                {
+                    "id": "fixed-effect-uncertainty",
+                    "text": "Fixed-effect uncertainty",
+                    "level": 2
+                },
+                {
+                    "id": "four-grouping-levels-which-observations-share-variation",
+                    "text": "Four grouping levels: which observations share variation?",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "notebooks/lmm-math": {
+            "title": "Gaussian mixed models: covariance, marginal likelihood and shrinkage",
+            "headings": [
+                {
+                    "id": "students-within-schools",
+                    "text": "1. Students within schools",
+                    "level": 2
+                },
+                {
+                    "id": "conditional-and-marginal-models",
+                    "text": "2. Conditional and marginal models",
+                    "level": 2
+                },
+                {
+                    "id": "the-likelihood-integrates-out-group-effects",
+                    "text": "3. The likelihood integrates out group effects",
+                    "level": 2
+                },
+                {
+                    "id": "whiten-groups-instead-of-building-a-huge-matrix",
+                    "text": "4. Whiten groups instead of building a huge matrix",
+                    "level": 2
+                },
+                {
+                    "id": "cache-a-square-root-reduction-following-the-lme4-idea",
+                    "text": "Cache a square-root reduction, following the lme4 idea",
+                    "level": 3
+                },
+                {
+                    "id": "profile-out-beta-and-sigma²-optimize-one-variance-ratio",
+                    "text": "5. Profile out beta and sigma²; optimize one variance ratio",
+                    "level": 2
+                },
+                {
+                    "id": "shrinkage-estimate-each-schools-intercept",
+                    "text": "6. Shrinkage: estimate each school’s intercept",
+                    "level": 2
+                },
+                {
+                    "id": "fixed-effect-uncertainty-and-model-statistics",
+                    "text": "7. Fixed-effect uncertainty and model statistics",
+                    "level": 2
+                },
+                {
+                    "id": "boundaries-assumptions-and-experiments",
+                    "text": "8. Boundaries, assumptions and experiments",
+                    "level": 2
+                },
+                {
+                    "id": "rust-connections",
+                    "text": "Rust connections",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "notebooks/lmm-public-verification": {
+            "title": "Gaussian mixed models on four published datasets",
+            "headings": [
+                {
+                    "id": "execute-all-four-comparisons",
+                    "text": "Execute all four comparisons",
+                    "level": 2
+                },
+                {
+                    "id": "estimates-by-dataset",
+                    "text": "Estimates by dataset",
+                    "level": 2
+                },
+                {
+                    "id": "variances-and-likelihood",
+                    "text": "Variances and likelihood",
+                    "level": 2
+                },
+                {
+                    "id": "look-closely-at-numerical-differences",
+                    "text": "Look closely at numerical differences",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce-without-fetching-data",
+                    "text": "Reproduce without fetching data",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/lmm-verification": {
+            "title": "The same random-intercept ML model in R, Python and PHP",
+            "headings": [
+                {
+                    "id": "equivalent-model-calls",
+                    "text": "Equivalent model calls",
+                    "level": 2
+                },
+                {
+                    "id": "conventions-that-must-match",
+                    "text": "Conventions that must match",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/logistic-math": {
+            "title": "Binary logistic regression: from probabilities to maximum likelihood",
+            "headings": [
+                {
+                    "id": "observations-parameters-and-probabilities",
+                    "text": "1. Observations, parameters and probabilities",
+                    "level": 2
+                },
+                {
+                    "id": "why-model-log-odds-instead-of-the-outcome-directly",
+                    "text": "2. Why model log-odds instead of the outcome directly?",
+                    "level": 2
+                },
+                {
+                    "id": "write-the-likelihood",
+                    "text": "3. Write the likelihood",
+                    "level": 2
+                },
+                {
+                    "id": "derivatives-give-the-newton-step",
+                    "text": "4. Derivatives give the Newton step",
+                    "level": 2
+                },
+                {
+                    "id": "weighted-svd-irls-and-step-halving",
+                    "text": "5. Weighted SVD, IRLS and step halving",
+                    "level": 2
+                },
+                {
+                    "id": "probabilities-residuals-and-uncertainty",
+                    "text": "6. Probabilities, residuals and uncertainty",
+                    "level": 2
+                },
+                {
+                    "id": "likelihood-deviance-and-aic",
+                    "text": "7. Likelihood, deviance and AIC",
+                    "level": 2
+                },
+                {
+                    "id": "separation-assumptions-and-things-to-try",
+                    "text": "8. Separation, assumptions and things to try",
+                    "level": 2
+                },
+                {
+                    "id": "rust-connections",
+                    "text": "Rust connections",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "notebooks/logistic-mixed-math": {
+            "title": "Binomial mixed models: likelihood, latent effects and integration",
+            "headings": [
+                {
+                    "id": "observed-counts-and-constructed-predictors",
+                    "text": "Observed counts and constructed predictors",
+                    "level": 2
+                },
+                {
+                    "id": "conditional-likelihood-and-random-effect-law",
+                    "text": "Conditional likelihood and random-effect law",
+                    "level": 2
+                },
+                {
+                    "id": "find-each-conditional-mode",
+                    "text": "Find each conditional mode",
+                    "level": 2
+                },
+                {
+                    "id": "laplace-approximation-use-height-and-curvature",
+                    "text": "Laplace approximation: use height and curvature",
+                    "level": 2
+                },
+                {
+                    "id": "adaptive-gauss-hermite-quadrature",
+                    "text": "Adaptive Gauss-Hermite quadrature",
+                    "level": 2
+                },
+                {
+                    "id": "fixed-effect-uncertainty-comes-from-the-marginal-objective",
+                    "text": "Fixed-effect uncertainty comes from the marginal objective",
+                    "level": 2
+                },
+                {
+                    "id": "approximation-accuracy-a-rare-event-example",
+                    "text": "Approximation accuracy: a rare-event example",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "notebooks/logistic-mixed-verification": {
+            "title": "Binomial mixed-model verification and approximation accuracy",
+            "headings": [
+                {
+                    "id": "execute-the-comparisons",
+                    "text": "Execute the comparisons",
+                    "level": 2
+                },
+                {
+                    "id": "published-cbpp-matching-estimation-methods",
+                    "text": "Published cbpp: matching estimation methods",
+                    "level": 2
+                },
+                {
+                    "id": "likelihood-normalization-matters",
+                    "text": "Likelihood normalization matters",
+                    "level": 2
+                },
+                {
+                    "id": "approximation-error-separately-from-implementation-agreement",
+                    "text": "Approximation error, separately from implementation agreement",
+                    "level": 2
+                },
+                {
+                    "id": "numerical-tolerance-and-failure-policy",
+                    "text": "Numerical tolerance and failure policy",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/logistic-verification": {
+            "title": "The same logistic models in R, statsmodels and PHP",
+            "headings": [
+                {
+                    "id": "equivalent-calls",
+                    "text": "Equivalent calls",
+                    "level": 2
+                },
+                {
+                    "id": "missing-rows-and-model-statistics",
+                    "text": "Missing rows and model statistics",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/ols-math": {
+            "title": "Ordinary least squares: from the objective to inference",
+            "headings": [
+                {
+                    "id": "where-these-data-come-from",
+                    "text": "Where these data come from",
+                    "level": 3
+                },
+                {
+                    "id": "read-the-matrices",
+                    "text": "Read the matrices",
+                    "level": 3
+                },
+                {
+                    "id": "what-does-fitting-minimize",
+                    "text": "1. What does fitting minimize?",
+                    "level": 2
+                },
+                {
+                    "id": "expand-the-dot-products",
+                    "text": "Expand the dot products",
+                    "level": 3
+                },
+                {
+                    "id": "svd-gives-a-stable-solution-and-a-rank-check",
+                    "text": "2. SVD gives a stable solution and a rank check",
+                    "level": 2
+                },
+                {
+                    "id": "what-problem-does-svd-help-us-understand",
+                    "text": "What problem does SVD help us understand?",
+                    "level": 3
+                },
+                {
+                    "id": "why-scale-the-columns-first",
+                    "text": "Why scale the columns first?",
+                    "level": 3
+                },
+                {
+                    "id": "what-do-u-s-and-v-mean",
+                    "text": "What do U, S and V mean?",
+                    "level": 3
+                },
+                {
+                    "id": "derive-the-least-squares-solution-from-the-decomposition",
+                    "text": "Derive the least-squares solution from the decomposition",
+                    "level": 3
+                },
+                {
+                    "id": "why-small-singular-values-matter",
+                    "text": "Why small singular values matter",
+                    "level": 3
+                },
+                {
+                    "id": "residuals-and-degrees-of-freedom",
+                    "text": "3. Residuals and degrees of freedom",
+                    "level": 2
+                },
+                {
+                    "id": "covariance-standard-errors-and-t-tests",
+                    "text": "4. Covariance, standard errors and t-tests",
+                    "level": 2
+                },
+                {
+                    "id": "r-squared-and-the-intercept-convention",
+                    "text": "5. R-squared and the intercept convention",
+                    "level": 2
+                },
+                {
+                    "id": "gaussian-likelihood-explains-the-same-estimator",
+                    "text": "6. Gaussian likelihood explains the same estimator",
+                    "level": 2
+                },
+                {
+                    "id": "verify-what-we-calculated",
+                    "text": "7. Verify what we calculated",
+                    "level": 2
+                },
+                {
+                    "id": "missing-data-singularity-and-perfect-fits",
+                    "text": "8. Missing data, singularity and perfect fits",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "notebooks/ols-verification": {
+            "title": "OLS verification: R, statsmodels and PHP",
+            "headings": [
+                {
+                    "id": "equivalent-calls",
+                    "text": "Equivalent calls",
+                    "level": 2
+                },
+                {
+                    "id": "automated-agreement-including-row-deletion",
+                    "text": "Automated agreement, including row deletion",
+                    "level": 2
+                },
+                {
+                    "id": "read-the-limits-of-this-evidence",
+                    "text": "Read the limits of this evidence",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/poisson-math": {
+            "title": "Poisson: count likelihood, log link and IRLS",
+            "headings": [
+                {
+                    "id": "meaningful-simulated-observations",
+                    "text": "1. Meaningful simulated observations",
+                    "level": 2
+                },
+                {
+                    "id": "likelihood-and-derivatives",
+                    "text": "2. Likelihood and derivatives",
+                    "level": 2
+                },
+                {
+                    "id": "scoring-weighted-matrices-and-svd",
+                    "text": "3. Scoring, weighted matrices and SVD",
+                    "level": 2
+                },
+                {
+                    "id": "covariance-and-wald-inference",
+                    "text": "4. Covariance and Wald inference",
+                    "level": 2
+                },
+                {
+                    "id": "likelihood-deviance-and-aic",
+                    "text": "5. Likelihood, deviance and AIC",
+                    "level": 2
+                },
+                {
+                    "id": "assumptions-failure-modes-and-experiments",
+                    "text": "6. Assumptions, failure modes and experiments",
+                    "level": 2
+                },
+                {
+                    "id": "rust-connections",
+                    "text": "Rust connections",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "notebooks/poisson-verification": {
+            "title": "The same poisson models in R, statsmodels and PHP",
+            "headings": [
+                {
+                    "id": "equivalent-calls",
+                    "text": "Equivalent calls",
+                    "level": 2
+                },
+                {
+                    "id": "missing-rows-and-model-statistics",
+                    "text": "Missing rows and model statistics",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/probit-math": {
+            "title": "Probit: a normal latent variable and Fisher scoring",
+            "headings": [
+                {
+                    "id": "meaningful-simulated-observations",
+                    "text": "1. Meaningful simulated observations",
+                    "level": 2
+                },
+                {
+                    "id": "likelihood-and-derivatives",
+                    "text": "2. Likelihood and derivatives",
+                    "level": 2
+                },
+                {
+                    "id": "scoring-weighted-matrices-and-svd",
+                    "text": "3. Scoring, weighted matrices and SVD",
+                    "level": 2
+                },
+                {
+                    "id": "covariance-and-wald-inference",
+                    "text": "4. Covariance and Wald inference",
+                    "level": 2
+                },
+                {
+                    "id": "likelihood-deviance-and-aic",
+                    "text": "5. Likelihood, deviance and AIC",
+                    "level": 2
+                },
+                {
+                    "id": "assumptions-failure-modes-and-experiments",
+                    "text": "6. Assumptions, failure modes and experiments",
+                    "level": 2
+                },
+                {
+                    "id": "rust-connections",
+                    "text": "Rust connections",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "notebooks/probit-verification": {
+            "title": "The same probit models in R, statsmodels and PHP",
+            "headings": [
+                {
+                    "id": "equivalent-calls",
+                    "text": "Equivalent calls",
+                    "level": 2
+                },
+                {
+                    "id": "missing-rows-and-model-statistics",
+                    "text": "Missing rows and model statistics",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/r-compatibility": {
+            "title": "Expanded R compatibility and all four lme4 optimizers",
+            "headings": [
+                {
+                    "id": "run-the-audit",
+                    "text": "Run the audit",
+                    "level": 2
+                },
+                {
+                    "id": "fixed-estimators-weights-offsets-and-binomial-trials",
+                    "text": "Fixed estimators: weights, offsets and binomial trials",
+                    "level": 2
+                },
+                {
+                    "id": "mixed-models-and-optimizer-agreement",
+                    "text": "Mixed models and optimizer agreement",
+                    "level": 2
+                },
+                {
+                    "id": "more-than-two-grouping-levels",
+                    "text": "More than two grouping levels",
+                    "level": 2
+                },
+                {
+                    "id": "published-sleepstudy-r-statsmodels-and-php",
+                    "text": "Published sleepstudy: R, statsmodels and PHP",
+                    "level": 2
+                },
+                {
+                    "id": "what-the-random-slopes-mean",
+                    "text": "What the random slopes mean",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce-or-refresh",
+                    "text": "Reproduce or refresh",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "ols-math": {
+            "title": "OLS mathematics and Rust notes",
+            "headings": [
+                {
+                    "id": "least-squares",
+                    "text": "Least squares",
+                    "level": 2
+                },
+                {
+                    "id": "gaussian-likelihood",
+                    "text": "Gaussian likelihood",
+                    "level": 2
+                },
+                {
+                    "id": "rust-constructs-in-this-implementation",
+                    "text": "Rust constructs in this implementation",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "r-compatibility": {
+            "title": "R compatibility: target, coverage and remaining work",
+            "headings": [
+                {
+                    "id": "distribution-and-statistical-utility-compatibility",
+                    "text": "Distribution and statistical utility compatibility",
+                    "level": 2
+                },
+                {
+                    "id": "implemented-and-verified",
+                    "text": "Implemented and verified",
+                    "level": 2
+                },
+                {
+                    "id": "optimizers-runtime-versus-reference",
+                    "text": "Optimizers: runtime versus reference",
+                    "level": 2
+                },
+                {
+                    "id": "evidence-and-tolerance-policy",
+                    "text": "Evidence and tolerance policy",
+                    "level": 2
+                },
+                {
+                    "id": "remaining-compatibility-work",
+                    "text": "Remaining compatibility work",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                },
+                {
+                    "id": "binomial-mixed-model-evidence",
+                    "text": "Binomial mixed-model evidence",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "rng": {
+            "title": "Seeded batch sampling",
+            "headings": [
+                {
+                    "id": "api-and-state-ownership",
+                    "text": "API and state ownership",
+                    "level": 2
+                },
+                {
+                    "id": "numerical-method-and-reproducibility",
+                    "text": "Numerical method and reproducibility",
+                    "level": 2
+                },
+                {
+                    "id": "validation",
+                    "text": "Validation",
+                    "level": 2
+                },
+                {
+                    "id": "independent-verification",
+                    "text": "Independent verification",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "v0.1": {
+            "title": "v0.1 stabilization and release assessment",
+            "headings": [
+                {
+                    "id": "what-the-release-gate-establishes",
+                    "text": "What the release gate establishes",
+                    "level": 2
+                },
+                {
+                    "id": "correctness-fixes-and-compatibility-notes",
+                    "text": "Correctness fixes and compatibility notes",
+                    "level": 2
+                },
+                {
+                    "id": "stress-tests-and-numerical-limits",
+                    "text": "Stress tests and numerical limits",
+                    "level": 2
+                },
+                {
+                    "id": "php-contract-gate",
+                    "text": "PHP contract gate",
+                    "level": 2
+                },
+                {
+                    "id": "performance-preservation",
+                    "text": "Performance preservation",
+                    "level": 2
+                },
+                {
+                    "id": "release-readiness-and-remaining-gates",
+                    "text": "Release readiness and remaining gates",
+                    "level": 2
+                },
+                {
+                    "id": "review-follow-up",
+                    "text": "Review follow-up",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "v0.2": {
+            "title": "v0.2 numerical API readiness",
+            "headings": [
+                {
+                    "id": "delivered-scope",
+                    "text": "Delivered scope",
+                    "level": 2
+                },
+                {
+                    "id": "numerical-findings-and-fixes",
+                    "text": "Numerical findings and fixes",
+                    "level": 2
+                },
+                {
+                    "id": "reuse-and-rng-decisions",
+                    "text": "Reuse and RNG decisions",
+                    "level": 2
+                },
+                {
+                    "id": "verification-and-maintenance",
+                    "text": "Verification and maintenance",
+                    "level": 2
+                },
+                {
+                    "id": "release-and-platform-limits",
+                    "text": "Release and platform limits",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "verification": {
+            "title": "Verification",
+            "headings": [
+                {
+                    "id": "routine-checks",
+                    "text": "Routine checks",
+                    "level": 2
+                },
+                {
+                    "id": "probability-and-descriptive-apis",
+                    "text": "Probability and descriptive APIs",
+                    "level": 2
+                },
+                {
+                    "id": "posterior-draw-kernels",
+                    "text": "Posterior-draw kernels",
+                    "level": 2
+                },
+                {
+                    "id": "php-intercept-and-offset-contracts",
+                    "text": "PHP intercept and offset contracts",
+                    "level": 2
+                },
+                {
+                    "id": "reference-and-tolerances",
+                    "text": "Reference and tolerances",
+                    "level": 2
+                },
+                {
+                    "id": "current-coverage-and-limits",
+                    "text": "Current coverage and limits",
+                    "level": 2
+                },
+                {
+                    "id": "maintaining-evidence",
+                    "text": "Maintaining evidence",
+                    "level": 2
+                },
+                {
+                    "id": "executed-three-way-evidence",
+                    "text": "Executed three-way evidence",
+                    "level": 2
+                },
+                {
+                    "id": "scale-and-performance-checks",
+                    "text": "Scale and performance checks",
+                    "level": 2
+                },
+                {
+                    "id": "binary-logistic-regression",
+                    "text": "Binary logistic regression",
+                    "level": 2
+                },
+                {
+                    "id": "probit-and-poisson",
+                    "text": "Probit and Poisson",
+                    "level": 2
+                },
+                {
+                    "id": "gaussian-random-intercept-ml",
+                    "text": "Gaussian random-intercept ML",
+                    "level": 2
+                },
+                {
+                    "id": "published-gaussian-mixed-model-data",
+                    "text": "Published Gaussian mixed-model data",
+                    "level": 2
+                },
+                {
+                    "id": "expanded-r-compatibility",
+                    "text": "Expanded R compatibility",
+                    "level": 2
+                },
+                {
+                    "id": "binomial-logit-with-one-random-intercept",
+                    "text": "Binomial logit with one random intercept",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "verifications/distributions": {
+            "title": "Distribution and utility verification",
+            "headings": [
+                {
+                    "id": "executed-reference-comparison",
+                    "text": "Executed reference comparison",
+                    "level": 2
+                },
+                {
+                    "id": "reference-generation-and-limitations",
+                    "text": "Reference generation and limitations",
+                    "level": 2
+                },
+                {
+                    "id": "release-gate-tolerances-and-checks",
+                    "text": "Release-gate tolerances and checks",
+                    "level": 2
+                },
+                {
+                    "id": "documented-reference-differences",
+                    "text": "Documented reference differences",
+                    "level": 2
+                },
+                {
+                    "id": "backend-and-model-path-audit",
+                    "text": "Backend and model-path audit",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "verifications/lmm": {
+            "title": "Gaussian random-intercept ML verification record",
+            "headings": [],
+            "math": false
+        },
+        "verifications/logistic": {
+            "title": "Binary logistic regression verification record",
+            "headings": [
+                {
+                    "id": "reference-cases-and-conventions",
+                    "text": "Reference cases and conventions",
+                    "level": 2
+                },
+                {
+                    "id": "failure-and-integration-checks",
+                    "text": "Failure and integration checks",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "verifications/ols": {
+            "title": "OLS verification in R, statsmodels and PHP",
+            "headings": [
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
+                    "level": 2
+                },
+                {
+                    "id": "equivalent-specifications",
+                    "text": "Equivalent specifications",
+                    "level": 2
+                },
+                {
+                    "id": "verified-cases",
+                    "text": "Verified cases",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "verifications/poisson": {
+            "title": "Poisson regression verification record",
+            "headings": [
+                {
+                    "id": "reference-cases-and-conventions",
+                    "text": "Reference cases and conventions",
+                    "level": 2
+                },
+                {
+                    "id": "failure-and-integration-checks",
+                    "text": "Failure and integration checks",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "verifications/probit": {
+            "title": "Probit regression verification record",
+            "headings": [
+                {
+                    "id": "reference-cases-and-conventions",
+                    "text": "Reference cases and conventions",
+                    "level": 2
+                },
+                {
+                    "id": "failure-and-integration-checks",
+                    "text": "Failure and integration checks",
+                    "level": 2
+                },
+                {
+                    "id": "reproduce",
+                    "text": "Reproduce",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "visualization": {
+            "title": "Figure conventions and reproducibility",
+            "headings": [
+                {
+                    "id": "visual-conventions",
+                    "text": "Visual conventions",
+                    "level": 2
+                },
+                {
+                    "id": "generate-figures-without-running-fits-or-benchmarks",
+                    "text": "Generate figures without running fits or benchmarks",
+                    "level": 2
+                },
+                {
+                    "id": "existing-figure-coverage",
+                    "text": "Existing figure coverage",
+                    "level": 2
+                }
+            ],
+            "math": false
+        }
+    }
+}

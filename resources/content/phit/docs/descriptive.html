@@ -1,0 +1,70 @@
+<p>These ten functions summarize ordinary PHP numeric arrays. They are deterministic, stateless native calculations; no intercept, model fitting or retained sample object is involved. Array keys are ignored and iteration order aligns pairs and weights. Results are floats except <code>stat_quantile_array</code>, which returns a packed list in probability-array iteration order.</p>
+<section id="calls-and-conventions" class="level2">
+<h2 class="anchored" data-anchor-id="calls-and-conventions">Calls and conventions</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Phit\stat_mean(<span class="dt">array</span> <span class="va">$values</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">float</span><span class="ot">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Phit\stat_var(<span class="dt">array</span> <span class="va">$values</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$type</span> <span class="op">=</span> <span class="st">'sample'</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">float</span><span class="ot">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Phit\stat_sd(<span class="dt">array</span> <span class="va">$values</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$type</span> <span class="op">=</span> <span class="st">'sample'</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">float</span><span class="ot">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Phit\stat_cov(<span class="dt">array</span> <span class="va">$x</span><span class="ot">,</span> <span class="dt">array</span> <span class="va">$y</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$type</span> <span class="op">=</span> <span class="st">'sample'</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">float</span><span class="ot">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Phit\stat_cor(<span class="dt">array</span> <span class="va">$x</span><span class="ot">,</span> <span class="dt">array</span> <span class="va">$y</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">float</span><span class="ot">;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Phit\stat_quantile(<span class="dt">array</span> <span class="va">$values</span><span class="ot">,</span> <span class="dt">float</span> <span class="va">$p</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">float</span><span class="ot">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>Phit\stat_quantile_array(<span class="dt">array</span> <span class="va">$values</span><span class="ot">,</span> <span class="dt">array</span> <span class="va">$probabilities</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">array</span><span class="ot">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Phit\stat_median(<span class="dt">array</span> <span class="va">$values</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">float</span><span class="ot">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>Phit\stat_weighted_mean(<span class="dt">array</span> <span class="va">$values</span><span class="ot">,</span> <span class="dt">array</span> <span class="va">$weights</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">float</span><span class="ot">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Phit\stat_weighted_var(<span class="dt">array</span> <span class="va">$values</span><span class="ot">,</span> <span class="dt">array</span> <span class="va">$weights</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$type</span> <span class="op">=</span> <span class="st">'frequency'</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'raise'</span>)<span class="ot">:</span> <span class="dt">float</span><span class="ot">;</span></span></code></pre></div></div>
+<p><code>type: 'sample'</code> variance/SD/covariance divides by n−1; <code>'population'</code> divides by n. Population variance/SD permits one value and returns zero. Covariance/correlation requires at least two aligned retained pairs under either normalization. Other summaries require one retained value. Correlation with a constant input is NAN, an explicitly undefined statistic. An empty requested probability array returns <code>[]</code> after validating the supplied values.</p>
+<p>Quantiles use R’s default <strong>type 7</strong> interpolation. For sorted values x, index <span class="math inline">\(h=1+(n-1)p\)</span>; interpolate between adjacent values using the fractional part of h. p must be in <code>[0,1]</code>. Endpoints are the minimum and maximum. Median is the type-7 quantile at p=0.5. The batch function sorts once for all requested probabilities; it returns exactly the same values as scalar calls.</p>
+</section>
+<section id="weight-definitions" class="level2">
+<h2 class="anchored" data-anchor-id="weight-definitions">Weight definitions</h2>
+<p>Let <span class="math inline">\(W=\sum_i w_i\)</span>, <span class="math inline">\(m=\sum_i w_i x_i/W\)</span>, and <span class="math inline">\(SS=\sum_i w_i(x_i-m)^2\)</span>. Weights must be nonnegative and finite; the retained total must be positive.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Weighted variance type</th>
+<th>Definition</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>frequency</code> (default)</td>
+<td><span class="math inline">\(SS/(W-1)\)</span></td>
+<td>Replication/count weights; requires W &gt; 1</td>
+</tr>
+<tr class="even">
+<td><code>reliability</code></td>
+<td><span class="math inline">\(SS/(W-\sum_i w_i^2/W)\)</span></td>
+<td>Reliability/precision weights; requires a positive denominator</td>
+</tr>
+<tr class="odd">
+<td><code>population</code></td>
+<td><span class="math inline">\(SS/W\)</span></td>
+<td>Weighted population second moment</td>
+</tr>
+</tbody>
+</table>
+<p>Frequency and reliability weighting differ. Integer frequency weights reproduce the sample variance of an expanded sample. Reliability/population results are invariant to multiplying all weights by a positive constant. Zero weights are allowed. One effective value has zero population variance but undefined reliability variance. Negative weights are rejected even when the paired value is missing. Weights are aligned to original input positions before pairwise deletion. The separate <a href="phpstats://phit/docs/draw-numerics">draw moments</a> API always normalizes weights and calls reliability normalization <code>'unbiased'</code>; it never treats weights as counts.</p>
+</section>
+<section id="missing-values-and-errors" class="level2">
+<h2 class="anchored" data-anchor-id="missing-values-and-errors">Missing values and errors</h2>
+<p>Null and NAN are missing values. The default <code>missing: 'raise'</code> rejects them with 1001. <code>missing: 'drop'</code> explicitly removes them, <strong>pairwise</strong> for covariance, correlation and weighted functions. No warning or retained-row metadata is returned; dropping is opt-in. Infinity always raises 1003, including an element paired with a missing value. Strings, booleans, objects and nested arrays raise 1001. All aligned arrays must have equal original lengths, or 1002 is raised.</p>
+<p>Unsupported type/missing options, insufficient retained values, invalid weights or invalid probability domains raise 1001. NAN probability raises 1003. Nonfinite arithmetic results also raise 1003, including an overflowing weight sum or squared deviation. The explicit NAN for constant-input correlation remains valid. This release fixed a case where an overflowing variance had been hidden as zero by floating-point <code>max(NAN, 0)</code>.</p>
+<p>Sums use Neumaier compensation; variances/covariances use corrected two-pass centered moments. This improves accuracy with large common offsets. These are binary64 calculations and do not promise arbitrary-scale extended precision.</p>
+</section>
+<section id="example-and-verification" class="level2">
+<h2 class="anchored" data-anchor-id="example-and-verification">Example and verification</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$values</span> <span class="op">=</span> [<span class="fl">2.5</span><span class="ot">,</span> <span class="fl">3.1</span><span class="ot">,</span> <span class="fl">4.7</span><span class="ot">,</span> <span class="fl">1.2</span><span class="ot">,</span> <span class="fl">9.8</span><span class="ot">,</span> <span class="fl">5.5</span><span class="ot">,</span> <span class="fl">3.3</span>]<span class="ot">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">$mean</span> <span class="op">=</span> Phit\stat_mean(<span class="va">$values</span>)<span class="ot">;</span>                     <span class="co">// 4.3</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">$sampleVariance</span> <span class="op">=</span> Phit\stat_var(<span class="va">$values</span>)<span class="ot">;</span>       <span class="co">// About 7.85667</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">$quartiles</span> <span class="op">=</span> Phit\stat_quantile_array(<span class="va">$values</span><span class="ot">,</span> [<span class="op">.</span><span class="dv">25</span><span class="ot">,</span> <span class="op">.</span><span class="dv">5</span><span class="ot">,</span> <span class="op">.</span><span class="dv">75</span>])<span class="ot">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">$explicitDrop</span> <span class="op">=</span> Phit\stat_mean([<span class="dv">1</span><span class="ot">,</span> <span class="kw">null</span><span class="ot">,</span> <span class="dv">3</span>]<span class="ot">,</span> missing<span class="ot">:</span> <span class="st">'drop'</span>)<span class="ot">;</span> <span class="co">// 2</span></span></code></pre></div></div>
+<p><code>tests/descriptive.php</code> checks 145 R reference quantities plus scalar/batch consistency, missing policies, pairwise deletion, weights, boundaries, malformed inputs and arithmetic overflow. <code>crates/stats-core/tests/descriptive.rs</code> checks the same stored R cases independently of PHP and adds core failure/degeneracy checks. The eight univariate samples, three paired samples and two weighted samples include large offsets, tiny values, constant data and reproducible simulations. Reference tolerance is relative <code>1e-12</code>, with exact zeros. R is not required by the ordinary test suites.</p>
+<p>Regenerate intentionally with <code>Rscript tests/generate-distribution-fixtures.R</code>; this also regenerates the distribution R fixture. The <a href="/content/phit/docs/verifications/reference-manifest.json">provenance manifest</a> records inputs, versions, generators and hashes. The <a href="phpstats://phit/docs/verification">release gate</a> includes the PHP suite and the runnable <code>examples/distributions.php</code>.</p>
+
+
+</section>

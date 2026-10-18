@@ -1,0 +1,376 @@
+<p>The distribution benchmark compares a PHP scalar loop, one native PHP batch call, an internal Rust loop, vectorized R and SciPy on identical saved temporary inputs. It covers 1,000, 100,000 and one million values for normal CDF/SF, Student-t quantile, binomial/Poisson log-PMF, mean/variance, beta quantile and chi-square CDF with df one million. <a href="/content/phit/docs/benchmarks/distributions-results.json">Raw results</a> retain every measurement, numerical summary, input hash, runtime version, thread setting and peak resident memory.</p>
+<section id="numerical-comparisons-before-timings" class="level2">
+<h2 class="anchored" data-anchor-id="numerical-comparisons-before-timings">Numerical comparisons before timings</h2>
+<p>All input cases are verified across implementations before any timing phase begins. Seventeen evenly spaced output values plus min/max use the distribution fixture tolerance: <code>1e-300 + 1e-12*abs(reference)</code>, or <code>1e-15 + 1e-12*abs(reference)</code> for quantiles. Sum and sum-of-squares consume <strong>all</strong> outputs, with tolerance <code>1e-9 + 1e-10*abs(reference)</code> to allow different accumulation orders. Mean/variance outputs are checked directly. R is the benchmark reference; the separate <a href="phpstats://phit/docs/verifications/distributions">R/SciPy/mpmath record</a> adjudicates reference differences and tests extreme/boundary values more broadly.</p>
+<p>Native comparisons must pass. SciPy peer discrepancies are retained and labeled; they do not silently relax the native gate. Every timed output summary is checked again. This benchmark does not compare every individual element of the large vectors; the complete-vector aggregates and sampled values complement the strict small reference/identity suite.</p>
+<!-- BEGIN BENCHMARK EVIDENCE -->
+<p>Recorded: <strong>2026-10-12T15:18:59.861643+00:00</strong>; Apple M5 Ultra, macOS-27.0.1-arm64-arm-64bit-Mach-O. 27 input cases; all native/R comparisons passed. SciPy exceeded the same tolerance for: chisquare_cdf (1,000), chisquare_cdf (100,000), chisquare_cdf (1,000,000).</p>
+<p>Median milliseconds per full call, 5 measurements after one warm-up:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operation</th>
+<th>Values</th>
+<th>PHP scalar loop</th>
+<th>PHP batch/native</th>
+<th>Rust loop</th>
+<th>R</th>
+<th>SciPy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>normal_cdf</td>
+<td>1,000</td>
+<td>0.04073</td>
+<td>0.02235</td>
+<td>0.01054</td>
+<td>0.02</td>
+<td>0.01851</td>
+</tr>
+<tr class="even">
+<td>normal_cdf</td>
+<td>100,000</td>
+<td>4.093</td>
+<td>2.23</td>
+<td>1.374</td>
+<td>2</td>
+<td>1.227</td>
+</tr>
+<tr class="odd">
+<td>normal_cdf</td>
+<td>1,000,000</td>
+<td>41.28</td>
+<td>23.62</td>
+<td>14.29</td>
+<td>17</td>
+<td>12.1</td>
+</tr>
+<tr class="even">
+<td>normal_sf</td>
+<td>1,000</td>
+<td>0.04412</td>
+<td>0.02112</td>
+<td>0.01159</td>
+<td>0.02</td>
+<td>0.0193</td>
+</tr>
+<tr class="odd">
+<td>normal_sf</td>
+<td>100,000</td>
+<td>4.406</td>
+<td>2.153</td>
+<td>1.238</td>
+<td>2</td>
+<td>0.9886</td>
+</tr>
+<tr class="even">
+<td>normal_sf</td>
+<td>1,000,000</td>
+<td>44.06</td>
+<td>21.05</td>
+<td>14.5</td>
+<td>16</td>
+<td>9.896</td>
+</tr>
+<tr class="odd">
+<td>t_quantile</td>
+<td>1,000</td>
+<td>0.5982</td>
+<td>0.5775</td>
+<td>0.5745</td>
+<td>0.23</td>
+<td>0.1402</td>
+</tr>
+<tr class="even">
+<td>t_quantile</td>
+<td>100,000</td>
+<td>59.79</td>
+<td>57.86</td>
+<td>56.78</td>
+<td>23</td>
+<td>12.53</td>
+</tr>
+<tr class="odd">
+<td>t_quantile</td>
+<td>1,000,000</td>
+<td>601.9</td>
+<td>580</td>
+<td>569.8</td>
+<td>222</td>
+<td>122.2</td>
+</tr>
+<tr class="even">
+<td>binomial_logpmf</td>
+<td>1,000</td>
+<td>0.07055</td>
+<td>0.03282</td>
+<td>0.02151</td>
+<td>0.03</td>
+<td>0.03847</td>
+</tr>
+<tr class="odd">
+<td>binomial_logpmf</td>
+<td>100,000</td>
+<td>6.817</td>
+<td>3.474</td>
+<td>2.65</td>
+<td>3</td>
+<td>2.488</td>
+</tr>
+<tr class="even">
+<td>binomial_logpmf</td>
+<td>1,000,000</td>
+<td>66.09</td>
+<td>35.04</td>
+<td>26.67</td>
+<td>31</td>
+<td>24.8</td>
+</tr>
+<tr class="odd">
+<td>poisson_logpmf</td>
+<td>1,000</td>
+<td>0.04139</td>
+<td>0.02145</td>
+<td>0.009005</td>
+<td>0.03</td>
+<td>0.0196</td>
+</tr>
+<tr class="even">
+<td>poisson_logpmf</td>
+<td>100,000</td>
+<td>4.105</td>
+<td>2.305</td>
+<td>1.26</td>
+<td>3</td>
+<td>1.357</td>
+</tr>
+<tr class="odd">
+<td>poisson_logpmf</td>
+<td>1,000,000</td>
+<td>40.75</td>
+<td>21.96</td>
+<td>12.93</td>
+<td>30</td>
+<td>14.08</td>
+</tr>
+<tr class="even">
+<td>mean</td>
+<td>1,000</td>
+<td>—</td>
+<td>0.008543</td>
+<td>0.001493</td>
+<td>0.002</td>
+<td>0.001174</td>
+</tr>
+<tr class="odd">
+<td>mean</td>
+<td>100,000</td>
+<td>—</td>
+<td>0.8752</td>
+<td>0.1473</td>
+<td>0.11</td>
+<td>0.01065</td>
+</tr>
+<tr class="even">
+<td>mean</td>
+<td>1,000,000</td>
+<td>—</td>
+<td>8.281</td>
+<td>1.502</td>
+<td>1.1</td>
+<td>0.09985</td>
+</tr>
+<tr class="odd">
+<td>variance</td>
+<td>1,000</td>
+<td>—</td>
+<td>0.009907</td>
+<td>0.002825</td>
+<td>0.0038</td>
+<td>0.003253</td>
+</tr>
+<tr class="even">
+<td>variance</td>
+<td>100,000</td>
+<td>—</td>
+<td>1.009</td>
+<td>0.2738</td>
+<td>0.21</td>
+<td>0.04644</td>
+</tr>
+<tr class="odd">
+<td>variance</td>
+<td>1,000,000</td>
+<td>—</td>
+<td>10.22</td>
+<td>2.741</td>
+<td>2.1</td>
+<td>0.4446</td>
+</tr>
+<tr class="even">
+<td>beta_quantile</td>
+<td>1,000</td>
+<td>0.9424</td>
+<td>0.9199</td>
+<td>0.9109</td>
+<td>0.39</td>
+<td>0.3732</td>
+</tr>
+<tr class="odd">
+<td>beta_quantile</td>
+<td>100,000</td>
+<td>91.36</td>
+<td>89.12</td>
+<td>87.85</td>
+<td>39</td>
+<td>35.37</td>
+</tr>
+<tr class="even">
+<td>beta_quantile</td>
+<td>1,000,000</td>
+<td>916.3</td>
+<td>891.7</td>
+<td>880.7</td>
+<td>396</td>
+<td>353.3</td>
+</tr>
+<tr class="odd">
+<td>chisquare_cdf</td>
+<td>1,000</td>
+<td>0.06663</td>
+<td>0.03809</td>
+<td>0.03149</td>
+<td>0.03</td>
+<td>0.1274</td>
+</tr>
+<tr class="even">
+<td>chisquare_cdf</td>
+<td>100,000</td>
+<td>7.326</td>
+<td>4.146</td>
+<td>3.302</td>
+<td>3</td>
+<td>13.69</td>
+</tr>
+<tr class="odd">
+<td>chisquare_cdf</td>
+<td>1,000,000</td>
+<td>72.36</td>
+<td>38.72</td>
+<td>31.75</td>
+<td>33</td>
+<td>118</td>
+</tr>
+</tbody>
+</table>
+<p>Whole-process peak RSS across these workers reached 268.1 MiB; per-worker memory, load/startup times and every timing sample are retained in the raw report.</p>
+<!-- END BENCHMARK EVIDENCE -->
+</section>
+<section id="timing-boundaries-and-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="timing-boundaries-and-interpretation">Timing boundaries and interpretation</h2>
+<p>Each worker loads/parses inputs once, performs one untimed warm-up, and measures five repetitions. Distribution calls allocate and populate the complete output vector. The PHP scalar loop constructs a distribution and crosses the PHP/native boundary for each value; batch calls construct it once and stream values natively. The internal Rust loop uses the same validation and an allocated result vector. Descriptive mean/variance has one PHP native call; there is no invented scalar-loop equivalent for those operations.</p>
+<p>JSON I/O, startup and output summaries are outside timed calls. PHP input/output conversion and native validation are included. R/SciPy start with native numeric vectors. Runtime reclamation/garbage collection of prior results contributes to the observed API cost. Peak RSS is the <strong>whole worker process</strong>, including imports, JSON parsing, inputs, outputs and summaries, not isolated kernel memory. Process elapsed time and input loading time are recorded separately.</p>
+<p>R’s timer has millisecond resolution. Small distribution cases batch 100 calls; mean/variance batch enough calls to process at least ten million input values per measurement, with a minimum of ten calls. Per-call times divide by the batch count. All raw timings must be positive. Thread environment variables are fixed to one for OpenBLAS, OpenMP, MKL, Accelerate and BLIS; they do not make different numerical implementations identical. PHP scalar/batch worker order alternates by case. Machine load, timer precision and GC make these measurements evidence for these workloads rather than universal speed claims.</p>
+</section>
+<section id="seven-model-preservation" class="level2">
+<h2 class="anchored" data-anchor-id="seven-model-preservation">Seven-model preservation</h2>
+<p>The <a href="/content/phit/docs/benchmarks/v02-preservation-results.json">preservation report</a> compares the current extension with a rebuilt pre-v0.2 baseline at <code>6342562</code>, using the same PHP 8.5 headers/compiler. Both receive identical complete designs with intercept insertion disabled where supported. It exercises all seven existing fitters. Reference tolerance is <code>1e-7 + 1e-6*abs(reference)</code> for the compared inference/scalar outputs, group effects and ten sampled observation outputs. Fits materialize their complete public results before summarization. This is separate from fitting all independent R fixtures in the release gate.</p>
+<!-- BEGIN PRESERVATION EVIDENCE -->
+<p>Recorded: <strong>2026-10-12T15:18:25.373311+00:00</strong>; baseline revision <code>6342562</code>. All seven model comparisons passed.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fitter</th>
+<th>Rows</th>
+<th>Largest compared absolute difference</th>
+<th>Current/baseline median time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ols</td>
+<td>100,000</td>
+<td>0</td>
+<td>1.024×</td>
+</tr>
+<tr class="even">
+<td>logistic</td>
+<td>100,000</td>
+<td>0</td>
+<td>1.024×</td>
+</tr>
+<tr class="odd">
+<td>probit</td>
+<td>100,000</td>
+<td>0</td>
+<td>0.974×</td>
+</tr>
+<tr class="even">
+<td>poisson</td>
+<td>100,000</td>
+<td>0</td>
+<td>0.970×</td>
+</tr>
+<tr class="odd">
+<td>lmm</td>
+<td>100,000</td>
+<td>0</td>
+<td>0.967×</td>
+</tr>
+<tr class="even">
+<td>lmm_fit</td>
+<td>1,000</td>
+<td>0</td>
+<td>1.006×</td>
+</tr>
+<tr class="odd">
+<td>logistic_mixed</td>
+<td>100,000</td>
+<td>0</td>
+<td>0.996×</td>
+</tr>
+</tbody>
+</table>
+<!-- END PRESERVATION EVIDENCE -->
+<p>This check does not establish bitwise agreement for every observation output or a performance bound on every future workload. Retained regression paths are also covered by the existing Rust/PHP reference and intercept/offset suites.</p>
+</section>
+<section id="reproduction" class="level2">
+<h2 class="anchored" data-anchor-id="reproduction">Reproduction</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .context/v02/python</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/v02/python/bin/pip</span> install <span class="at">-r</span> tests/benchmarks/distribution-requirements.txt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># R with jsonlite is a development-only reference dependency.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> phit <span class="at">--release</span> <span class="at">--locked</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> stats-core <span class="at">--release</span> <span class="at">--locked</span> <span class="at">--example</span> distribution_bench</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="ex">.context/v02/python/bin/python</span> tests/benchmarks/run-distributions.py</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/distribution-docs.py</span></code></pre></div></div>
+<p>The runner accepts <code>--sizes</code>, <code>--operations</code>, <code>--repeats</code>, <code>--output</code> and <code>--resume</code>. A partial report is marked <code>complete: false</code>; resume requires matching binary hashes, seed, repetitions, thread settings and input hashes. It keeps completed verification/timings and recomputes any changed input. Use a new output file for a different build. Fixed seed 20261012 and saved NumPy/Python versions specify input generation; SHA-256 records the exact JSON values actually used.</p>
+<p>Rebuild the preservation baseline in an isolated source/target directory, using the same <a href="phpstats://phit/docs/development">PHP/Clang environment</a>, then run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> .context/v02/baseline-src</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> archive 6342562 <span class="kw">|</span> <span class="fu">tar</span> <span class="at">-x</span> <span class="at">-C</span> .context/v02/baseline-src</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">CARGO_TARGET_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$PWD</span><span class="st">/.context/v02/baseline-target"</span> <span class="ex">cargo</span> build <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--manifest-path</span> .context/v02/baseline-src/Cargo.toml <span class="at">-p</span> phit <span class="at">--release</span> <span class="at">--locked</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS; use libphit.so on Linux.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="ex">.context/v02/python/bin/python</span> tests/benchmarks/run-v01.py <span class="dt">\</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--baseline</span> .context/v02/baseline-target/release/libphit.dylib <span class="dt">\</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--baseline-revision</span> 6342562 <span class="at">--output</span> docs/benchmarks/v02-preservation-results.json</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/distribution-docs.py</span></code></pre></div></div>
+<p>The worker uses reflected function parameters, so the older module name and API remain loadable without importing current stubs into the baseline runtime. No benchmark changes a user’s PHP configuration or needs network/model services.</p>
+
+
+</section>
