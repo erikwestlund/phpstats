@@ -82,7 +82,7 @@ class PagesTest extends TestCase
         foreach (array_keys(config('projects')) as $key) {
             $response->assertSee("http://{$key}.phpstats.test", false);
         }
-        $response->assertSee('Data &amp; Visualization', false)
+        $response->assertSee('Data Frames &amp; Visualization', false)
             ->assertSee('Statistical Modeling')
             ->assertSee('aria-label="PHPstats home"', false)
             ->assertSee('Connected packages')

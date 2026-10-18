@@ -62,7 +62,7 @@ return [
      * package is in one menu. short is the label on narrow screens.
      */
     'menus' => [
-        'data' => ['title' => 'Data & Visualization', 'short' => 'Data', 'layers' => ['data', 'visualization']],
+        'data' => ['title' => 'Data Frames & Visualization', 'short' => 'Data', 'layers' => ['data', 'visualization']],
         'modeling' => ['title' => 'Statistical Modeling', 'short' => 'Modeling', 'layers' => ['models']],
     ],
 
