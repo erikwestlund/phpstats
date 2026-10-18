@@ -13,4 +13,3 @@
 <g clip-path="url(#phpstats-mark-body)" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"><path d="M3 30.5C3 26.5 4.6 23.4 7.2 21.8L13 24 21 14 27 18.5 36.5 14.5" stroke-width="1.8"/><path d="M36.5 14.5C40.3 16 42 20 42 25.5c0 3.2.9 5.6 3.4 6.1" stroke-width="3.4"/></g>
 <circle cx="36.5" cy="14.5" r="1.9" fill="#2a2850"/><circle cx="21" cy="14" r="1.9" fill="#fcd34d"/>
 </svg>
-</svg>
