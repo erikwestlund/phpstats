@@ -12,19 +12,31 @@ class Results
      * Benchmark rows pivoted to one row per case and one column per
      * implementation, in first-seen order.
      *
-     * @return array{implementations: list<string>, cases: list<array{case: string, values: array<string, ?float>}>}
+     * Notes on rows, such as a value below the timer resolution, are numbered
+     * in the order they first appear.
+     *
+     * @return array{implementations: list<string>, cases: list<array{case: string, values: array<string, ?float>, marks: array<string, int>}>, notes: list<string>}
      */
     public static function pivot(array $benchmark): array
     {
         $implementations = [];
         $cases = [];
+        $notes = [];
         foreach ($benchmark['rows'] as $row) {
             $implementations[$row['implementation']] = true;
-            $cases[$row['case']]['case'] = $row['case'];
+            $cases[$row['case']] ??= ['case' => $row['case'], 'values' => [], 'marks' => []];
             $cases[$row['case']]['values'][$row['implementation']] = $row['value'];
+            if (! empty($row['note'])) {
+                $index = array_search($row['note'], $notes, true);
+                if ($index === false) {
+                    $notes[] = $row['note'];
+                    $index = count($notes) - 1;
+                }
+                $cases[$row['case']]['marks'][$row['implementation']] = $index + 1;
+            }
         }
 
-        return ['implementations' => array_keys($implementations), 'cases' => array_values($cases)];
+        return ['implementations' => array_keys($implementations), 'cases' => array_values($cases), 'notes' => $notes];
     }
 
     /** A Vega-Lite dot chart of a benchmark, with a log scale when the values span more than two decimal orders. */

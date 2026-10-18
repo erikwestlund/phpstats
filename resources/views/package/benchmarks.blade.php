@@ -52,13 +52,22 @@
                                 <tr class="border-b border-zinc-100 dark:border-zinc-900">
                                     <td class="py-2 pr-4">{{ $case['case'] }}</td>
                                     @foreach ($pivot['implementations'] as $implementation)
-                                        <td class="py-2 pr-4 text-right">{{ \App\Content\Results::number($case['values'][$implementation] ?? null) }}</td>
+                                        @php
+                                            $value = $case['values'][$implementation] ?? null;
+                                            $mark = $case['marks'][$implementation] ?? null;
+                                        @endphp
+                                        <td class="py-2 pr-4 text-right">
+                                            {{ $value === null && $mark ? 'not measured' : \App\Content\Results::number($value) }}@if ($mark)<sup class="ml-0.5 text-zinc-500">{{ $mark }}</sup>@endif
+                                        </td>
                                     @endforeach
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    <p class="mt-2 text-xs text-zinc-500">{{ ucfirst($benchmark['measure'] ?? 'value') }}, in {{ $benchmark['unit'] ?? 'the reported unit' }}.</p>
+                    <p class="mt-2 text-xs text-zinc-500">{{ ucfirst($benchmark['measure'] ?? 'value') }}, in {{ $benchmark['unit'] ?? 'the reported unit' }}. Values without a measurement are left out of the chart.</p>
+                    @foreach ($pivot['notes'] as $n => $note)
+                        <p class="text-xs text-zinc-500"><sup>{{ $n + 1 }}</sup> {{ ucfirst($note) }}.</p>
+                    @endforeach
                 </div>
             </section>
         @endforeach

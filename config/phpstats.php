@@ -18,7 +18,7 @@ return [
      * without an entry show the overview from config/projects.php only.
      */
     'content' => [
-        'phit' => ['repo' => 'phpstats/phit', 'ref' => '74999288dab30022d8ce056c4b94e843753eefca'],
+        'phit' => ['repo' => 'phpstats/phit', 'ref' => 'bb9133ea39245977f0b79f77d168c7d4e9bdd107'],
         'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'b57bff8076647093f4b2a4a3f2fe3ef02cb5f96a'],
     ],
 
