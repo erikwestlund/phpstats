@@ -117,7 +117,22 @@ class Package
             }
         }
 
+        $parent = config("phpstats.companions.{$this->key}");
+        if ($parent !== null && ($parent = self::find($parent))) {
+            return [...$parent->layer(), 'description' => $this->project['summary']];
+        }
+
         return ['key' => 'other', 'title' => 'Other', 'role' => '', 'color' => 'purple', 'description' => $this->project['summary']];
+    }
+
+    /**
+     * Packages listed inside this one's entry, such as phit-polyfill in phit's.
+     *
+     * @return list<self>
+     */
+    public function companions(): array
+    {
+        return array_values(array_map(self::find(...), array_keys(config('phpstats.companions'), $this->key, true)));
     }
 
     /**

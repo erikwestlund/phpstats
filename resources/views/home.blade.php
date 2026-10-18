@@ -150,17 +150,22 @@ $chart = Plot::of($rentals)
                         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                             @foreach ($layer['packages'] as $key => $description)
                                 @php $package = $packages[$key]; @endphp
-                                <a href="{{ $package->url() }}" class="group flex flex-col rounded-xl bg-white p-4 shadow-sm ring-1 ring-zinc-200/80 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-(--l300) dark:bg-zinc-900 dark:ring-white/10 dark:hover:ring-(--l400)/40">
+                                <div class="group relative flex flex-col rounded-xl bg-white p-4 shadow-sm ring-1 ring-zinc-200/80 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-(--l300) dark:bg-zinc-900 dark:ring-white/10 dark:hover:ring-(--l400)/40">
                                     <span class="flex items-center justify-between gap-3">
-                                        <span class="font-semibold text-zinc-950 dark:text-white">{{ $package->name() }}</span>
+                                        <a href="{{ $package->url() }}" class="font-semibold text-zinc-950 after:absolute after:inset-0 after:rounded-xl dark:text-white">{{ $package->name() }}</a>
                                         <x-status :project="$package->project" />
                                     </span>
                                     <span class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{{ $description }}</span>
+                                    @foreach ($package->companions() as $companion)
+                                        <a href="{{ $companion->url() }}" class="relative z-10 mt-3 block rounded-lg bg-(--l50) px-3 py-2 text-xs text-zinc-600 ring-1 ring-(--l100) hover:ring-(--l300) dark:bg-(--l400)/10 dark:text-zinc-400 dark:ring-(--l400)/20">
+                                            <span class="font-semibold text-zinc-900 dark:text-white">{{ $companion->name() }}</span>. {{ $companion->project['summary'] }}
+                                        </a>
+                                    @endforeach
                                     <span class="mt-auto flex items-center gap-1 pt-3 text-xs font-medium text-(--l600) dark:text-(--l300)">
                                         {{ preg_replace('#^https?://#', '', $package->url()) }}
                                         <x-heroicon-m-arrow-right class="size-3.5 transition group-hover:translate-x-0.5" />
                                     </span>
-                                </a>
+                                </div>
                             @endforeach
                         </div>
                     </div>

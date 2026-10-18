@@ -35,19 +35,26 @@ return [
      * Colors are Tailwind color names.
      */
     'layers' => [
-        'data' => ['title' => 'Data Frames & Manipulation', 'role' => 'Read, filter, mutate, group, summarise, join, and reshape tables', 'color' => 'indigo', 'packages' => [
+        'data' => ['title' => 'Data Frames', 'role' => 'Read, filter, mutate, group, summarise, join, and reshape tables', 'color' => 'indigo', 'packages' => [
             'phibble' => 'The shared data frame: typed, immutable, and loaded from CSV, PDO, Eloquent, or Doctrine',
             'phpolars' => 'Polars data frames in a Rust extension, and a fast backend for phibble',
             'phplyr' => 'dplyr and tidyr for PHP, run in memory, as SQL, or in Polars',
         ]],
-        'visualization' => ['title' => 'Visualization', 'role' => 'A grammar of graphics', 'color' => 'fuchsia', 'packages' => [
+        'visualization' => ['title' => 'Data Visualization', 'role' => 'A grammar of graphics', 'color' => 'fuchsia', 'packages' => [
             'phiz' => 'ggplot2-style charts that render as Vega-Lite, with a Blade component for Livewire',
         ]],
         'models' => ['title' => 'Statistical Modeling', 'role' => 'Estimation, verified against R', 'color' => 'purple', 'packages' => [
             'phit' => 'Regression, mixed models, distributions, and descriptive statistics in a Rust extension',
-            'phit-polyfill' => 'The phit functions in plain PHP, for hosts that cannot install extensions',
             'cmdstanphp' => 'Bayesian models in Stan through CmdStan',
         ]],
+    ],
+
+    /*
+     * Packages listed inside another package's entry instead of on their own,
+     * as [companion => parent]. A companion's host takes the parent's layer.
+     */
+    'companions' => [
+        'phit-polyfill' => 'phit',
     ],
 
     /*

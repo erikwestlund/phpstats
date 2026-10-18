@@ -25,7 +25,7 @@ return [
     'phit-polyfill' => [
         'name' => 'phit-polyfill',
         'from_r' => null,
-        'summary' => 'A pure-PHP fallback for the phit functions, for hosts that cannot install the extension.',
+        'summary' => 'The phit functions in plain PHP, for hosts that cannot install the extension.',
         'status' => 'in-progress',
         'status_label' => 'In progress',
         'repo' => 'https://github.com/phpstats/phit-polyfill',
@@ -41,12 +41,12 @@ return [
         'from_r' => 'tibble and readr',
         'summary' => 'A typed, immutable data frame that loads from CSV files, PDO, and Eloquent or Doctrine queries.',
         'status' => 'working',
-        'status_label' => 'Released, v0.2.0',
+        'status_label' => 'Released, v0.3.0',
         'repo' => 'https://github.com/phpstats/phibble',
         'docs' => 'https://phpstats.github.io/phibble/',
         'links' => [
             'Laravel integration' => 'https://phpstats.github.io/phibble/laravel.html',
-            'Release notes' => 'https://github.com/phpstats/phibble/releases/tag/v0.2.0',
+            'Release notes' => 'https://github.com/phpstats/phibble/releases/tag/v0.3.0',
         ],
         'overview' => [
             'phibble is the shared table type for phplyr, phpolars, phit, and cmdstanphp. Every operation returns a new frame.',
@@ -60,14 +60,14 @@ return [
         'from_r' => 'dplyr and tidyr',
         'summary' => 'dplyr-style data manipulation with pipe functions, with lm() and glm() formulas that call phit.',
         'status' => 'working',
-        'status_label' => 'Released, v0.2.0',
+        'status_label' => 'Released, v0.3.0',
         'repo' => 'https://github.com/phpstats/phplyr',
         'docs' => 'https://phpstats.github.io/phplyr/',
         'links' => [
             'Getting started' => 'https://phpstats.github.io/phplyr/getting-started.html',
             'Coming from dplyr' => 'https://phpstats.github.io/phplyr/coming-from-dplyr.html',
             'Gallery' => 'https://phpstats.github.io/phplyr/gallery.html',
-            'Release notes' => 'https://github.com/phpstats/phplyr/releases/tag/v0.2.0',
+            'Release notes' => 'https://github.com/phpstats/phplyr/releases/tag/v0.3.0',
         ],
         'overview' => [
             'phplyr covers most of dplyr and tidyr. Each function returns a closure, so steps compose with the PHP 8.5 pipe operator.',
