@@ -27,7 +27,7 @@ return [
     'content' => [
         'phit' => ['repo' => 'phpstats/phit', 'ref' => 'bb9133ea39245977f0b79f77d168c7d4e9bdd107'],
         'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'b57bff8076647093f4b2a4a3f2fe3ef02cb5f96a'],
-        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'a741c88d7b9afca6d20e758c4326f126d5f6538f'],
+        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'da6c617adeb02a6ee0ae8f488dd0543ecae27dd9'],
     ],
 
     /*
