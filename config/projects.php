@@ -58,7 +58,7 @@ return [
     'phplyr' => [
         'name' => 'phplyr',
         'from_r' => 'dplyr and tidyr',
-        'summary' => 'dplyr and tidyr for PHP.',
+        'summary' => "A PHP port of the Tidyverse's dplyr and tidyr.",
         'status' => 'working',
         'status_label' => 'Released, v0.3.0',
         'repo' => 'https://github.com/phpstats/phplyr',

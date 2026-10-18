@@ -37,16 +37,16 @@ return [
      */
     'layers' => [
         'data' => ['title' => 'Data Frames', 'role' => 'Read, transform, and reshape tables', 'color' => 'indigo', 'packages' => [
-            'phibble' => 'Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine',
+            'phibble' => 'Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine.',
             'phpolars' => 'Polars data frames as a PHP extension. Compatible with phibble.',
-            'phplyr' => 'dplyr and tidyr for PHP, in memory, in SQL, or in Polars',
+            'phplyr' => "A PHP port of the Tidyverse's dplyr and tidyr.",
         ]],
         'visualization' => ['title' => 'Data Visualization', 'role' => 'Charts in the grammar of graphics', 'color' => 'fuchsia', 'packages' => [
-            'phiz' => 'ggplot2-style charts, rendered with Vega-Lite',
+            'phiz' => 'ggplot2-style charts, rendered with Vega-Lite.',
         ]],
         'models' => ['title' => 'Statistical Modeling', 'role' => 'Models checked against R', 'color' => 'purple', 'packages' => [
-            'phit' => 'Regression, mixed models, distributions, and descriptive statistics',
-            'cmdstanphp' => 'Bayesian models in Stan',
+            'phit' => 'Regression, mixed models, distributions, and descriptive statistics.',
+            'cmdstanphp' => 'Bayesian models in Stan.',
         ]],
     ],
 
