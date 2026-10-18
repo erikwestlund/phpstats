@@ -25,7 +25,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Markdown
 {
-    private static ?MarkdownConverter $converter = null;
+    /** @var array<string, MarkdownConverter> */
+    private static array $converters = [];
 
     /** @return array{meta: array, html: string} */
     public static function page(string $file, array $data = []): array
@@ -59,15 +60,25 @@ class Markdown
             );
         }
 
-        $html = (string) self::converter()->convert(implode('', $parts));
+        $html = (string) self::converter('allow')->convert(implode('', $parts));
 
         return preg_replace_callback('/<!--blade:(\d+)-->/', fn (array $m) => Blade::render($snippets[(int) $m[1]], $data), $html);
     }
 
-    private static function converter(): MarkdownConverter
+    /**
+     * Markdown from a package's synced content, such as a vignette's text
+     * blocks: HTML is escaped and Blade is not run, but fenced code is
+     * highlighted like the site's own pages.
+     */
+    public static function text(string $markdown): string
     {
-        if (self::$converter === null) {
-            $environment = new Environment(['html_input' => 'allow', 'allow_unsafe_links' => false]);
+        return (string) self::converter('escape')->convert($markdown);
+    }
+
+    private static function converter(string $htmlInput): MarkdownConverter
+    {
+        if (! isset(self::$converters[$htmlInput])) {
+            $environment = new Environment(['html_input' => $htmlInput, 'allow_unsafe_links' => false]);
             $environment->addExtension(new CommonMarkCoreExtension);
             $environment->addExtension(new GithubFlavoredMarkdownExtension);
             $environment->addRenderer(FencedCode::class, new class implements NodeRendererInterface
@@ -83,9 +94,9 @@ class Markdown
                     ]);
                 }
             }, 10);
-            self::$converter = new MarkdownConverter($environment);
+            self::$converters[$htmlInput] = new MarkdownConverter($environment);
         }
 
-        return self::$converter;
+        return self::$converters[$htmlInput];
     }
 }

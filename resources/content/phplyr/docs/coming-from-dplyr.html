@@ -1,0 +1,130 @@
+<p>phplyr keeps dplyr’s function names, argument names, and results. The differences come from PHP syntax.</p>
+<section id="syntax-translation" class="level2">
+<h2 class="anchored" data-anchor-id="syntax-translation">Syntax translation</h2>
+<p>In R, verbs are chained with <code>%&gt;%</code> or <code>|&gt;</code>. In PHP, they are chained as methods, <code>phplyr($t)-&gt;filter(...)-&gt;arrange(...)</code>, or on PHP 8.5 with <code>|&gt;</code>. The table below shows single calls.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>dplyr</th>
+<th>phplyr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>filter(x &gt; 1)</code></td>
+<td><code>filter(fn ($r) =&gt; $r-&gt;x &gt; 1)</code></td>
+</tr>
+<tr class="even">
+<td><code>mutate(z = x * 2)</code></td>
+<td><code>mutate(z: fn ($r) =&gt; $r-&gt;x * 2)</code> or <code>mutate(z: col('x')-&gt;mul(2))</code></td>
+</tr>
+<tr class="odd">
+<td><code>mutate(z = lag(x))</code></td>
+<td><code>mutate(z: lag('x'))</code></td>
+</tr>
+<tr class="even">
+<td><code>summarise(m = mean(x, na.rm = TRUE))</code></td>
+<td><code>summarise(m: mean('x', na_rm: true))</code></td>
+</tr>
+<tr class="odd">
+<td><code>select(-id)</code></td>
+<td><code>select(except('id'))</code></td>
+</tr>
+<tr class="even">
+<td><code>select(new = old, everything())</code></td>
+<td><code>select(['new' =&gt; 'old'], everything())</code></td>
+</tr>
+<tr class="odd">
+<td><code>rename(new = old)</code></td>
+<td><code>rename(new: 'old')</code></td>
+</tr>
+<tr class="even">
+<td><code>arrange(desc(x))</code></td>
+<td><code>arrange(desc('x'))</code></td>
+</tr>
+<tr class="odd">
+<td><code>mutate(..., .by = g)</code></td>
+<td><code>mutate(..., _by: 'g')</code></td>
+</tr>
+<tr class="even">
+<td><code>summarise(..., .groups = "drop")</code></td>
+<td><code>summarise(..., _groups: 'drop')</code></td>
+</tr>
+<tr class="odd">
+<td><code>across(c(a, b), mean)</code></td>
+<td><code>across(['a', 'b'], mean(...))</code></td>
+</tr>
+<tr class="even">
+<td><code>across(c(a, b), \(x) x * 2)</code></td>
+<td><code>across(['a', 'b'], fn ($x) =&gt; $x * 2)</code></td>
+</tr>
+<tr class="odd">
+<td><code>case_when(x &lt; 0 ~ "neg", .default = "pos")</code></td>
+<td><code>case_when([fn ($r) =&gt; $r-&gt;x &lt; 0, 'neg'], default: 'pos')</code></td>
+</tr>
+<tr class="even">
+<td><code>left_join(y, by = c("a" = "b"))</code></td>
+<td><code>left_join($y, by: ['a' =&gt; 'b'])</code></td>
+</tr>
+<tr class="odd">
+<td><code>left_join(y, by = join_by(a))</code></td>
+<td><code>left_join($y, by: 'a')</code></td>
+</tr>
+<tr class="even">
+<td><code>join_by(id, t &gt;= start)</code></td>
+<td><code>join_by('id', col('t')-&gt;ge(col('start')))</code></td>
+</tr>
+<tr class="odd">
+<td><code>join_by(closest(t &gt;= start))</code></td>
+<td><code>join_by(closest(col('t')-&gt;ge(col('start'))))</code></td>
+</tr>
+<tr class="even">
+<td><code>pivot_longer(-id)</code></td>
+<td><code>pivot_longer(except('id'))</code></td>
+</tr>
+<tr class="odd">
+<td><code>var(x)</code></td>
+<td><code>variance('x')</code></td>
+</tr>
+<tr class="even">
+<td><code>NA</code></td>
+<td><code>null</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conventions" class="level2">
+<h2 class="anchored" data-anchor-id="conventions">Conventions</h2>
+<ul>
+<li><strong>Dot-arguments.</strong> dplyr’s <code>.by</code>, <code>.keep</code>, <code>.before</code>, <code>.after</code>, <code>.groups</code>, <code>.keep_all</code>, <code>.by_group</code>, <code>.direction</code>, <code>.id</code>, and <code>.remove</code> are written <code>_by</code>, <code>_keep</code>, and so on. A column whose name starts with an underscore cannot be created through a named argument.</li>
+<li><strong>Positions are 1-based</strong>, as in R: <code>pull(1)</code> is the first column, <code>pull(-1)</code> the last, and <code>slice(1, 3)</code> the first and third rows of each group.</li>
+<li><strong><code>var()</code> is <code>variance()</code></strong>, because <code>var</code> is a reserved word in PHP.</li>
+<li><strong><code>count</code>, <code>min</code>, and <code>max</code></strong> shadow PHP’s built-ins in files that import them.</li>
+<li><strong>Group order</strong> follows dplyr: groups are sorted by key, factors by level order, and NA last. <code>_by</code> also sorts groups (dplyr keeps first-appearance order for <code>.by</code>).</li>
+</ul>
+</section>
+<section id="across-functions" class="level2">
+<h2 class="anchored" data-anchor-id="across-functions"><code>across()</code> functions</h2>
+<p>R passes a vector to every <code>across()</code> function. PHP closures have no such convention, so phplyr decides what a function receives:</p>
+<ul>
+<li>A phplyr helper passed as a first-class callable, such as <code>mean(...)</code> or <code>lag(...)</code>, is called with each column’s name.</li>
+<li>In <code>summarise()</code>, any other closure receives the column’s values as a list.</li>
+<li>In <code>mutate()</code>, a closure receives one value at a time. If its first parameter is typed <code>array</code>, it receives the whole column instead.</li>
+</ul>
+</section>
+<section id="not-supported" class="level2">
+<h2 class="anchored" data-anchor-id="not-supported">Not supported</h2>
+<ul>
+<li><strong>Bare column names and tidy evaluation.</strong> Columns are strings, and expressions are closures or phplyr helpers.</li>
+<li><strong><code>mutate(.keep = "used")</code> and <code>.keep = "unused"</code> with closures.</strong> These work with expression arguments such as <code>col('x')-&gt;mul(2)</code>, whose columns can be read. A PHP closure does not expose the columns it reads.</li>
+<li><strong><code>cur_group()</code>, <code>cur_column()</code>, and <code>cur_data()</code>.</strong> <code>cur_group_id()</code> and <code>cur_group_rows()</code> are supported in <code>mutate()</code>, <code>summarise()</code>, and <code>reframe()</code>.</li>
+<li><strong>Data frame columns</strong>, <code>across(.unpack)</code>, and <code>nest_join()</code>.</li>
+<li><strong>Superseded functions</strong> such as <code>top_n()</code>, <code>sample_n()</code>, the scoped <code>_at</code>, <code>_if</code>, and <code>_all</code> variants, and <code>recode()</code>. Use <code>slice_max()</code>, <code>slice_sample()</code>, <code>across()</code>, and <code>recode_values()</code>.</li>
+</ul>
+
+
+</section>

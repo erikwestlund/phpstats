@@ -8,10 +8,10 @@
 
     @switch($block['type'])
         @case('text')
-            <div class="prose prose-zinc prose-php max-w-3xl dark:prose-invert">{!! \Illuminate\Support\Str::markdown($block['markdown'], ['html_input' => 'escape', 'allow_unsafe_links' => false]) !!}</div>
+            <div class="prose prose-zinc prose-php max-w-3xl dark:prose-invert">{!! \App\Content\Markdown::text($block['markdown']) !!}</div>
             @break
         @case('note')
-            <div class="prose prose-zinc prose-php max-w-3xl rounded-xl border-l-4 border-(--l400) bg-(--l50) px-4 py-3 text-sm ring-1 ring-(--l100) dark:prose-invert dark:bg-(--l400)/10 dark:ring-(--l400)/15">{!! \Illuminate\Support\Str::markdown($block['markdown'], ['html_input' => 'escape', 'allow_unsafe_links' => false]) !!}</div>
+            <div class="prose prose-zinc prose-php max-w-3xl rounded-xl border-l-4 border-(--l400) bg-(--l50) px-4 py-3 text-sm ring-1 ring-(--l100) dark:prose-invert dark:bg-(--l400)/10 dark:ring-(--l400)/15">{!! \App\Content\Markdown::text($block['markdown']) !!}</div>
             @break
         @case('code')
             @if ($block['chain'] && $block['pipe'])

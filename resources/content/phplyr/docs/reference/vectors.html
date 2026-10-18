@@ -1,0 +1,256 @@
+<p>Vector helpers are evaluated once per group on whole columns. Use them as <code>mutate()</code>, <code>filter()</code>, and <code>summarise()</code> arguments. They follow R’s NA rules: a summary returns NA when its input has an NA unless <code>na_rm: true</code>, ranks keep NA, and cumulative functions stay NA after the first NA.</p>
+<p>The first argument is the input column. A string there is a column name. It can also be <code>col('x')</code>, another helper, or a row closure. Later arguments are values. <code>-&gt;map(fn ($value, $r) =&gt; ...)</code> transforms a helper’s result row by row.</p>
+<section id="summaries" class="level2">
+<h2 class="anchored" data-anchor-id="summaries">Summaries</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Helper</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>n()</code></td>
+<td>Rows in the group</td>
+</tr>
+<tr class="even">
+<td><code>n_distinct('x', 'y')</code></td>
+<td>Distinct values or combinations</td>
+</tr>
+<tr class="odd">
+<td><code>sum</code>, <code>mean</code>, <code>median</code></td>
+<td>As in R</td>
+</tr>
+<tr class="even">
+<td><code>sd</code>, <code>variance</code></td>
+<td>Sample statistics (n − 1)</td>
+</tr>
+<tr class="odd">
+<td><code>quantile('x', 0.9)</code>, <code>iqr('x')</code></td>
+<td>Type 7 quantiles, R’s default</td>
+</tr>
+<tr class="even">
+<td><code>min</code>, <code>max</code></td>
+<td>Smallest and largest values</td>
+</tr>
+<tr class="odd">
+<td><code>first</code>, <code>last</code>, <code>nth('x', 2)</code></td>
+<td>Values by position, with <code>default:</code></td>
+</tr>
+<tr class="even">
+<td><code>any</code>, <code>all</code></td>
+<td>Logical summaries with NA logic</td>
+</tr>
+</tbody>
+</table>
+<p>With the phit extension loaded, <code>mean</code>, <code>sd</code>, <code>variance</code>, <code>median</code>, and <code>quantile</code> use it. Without it they run in PHP and give the same results.</p>
+</section>
+<section id="window-functions" class="level2">
+<h2 class="anchored" data-anchor-id="window-functions">Window functions</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Helper</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>lag('x', n:, default:, order_by:)</code>, <code>lead(...)</code></td>
+<td>Shifted values</td>
+</tr>
+<tr class="even">
+<td><code>row_number()</code>, <code>row_number('x')</code></td>
+<td>Row numbers, or ranks with ties broken by position</td>
+</tr>
+<tr class="odd">
+<td><code>min_rank</code>, <code>dense_rank</code></td>
+<td>Ranks; wrap the column in <code>desc()</code> to reverse</td>
+</tr>
+<tr class="even">
+<td><code>percent_rank</code>, <code>cume_dist</code></td>
+<td>Ranks scaled to [0, 1]</td>
+</tr>
+<tr class="odd">
+<td><code>ntile('x', 4)</code></td>
+<td>Buckets of near-equal size</td>
+</tr>
+<tr class="even">
+<td><code>cumsum</code>, <code>cumprod</code>, <code>cummin</code>, <code>cummax</code>, <code>cummean</code></td>
+<td>Running values</td>
+</tr>
+<tr class="odd">
+<td><code>cumall</code>, <code>cumany</code></td>
+<td>Running logical values</td>
+</tr>
+<tr class="even">
+<td><code>consecutive_id('x')</code></td>
+<td>A new id each time the value changes</td>
+</tr>
+<tr class="odd">
+<td><code>order_by('t', cumsum('x'))</code></td>
+<td>A window function evaluated in another order</td>
+</tr>
+</tbody>
+</table>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="syntax">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Method chain (PHP 8.3+)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Pipe (PHP 8.5)</a></li></ul>
+<div class="tab-content" data-group="syntax">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> phplyr(DataFrame::fromCsv(<span class="st">'schools.csv'</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;school <span class="op">===</span> <span class="st">'school-01'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    -&gt;arrange(<span class="st">'study_hours'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    -&gt;mutate(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">prev</span><span class="ot">:</span> lag(<span class="st">'score'</span>)<span class="ot">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        change<span class="ot">:</span> lag(<span class="st">'score'</span>)-&gt;map(<span class="kw">fn</span> (<span class="va">$prev</span><span class="ot">,</span> <span class="va">$r</span>) =&gt; <span class="va">$prev</span> <span class="op">===</span> <span class="kw">null</span> <span class="ot">?</span> <span class="kw">null</span> <span class="ot">:</span> <span class="fu">round</span>(<span class="va">$r</span>-&gt;score <span class="op">-</span> <span class="va">$prev</span><span class="ot">,</span> <span class="dv">2</span>))<span class="ot">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        running_mean<span class="ot">:</span> cummean(<span class="st">'score'</span>)<span class="ot">,</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        rank<span class="ot">:</span> min_rank(desc(<span class="st">'score'</span>))<span class="ot">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        pct<span class="ot">:</span> percent_rank(<span class="st">'score'</span>)<span class="ot">,</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        quartile<span class="ot">:</span> ntile(<span class="st">'score'</span><span class="ot">,</span> <span class="dv">4</span>)<span class="ot">,</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    -&gt;select(<span class="st">'study_hours'</span><span class="ot">,</span> <span class="st">'score'</span><span class="ot">,</span> <span class="st">'prev'</span><span class="ot">,</span> <span class="st">'change'</span><span class="ot">,</span> <span class="st">'running_mean'</span><span class="ot">,</span> <span class="st">'rank'</span><span class="ot">,</span> <span class="st">'pct'</span><span class="ot">,</span> <span class="st">'quartile'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    -&gt;head(<span class="dv">8</span>)<span class="ot">;</span></span></code></pre></div></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> DataFrame::fromCsv(<span class="st">'schools.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">|&gt;</span> filter(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;school <span class="op">===</span> <span class="st">'school-01'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">|&gt;</span> arrange(<span class="st">'study_hours'</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">|&gt;</span> mutate(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">prev</span><span class="ot">:</span> lag(<span class="st">'score'</span>)<span class="ot">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        change<span class="ot">:</span> lag(<span class="st">'score'</span>)-&gt;map(<span class="kw">fn</span> (<span class="va">$prev</span><span class="ot">,</span> <span class="va">$r</span>) =&gt; <span class="va">$prev</span> <span class="op">===</span> <span class="kw">null</span> <span class="ot">?</span> <span class="kw">null</span> <span class="ot">:</span> <span class="fu">round</span>(<span class="va">$r</span>-&gt;score <span class="op">-</span> <span class="va">$prev</span><span class="ot">,</span> <span class="dv">2</span>))<span class="ot">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        running_mean<span class="ot">:</span> cummean(<span class="st">'score'</span>)<span class="ot">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        rank<span class="ot">:</span> min_rank(desc(<span class="st">'score'</span>))<span class="ot">,</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        pct<span class="ot">:</span> percent_rank(<span class="st">'score'</span>)<span class="ot">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        quartile<span class="ot">:</span> ntile(<span class="st">'score'</span><span class="ot">,</span> <span class="dv">4</span>)<span class="ot">,</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">|&gt;</span> select(<span class="st">'study_hours'</span><span class="ot">,</span> <span class="st">'score'</span><span class="ot">,</span> <span class="st">'prev'</span><span class="ot">,</span> <span class="st">'change'</span><span class="ot">,</span> <span class="st">'running_mean'</span><span class="ot">,</span> <span class="st">'rank'</span><span class="ot">,</span> <span class="st">'pct'</span><span class="ot">,</span> <span class="st">'quartile'</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">|&gt;</span> head(<span class="dv">8</span>)<span class="ot">;</span></span></code></pre></div></div>
+</div>
+</div>
+</div>
+<pre class="text output"><code># A tibble: 8 × 8
+  study_hours score  prev change running_mean  rank    pct quartile
+        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;    &lt;int&gt;
+1        1.31  63.7  NA    NA            63.7    15 0.176         1
+2        2.7   67.2  63.7   3.54         65.5    14 0.235         1
+3        2.74  60.4  67.2  -6.89         63.8    17 0.0588        1
+4        3.71  68.5  60.4   8.19         65.0    13 0.294         2
+5        4.38  60.1  68.5  -8.41         64.0    18 0             1
+6        4.89  72.8  60.1  12.6          65.5     9 0.529         2
+7        5.21  69.7  72.8  -3.09         66.1    12 0.353         2
+8        5.51  72.1  69.7   2.48         66.8    10 0.471         2</code></pre>
+</section>
+<section id="conditionals-and-na" class="level2">
+<h2 class="anchored" data-anchor-id="conditionals-and-na">Conditionals and NA</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Helper</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>if_else(cond, yes, no, missing:)</code></td>
+<td>Vectorized if/else</td>
+</tr>
+<tr class="even">
+<td><code>case_when([cond, value], ..., default:)</code></td>
+<td>The first true condition wins</td>
+</tr>
+<tr class="odd">
+<td><code>replace_when('x', [cond, value], ...)</code></td>
+<td><code>case_when()</code> that keeps <code>x</code> where nothing matches</td>
+</tr>
+<tr class="even">
+<td><code>recode_values('x', [from, to], ..., default:)</code></td>
+<td>Map values; also <code>from:</code> / <code>to:</code> lookup lists</td>
+</tr>
+<tr class="odd">
+<td><code>replace_values('x', [from, to], ...)</code></td>
+<td><code>recode_values()</code> that keeps unmatched values</td>
+</tr>
+<tr class="even">
+<td><code>case_match('x', [from, to], ..., default:)</code></td>
+<td>dplyr’s deprecated form of <code>recode_values()</code></td>
+</tr>
+<tr class="odd">
+<td><code>recode('x', a: 'A', _default:, _missing:)</code></td>
+<td>dplyr’s superseded recoder, matching values by name</td>
+</tr>
+<tr class="even">
+<td><code>when_any(...)</code>, <code>when_all(...)</code></td>
+<td>Elementwise OR and AND across conditions</td>
+</tr>
+<tr class="odd">
+<td><code>coalesce('x', 0)</code></td>
+<td>The first non-NA value</td>
+</tr>
+<tr class="even">
+<td><code>na_if('x', value)</code></td>
+<td>NA where <code>x</code> equals the value</td>
+</tr>
+<tr class="odd">
+<td><code>between('x', lo, hi)</code></td>
+<td>Inclusive range test</td>
+</tr>
+<tr class="even">
+<td><code>near('x', y)</code></td>
+<td>Equality within floating-point tolerance</td>
+</tr>
+</tbody>
+</table>
+<div class="tabset-margin-container"></div><div class="panel-tabset" data-group="syntax">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Method chain (PHP 8.3+)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">Pipe (PHP 8.5)</a></li></ul>
+<div class="tab-content" data-group="syntax">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> phplyr(DataFrame::fromRows([</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'state'</span> =&gt; <span class="st">'NC'</span><span class="ot">,</span> <span class="st">'visits'</span> =&gt; <span class="dv">3</span>]<span class="ot">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'state'</span> =&gt; <span class="st">'NYC'</span><span class="ot">,</span> <span class="st">'visits'</span> =&gt; <span class="kw">null</span>]<span class="ot">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'state'</span> =&gt; <span class="st">'CA'</span><span class="ot">,</span> <span class="st">'visits'</span> =&gt; <span class="dv">12</span>]<span class="ot">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'state'</span> =&gt; <span class="kw">null</span><span class="ot">,</span> <span class="st">'visits'</span> =&gt; <span class="dv">0</span>]<span class="ot">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>]))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    -&gt;mutate(</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        name<span class="ot">:</span> recode_values(<span class="st">'state'</span><span class="ot">,</span> [<span class="st">'NC'</span><span class="ot">,</span> <span class="st">'North Carolina'</span>]<span class="ot">,</span> [[<span class="st">'NY'</span><span class="ot">,</span> <span class="st">'NYC'</span>]<span class="ot">,</span> <span class="st">'New York'</span>]<span class="ot">,</span> <span class="cf">default</span><span class="ot">:</span> <span class="st">'other'</span>)<span class="ot">,</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        visits<span class="ot">:</span> coalesce(<span class="st">'visits'</span><span class="ot">,</span> <span class="dv">0</span>)<span class="ot">,</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        busy<span class="ot">:</span> if_else(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;visits <span class="op">&gt;</span> <span class="dv">5</span><span class="ot">,</span> <span class="st">'yes'</span><span class="ot">,</span> <span class="st">'no'</span>)<span class="ot">,</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        capped<span class="ot">:</span> replace_when(<span class="st">'visits'</span><span class="ot">,</span> [<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;visits <span class="op">&gt;</span> <span class="dv">10</span><span class="ot">,</span> <span class="dv">10</span>])<span class="ot">,</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        any_flag<span class="ot">:</span> when_any(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;state <span class="op">===</span> <span class="st">'CA'</span><span class="ot">,</span> <span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;visits <span class="op">===</span> <span class="dv">0</span>)<span class="ot">,</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    )<span class="ot">;</span></span></code></pre></div></div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> DataFrame::fromRows([</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'state'</span> =&gt; <span class="st">'NC'</span><span class="ot">,</span> <span class="st">'visits'</span> =&gt; <span class="dv">3</span>]<span class="ot">,</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'state'</span> =&gt; <span class="st">'NYC'</span><span class="ot">,</span> <span class="st">'visits'</span> =&gt; <span class="kw">null</span>]<span class="ot">,</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'state'</span> =&gt; <span class="st">'CA'</span><span class="ot">,</span> <span class="st">'visits'</span> =&gt; <span class="dv">12</span>]<span class="ot">,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'state'</span> =&gt; <span class="kw">null</span><span class="ot">,</span> <span class="st">'visits'</span> =&gt; <span class="dv">0</span>]<span class="ot">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">|&gt;</span> mutate(</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        name<span class="ot">:</span> recode_values(<span class="st">'state'</span><span class="ot">,</span> [<span class="st">'NC'</span><span class="ot">,</span> <span class="st">'North Carolina'</span>]<span class="ot">,</span> [[<span class="st">'NY'</span><span class="ot">,</span> <span class="st">'NYC'</span>]<span class="ot">,</span> <span class="st">'New York'</span>]<span class="ot">,</span> <span class="cf">default</span><span class="ot">:</span> <span class="st">'other'</span>)<span class="ot">,</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        visits<span class="ot">:</span> coalesce(<span class="st">'visits'</span><span class="ot">,</span> <span class="dv">0</span>)<span class="ot">,</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        busy<span class="ot">:</span> if_else(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;visits <span class="op">&gt;</span> <span class="dv">5</span><span class="ot">,</span> <span class="st">'yes'</span><span class="ot">,</span> <span class="st">'no'</span>)<span class="ot">,</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        capped<span class="ot">:</span> replace_when(<span class="st">'visits'</span><span class="ot">,</span> [<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;visits <span class="op">&gt;</span> <span class="dv">10</span><span class="ot">,</span> <span class="dv">10</span>])<span class="ot">,</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        any_flag<span class="ot">:</span> when_any(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;state <span class="op">===</span> <span class="st">'CA'</span><span class="ot">,</span> <span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;visits <span class="op">===</span> <span class="dv">0</span>)<span class="ot">,</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    )<span class="ot">;</span></span></code></pre></div></div>
+</div>
+</div>
+</div>
+<pre class="text output"><code># A tibble: 4 × 6
+  state visits name           busy  capped any_flag
+  &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;          &lt;chr&gt;  &lt;int&gt; &lt;lgl&gt;   
+1 NC         3 North Carolina no         3 FALSE   
+2 NYC        0 New York       no         0 TRUE    
+3 CA        12 other          yes       10 TRUE    
+4 &lt;NA&gt;       0 other          no         0 TRUE</code></pre>
+
+
+</section>

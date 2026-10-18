@@ -104,6 +104,7 @@ pre,
 
 /* Highlighted code (tempest/highlight and pandoc), on the dark ink background. */
 .code-ink {
+    color-scheme: dark; /* dark scrollbars on the ink background */
     background: var(--color-ink);
     color: #e4e2f4;
 }

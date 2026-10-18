@@ -1,0 +1,425 @@
+{
+    "nav": [
+        {
+            "title": "Overview",
+            "path": "index"
+        },
+        {
+            "title": "Getting started",
+            "path": "getting-started"
+        },
+        {
+            "title": "Coming from dplyr",
+            "path": "coming-from-dplyr"
+        },
+        {
+            "title": "Single-table functions",
+            "path": "reference/single-table"
+        },
+        {
+            "title": "Joins, binding, and set operations",
+            "path": "reference/two-table"
+        },
+        {
+            "title": "Grouping",
+            "path": "reference/grouping"
+        },
+        {
+            "title": "Vector helpers",
+            "path": "reference/vectors"
+        },
+        {
+            "title": "Strings and dates",
+            "path": "reference/strings-dates"
+        },
+        {
+            "title": "Selecting columns",
+            "path": "reference/tidyselect"
+        },
+        {
+            "title": "Reshaping with tidyr",
+            "path": "reference/tidyr"
+        },
+        {
+            "title": "Models",
+            "path": "reference/models"
+        },
+        {
+            "title": "Databases",
+            "path": "reference/databases"
+        },
+        {
+            "title": "Gallery",
+            "path": "gallery"
+        },
+        {
+            "title": "Porting an R script",
+            "path": "port-r-script"
+        },
+        {
+            "title": "Performance",
+            "path": "performance"
+        },
+        {
+            "title": "Development",
+            "path": "development"
+        }
+    ],
+    "pages": {
+        "coming-from-dplyr": {
+            "title": "Coming from dplyr",
+            "headings": [
+                {
+                    "id": "syntax-translation",
+                    "text": "Syntax translation",
+                    "level": 2
+                },
+                {
+                    "id": "conventions",
+                    "text": "Conventions",
+                    "level": 2
+                },
+                {
+                    "id": "across-functions",
+                    "text": "across() functions",
+                    "level": 2
+                },
+                {
+                    "id": "not-supported",
+                    "text": "Not supported",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "development": {
+            "title": "Development",
+            "headings": [
+                {
+                    "id": "tests",
+                    "text": "Tests",
+                    "level": 2
+                },
+                {
+                    "id": "documentation",
+                    "text": "Documentation",
+                    "level": 2
+                },
+                {
+                    "id": "site-content",
+                    "text": "Site content",
+                    "level": 2
+                },
+                {
+                    "id": "layout",
+                    "text": "Layout",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "gallery": {
+            "title": "Gallery",
+            "headings": [
+                {
+                    "id": "school-value-added",
+                    "text": "School value added",
+                    "level": 2
+                },
+                {
+                    "id": "schools-as-random-intercepts",
+                    "text": "Schools as random intercepts",
+                    "level": 2
+                },
+                {
+                    "id": "rent-per-square-meter",
+                    "text": "Rent per square meter",
+                    "level": 2
+                },
+                {
+                    "id": "pass-rates-by-study-time",
+                    "text": "Pass rates by study time",
+                    "level": 2
+                },
+                {
+                    "id": "clinic-calls-by-staffing",
+                    "text": "Clinic calls by staffing",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "getting-started": {
+            "title": "Getting started",
+            "headings": [
+                {
+                    "id": "imports",
+                    "text": "Imports",
+                    "level": 2
+                },
+                {
+                    "id": "loading-data",
+                    "text": "Loading data",
+                    "level": 2
+                },
+                {
+                    "id": "chaining-verbs",
+                    "text": "Chaining verbs",
+                    "level": 2
+                },
+                {
+                    "id": "row-closures-and-vector-helpers",
+                    "text": "Row closures and vector helpers",
+                    "level": 2
+                },
+                {
+                    "id": "named-arguments-and-options",
+                    "text": "Named arguments and options",
+                    "level": 2
+                },
+                {
+                    "id": "printing-and-inspecting",
+                    "text": "Printing and inspecting",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "index": {
+            "title": "phplyr",
+            "headings": [
+                {
+                    "id": "install",
+                    "text": "Install",
+                    "level": 2
+                },
+                {
+                    "id": "where-to-go-next",
+                    "text": "Where to go next",
+                    "level": 2
+                },
+                {
+                    "id": "the-family",
+                    "text": "The family",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "performance": {
+            "title": "Performance",
+            "headings": [
+                {
+                    "id": "method",
+                    "text": "Method",
+                    "level": 2
+                },
+                {
+                    "id": "phplyrs-overhead",
+                    "text": "phplyr’s overhead",
+                    "level": 2
+                },
+                {
+                    "id": "timings-at-1000000-rows",
+                    "text": "Timings at 1,000,000 rows",
+                    "level": 2
+                },
+                {
+                    "id": "choosing-a-backend",
+                    "text": "Choosing a backend",
+                    "level": 2
+                },
+                {
+                    "id": "polarstable",
+                    "text": "PolarsTable",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "port-r-script": {
+            "title": "Porting an R script",
+            "headings": [
+                {
+                    "id": "r",
+                    "text": "R",
+                    "level": 3
+                },
+                {
+                    "id": "php",
+                    "text": "PHP",
+                    "level": 3
+                },
+                {
+                    "id": "what-changed-in-translation",
+                    "text": "What changed in translation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/databases": {
+            "title": "Databases and expressions",
+            "headings": [
+                {
+                    "id": "expressions",
+                    "text": "Expressions",
+                    "level": 2
+                },
+                {
+                    "id": "database-tables",
+                    "text": "Database tables",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/grouping": {
+            "title": "Grouping",
+            "headings": [
+                {
+                    "id": "group-utilities",
+                    "text": "Group utilities",
+                    "level": 2
+                },
+                {
+                    "id": "row-wise-operations",
+                    "text": "Row-wise operations",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/models": {
+            "title": "Models",
+            "headings": [],
+            "math": false
+        },
+        "reference/single-table": {
+            "title": "Single-table verbs",
+            "headings": [
+                {
+                    "id": "rows",
+                    "text": "Rows",
+                    "level": 2
+                },
+                {
+                    "id": "columns",
+                    "text": "Columns",
+                    "level": 2
+                },
+                {
+                    "id": "summaries",
+                    "text": "Summaries",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/strings-dates": {
+            "title": "Strings and dates",
+            "headings": [
+                {
+                    "id": "strings",
+                    "text": "Strings",
+                    "level": 2
+                },
+                {
+                    "id": "dates-and-times",
+                    "text": "Dates and times",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/tidyr": {
+            "title": "tidyr",
+            "headings": [
+                {
+                    "id": "pivoting",
+                    "text": "Pivoting",
+                    "level": 2
+                },
+                {
+                    "id": "missing-combinations-and-values",
+                    "text": "Missing combinations and values",
+                    "level": 2
+                },
+                {
+                    "id": "splitting-and-combining",
+                    "text": "Splitting and combining",
+                    "level": 2
+                },
+                {
+                    "id": "list-columns",
+                    "text": "List-columns",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/tidyselect": {
+            "title": "tidyselect and across()",
+            "headings": [
+                {
+                    "id": "selectors",
+                    "text": "Selectors",
+                    "level": 2
+                },
+                {
+                    "id": "across",
+                    "text": "across()",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/two-table": {
+            "title": "Two-table verbs",
+            "headings": [
+                {
+                    "id": "joins",
+                    "text": "Joins",
+                    "level": 2
+                },
+                {
+                    "id": "join_by",
+                    "text": "join_by()",
+                    "level": 2
+                },
+                {
+                    "id": "binding",
+                    "text": "Binding",
+                    "level": 2
+                },
+                {
+                    "id": "set-operations-and-row-updates",
+                    "text": "Set operations and row updates",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/vectors": {
+            "title": "Vector helpers",
+            "headings": [
+                {
+                    "id": "summaries",
+                    "text": "Summaries",
+                    "level": 2
+                },
+                {
+                    "id": "window-functions",
+                    "text": "Window functions",
+                    "level": 2
+                },
+                {
+                    "id": "conditionals-and-na",
+                    "text": "Conditionals and NA",
+                    "level": 2
+                }
+            ],
+            "math": false
+        }
+    }
+}
