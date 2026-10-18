@@ -7,15 +7,7 @@ declare(strict_types=1);
 
 use Phibble\DataFrame;
 
-use function Phplyr\case_when;
-use function Phplyr\col;
-use function Phplyr\desc;
-use function Phplyr\if_else;
-use function Phplyr\mean;
-use function Phplyr\n;
-use function Phplyr\phplyr;
-use function Phplyr\row_number;
-use function Phplyr\sd;
+use function Phplyr\{case_when, col, desc, if_else, mean, n, phplyr, row_number, sd};
 
 return [
     'inputs' => [

@@ -7,11 +7,7 @@ declare(strict_types=1);
 
 use Phibble\DataFrame;
 
-use function Phplyr\case_when;
-use function Phplyr\col;
-use function Phplyr\mean;
-use function Phplyr\n;
-use function Phplyr\phplyr;
+use function Phplyr\{case_when, col, mean, n, phplyr};
 
 return [
     'inputs' => [

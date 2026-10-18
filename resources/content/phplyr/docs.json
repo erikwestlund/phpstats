@@ -163,8 +163,8 @@
                     "level": 2
                 },
                 {
-                    "id": "chaining-verbs",
-                    "text": "Chaining verbs",
+                    "id": "chaining-functions",
+                    "text": "Chaining functions",
                     "level": 2
                 },
                 {
@@ -296,7 +296,7 @@
             "math": false
         },
         "reference/single-table": {
-            "title": "Single-table verbs",
+            "title": "Single-table functions",
             "headings": [
                 {
                     "id": "rows",
@@ -375,7 +375,7 @@
             "math": false
         },
         "reference/two-table": {
-            "title": "Two-table verbs",
+            "title": "Joins, binding, and set operations",
             "headings": [
                 {
                     "id": "joins",

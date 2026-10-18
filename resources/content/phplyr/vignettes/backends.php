@@ -10,13 +10,7 @@ use Phibble\DataFrame;
 use Phibble\Polars\PolarsTable;
 use Phibble\Sql\SqlTable;
 
-use function Phplyr\col;
-use function Phplyr\desc;
-use function Phplyr\mean;
-use function Phplyr\min_rank;
-use function Phplyr\n;
-use function Phplyr\phplyr;
-use function Phplyr\sum;
+use function Phplyr\{col, desc, mean, min_rank, n, phplyr, sum};
 
 $polars = \extension_loaded('php_polars') && class_exists(PolarsTable::class);
 $sqlite = \extension_loaded('pdo_sqlite');
@@ -132,7 +126,7 @@ return [
         PHP;
 
         $blocks = [
-            ['type' => 'text', 'content' => 'phplyr verbs call the methods of phibble\'s `Table` contract, so one pipeline runs on several backends. '
+            ['type' => 'text', 'content' => 'phplyr functions call the methods of phibble\'s `Table` contract, so one pipeline runs on several backends. '
                 .'`DataFrame` evaluates it in PHP. `SqlTable` compiles `col()` expressions and helpers such as `mean()` to SQL, and `collect()` runs the query. '
                 .'`PolarsTable` runs the same expressions in Polars through the php_polars extension. '
                 .'This pipeline joins sales to stores, sums revenue per region and product, and keeps each region\'s top products.'],
