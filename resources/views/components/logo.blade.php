@@ -1,15 +1,13 @@
 {{--
-    The PHPstats mark: a PHP-purple elephant drawn around one line, which
-    starts as the tail, runs across the body as a line graph through the eye,
-    and ends as the trunk. Inside the body the line is white.
+    The PHPstats mark: a PHP-purple elephant with a white line graph in its
+    body. The line starts at a dot, goes up, down, and up, and ends at the
+    eye.
 --}}
 @props(['size' => 28])
 
 <svg width="{{ round($size * 1.2) }}" height="{{ $size }}" viewBox="0 0 48 40" fill="none" aria-hidden="true" {{ $attributes }}>
-<defs><clipPath id="phpstats-mark-body"><path d="M5 25C3.5 15.5 9.5 7.5 19 7.5c3.6 0 6.2.7 8.3 1.9C29.3 7.6 31.8 6.5 35 6.5c5 0 8.5 4.4 8.5 10 0 3.4-1.2 6.3-3.2 8.2L37 27.5V33h-6.6v-6H16v6H9.6v-7.4C7 30.6 5.3 28.3 5 25z"/></clipPath></defs>
-<path fill="#777bb4" d="M5 25C3.5 15.5 9.5 7.5 19 7.5c3.6 0 6.2.7 8.3 1.9C29.3 7.6 31.8 6.5 35 6.5c5 0 8.5 4.4 8.5 10 0 3.4-1.2 6.3-3.2 8.2L37 27.5V33h-6.6v-6H16v6H9.6v-7.4C7 30.6 5.3 28.3 5 25z"/>
-<path d="M3 30.5C3 26.5 4.6 23.4 7.2 21.8L13 24 21 14 27 18.5 36.5 14.5" stroke="#777bb4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M36.5 14.5C40.3 16 42 20 42 25.5c0 3.2.9 5.6 3.4 6.1" stroke="#777bb4" stroke-width="3.4" stroke-linecap="round"/>
-<g clip-path="url(#phpstats-mark-body)" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"><path d="M3 30.5C3 26.5 4.6 23.4 7.2 21.8L13 24 21 14 27 18.5 36.5 14.5" stroke-width="1.8"/><path d="M36.5 14.5C40.3 16 42 20 42 25.5c0 3.2.9 5.6 3.4 6.1" stroke-width="3.4"/></g>
-<circle cx="36.5" cy="14.5" r="1.9" fill="#2a2850"/><circle cx="21" cy="14" r="1.9" fill="#fcd34d"/>
+<path d="M5.6 17.8C3.8 18.6 2.9 20.2 2.9 22" stroke="#777bb4" stroke-width="1.4" stroke-linecap="round"/>
+<path fill="#777bb4" d="M5 25C3.5 15 10 6 20 6c6 0 10 1 13.5 3.5C39 10 43 14 43 19.5c0 3-.8 5.5-1.6 8-.6 1.8-.2 3 1.4 3.6 1.3.5 1.1 2.6-.6 2.6-3.6 0-5.2-3-5.2-6.4l-.4-1.3-.6 8H30v-6H16v6h-6.4v-7.4C7 30.6 5.3 28.3 5 25z"/>
+<path d="M10 24 17 14.5 25 21 36.5 14.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="10" cy="24" r="2.2" fill="#fff"/><circle cx="36.5" cy="14.5" r="2.2" fill="#fff"/>
 </svg>
