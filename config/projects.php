@@ -10,7 +10,7 @@ return [
     'phit' => [
         'name' => 'phit',
         'from_r' => 'stats and lme4',
-        'summary' => 'A native PHP extension, written in Rust, for regression, mixed models, distributions, and descriptive statistics.',
+        'summary' => 'Regression, mixed models, distributions, and descriptive statistics, in a Rust extension.',
         'status' => 'working',
         'status_label' => 'Working',
         'repo' => 'https://github.com/phpstats/phit',
@@ -39,7 +39,7 @@ return [
     'phibble' => [
         'name' => 'phibble',
         'from_r' => 'tibble and readr',
-        'summary' => 'A typed, immutable data frame that loads from CSV files, PDO, and Eloquent or Doctrine queries.',
+        'summary' => 'Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine.',
         'status' => 'working',
         'status_label' => 'Released, v0.3.0',
         'repo' => 'https://github.com/phpstats/phibble',
@@ -58,7 +58,7 @@ return [
     'phplyr' => [
         'name' => 'phplyr',
         'from_r' => 'dplyr and tidyr',
-        'summary' => 'dplyr-style data manipulation with pipe functions, with lm() and glm() formulas that call phit.',
+        'summary' => 'dplyr and tidyr for PHP.',
         'status' => 'working',
         'status_label' => 'Released, v0.3.0',
         'repo' => 'https://github.com/phpstats/phplyr',
@@ -79,7 +79,7 @@ return [
     'phiz' => [
         'name' => 'phiz',
         'from_r' => 'ggplot2',
-        'summary' => 'A ggplot-style grammar of graphics for PHP that produces Vega-Lite charts.',
+        'summary' => 'ggplot2-style charts for PHP, rendered with Vega-Lite.',
         'status' => 'working',
         'status_label' => 'Released, v0.3.0',
         'repo' => 'https://github.com/phpstats/phiz',
@@ -96,7 +96,7 @@ return [
     'phpolars' => [
         'name' => 'phpolars',
         'from_r' => 'polars',
-        'summary' => 'Polars data frames for PHP as a native Rust extension, with a phibble table backend for phplyr.',
+        'summary' => 'Polars data frames as a PHP extension. Compatible with phibble.',
         'status' => 'working',
         'status_label' => 'Working, PIE-packaged',
         'repo' => 'https://github.com/phpstats/phpolars',
@@ -113,7 +113,7 @@ return [
     'cmdstanphp' => [
         'name' => 'CmdStanPHP',
         'from_r' => 'cmdstanr',
-        'summary' => 'Bayesian models in Stan, run from PHP through CmdStan, with an API patterned after CmdStanR.',
+        'summary' => 'Bayesian models in Stan, with an API patterned after CmdStanR.',
         'status' => 'working',
         'status_label' => 'Working',
         'repo' => 'https://github.com/phpstats/cmdstanphp',

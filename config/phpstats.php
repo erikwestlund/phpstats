@@ -36,17 +36,17 @@ return [
      * Colors are Tailwind color names.
      */
     'layers' => [
-        'data' => ['title' => 'Data Frames', 'role' => 'Read, filter, mutate, group, summarise, join, and reshape tables', 'color' => 'indigo', 'packages' => [
-            'phibble' => 'The shared data frame: typed, immutable, and loaded from CSV, PDO, Eloquent, or Doctrine',
-            'phpolars' => 'Polars data frames in a Rust extension, and a fast backend for phibble',
-            'phplyr' => 'dplyr and tidyr for PHP, run in memory, as SQL, or in Polars',
+        'data' => ['title' => 'Data Frames', 'role' => 'Read, transform, and reshape tables', 'color' => 'indigo', 'packages' => [
+            'phibble' => 'Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine',
+            'phpolars' => 'Polars data frames as a PHP extension. Compatible with phibble.',
+            'phplyr' => 'dplyr and tidyr for PHP, in memory, in SQL, or in Polars',
         ]],
-        'visualization' => ['title' => 'Data Visualization', 'role' => 'A grammar of graphics', 'color' => 'fuchsia', 'packages' => [
-            'phiz' => 'ggplot2-style charts that render as Vega-Lite, with a Blade component for Livewire',
+        'visualization' => ['title' => 'Data Visualization', 'role' => 'Charts in the grammar of graphics', 'color' => 'fuchsia', 'packages' => [
+            'phiz' => 'ggplot2-style charts, rendered with Vega-Lite',
         ]],
-        'models' => ['title' => 'Statistical Modeling', 'role' => 'Estimation, verified against R', 'color' => 'purple', 'packages' => [
-            'phit' => 'Regression, mixed models, distributions, and descriptive statistics in a Rust extension',
-            'cmdstanphp' => 'Bayesian models in Stan through CmdStan',
+        'models' => ['title' => 'Statistical Modeling', 'role' => 'Models checked against R', 'color' => 'purple', 'packages' => [
+            'phit' => 'Regression, mixed models, distributions, and descriptive statistics',
+            'cmdstanphp' => 'Bayesian models in Stan',
         ]],
     ],
 
