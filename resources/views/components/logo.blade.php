@@ -11,47 +11,47 @@
 <svg width="{{ round($size * 1006 / 643) }}" height="{{ $size }}" viewBox="143 283 1006 643" aria-hidden="true" {{ $attributes }}>
 <defs>
  <linearGradient id="{{ $id }}-body" x1="240" y1="340" x2="695" y2="918" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#305d9f"/>
- <stop offset="0.42" stop-color="#284d88"/>
- <stop offset="1" stop-color="#1d355d"/>
+ <stop offset="0" stop-color="#41579e"/>
+ <stop offset="0.45" stop-color="#314784"/>
+ <stop offset="1" stop-color="#233365"/>
  </linearGradient>
  <linearGradient id="{{ $id }}-ear" x1="590" y1="308" x2="801" y2="625" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#789bd2"/>
- <stop offset="0.48" stop-color="#658ac3"/>
- <stop offset="1" stop-color="#4a73ad"/>
+ <stop offset="0" stop-color="#b3bef7"/>
+ <stop offset="0.5" stop-color="#9aa9ef"/>
+ <stop offset="1" stop-color="#8595df"/>
  </linearGradient>
  <linearGradient id="{{ $id }}-head" x1="805" y1="362" x2="952" y2="787" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#30568f"/>
- <stop offset="0.65" stop-color="#254478"/>
- <stop offset="1" stop-color="#18345f"/>
+ <stop offset="0" stop-color="#496db8"/>
+ <stop offset="0.65" stop-color="#38579c"/>
+ <stop offset="1" stop-color="#27417b"/>
  </linearGradient>
  <linearGradient id="{{ $id }}-trunk" x1="962" y1="583" x2="1070" y2="764" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#315b9c"/>
- <stop offset="1" stop-color="#23487f"/>
+ <stop offset="0" stop-color="#5d7fd0"/>
+ <stop offset="1" stop-color="#3a5ca5"/>
  </linearGradient>
  <linearGradient id="{{ $id }}-legShade" x1="368" y1="748" x2="317" y2="894" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#18365f" stop-opacity=".13"/>
- <stop offset="1" stop-color="#102747" stop-opacity=".72"/>
+ <stop offset="0" stop-color="#192755" stop-opacity=".08"/>
+ <stop offset="1" stop-color="#101a3c" stop-opacity=".50"/>
  </linearGradient>
  <linearGradient id="{{ $id }}-frontLeg" x1="680" y1="661" x2="812" y2="909" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#1a355b" stop-opacity="0"/>
- <stop offset="1" stop-color="#132949" stop-opacity=".70"/>
+ <stop offset="0" stop-color="#1a2757" stop-opacity="0"/>
+ <stop offset="1" stop-color="#121f46" stop-opacity=".55"/>
  </linearGradient>
  <linearGradient id="{{ $id }}-bar1" x1="260" y1="660" x2="328" y2="803" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#d5e9fc"/>
- <stop offset="1" stop-color="#b7d8fd"/>
+ <stop offset="0" stop-color="#dbe3ff"/>
+ <stop offset="1" stop-color="#c7d0ff"/>
  </linearGradient>
  <linearGradient id="{{ $id }}-bar2" x1="345" y1="607" x2="402" y2="737" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#90c8ff"/>
- <stop offset="1" stop-color="#6aaff8"/>
+ <stop offset="0" stop-color="#b3c3ff"/>
+ <stop offset="1" stop-color="#98abf3"/>
  </linearGradient>
  <linearGradient id="{{ $id }}-bar3" x1="421" y1="550" x2="481" y2="716" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#64b1ff"/>
- <stop offset="1" stop-color="#428ef0"/>
+ <stop offset="0" stop-color="#92a9ff"/>
+ <stop offset="1" stop-color="#7088e6"/>
  </linearGradient>
  <linearGradient id="{{ $id }}-bar4" x1="507" y1="479" x2="562" y2="739" gradientUnits="userSpaceOnUse">
- <stop offset="0" stop-color="#3797ff"/>
- <stop offset="1" stop-color="#257ce8"/>
+ <stop offset="0" stop-color="#c6b8ff"/>
+ <stop offset="1" stop-color="#9b82f6"/>
  </linearGradient>
  </defs>
  <path fill="url(#{{ $id }}-body)" d="
@@ -108,5 +108,5 @@
  C 994.0,730.0 1035.0,705.0 1055.5,645.0
  C 1077.8,690.2 1050.7,734.0 1017.1,746.4
  C 989.0,755.1 969.5,731.4 967.5,684.0 Z"/>
- <circle cx="842" cy="535.5" r="18.0" fill="#fff"/>
+ <circle cx="842" cy="535.5" r="18.0" fill="#ffffff"/>
 </svg>
