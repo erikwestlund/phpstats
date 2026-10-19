@@ -81,8 +81,15 @@
         </div>
     </section>
 
-    <div class="layer-{{ $layer['color'] }} mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:px-8">
-        <div class="min-w-0">
+    {{-- A package with no sections, relations, or synced content has an empty
+         aside, so the second column is left out rather than shown blank. --}}
+    @php $hasAside = $sections !== [] || $relations->isNotEmpty() || $package->sync() !== null; @endphp
+    <div @class([
+        'layer-'.$layer['color'],
+        'mx-auto grid max-w-7xl gap-12 px-4 py-14 sm:px-6 lg:px-8',
+        'lg:grid-cols-[minmax(0,1fr)_22rem]' => $hasAside,
+    ])>
+        <div @class(['min-w-0', 'lg:max-w-4xl' => ! $hasAside])>
             <div class="prose prose-zinc prose-php max-w-none text-[1.0625rem] dark:prose-invert">
                 @foreach ($package->summary() as $paragraph)
                     <p>{{ $paragraph }}</p>
@@ -100,9 +107,10 @@
                     <x-code class="mt-4" :code="$example['chain'] ?? $example['pipe']" />
                 @endif
                 @if ($example['output'])
+                    @php [$output, $size] = \App\Content\Package::splitTableHeader($example['output']); @endphp
                     <div class="mt-3 overflow-hidden rounded-xl ring-1 ring-zinc-200 dark:ring-white/10">
-                        <p class="border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-xs font-medium text-zinc-500 dark:border-white/10 dark:bg-white/[0.03]">Output</p>
-                        <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6 text-zinc-700 dark:text-zinc-300"><code>{{ $example['output'] }}</code></pre>
+                        <p class="border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-xs font-medium text-zinc-500 dark:border-white/10 dark:bg-white/[0.03]">{{ $size === null ? 'Output' : "Output · {$size}" }}</p>
+                        <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6 text-zinc-700 dark:text-zinc-300"><code>{{ $output }}</code></pre>
                     </div>
                 @endif
             @endif
@@ -125,6 +133,7 @@
             @endunless
         </div>
 
+        @if ($hasAside)
         <aside class="space-y-8">
             @if ($sections)
                 <div class="space-y-3">
@@ -170,5 +179,6 @@
                 </p>
             @endif
         </aside>
+        @endif
     </div>
 </x-layout>

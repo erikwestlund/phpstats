@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Content\Package;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\File;
 use Tests\TestCase;
 
 class PackagePagesTest extends TestCase
@@ -109,5 +110,137 @@ class PackagePagesTest extends TestCase
         $this->get('http://phpstats.test/vignettes/school-effects')->assertRedirect('http://phit.phpstats.test/vignettes/school-shrinkage');
         $this->get('http://phpstats.test/vignettes/sql-pipeline')->assertRedirect('http://phibble.phpstats.test/vignettes/sql-pipeline');
         $this->get('http://phpstats.test/benchmarks')->assertRedirect('http://phit.phpstats.test/benchmarks');
+    }
+
+    // Overview content (task 11a): summary lists, pipe-only examples, the
+    // tibble header, and the aside that used to render empty.
+
+    public function test_a_site_summary_list_becomes_the_overview_paragraphs(): void
+    {
+        $this->fixtureSite('phibble', ['summary' => ['The first paragraph.', 'The second paragraph.']]);
+        $package = Package::find('phibble');
+
+        $this->assertSame(['The first paragraph.', 'The second paragraph.'], $package->summary());
+        $this->get($package->url())->assertOk()
+            ->assertSeeInOrder(['The first paragraph.', 'The second paragraph.'])
+            ->assertDontSee('Array');
+    }
+
+    public function test_a_site_summary_string_keeps_the_shaped_paragraphs(): void
+    {
+        $this->fixtureSite('phibble', ['summary' => 'One dense paragraph.']);
+        $package = Package::find('phibble');
+
+        $this->assertSame(config('projects.phibble.overview'), $package->summary());
+        $this->get($package->url())->assertOk()
+            ->assertSee('phibble is the shared table type')
+            ->assertDontSee('One dense paragraph.')
+            ->assertDontSee('Array');
+    }
+
+    public function test_a_package_with_no_site_content_keeps_the_shaped_paragraphs(): void
+    {
+        $this->fixtureSite('phibble', [], synced: false);
+        $package = Package::find('phibble');
+
+        $this->assertSame(config('projects.phibble.overview'), $package->summary());
+        $this->get($package->url())->assertOk()->assertDontSee('Array');
+    }
+
+    public function test_an_example_with_only_a_pipe_renders_one_plain_code_block(): void
+    {
+        $this->fixtureSite('phibble', ['example' => ['pipe' => '$table |> pipeOnlyFixture();']]);
+        $package = Package::find('phibble');
+
+        $this->assertSame(['chain' => null, 'pipe' => '$table |> pipeOnlyFixture();', 'output' => null], $package->example());
+        $this->get($package->url())->assertOk()
+            ->assertSee('pipeOnlyFixture')
+            ->assertDontSee('aria-label="Code syntax"', false);
+    }
+
+    public function test_an_example_with_only_a_chain_renders_one_plain_code_block(): void
+    {
+        $this->fixtureSite('phibble', ['example' => ['chain' => '$table->chainOnlyFixture();']]);
+        $package = Package::find('phibble');
+
+        $this->assertSame('$table->chainOnlyFixture();', $package->example()['chain']);
+        $this->assertNull($package->example()['pipe']);
+        $this->get($package->url())->assertOk()
+            ->assertSee('chainOnlyFixture')
+            ->assertDontSee('aria-label="Code syntax"', false);
+    }
+
+    public function test_an_example_with_both_syntaxes_keeps_the_tabs(): void
+    {
+        $this->fixtureSite('phibble', ['example' => ['pipe' => '$table |> head(3);', 'chain' => '$table->head(3);']]);
+
+        $this->get(Package::find('phibble')->url())->assertOk()
+            ->assertSee('aria-label="Code syntax"', false);
+    }
+
+    public function test_no_overview_shows_a_tibble_header(): void
+    {
+        foreach (Package::all() as $package) {
+            $this->get($package->url())->assertOk()->assertDontSee('# A tibble');
+        }
+    }
+
+    public function test_an_example_output_shows_its_size_instead_of_the_tibble_header(): void
+    {
+        $this->fixtureSite('phibble', ['example' => [
+            'pipe' => '$table |> head(2);',
+            'output' => "# A tibble: 2 × 3\n  id    city   rent\n  <int> <chr> <dbl>",
+        ]]);
+
+        $this->get(Package::find('phibble')->url())->assertOk()
+            ->assertDontSee('# A tibble')
+            ->assertSee('Output · 2 × 3')
+            ->assertSee('&lt;int&gt;', false);
+    }
+
+    public function test_a_package_with_an_empty_aside_has_no_second_column(): void
+    {
+        // juphyter has no docs, vignettes, benchmarks, verification, relations,
+        // or synced content, so there is nothing to put beside the overview.
+        $package = Package::find('juphyter');
+        $this->assertSame([], $package->vignettes());
+        $this->assertSame([], $package->relations());
+        $this->assertNull($package->sync());
+
+        $this->get($package->url())->assertOk()
+            ->assertDontSee('<aside', false)
+            ->assertDontSee('lg:grid-cols-[minmax(0,1fr)_22rem]', false);
+    }
+
+    public function test_a_package_with_content_keeps_its_aside(): void
+    {
+        $this->get(Package::find('phit')->url())->assertOk()
+            ->assertSee('<aside', false)
+            ->assertSee('lg:grid-cols-[minmax(0,1fr)_22rem]', false);
+    }
+
+    /**
+     * Point the content path at a copy whose site.json for one package is this
+     * fixture, so a partial or list-shaped manifest can be rendered without
+     * touching the real synced content.
+     */
+    private function fixtureSite(string $key, array $site, bool $synced = true): void
+    {
+        $root = base_path('storage/framework/testing/overview-'.uniqid());
+        File::copyDirectory(config('phpstats.content_path'), $root);
+        File::deleteDirectory("{$root}/{$key}");
+
+        if ($synced) {
+            File::ensureDirectoryExists("{$root}/{$key}");
+            File::put("{$root}/{$key}/site.json", json_encode(array_merge([
+                'package' => $key,
+                'title' => $key,
+                'tagline' => 'A tagline from the fixture.',
+            ], $site)));
+        }
+
+        config(['phpstats.content_path' => $root]);
+        Package::flush();
+        $this->beforeApplicationDestroyed(fn () => File::deleteDirectory($root));
     }
 }

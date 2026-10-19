@@ -20,9 +20,8 @@
         is_array($value) && isset($value['coefficients'], $value['columns']) => \App\Content\Console::fit($value),
         default => print_r($value, true),
     };
-    if ($text !== null && preg_match('/\A# A tibble: ([^\n]+)\n/u', $text, $m)) {
-        $size = $m[1];
-        $text = substr($text, strlen($m[0]));
+    if ($text !== null) {
+        [$text, $size] = \App\Content\Package::splitTableHeader($text);
     }
 @endphp
 <p class="px-5 pt-5 text-sm sm:px-7 text-zinc-500 dark:text-zinc-400">{{ $label }}@if ($size) · {{ $size }}@endif</p>

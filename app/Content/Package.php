@@ -82,10 +82,37 @@ class Package
         return $this->site['tagline'] ?? $this->project['summary'];
     }
 
-    /** @return list<string> */
+    /**
+     * The overview paragraphs. A package's own site.json wins when it ships a
+     * list of them; a single string is thinner than the shaped paragraphs in
+     * config/projects.php, so those are kept instead.
+     *
+     * @return list<string>
+     */
     public function summary(): array
     {
-        return isset($this->site['summary']) ? [$this->site['summary']] : $this->project['overview'];
+        $paragraphs = $this->site['summary'] ?? null;
+        if (is_array($paragraphs) && array_is_list($paragraphs) && $paragraphs !== []
+            && $paragraphs === array_filter($paragraphs, 'is_string')) {
+            return $paragraphs;
+        }
+
+        return $this->project['overview'];
+    }
+
+    /**
+     * A printed phibble or phplyr table heads with "# A tibble: n × m". Pages
+     * show that size next to the output instead of inside it.
+     *
+     * @return array{0: string, 1: ?string} the text without the header, and the size
+     */
+    public static function splitTableHeader(string $text): array
+    {
+        if (preg_match('/\A# A tibble: ([^\n]+)\n/u', $text, $matches)) {
+            return [substr($text, strlen($matches[0])), $matches[1]];
+        }
+
+        return [$text, null];
     }
 
     /** @return list<string> */
@@ -113,7 +140,7 @@ class Package
             return null;
         }
 
-        return ['chain' => $example['chain'] ?: null, 'pipe' => $example['pipe'] ?? null, 'output' => $example['output'] ?? null];
+        return ['chain' => ($example['chain'] ?? null) ?: null, 'pipe' => $example['pipe'] ?? null, 'output' => $example['output'] ?? null];
     }
 
     public function status(): string
