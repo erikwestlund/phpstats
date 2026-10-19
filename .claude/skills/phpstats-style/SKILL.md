@@ -56,6 +56,10 @@ its own menu:
   literal path, `/about`, which is the same on the landing host in host mode
   and in path mode. A loop belongs in a component, as `<x-install-steps />`
   holds the one over `Package::all()`.
+- Never write the bare noun "frame" or "frames" in site prose. Write "data
+  frame", "data frames", or "table", and `DataFrame` where the class is
+  meant. The rule is about prose only: `$frame` variables, the
+  `frame-table` component, and anything else in code keep their names.
 - Leave out status badges, version pills, colored dots, and stats bars.
 - Keep "checked against R" and verification claims off the landing page and
   the About page. Verification belongs on each package's Verification
@@ -88,7 +92,7 @@ its own menu:
 - Each package has an example in `resources/examples/packages/{key}.php`
   (with `{key}.chain.php` where a method chain exists). The package explorer
   shows the selected package's code and its output as the package prints it:
-  a phibble frame, Polars' table, a chart, or an R-style model summary. Never
+  a phibble data frame, Polars' table, a chart, or an R-style model summary. Never
   call phibble output a "tibble"; the site drops phibble's "# A tibble" header
   line and shows the size in the output label. phibble is
   selected by default. Never invent output: run the example, or compute it

@@ -49,9 +49,9 @@ return [
             'Release notes' => 'https://github.com/phpstats/phibble/releases/tag/v0.3.0',
         ],
         'overview' => [
-            'phibble is the shared table type for phplyr, phpolars, phit, and CmdStanPHP. Every operation returns a new frame.',
+            'phibble is the shared table type for phplyr, phpolars, phit, and CmdStanPHP. Every operation returns a new data frame.',
             'Columns are typed as float, int, bool, string, factor, or date, and types are inferred on load. Missing values are PHP null.',
-            'Frames load from CSV files, PDO statements, and Laravel, Eloquent, or Doctrine query builders, so analysis can start from the application database. phibble does not depend on Laravel or Doctrine.',
+            'Data frames load from CSV files, PDO statements, and Laravel, Eloquent, or Doctrine query builders, so analysis can start from the application database. phibble does not depend on Laravel or Doctrine.',
             'toMatrix() and toVector() hand columns to phit functions such as Phit\fit_ols().',
         ],
     ],
@@ -89,7 +89,7 @@ return [
         ],
         'overview' => [
             'phiz describes charts with a grammar modeled on ggplot2 and produces Vega-Lite specifications, which the browser renders.',
-            'Plots take rows, columns, phibble frames, or Laravel collections, and support layers, scales, facets, themes, and interactive selections.',
+            'Plots take rows, columns, phibble data frames, or Laravel collections, and support layers, scales, facets, themes, and interactive selections.',
             'The <x-phiz> Blade component renders a plot and re-renders it when a Livewire component updates. Every chart on this site is drawn with it.',
         ],
     ],
@@ -107,7 +107,7 @@ return [
         'overview' => [
             'phpolars is a native PHP extension, written in Rust, that brings the Polars columnar engine to PHP. It installs with PIE as php_polars and targets PHP 8.5 on Linux and macOS.',
             'Its PolarsTable implements phibble\'s table contract, so phplyr pipelines run in Polars. phibble and phplyr work without it.',
-            'phplyr pipelines run 10 to 100 times faster in Polars than on an in-memory phibble frame. Converting results back to PHP values takes most of a PolarsTable pipeline\'s time, so pipelines that reduce the data before collecting gain the most.',
+            'phplyr pipelines run 10 to 100 times faster in Polars than on an in-memory phibble data frame. Converting results back to PHP values takes most of a PolarsTable pipeline\'s time, so pipelines that reduce the data before collecting gain the most.',
         ],
     ],
     'juphyter' => [

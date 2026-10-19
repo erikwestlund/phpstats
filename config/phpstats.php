@@ -48,7 +48,7 @@ return [
      * Colors are Tailwind color names, and icons are Heroicons.
      */
     'layers' => [
-        'data' => ['title' => 'Data & Workflow', 'role' => 'Frames, pipelines, and notebooks', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => [
+        'data' => ['title' => 'Data & Workflow', 'role' => 'Tables, pipelines, and notebooks', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => [
             'phibble' => 'Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine.',
             'phpolars' => 'Polars data frames as a PHP extension. Compatible with phibble.',
             'phplyr' => "A PHP port of the Tidyverse's dplyr and tidyr. Pipelines use PHP 8.5's pipe operator.",
@@ -75,9 +75,9 @@ return [
             'summary' => 'Immutable, typed data frames for PHP.',
             'example' => 'Example: Load typed columns from the database',
             'does' => [
-                "Inspired by the design and API of the tidyverse's [tibble](https://tibble.tidyverse.org/), phibble provides typed, immutable data frames for PHP. Operations return new frames and leave the originals unchanged.",
+                "Inspired by the design and API of the tidyverse's [tibble](https://tibble.tidyverse.org/), phibble provides typed, immutable data frames for PHP. Operations return a new data frame and leave the original unchanged.",
                 'Columns are typed as `float`, `int`, `bool`, `string`, `factor`, `date`, or `datetime`. Types are inferred on load or set explicitly, and missing values are `null`.',
-                'Frames load from CSV files, PDO statements, and Eloquent or Doctrine queries, so analysis can start from the application database.',
+                'Data frames load from CSV files, PDO statements, and Eloquent or Doctrine queries, so analysis can start from the application database.',
                 'It is the common table type of the PHPstats packages, accepted by phplyr, phpolars, phiz, phit, and CmdStanPHP.',
             ],
             'output' => 'Data frame glimpse',
@@ -100,7 +100,7 @@ return [
                 "Ports the API and design of the tidyverse's [dplyr](https://dplyr.tidyverse.org/) and [tidyr](https://tidyr.tidyverse.org/) to PHP, keeping their function names, arguments, and conventions.",
                 'Provides verbs for filtering, selecting, mutating, grouping, summarizing, arranging, joining, and reshaping, with grouped window functions, `across()`, `pivot_wider()`, `pivot_longer()`, and nesting.',
                 "Pipelines use PHP 8.5's `|>` operator, with a method chain on PHP 8.3 and 8.4.",
-                'The same pipeline runs on a phibble frame, in the database as SQL, or in Polars.',
+                'The same pipeline runs on a phibble data frame, in the database as SQL, or in Polars.',
             ],
             'output' => 'Data frame preview',
         ],
@@ -111,7 +111,7 @@ return [
                 'Inspired by [ggplot2](https://ggplot2.tidyverse.org/) and the [grammar of graphics](https://link.springer.com/book/9780387245447), phiz brings declarative, layered statistical graphics to PHP.',
                 'Charts are composed from aesthetic mappings, geometric layers, statistical layers such as `smooth()`, scales, labels, and facets with a ggplot2-style API.',
                 'Produces [Vega-Lite](https://vega.github.io/vega-lite/) specifications, which the browser renders, including interactive selections.',
-                'Plots take phibble frames, arrays of rows, or Laravel collections. Its `<x-phiz>` Blade component redraws a chart when a Livewire component updates.',
+                'Plots take phibble data frames, arrays of rows, or Laravel collections. Its `<x-phiz>` Blade component redraws a chart when a Livewire component updates.',
             ],
             'output' => 'Chart',
         ],
@@ -120,7 +120,7 @@ return [
             'example' => 'Example: Fit a model and quantify uncertainty',
             'does' => [
                 'phit fits statistical models directly in PHP. It provides linear models with `fit_lm()`, logistic, probit, and Poisson regression with `fit_glm()`, and mixed-effects models with `fit_lmer()` and `fit_glmer()`.',
-                'The native extension, written in Rust, fits models fastest. It takes phibble frames and R-style formulas and returns plain PHP arrays.',
+                'The native extension, written in Rust, fits models fastest. It takes phibble data frames and R-style formulas and returns plain PHP arrays.',
                 '[phit-polyfill](https://github.com/phpstats/phit-polyfill) implements the same functions in plain PHP, so the same code runs where the extension cannot be installed. Mixed models are slower without the extension.',
                 'Includes probability distributions and descriptive statistics, such as `dist_t_quantile()` and `stat_quantile()`, alongside model fitting.',
             ],
@@ -132,7 +132,7 @@ return [
             'does' => [
                 'Inspired by [CmdStanR](https://mc-stan.org/cmdstanr/), CmdStanPHP is a PHP interface to [Stan](https://mc-stan.org/) for Bayesian modeling. It compiles and runs Stan programs with an installed CmdStan.',
                 'Supports MCMC sampling, optimization, variational inference, Pathfinder, and Laplace approximation.',
-                'Builds Stan data from R-style model formulas and phibble frames.',
+                'Builds Stan data from R-style model formulas and phibble data frames.',
                 'Summarizes posteriors with convergence diagnostics and compares models with PSIS-LOO and WAIC.',
             ],
             'output' => 'Posterior summary',
@@ -165,12 +165,12 @@ return [
      * second.
      */
     'relations' => [
-        ['phplyr', 'phibble', 'phplyr functions take phibble frames and return new ones.'],
+        ['phplyr', 'phibble', 'phplyr functions take phibble data frames and return new ones.'],
         ['phplyr', 'phit', 'phplyr\'s lm() and glm() fit their formulas with phit, and its summary helpers use phit when it is loaded.'],
-        ['phplyr', 'phpolars', 'phplyr pipelines run in Polars when the frame is a phpolars PolarsTable.'],
+        ['phplyr', 'phpolars', 'phplyr pipelines run in Polars when the table is a phpolars PolarsTable.'],
         ['phpolars', 'phibble', 'phpolars\' PolarsTable implements phibble\'s table contract.'],
         ['phibble', 'phit', 'phibble\'s toMatrix() and toVector() hand columns to phit functions such as Phit\\fit_ols().'],
-        ['phiz', 'phibble', 'phiz plots take phibble frames as data.'],
+        ['phiz', 'phibble', 'phiz plots take phibble data frames as data.'],
         ['cmdstanphp', 'phit', 'CmdStanPHP uses phit\'s draw kernels for PSIS-LOO moment matching when the extension is loaded.'],
     ],
 

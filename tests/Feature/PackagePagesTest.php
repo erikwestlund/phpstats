@@ -25,10 +25,10 @@ class PackagePagesTest extends TestCase
             ->assertSee('Statistics, Modeling &amp; Visualization', false)
             ->assertSee('aria-label="PHPstats home"', false)
             ->assertSee('Connected packages')
-            ->assertSee('phplyr functions take phibble frames and return new ones.');
+            ->assertSee('phplyr functions take phibble data frames and return new ones.');
 
         // The other side of the relation lists it too.
-        $this->get('http://phibble.phpstats.test/')->assertSee('Used by')->assertSee('phplyr functions take phibble frames');
+        $this->get('http://phibble.phpstats.test/')->assertSee('Used by')->assertSee('phplyr functions take phibble data frames');
     }
 
     public function test_each_package_has_an_overview_on_its_own_host(): void
