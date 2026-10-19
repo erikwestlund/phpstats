@@ -4,12 +4,12 @@ namespace Database\Seeders;
 
 use App\Data\Orders;
 use App\Data\SimulatedRentals;
-use App\Data\Visits;
-use App\Models\DailyVisit;
+use App\Data\Tracks;
 use App\Models\HousingRental;
 use App\Models\Order;
 use App\Models\SimulatedRental;
 use App\Models\StudentScore;
+use App\Models\Track;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -38,9 +38,9 @@ class DatabaseSeeder extends Seeder
             Order::insert($chunk);
         }
 
-        DailyVisit::query()->delete();
-        foreach (array_chunk(Visits::generate(), 500) as $chunk) {
-            DailyVisit::insert($chunk);
+        Track::query()->delete();
+        foreach (array_chunk(Tracks::generate(), 500) as $chunk) {
+            Track::insert($chunk);
         }
     }
 

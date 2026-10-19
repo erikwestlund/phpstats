@@ -34,10 +34,22 @@ its own menu:
 - Keep package taglines (menus, package pages) short and plain, such as
   "Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine."
   The landing page's package explorer lists each package with a one-line
-  summary and puts the detail in its "About {package}" panel, above
-  "Example code" and "Example output",: three to five short
-  bullets from `explorer` in `config/phpstats.php`, built only from documented
-  capabilities. Avoid label-colon phrasing such as "The shared data frame: …".
+  summary and puts the detail in three panels: "About {package}", the
+  example (titled "Example: {what it does}", from `example` in `explorer`),
+  and "Example output". The About panel has usually four bullets from
+  `explorer` in `config/phpstats.php`, built only from documented
+  capabilities. Write them for readers who know R, the tidyverse, Polars,
+  ggplot2, or Stan: name the upstream project and link its first mention,
+  cover the core and further capabilities, and say whether the package is
+  plain PHP, a Rust extension, or a wrapper around CmdStan. Avoid
+  label-colon phrasing such as "The shared data frame: …".
+- Explanatory text such as the About bullets is inline Markdown, rendered
+  with `App\Content\Markdown::inline()`. Put function, class, and interface
+  names, operators, literals, and type names in backticks: `fit_glm()`,
+  `PolarsTable`, `|>`, `null`, and `factor`. PHPstats package names become
+  bold monospace links to their pages on their own; write them as plain
+  words. Link upstream projects (tibble, Polars, ggplot2, Stan) as ordinary
+  Markdown links.
 - Leave out status badges, version pills, colored dots, and stats bars.
 - Keep "checked against R" and verification claims off the landing page and
   the About page. Verification belongs on each package's Verification
@@ -53,13 +65,20 @@ its own menu:
 - Put `|>` at the end of a line, never at the start of the next one:
   `$orders |>` then `    filter(...) |>` on the following lines.
 - For phplyr, say that pipelines use PHP 8.5's pipe operator. The syntax
-  tabs read "PHP 8.5+ · Pipe" and "PHP 8.3+ · Methods", since every package
-  that has a method chain supports PHP 8.3 and later.
+  tabs read only "PHP 8.5+" and "PHP 8.3–8.4", with no "Pipe" or "Methods".
 - Use realistic application data, such as the `orders` table, instead of
   textbook datasets.
 - Don't put comments in example code.
 - Write `\Phibble\DataFrame` and `\Phiz\Plot` fully qualified in the code.
-  Import models and phplyr functions with `use`.
+  Import models and phplyr functions with `use`. Imports are hidden unless
+  they sit below the example's `// ---` line; show them where the example is
+  about loading data, as phibble's and phpolars' are.
+- Use American spellings in prose and, where an API offers both, in code:
+  `summarize()` over `summarise()`. Never rename an API for spelling.
+- Make each explorer example show what the package adds to an analytical
+  workflow (typed columns, Polars execution, grouped calculations and
+  reshaping, layered and faceted charts, model inference), not a query that
+  Eloquent already does well.
 - Each package has an example in `resources/examples/packages/{key}.php`
   (with `{key}.chain.php` where a method chain exists). The package explorer
   shows the selected package's code and its output as the package prints it:
@@ -67,7 +86,8 @@ its own menu:
   call phibble output a "tibble"; the site drops phibble's "# A tibble" header
   line and shows the size in the output label. phibble is
   selected by default. Never invent output: run the example, or compute it
-  from a stored fixture with the package's own code and say so on the page.
+  from a stored fixture with the package's own code. Don't add notes about
+  how the output was computed.
   Keep these examples different from the workflow examples below them.
 - Show every landing page example as its code and then its result, computed
   when the page renders. Add examples under `resources/examples` and show

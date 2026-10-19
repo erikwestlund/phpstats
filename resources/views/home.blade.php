@@ -32,7 +32,7 @@
                 <x-code-tabs label="OrderReport.php" class="shadow-2xl shadow-black/40 ring-white/10!">
                     <x-slot:pipe>use App\Models\Order;
 use function Phplyr\{col, filter, floor_date, group_by};
-use function Phplyr\{lm, mutate, sum, summarise};
+use function Phplyr\{lm, mutate, sum, summarize};
 
 $orders = \Phibble\DataFrame::fromQuery(Order::query());
 
@@ -40,7 +40,7 @@ $monthly = $orders |>
     filter(col('returned')->eq(0)) |>
     mutate(month: floor_date(col('placed_on'), 'month')) |>
     group_by('month', 'channel') |>
-    summarise(revenue: sum('total'));
+    summarize(revenue: sum('total'));
 
 $fit = $orders |> lm('total ~ items + coupon + channel');
 
@@ -56,7 +56,7 @@ $monthly = phplyr($orders)
     ->filter(col('returned')->eq(0))
     ->mutate(month: floor_date(col('placed_on'), 'month'))
     ->group_by('month', 'channel')
-    ->summarise(revenue: sum('total'))
+    ->summarize(revenue: sum('total'))
     ->get();
 
 $fit = phplyr($orders)->lm('total ~ items + coupon + channel');
@@ -70,9 +70,9 @@ $chart = \Phiz\Plot::of($monthly)
     </section>
 
     {{-- The packages: what each one does, its code, and its output --}}
-    <section id="packages" class="scroll-mt-16 py-12 sm:py-14">
+    <section id="packages" class="scroll-mt-16 py-16 sm:py-20">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 class="mb-8 text-center text-3xl font-semibold tracking-tight sm:text-4xl">About PHPstats Packages</h2>
+            <h2 class="mb-10 text-center text-3xl font-semibold tracking-tight sm:mb-12 sm:text-4xl">About PHPstats Packages</h2>
             <x-package-explorer />
         </div>
     </section>

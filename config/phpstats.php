@@ -52,73 +52,79 @@ return [
 
     /*
      * The landing page's package explorer: a one-line summary for the list,
-     * points about each package for its "About" panel, the label for its
-     * output, and, for examples pages can't run, a callable that gives the
-     * stored result and a note saying so. Each package's code is
-     * resources/examples/packages/{key}.php.
+     * the title of its example, points about each package for its "About"
+     * panel (inline Markdown, for links to upstream projects and `code`;
+     * package names become links to their pages), the label for its output,
+     * and, for examples pages can't run, a callable that gives the stored
+     * result. Each package's code is resources/examples/packages/{key}.php.
      */
     'explorer' => [
         'phibble' => [
             'summary' => 'Immutable, typed data frames for PHP.',
+            'example' => 'Example: Load typed columns from the database',
             'does' => [
-                'Every operation returns a new frame, and the original is never changed.',
-                'Columns are typed as float, int, bool, string, factor, or date, inferred on load. Missing values are null.',
-                'Loads CSV files, PDO statements, and Eloquent or Doctrine queries.',
-                'The table type that phplyr, phpolars, phiz, phit, and CmdStanPHP accept.',
+                "Inspired by the design and API of the tidyverse's [tibble](https://tibble.tidyverse.org/), phibble provides typed, immutable data frames for PHP. Operations return new frames and leave the originals unchanged.",
+                'Columns are typed as `float`, `int`, `bool`, `string`, `factor`, `date`, or `datetime`. Types are inferred on load or set explicitly, and missing values are `null`.',
+                'Frames load from CSV files, PDO statements, and Eloquent or Doctrine queries, so analysis can start from the application database.',
+                'It is the common table type of the PHPstats packages, accepted by phplyr, phpolars, phiz, phit, and CmdStanPHP.',
             ],
-            'output' => 'Data frame preview',
+            'output' => 'Data frame glimpse',
         ],
         'phpolars' => [
             'summary' => 'Polars data frames for PHP, in a Rust extension.',
+            'example' => 'Example: Aggregate database rows in Polars',
             'does' => [
-                'Brings the Polars engine to PHP as an extension written in Rust.',
-                'Follows the py-polars API: DataFrame, LazyFrame, Series, and expressions.',
-                'Supports lazy queries, joins, time series windows, SQL, and Parquet and Arrow files.',
-                "Its PolarsTable implements phibble's table contract, so phplyr pipelines run in Polars.",
+                'Brings [Polars](https://pola.rs/) to PHP as a native extension written in Rust. It follows the Python Polars API and its expression-based approach to data manipulation.',
+                'Provides `DataFrame`, `LazyFrame`, `Series`, and expressions, with lazy execution, joins, aggregations, and window functions.',
+                'Reads query results from any PDO connection with `read_database()`, runs SQL queries, and reads and writes Parquet and Arrow IPC files.',
+                "Its `PolarsTable` implements phibble's table contract, so phplyr pipelines run on the Polars engine.",
             ],
             'output' => 'Polars table',
         ],
         'phplyr' => [
             'summary' => 'dplyr and tidyr pipelines for PHP.',
+            'example' => 'Example: Revenue share by channel and quarter',
             'does' => [
-                "Ports dplyr and tidyr, keeping their function names, arguments, and results.",
-                "Pipelines use PHP 8.5's pipe operator, or a method chain on PHP 8.3 and 8.4.",
-                'Covers joins, window functions, across(), pivots, nesting, and filling missing values.',
+                "Ports the API and design of the tidyverse's [dplyr](https://dplyr.tidyverse.org/) and [tidyr](https://tidyr.tidyverse.org/) to PHP, keeping their function names, arguments, and conventions.",
+                'Provides verbs for filtering, selecting, mutating, grouping, summarizing, arranging, joining, and reshaping, with grouped window functions, `across()`, `pivot_wider()`, `pivot_longer()`, and nesting.',
+                "Pipelines use PHP 8.5's `|>` operator, with a method chain on PHP 8.3 and 8.4.",
                 'The same pipeline runs on a phibble frame, in the database as SQL, or in Polars.',
             ],
             'output' => 'Data frame preview',
         ],
         'phiz' => [
             'summary' => 'ggplot2-style charts rendered with Vega-Lite.',
+            'example' => 'Example: Compare fitted trends across genres',
             'does' => [
-                'Describes charts with the grammar of ggplot2: aesthetics, layers, scales, and facets.',
-                'Produces Vega-Lite specifications, which the browser renders.',
-                'Plots take phibble frames, arrays of rows, or Laravel collections.',
-                'Its Blade component redraws a chart when a Livewire component updates.',
+                'Inspired by [ggplot2](https://ggplot2.tidyverse.org/) and the [grammar of graphics](https://link.springer.com/book/9780387245447), phiz brings declarative, layered statistical graphics to PHP.',
+                'Charts are composed from aesthetic mappings, geometric layers, statistical layers such as `smooth()`, scales, labels, and facets with a ggplot2-style API.',
+                'Produces [Vega-Lite](https://vega.github.io/vega-lite/) specifications, which the browser renders, including interactive selections.',
+                'Plots take phibble frames, arrays of rows, or Laravel collections. Its `<x-phiz>` Blade component redraws a chart when a Livewire component updates.',
             ],
             'output' => 'Chart',
         ],
         'phit' => [
             'summary' => 'Regression, mixed models, and descriptive statistics.',
+            'example' => 'Example: Fit a model and quantify uncertainty',
             'does' => [
-                'Fits models from R formulas with fit_lm(), fit_glm(), fit_lmer(), and fit_glmer().',
-                'Covers linear, logistic, probit, and Poisson regression and mixed models.',
-                'Also provides probability distributions and descriptive statistics.',
-                'A Rust extension that takes phibble frames and returns plain PHP arrays.',
+                'phit fits statistical models directly in PHP. It provides linear models with `fit_lm()`, logistic, probit, and Poisson regression with `fit_glm()`, and mixed-effects models with `fit_lmer()` and `fit_glmer()`.',
+                'The native extension, written in Rust, fits models fastest. It takes phibble frames and R-style formulas and returns plain PHP arrays.',
+                '[phit-polyfill](https://github.com/phpstats/phit-polyfill) implements the same functions in plain PHP, so the same code runs where the extension cannot be installed. Mixed models are slower without the extension.',
+                'Includes probability distributions and descriptive statistics, such as `dist_t_quantile()` and `stat_quantile()`, alongside model fitting.',
             ],
-            'output' => 'Model summary',
+            'output' => 'Model summary and slope intervals',
         ],
         'cmdstanphp' => [
             'summary' => 'Bayesian modeling in Stan from PHP.',
+            'example' => 'Example: Fit a hierarchical Bayesian model',
             'does' => [
-                'Runs Stan programs through CmdStan, with an API patterned after CmdStanR.',
-                'Supports MCMC, optimization, variational inference, and Pathfinder.',
-                'Builds Stan data from R formulas and phibble frames.',
-                'Summarizes posterior draws with convergence diagnostics, PSIS-LOO, and WAIC.',
+                'Inspired by [CmdStanR](https://mc-stan.org/cmdstanr/), CmdStanPHP is a PHP interface to [Stan](https://mc-stan.org/) for Bayesian modeling. It compiles and runs Stan programs with an installed CmdStan.',
+                'Supports MCMC sampling, optimization, variational inference, Pathfinder, and Laplace approximation.',
+                'Builds Stan data from R-style model formulas and phibble frames.',
+                'Summarizes posteriors with convergence diagnostics and compares models with PSIS-LOO and WAIC.',
             ],
             'output' => 'Posterior summary',
             'stored' => [\App\Data\SchoolPosterior::class, 'explorerSummary'],
-            'note' => 'Pages never run CmdStan. CmdStanPHP computed this summary from the stored draws of this fit.',
         ],
     ],
 

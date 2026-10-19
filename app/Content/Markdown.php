@@ -3,6 +3,7 @@
 namespace App\Content;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Str;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
@@ -73,6 +74,28 @@ class Markdown
     public static function text(string $markdown): string
     {
         return (string) self::converter('escape')->convert($markdown);
+    }
+
+    /**
+     * One line of inline Markdown written for this site, such as a point in
+     * the package explorer. Each PHPstats package named in it outside code
+     * and links becomes a link to the package's pages, with the class
+     * "package-link" for styling.
+     */
+    public static function inline(string $markdown): string
+    {
+        $names = array_map(fn (Package $package) => preg_quote($package->name(), '/'), Package::all());
+        $pattern = '/(`[^`]*`|\[[^\]]*\]\([^)]*\))|(?<![\w\/.-])('.implode('|', $names).')(?![\w-])/';
+        $markdown = preg_replace_callback($pattern, function (array $m) {
+            if ($m[1] !== '') {
+                return $m[1];
+            }
+            $package = Package::find(strtolower($m[2]));
+
+            return '<a href="'.e($package->url()).'" class="package-link">'.e($m[2]).'</a>';
+        }, $markdown);
+
+        return Str::inlineMarkdown($markdown);
     }
 
     private static function converter(string $htmlInput): MarkdownConverter

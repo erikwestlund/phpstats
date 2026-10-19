@@ -2,14 +2,19 @@
 
 use App\Models\Order;
 
-use function Phplyr\{arrange, col, desc, group_by, mean, mutate, n, summarise};
+use function Phplyr\{col, group_by, mutate, pivot_wider, quarter, round, sum, summarize};
 
 $orders = \Phibble\DataFrame::fromQuery(Order::query());
 // ---
-$customers = $orders |>
-    mutate(item_price: col('total')->div(col('items'))) |>
-    group_by('customer', 'channel') |>
-    summarise(orders: n(), price: mean('item_price'), returns: mean('returned')) |>
-    arrange(desc('returns'));
+$shares = $orders |>
+    mutate(quarter: quarter(col('placed_on'))) |>
+    group_by('quarter', 'channel') |>
+    summarize(revenue: sum('total')) |>
+    mutate(share: round(col('revenue')->div(sum('revenue')), 3)) |>
+    pivot_wider(
+        id_cols: 'quarter',
+        names_from: 'channel',
+        values_from: 'share',
+    );
 
-return $customers;
+return $shares;

@@ -23,16 +23,7 @@ class Console
             ];
         }
 
-        $widths = array_map(fn (int $c) => max(array_map(fn (array $row) => strlen($row[$c]), $rows)), array_keys($rows[0]));
-        $lines = ['Coefficients:'];
-        foreach ($rows as $row) {
-            $cells = [str_pad($row[0], $widths[0])];
-            foreach (array_slice($row, 1, preserve_keys: true) as $c => $cell) {
-                $cells[] = str_pad($cell, $widths[$c], ' ', STR_PAD_LEFT);
-            }
-            $lines[] = rtrim(implode('  ', $cells));
-        }
-        $lines[] = '';
+        $lines = ['Coefficients:', ...self::table($rows), ''];
 
         $n = $fit['n_observations'];
         if (isset($fit['deviance'])) {
@@ -45,6 +36,28 @@ class Console
         }
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * Rows of cells as aligned lines: the first column left-aligned, the
+     * others right-aligned, two spaces apart.
+     *
+     * @param list<list<string>> $rows
+     * @return list<string>
+     */
+    private static function table(array $rows): array
+    {
+        $widths = array_map(fn (int $c) => max(array_map(fn (array $row) => strlen($row[$c]), $rows)), array_keys($rows[0]));
+        $lines = [];
+        foreach ($rows as $row) {
+            $cells = [str_pad($row[0], $widths[0])];
+            foreach (array_slice($row, 1, preserve_keys: true) as $c => $cell) {
+                $cells[] = str_pad($cell, $widths[$c], ' ', STR_PAD_LEFT);
+            }
+            $lines[] = rtrim(implode('  ', $cells));
+        }
+
+        return $lines;
     }
 
     private static function pValue(float $p): string

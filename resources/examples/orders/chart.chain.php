@@ -9,7 +9,7 @@ $orders = \Phibble\DataFrame::fromQuery(Order::query());
 $monthly = phplyr($orders)
     ->mutate(month: floor_date(col('placed_on'), 'month'))
     ->group_by('month', 'channel')
-    ->summarise(revenue: sum('total'))
+    ->summarize(revenue: sum('total'))
     ->get();
 
 $chart = \Phiz\Plot::of($monthly)

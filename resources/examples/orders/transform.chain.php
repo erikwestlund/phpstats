@@ -9,7 +9,7 @@ $orders = \Phibble\DataFrame::fromQuery(Order::query());
 $revenue = phplyr($orders)
     ->filter(col('returned')->eq(0))
     ->group_by('channel')
-    ->summarise(orders: n(), revenue: sum('total'), average: mean('total'))
+    ->summarize(orders: n(), revenue: sum('total'), average: mean('total'))
     ->arrange(desc('revenue'))
     ->get();
 

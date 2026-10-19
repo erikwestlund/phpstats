@@ -7,7 +7,10 @@ use function CmdStan\cmdstan_model;
 
 $scores = \Phibble\DataFrame::fromQuery(StudentScore::query());
 // ---
-$data = StanData::fromFormula('score ~ study_hours + (1 | school)', $scores);
+$data = StanData::fromFormula(
+    'score ~ study_hours + (1 | school)',
+    $scores,
+);
 
 $fit = cmdstan_model('school_intercepts.stan')
     ->sample(data: $data, chains: 4, thin: 4, seed: 20261016);

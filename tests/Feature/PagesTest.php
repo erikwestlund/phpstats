@@ -77,7 +77,7 @@ class PagesTest extends TestCase
             }
         }
         $this->assertSame(['beta[1]', 'beta[2]', 'sigma', 'tau'], SchoolPosterior::explorerSummary()->column('variable'));
-        $response->assertSee('PHP 8.5+ · Pipe')->assertSee('More about')->assertDontSee("can't run the example");
+        $response->assertSee('PHP 8.3–8.4')->assertDontSee('· Pipe')->assertSee('More about')->assertDontSee("can't run the example");
     }
 
     public function test_examples_give_the_same_result_with_the_pipe_and_the_chain(): void
@@ -97,7 +97,10 @@ class PagesTest extends TestCase
             };
 
             $this->assertEquals($normalize(Example::run($name)), $normalize(Example::run($name, 'chain')), $name);
-            $this->assertStringNotContainsString('use function', Example::code($name)['chain']);
+            // Imports are shown only when the example puts them below its "// ---" line.
+            if (! preg_match('/^\/\/ ---\nuse /m', file_get_contents($chain))) {
+                $this->assertStringNotContainsString('use function', Example::code($name)['chain']);
+            }
             $compared++;
         }
 

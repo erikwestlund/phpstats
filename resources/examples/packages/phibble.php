@@ -1,13 +1,28 @@
 <?php
 
+// ---
 use App\Models\Order;
+use Phibble\DataFrame;
 
-$orders = \Phibble\DataFrame::fromQuery(Order::query());
+use function Phibble\Expr\{col, quarter};
 
-$large = $orders
-    ->filter(fn ($row) => $row->total > 100)
-    ->select(['placed_on', 'channel', 'items', 'total'])
-    ->arrange([['total', 'desc']])
-    ->head(5);
+$orders = DataFrame::fromQuery(Order::query(), types: [
+    'channel' => 'factor',
+    'customer' => 'factor',
+    'coupon' => 'bool',
+    'returned' => 'bool',
+]);
 
-return $large;
+$typed = $orders
+    ->select([
+        'placed_on', 'channel', 'customer', 'items',
+        'coupon', 'total', 'returned',
+    ])
+    ->mutate([
+        'item_price' => col('total')->div(col('items')),
+        'quarter' => quarter(col('placed_on')),
+    ]);
+
+$overview = $typed->glimpse(width: 76);
+
+return $overview;

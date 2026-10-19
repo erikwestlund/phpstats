@@ -1,16 +1,20 @@
 <?php
 
-use App\Models\Order;
-
-use function Phplyr\{arrange, desc, group_by, mean, n, summarise};
-
-$orders = \Phibble\DataFrame::fromQuery(Order::query());
 // ---
-$table = \Phibble\Polars\PolarsTable::fromTable($orders);
+use Illuminate\Support\Facades\DB;
+use Phibble\Polars\PolarsTable;
 
-$byChannel = $table |>
+use function Phplyr\{arrange, desc, group_by, mean, n, summarize};
+use function Phpolars\read_database;
+
+$orders = read_database(
+    'select channel, customer, total from orders',
+    DB::connection()->getPdo(),
+);
+
+$byChannel = PolarsTable::fromPolars($orders) |>
     group_by('channel', 'customer') |>
-    summarise(orders: n(), average: mean('total')) |>
+    summarize(orders: n(), average: mean('total')) |>
     arrange(desc('average'));
 
 return $byChannel;

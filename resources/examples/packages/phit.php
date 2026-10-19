@@ -1,9 +1,26 @@
 <?php
 
-use App\Models\Order;
+use App\Models\Track;
 
-$orders = \Phibble\DataFrame::fromQuery(Order::query());
+$tracks = \Phibble\DataFrame::fromQuery(Track::query());
 // ---
-$returns = \Phit\fit_glm('returned ~ items + coupon + channel', $orders, 'binomial');
+use Phibble\DataFrame;
 
-return $returns;
+use function Phibble\Expr\{col, str_detect};
+
+$fit = \Phit\fit_lm('streams ~ playlist_adds * label + genre', $tracks);
+
+$t = \Phit\dist_t_quantile(0.975, $fit['df_residual']);
+
+$slopes = DataFrame::fromColumns([
+    'term' => $fit['columns'],
+    'estimate' => $fit['coefficients'],
+    'std_error' => $fit['std_errors'],
+])
+    ->filter(str_detect(col('term'), 'playlist_adds'))
+    ->mutate([
+        'lower' => col('estimate')->sub(col('std_error')->mul($t)),
+        'upper' => col('estimate')->add(col('std_error')->mul($t)),
+    ]);
+
+return ['fit' => $fit, 'table' => $slopes];

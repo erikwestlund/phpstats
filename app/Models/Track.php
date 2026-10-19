@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DailyVisit extends Model
+class Track extends Model
 {
     public $timestamps = false;
 
@@ -13,8 +13,8 @@ class DailyVisit extends Model
     protected function casts(): array
     {
         return [
-            'visited_on' => 'date:Y-m-d',
-            'visits' => 'integer',
+            'playlist_adds' => 'float',
+            'streams' => 'float',
         ];
     }
 }
