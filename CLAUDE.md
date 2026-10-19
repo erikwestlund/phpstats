@@ -25,7 +25,11 @@ The website for the PHPstats family: a Laravel 13 + Livewire 4 app.
   landing page's example tabs are `resources/pages/home/*.md`.
 - Each landing page example shows code and then its result. `<x-example name="orders/transform" />`
   runs `resources/examples/orders/transform.php` (the pipe version, which returns its result) and
-  shows it next to `transform.chain.php`. A test checks that both versions agree. The examples
+  shows it next to `transform.chain.php`. A test checks that both versions agree. Each example's
+  rendered output is cached, keyed by the example file's modification time, and not cached at all
+  when `APP_DEBUG` is true. Clear it on deploy and after `site:sync` with
+  `php artisan examples:clear`, because the key does not follow the code or the data the example
+  reads. The examples
   read the `orders` table, simulated by `App\Data\Orders` and loaded by `DatabaseSeeder`.
 - `config/phpstats.php` defines the layers (data and workflow, and statistics, modeling and visualization)
   with their colors, and the relations between packages that package pages

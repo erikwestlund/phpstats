@@ -46,12 +46,18 @@
                 $package = $packages[$key];
                 $code = \App\Content\Example::code("packages/{$key}");
                 $stored = $explorer[$key]['stored'] ?? null;
+                $label = $explorer[$key]['output'];
                 try {
-                    $result = $stored ? $stored() : \App\Content\Example::run("packages/{$key}");
+                    $output = \App\Content\Example::output(
+                        "packages/{$key}",
+                        'package-output|'.$label,
+                        fn (mixed $value) => view('components.package-output', ['value' => $value, 'label' => $label])->render(),
+                        $stored ? fn () => $stored() : null,
+                    );
                     $failed = false;
                 } catch (\Throwable $e) {
                     report($e);
-                    $result = null;
+                    $output = null;
                     $failed = true;
                 }
             @endphp
@@ -70,7 +76,7 @@
                     @if ($failed)
                         <p class="p-5 text-sm text-zinc-500 sm:p-7">This server can't run the example, so its output isn't shown.</p>
                     @else
-                        <x-package-output :value="$result" :label="$explorer[$key]['output']" />
+                        {!! $output !!}
                     @endif
                     <a href="{{ $package->url() }}" class="mt-auto inline-flex items-center gap-1.5 border-t border-zinc-200 px-5 py-4 text-[0.9375rem] sm:px-7 font-medium text-php-600 hover:text-php-500 dark:border-white/10 dark:text-php-300 dark:hover:text-php-200">
                         More about <span class="font-mono">{{ $package->name() }}</span>

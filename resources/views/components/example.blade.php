@@ -8,11 +8,11 @@
 @php
     $code = \App\Content\Example::code($name);
     $missing = array_values(array_filter((array) $requires, fn (string $package) => ! \App\Livewire\ScriptVignette::available($package)));
-    $result = null;
+    $output = null;
     $failed = false;
     if ($missing === []) {
         try {
-            $result = \App\Content\Example::run($name);
+            $output = \App\Content\Example::output($name, 'example-result', fn (mixed $value) => view('components.example-result', ['value' => $value])->render());
         } catch (\Throwable $e) {
             report($e);
             $failed = true;
@@ -27,7 +27,7 @@
         @elseif ($failed)
             <p class="text-sm text-zinc-500">The example failed to run on this server.</p>
         @else
-            <x-example-result :value="$result" />
+            {!! $output !!}
         @endif
     </x-result>
 </div>

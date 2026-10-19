@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Content\Example;
 use App\Data\SchoolPosterior;
 use App\Models\StudentScore;
 use CmdStan\StanData;
@@ -72,6 +73,11 @@ class FitSchoolPosterior extends Command
         ], JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION)."\n");
 
         $this->info('Wrote '.count($draws['.draw']).' draws to '.SchoolPosterior::path());
+
+        // The explorer's CmdStanPHP panel renders these draws, and the cache
+        // key follows the example files, not this one.
+        Example::flush();
+        $this->info('Cleared the cached example output.');
 
         return self::SUCCESS;
     }
