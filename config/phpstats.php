@@ -52,7 +52,7 @@ return [
 
     /*
      * The landing page's package explorer: a one-line summary for the list,
-     * what each package does for the "What it does" panel, the label for its
+     * points about each package for its "About" panel, the label for its
      * output, and, for examples pages can't run, a callable that gives the
      * stored result and a note saying so. Each package's code is
      * resources/examples/packages/{key}.php.

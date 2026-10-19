@@ -1,6 +1,6 @@
 {{--
     The landing page's package explorer: the packages by category on the
-    left, and for the selected one, what it does, its example code, and the
+    left, and for the selected one, a few points about it, its example code, and the
     example's output on the right. Code is resources/examples/packages/{key}.php,
     run when the page renders, or, for examples pages can't run, the stored
     result named in config/phpstats.php explorer.
@@ -16,10 +16,10 @@
     <div class="border-b border-zinc-200 py-2 lg:border-b-0 lg:border-r dark:border-white/10" x-on:keydown.down.prevent="move(1)" x-on:keydown.up.prevent="move(-1)">
         @foreach (config('phpstats.layers') as $layer)
             <div class="layer-{{ $layer['color'] }}">
-                <h2 class="flex items-center gap-2 px-5 pb-1 pt-3 text-[0.7rem] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                <h3 class="flex items-center gap-2 px-5 pb-1 pt-3 text-[0.7rem] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
                     <x-dynamic-component :component="'heroicon-o-'.$layer['icon']" class="size-4 text-(--l500) dark:text-(--l300)" />
                     {{ $layer['title'] }}
-                </h2>
+                </h3>
                 <div role="tablist" aria-label="{{ $layer['title'] }}" aria-orientation="vertical">
                     @foreach (array_keys($layer['packages']) as $key)
                         <button type="button" role="tab" id="package-tab-{{ $key }}" aria-controls="package-code-{{ $key }}"
@@ -51,8 +51,8 @@
             @endphp
             <div role="tabpanel" id="package-code-{{ $key }}" aria-labelledby="package-tab-{{ $key }}" x-show="open === '{{ $key }}'" @unless ($key === 'phibble') x-cloak @endunless class="flex h-full flex-col">
                 <section class="border-b border-zinc-200 dark:border-white/10">
-                    <h3 class="{{ $heading }} pb-0">What it does</h3>
-                    <ul class="list-disc space-y-0.5 py-2 pl-9 pr-4 text-sm leading-5 text-zinc-700 marker:text-zinc-400 dark:text-zinc-300">
+                    <h4 class="{{ $heading }} pb-0">About <span class="font-mono normal-case tracking-normal">{{ $package->name() }}</span></h4>
+                    <ul class="list-disc space-y-1 pb-3 pl-9 pr-4 pt-1.5 text-sm leading-5 text-zinc-700 marker:text-zinc-400 dark:text-zinc-300">
                         @foreach ($explorer[$key]['does'] as $point)
                             <li>{{ $point }}</li>
                         @endforeach
@@ -60,7 +60,7 @@
                 </section>
                 <x-code-tabs :pipe="$code['pipe']" :chain="$code['chain']" label="Example code" :dense="true" class="rounded-none! shadow-none! ring-0!" />
                 <section class="flex flex-1 flex-col bg-zinc-50/70 dark:bg-white/[0.02]">
-                    <h3 class="{{ $heading }} border-b border-zinc-200 dark:border-white/10">Example output</h3>
+                    <h4 class="{{ $heading }} border-b border-zinc-200 dark:border-white/10">Example output</h4>
                     @if ($failed)
                         <p class="px-4 py-3 text-sm text-zinc-500">This server can't run the example, so its output isn't shown.</p>
                     @else

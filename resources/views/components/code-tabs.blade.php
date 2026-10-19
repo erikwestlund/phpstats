@@ -16,7 +16,7 @@
 @php
     $code = fn ($slot) => html_entity_decode(trim((string) $slot), ENT_QUOTES | ENT_HTML5);
     $hasChain = $chain !== null && trim((string) $chain) !== '';
-    $preClass = $dense ? 'max-h-60 overflow-auto px-4 py-3 font-mono text-[0.8125rem] leading-5' : 'overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6';
+    $preClass = $dense ? 'max-h-72 overflow-auto px-4 py-3 font-mono text-[0.8125rem] leading-5' : 'overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6';
 @endphp
 <div x-data="syntaxTabs" {{ $attributes->merge(['class' => 'code-ink overflow-hidden rounded-xl shadow-lg shadow-php-950/10 ring-1 ring-black/5 dark:ring-(--color-ink-line)']) }}>
     @if ($label || $hasChain)

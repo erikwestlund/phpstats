@@ -72,6 +72,7 @@ $chart = \Phiz\Plot::of($monthly)
     {{-- The packages: what each one does, its code, and its output --}}
     <section id="packages" class="scroll-mt-16 py-12 sm:py-14">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 class="mb-8 text-center text-3xl font-semibold tracking-tight sm:text-4xl">About PHPstats Packages</h2>
             <x-package-explorer />
         </div>
     </section>

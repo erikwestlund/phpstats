@@ -34,7 +34,8 @@ its own menu:
 - Keep package taglines (menus, package pages) short and plain, such as
   "Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine."
   The landing page's package explorer lists each package with a one-line
-  summary and puts the detail in its "What it does" panel: three to five short
+  summary and puts the detail in its "About {package}" panel, above
+  "Example code" and "Example output",: three to five short
   bullets from `explorer` in `config/phpstats.php`, built only from documented
   capabilities. Avoid label-colon phrasing such as "The shared data frame: …".
 - Leave out status badges, version pills, colored dots, and stats bars.
