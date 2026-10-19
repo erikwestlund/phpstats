@@ -9,6 +9,11 @@
 @props(['pipe', 'chain' => null, 'label' => null, 'monoLabel' => false])
 
 @php
+    // Every package that offers the method chain supports PHP 8.3 and later.
+    $titles = ['pipe' => 'PHP 8.5+ · Pipe', 'chain' => 'PHP 8.3+ · Methods'];
+@endphp
+
+@php
     $code = fn ($slot) => html_entity_decode(trim((string) $slot), ENT_QUOTES | ENT_HTML5);
     $hasChain = $chain !== null && trim((string) $chain) !== '';
 @endphp
@@ -20,11 +25,10 @@
         @endif
         @if ($hasChain)
         <div role="tablist" aria-label="Code syntax" class="ml-auto flex gap-1 rounded-lg bg-white/5 p-0.5">
-            @foreach (['pipe' => 'Pipe |>', 'chain' => 'Method chain'] as $key => $title)
+            @foreach ($titles as $key => $title)
                 <button type="button" role="tab" x-on:click="choose('{{ $key }}')"
                         x-bind:aria-selected="(syntax === '{{ $key }}').toString()"
                         aria-selected="{{ $key === 'pipe' ? 'true' : 'false' }}"
-                        title="{{ $key === 'chain' ? 'PHP 8.3 and later' : 'PHP 8.5 and later' }}"
                         class="rounded-md px-2.5 py-1 text-zinc-400 transition hover:text-white aria-selected:bg-php-500/30 aria-selected:text-white">
                     {{ $title }}
                 </button>

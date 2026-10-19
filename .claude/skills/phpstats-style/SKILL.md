@@ -31,9 +31,11 @@ its own menu:
 
 ## Copy
 
-- Keep package descriptions short and plain, such as "Immutable, typed data
-  frames from CSV files, PDO, Eloquent, or Doctrine." Avoid label-colon
-  phrasing such as "The shared data frame: …".
+- Keep package taglines (menus, package pages) short and plain, such as
+  "Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine."
+  The landing page's package explorer uses fuller descriptions of two to four
+  lines, from `explorer` in `config/phpstats.php`, built only from documented
+  capabilities. Avoid label-colon phrasing such as "The shared data frame: …".
 - Leave out status badges, version pills, colored dots, and stats bars.
 - Keep "checked against R" and verification claims off the landing page and
   the About page. Verification belongs on each package's Verification
@@ -47,15 +49,22 @@ its own menu:
 - Default to the pipe operator `|>` (PHP 8.5). The method chain is the
   second tab.
 - Put `|>` at the end of a line, never at the start of the next one:
-  `$orders |>` then `    filter(...) |>` on the following lines. For phplyr, say that pipelines use PHP 8.5's pipe operator.
+  `$orders |>` then `    filter(...) |>` on the following lines.
+- For phplyr, say that pipelines use PHP 8.5's pipe operator. The syntax
+  tabs read "PHP 8.5+ · Pipe" and "PHP 8.3+ · Methods", since every package
+  that has a method chain supports PHP 8.3 and later.
 - Use realistic application data, such as the `orders` table, instead of
   textbook datasets.
 - Don't put comments in example code.
 - Write `\Phibble\DataFrame` and `\Phiz\Plot` fully qualified in the code.
   Import models and phplyr functions with `use`.
-- Each package has a short snippet in `resources/examples/packages/{key}.php`
-  (with `{key}.chain.php` for phplyr's method chain). The landing page shows it
-  when the package is opened in the category columns; phibble is open by default.
+- Each package has an example in `resources/examples/packages/{key}.php`
+  (with `{key}.chain.php` where a method chain exists). The package explorer
+  shows the selected package's code and its output as the package prints it:
+  a tibble, Polars' table, a chart, or an R-style model summary. phibble is
+  selected by default. Never invent output: run the example, or compute it
+  from a stored fixture with the package's own code and say so on the page.
+  Keep these examples different from the workflow examples below them.
 - Show every landing page example as its code and then its result, computed
   when the page renders. Add examples under `resources/examples` and show
   them with `<x-example>`.

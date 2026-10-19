@@ -2,15 +2,20 @@
 
 use App\Models\Order;
 
-use function Phplyr\{col, desc, mean, n, phplyr, sum};
+use function Phplyr\{col, desc, mean, n, phplyr};
 
 $orders = \Phibble\DataFrame::fromQuery(Order::query());
 
-$revenue = phplyr($orders)
-    ->filter(col('returned')->eq(0))
-    ->group_by('channel')
-    ->summarise(orders: n(), revenue: sum('total'), average: mean('total'))
-    ->arrange(desc('revenue'))
+$customers = phplyr($orders)
+    ->mutate(item_price: col('total')->div(col('items')))
+    ->group_by('customer', 'channel')
+    ->summarise(
+        orders: n(),
+        item_price: mean('item_price'),
+        coupon_rate: mean('coupon'),
+        return_rate: mean('returned'),
+    )
+    ->arrange(desc('return_rate'))
     ->get();
 
-return $revenue;
+return $customers;

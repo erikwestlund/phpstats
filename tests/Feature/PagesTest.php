@@ -70,17 +70,19 @@ class PagesTest extends TestCase
             $response->assertSee("package-code-{$key}", false);
         }
 
-        // CmdStanPHP's snippet needs CmdStan, which pages never run.
+        // CmdStanPHP's snippet needs CmdStan, which pages never run: its output is the stored fit's summary.
         foreach ($requires as $key => $package) {
             if (ScriptVignette::available($package) && ScriptVignette::available('phplyr')) {
                 $this->assertNotNull(Example::run("packages/{$key}"), $key);
             }
         }
+        $this->assertSame(['beta[1]', 'beta[2]', 'sigma', 'tau'], SchoolPosterior::explorerSummary()->column('variable'));
+        $response->assertSee('PHP 8.5+ · Pipe')->assertSee('More about')->assertDontSee("can't run the example");
     }
 
     public function test_examples_give_the_same_result_with_the_pipe_and_the_chain(): void
     {
-        $requires = ['model' => 'phit', 'polars' => 'phpolars'];
+        $requires = ['model' => 'phit', 'polars' => 'phpolars', 'phpolars' => 'phpolars'];
         $compared = 0;
 
         foreach (glob(resource_path('examples/*/*.chain.php')) as $chain) {

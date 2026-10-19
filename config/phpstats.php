@@ -51,6 +51,41 @@ return [
     ],
 
     /*
+     * The landing page's package explorer: a fuller description of each
+     * package, the label for its output, and, for examples that pages can't
+     * run, a callable that gives the stored result. Each package's code is
+     * resources/examples/packages/{key}.php.
+     */
+    'explorer' => [
+        'phibble' => [
+            'description' => 'Immutable, typed data frames for PHP. Column types are inferred on load, and missing values are null. Frames load from CSV files, PDO statements, and Eloquent or Doctrine queries, and every operation returns a new frame.',
+            'output' => 'Printed data frame',
+        ],
+        'phpolars' => [
+            'description' => 'Polars data frames as a PHP extension, written in Rust, following the py-polars API with lazy queries, joins, and SQL. Its PolarsTable is compatible with phibble, so phplyr pipelines run on the Polars engine.',
+            'output' => 'Printed Polars DataFrame',
+        ],
+        'phplyr' => [
+            'description' => "A PHP port of the Tidyverse's dplyr and tidyr, with their function names and arguments. Pipelines use PHP 8.5's pipe operator, or a method chain on 8.3 and 8.4, and run on phibble frames, in SQL, or in Polars.",
+            'output' => 'Printed data frame',
+        ],
+        'phiz' => [
+            'description' => 'ggplot2-style charts built from aesthetics, layers, scales, and facets, rendered with Vega-Lite. Plots take phibble frames, rows, or Laravel collections, and a Blade component redraws them when Livewire updates.',
+            'output' => 'Chart',
+        ],
+        'phit' => [
+            'description' => 'Regression, mixed models, probability distributions, and descriptive statistics, in a Rust extension. Formulas work as in R through fit_lm(), fit_glm(), fit_lmer(), and fit_glmer(), and results are plain PHP arrays.',
+            'output' => 'Model summary',
+        ],
+        'cmdstanphp' => [
+            'description' => 'Bayesian models in Stan, run through CmdStan with an API patterned after CmdStanR. It supports MCMC, optimization, variational inference, and Pathfinder, with posterior summaries and convergence diagnostics.',
+            'output' => 'Posterior summary',
+            'stored' => [\App\Data\SchoolPosterior::class, 'explorerSummary'],
+            'note' => 'Pages never run CmdStan. This summary is computed by CmdStanPHP from the stored draws of this fit (CmdStan 2.40.0).',
+        ],
+    ],
+
+    /*
      * Packages that are part of another package on this site, as
      * [companion => parent]. A companion has no pages or menu entry of its
      * own: its host redirects to the parent, whose overview mentions it.

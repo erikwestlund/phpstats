@@ -2,14 +2,19 @@
 
 use App\Models\Order;
 
-use function Phplyr\{arrange, col, desc, filter, group_by, mean, n, sum, summarise};
+use function Phplyr\{arrange, col, desc, group_by, mean, mutate, n, summarise};
 
 $orders = \Phibble\DataFrame::fromQuery(Order::query());
 
-$revenue = $orders |>
-    filter(col('returned')->eq(0)) |>
-    group_by('channel') |>
-    summarise(orders: n(), revenue: sum('total'), average: mean('total')) |>
-    arrange(desc('revenue'));
+$customers = $orders |>
+    mutate(item_price: col('total')->div(col('items'))) |>
+    group_by('customer', 'channel') |>
+    summarise(
+        orders: n(),
+        item_price: mean('item_price'),
+        coupon_rate: mean('coupon'),
+        return_rate: mean('returned'),
+    ) |>
+    arrange(desc('return_rate'));
 
-return $revenue;
+return $customers;
