@@ -12,7 +12,7 @@
         <div class="hero-grid absolute inset-0 -z-10" aria-hidden="true"></div>
         <div class="absolute -top-40 left-1/2 -z-10 h-[36rem] w-[64rem] -translate-x-1/2 rounded-full bg-gradient-to-r from-php-600/40 via-violet-600/30 to-fuchsia-600/20 blur-3xl" aria-hidden="true"></div>
 
-        <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 pb-20 pt-16 *:min-w-0 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:px-8 lg:pb-28 lg:pt-24">
+        <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-14 pt-12 *:min-w-0 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:gap-12 lg:px-8 lg:pb-16 lg:pt-16">
             <div>
                 <h1 class="text-4xl font-semibold tracking-tight sm:text-6xl">
                     Modern statistical computing
@@ -70,26 +70,26 @@ $chart = \Phiz\Plot::of($monthly)
     </section>
 
     {{-- The packages, by category. Choosing a package shows its code from resources/examples/packages. --}}
-    <section id="packages" x-data="{ open: 'phibble' }" class="scroll-mt-16 py-16 sm:py-20">
+    <section id="packages" x-data="{ open: 'phibble' }" class="scroll-mt-16 py-12 sm:py-14">
         <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <div class="grid divide-y divide-zinc-200 rounded-2xl ring-1 ring-zinc-200 md:grid-cols-3 md:divide-x md:divide-y-0 dark:divide-white/10 dark:ring-white/10">
                 @foreach (config('phpstats.layers') as $layer)
-                    <div class="layer-{{ $layer['color'] }} px-6 py-8 sm:px-8">
+                    <div class="layer-{{ $layer['color'] }} px-5 py-6 sm:px-6">
                         <div class="text-center">
                             <x-dynamic-component :component="'heroicon-o-'.$layer['icon']" class="mx-auto size-7 text-(--l500) dark:text-(--l300)" />
-                            <h2 class="mt-4 font-semibold text-zinc-950 dark:text-white">{{ $layer['title'] }}</h2>
+                            <h2 class="mt-2.5 font-semibold text-zinc-950 dark:text-white">{{ $layer['title'] }}</h2>
                         </div>
-                        <hr class="mt-6 border-zinc-200 dark:border-white/10">
-                        <ul class="mt-4 space-y-1">
+                        <hr class="mt-4 border-zinc-200 dark:border-white/10">
+                        <ul class="mt-3 space-y-0.5">
                             @foreach ($layer['packages'] as $key => $description)
                                 <li>
                                     <button type="button" x-on:click="open = open === '{{ $key }}' ? null : '{{ $key }}'"
                                             x-bind:aria-expanded="(open === '{{ $key }}').toString()" aria-expanded="{{ $key === 'phibble' ? 'true' : 'false' }}" aria-controls="package-code-{{ $key }}"
-                                            class="group -mx-2 flex w-[calc(100%+1rem)] gap-2 rounded-lg px-2 py-2 text-left transition hover:bg-(--l50) aria-expanded:bg-(--l50) dark:hover:bg-(--l400)/10 dark:aria-expanded:bg-(--l400)/10">
+                                            class="group -mx-2 flex w-[calc(100%+1rem)] gap-2 rounded-lg px-2 py-1.5 text-left transition hover:bg-(--l50) aria-expanded:bg-(--l50) dark:hover:bg-(--l400)/10 dark:aria-expanded:bg-(--l400)/10">
                                         <x-heroicon-m-chevron-right class="mt-0.5 size-4 shrink-0 text-(--l500) transition group-aria-expanded:rotate-90 dark:text-(--l300)" />
                                         <span>
                                             <span class="font-mono text-sm font-semibold text-zinc-950 dark:text-white">{{ $packages[$key]->name() }}</span>
-                                            <span class="mt-1 block text-sm leading-6 text-zinc-600 dark:text-zinc-400">{{ $description }}</span>
+                                            <span class="mt-0.5 block text-sm leading-[1.375rem] text-zinc-600 dark:text-zinc-400">{{ $description }}</span>
                                         </span>
                                     </button>
                                 </li>
@@ -101,9 +101,9 @@ $chart = \Phiz\Plot::of($monthly)
 
             @foreach ($packages as $key => $package)
                 @php $code = \App\Content\Example::code("packages/{$key}"); @endphp
-                <div id="package-code-{{ $key }}" x-show="open === '{{ $key }}'" @unless ($key === 'phibble') x-cloak @endunless class="mt-6">
+                <div id="package-code-{{ $key }}" x-show="open === '{{ $key }}'" @unless ($key === 'phibble') x-cloak @endunless class="mt-4">
                     <x-code-tabs :pipe="$code['pipe']" :chain="$code['chain']" :label="$package->name()" :mono-label="true" />
-                    <a href="{{ $package->url() }}" class="mt-3 inline-flex items-center gap-1 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
+                    <a href="{{ $package->url() }}" class="mt-2 inline-flex items-center gap-1 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
                         More about <span class="font-mono">{{ $package->name() }}</span>
                         <x-heroicon-m-arrow-right class="size-4" />
                     </a>

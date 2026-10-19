@@ -25,9 +25,9 @@
     </button>
 
     <div x-show="open" x-cloak x-transition.origin.top.left
-         class="fixed inset-x-4 top-16 z-50 overflow-hidden rounded-2xl bg-white p-2 shadow-2xl shadow-php-950/20 ring-1 ring-zinc-900/10 sm:absolute sm:inset-x-auto sm:left-0 sm:top-full sm:mt-2 sm:w-96 dark:bg-zinc-900 dark:ring-white/10">
+         class="fixed inset-x-4 top-16 z-50 overflow-hidden rounded-2xl bg-white p-1.5 shadow-2xl shadow-php-950/20 ring-1 ring-zinc-900/10 sm:absolute sm:inset-x-auto sm:left-0 sm:top-full sm:mt-2 sm:w-80 dark:bg-zinc-900 dark:ring-white/10">
         @foreach ($layers as $layer)
-            <div class="layer-{{ $layer['color'] }} p-1">
+            <div class="layer-{{ $layer['color'] }}">
                 @if (count($layers) > 1)
                     <p class="px-2.5 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-(--l600) dark:text-(--l300)">{{ $layer['title'] }}</p>
                 @endif
@@ -36,9 +36,9 @@
                         @php $item = \App\Content\Package::find($key); @endphp
                         <li>
                             <a href="{{ $item->url() }}" @if ($current?->key === $key) aria-current="page" @endif
-                               class="block rounded-lg px-2.5 py-2 transition hover:bg-(--l50) aria-[current]:bg-(--l50) dark:hover:bg-(--l400)/10 dark:aria-[current]:bg-(--l400)/10">
+                               class="block rounded-lg px-3 py-2 transition hover:bg-(--l50) aria-[current]:bg-(--l50) dark:hover:bg-(--l400)/10 dark:aria-[current]:bg-(--l400)/10">
                                 <span class="font-mono text-sm font-semibold text-zinc-900 dark:text-white">{{ $item->name() }}</span>
-                                <span class="mt-0.5 block text-xs leading-5 text-zinc-500 dark:text-zinc-400">{{ $layer['packages'][$key] }}</span>
+                                <span class="mt-px block text-xs leading-[1.125rem] text-zinc-500 dark:text-zinc-400">{{ $layer['packages'][$key] }}</span>
                             </a>
                         </li>
                     @endforeach
