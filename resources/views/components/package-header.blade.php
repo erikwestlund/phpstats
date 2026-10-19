@@ -20,7 +20,7 @@
     <div class="mx-auto flex h-14 max-w-[88rem] items-center gap-1 px-4 sm:px-6 lg:px-8">
         <x-site-menus :current="$package" />
         <span class="mx-1 h-5 w-px bg-zinc-200 dark:bg-white/10" aria-hidden="true"></span>
-        <a href="{{ $package->url() }}" class="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-white/5">{{ $package->name() }}
+        <a href="{{ $package->url() }}" class="flex items-center gap-2 rounded-lg px-2 py-1.5 font-mono text-sm font-semibold hover:bg-zinc-100 dark:hover:bg-white/5">{{ $package->name() }}
         </a>
 
         <nav class="ml-2 hidden items-center gap-1 text-sm lg:flex" aria-label="{{ $package->name() }} sections">
@@ -28,7 +28,7 @@
                 @php $external = $key === 'docs' && ! $package->hasDocs(); @endphp
                 @if ($key !== 'docs' || $package->hasDocs() || $package->externalDocs())
                     <a href="{{ $external ? $package->externalDocs() : $package->url($key) }}" @if ($active === $key) aria-current="page" @endif
-                       class="relative rounded-lg px-3 py-1.5 text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 aria-[current]:text-(--l700) dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white dark:aria-[current]:text-(--l300)">
+                       class="relative whitespace-nowrap rounded-lg px-3 py-1.5 text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 aria-[current]:text-(--l700) dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white dark:aria-[current]:text-(--l300)">
                         {{ $label }}@if ($external)<x-heroicon-m-arrow-up-right class="ml-0.5 inline size-3 opacity-60" />@endif
                         @if ($active === $key)<span class="absolute inset-x-3 -bottom-[0.6rem] h-0.5 rounded-full bg-(--l500)"></span>@endif
                     </a>
@@ -37,6 +37,7 @@
         </nav>
 
         <div class="ml-auto flex items-center gap-1">
+            <x-theme-toggle />
             @if ($package->repository())
                 <a href="{{ $package->repository() }}" class="rounded-lg p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white" aria-label="{{ $package->name() }} on GitHub"><x-github-icon /></a>
             @endif

@@ -18,8 +18,7 @@
                     <span class="font-normal text-zinc-500 dark:text-zinc-400">· {{ $layer['role'] }}</span>
                 </p>
                 <div class="mt-4 flex flex-wrap items-center gap-4">
-                    <h1 class="text-5xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $package->name() }}</h1>
-                    <x-status :project="$package->project" />
+                    <h1 class="font-mono text-5xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $package->name() }}</h1>
                 </div>
                 <p class="mt-5 max-w-2xl text-xl leading-8 text-zinc-700 dark:text-zinc-300">{{ $package->tagline() }}</p>
                 <div class="mt-8 flex flex-wrap gap-3">

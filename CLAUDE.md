@@ -40,6 +40,18 @@ The website for the PHPstats family: a Laravel 13 + Livewire 4 app.
 - Example datasets come from phit `docs/data` and are copied to
   `database/data`, then seeded by `DatabaseSeeder`.
 
+## Style rules
+
+Follow the `phpstats-style` skill in `.claude/skills` for site text and
+views. The two most important rules:
+
+- Package names are set in the monospace font (`font-mono`) wherever they
+  stand as labels, such as headings, menus, lists, and links. They are
+  lowercase except CmdStanPHP.
+- Dark mode is the `.dark` class on `<html>`, set by the theme toggle or the
+  system setting. Use `dark:` variants, never `prefers-color-scheme` media
+  queries.
+
 ## Generated data
 
 These committed files are generated, not hand-edited:

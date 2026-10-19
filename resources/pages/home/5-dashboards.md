@@ -1,7 +1,6 @@
 ---
 title: Build dashboards in Livewire
 icon: cursor-arrow-rays
-packages: [phplyr, phiz]
 ---
 
 In a Livewire component, inputs are properties. When one changes, the server reruns the pipeline and phiz redraws the chart.

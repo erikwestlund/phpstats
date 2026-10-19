@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Dark mode follows the .dark class on <html>, set from the theme toggle or the system setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
@@ -95,7 +98,7 @@ pre,
 .prose a:hover {
     text-decoration-color: currentColor;
 }
-@media (prefers-color-scheme: dark) {
+.dark {
     .prose :where(:not(pre) > code) {
         background: color-mix(in oklab, var(--color-php-900) 60%, transparent);
         border-color: var(--color-php-900);
@@ -245,7 +248,7 @@ pre,
     clip: rect(0 0 0 0);
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
     .docs-content div.sourceCode {
         box-shadow: 0 0 0 1px var(--color-ink-line);
     }

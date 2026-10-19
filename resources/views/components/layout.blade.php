@@ -12,6 +12,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ collect([$title, $current?->name(), 'PHPstats'])->filter()->unique()->implode(' · ') }}</title>
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <script>
+        // Set the color scheme before the page paints: the stored choice, or the system setting.
+        (function () {
+            var choice = null;
+            try { choice = localStorage.getItem('phpstats-theme'); } catch (e) {}
+            var dark = choice ? choice === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.classList.toggle('dark', dark);
+        })();
+    </script>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|jetbrains-mono:400,500&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])

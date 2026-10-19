@@ -2,7 +2,43 @@ import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.e
 import embed from 'vega-embed';
 
 // phiz's <x-phiz> loader renders charts with window.vegaEmbed (config/phiz.php sets assets to 'none').
-window.vegaEmbed = embed;
+// Charts use Vega's dark theme when the page is dark, whichever way it was chosen.
+const isDark = () => document.documentElement.classList.contains('dark');
+window.vegaEmbed = (el, spec, options = {}) => {
+    const { theme, ...rest } = options;
+    return embed(el, spec, isDark() ? { ...rest, theme: 'dark' } : rest);
+};
+
+// The theme toggle: light or dark, stored, or the system setting until one is chosen.
+const THEME_KEY = 'phpstats-theme';
+
+function applyTheme(dark) {
+    document.documentElement.classList.toggle('dark', dark);
+    // phiz redraws a chart when its options attribute changes, so nudge each one.
+    document.querySelectorAll('[data-phiz]').forEach((chart) => {
+        const options = chart.getAttribute('data-phiz-options') ?? '';
+        chart.setAttribute('data-phiz-options', options.endsWith(' ') ? options.trimEnd() : `${options} `);
+    });
+}
+
+Alpine.data('themeToggle', () => ({
+    dark: isDark(),
+    toggle() {
+        this.dark = !this.dark;
+        try {
+            localStorage.setItem(THEME_KEY, this.dark ? 'dark' : 'light');
+        } catch {}
+        applyTheme(this.dark);
+    },
+}));
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+    let stored = null;
+    try {
+        stored = localStorage.getItem(THEME_KEY);
+    } catch {}
+    if (!stored) applyTheme(event.matches);
+});
 
 // <x-code-tabs>: every tabset on a page shows the same syntax, and the choice
 // is remembered between pages when storage is available.

@@ -1,7 +1,9 @@
 {{--
     One menu of the site bar: the packages of a group from config/phpstats.php
     menus, with their layers. The menu holding the current package is marked.
-    dark styles the button for the landing page's dark bar.
+    dark styles the button for the landing page's dark bar. On a package bar
+    ($current set), the full label waits for 2xl screens to leave room for
+    the section links.
 --}}
 @props(['menu', 'current' => null, 'dark' => false])
 
@@ -18,7 +20,7 @@
                 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white' => ! $dark,
                 'text-zinc-900! dark:text-white!' => $holdsCurrent,
             ])>
-        <span class="xl:hidden">{{ $menu['short'] }}</span><span class="hidden xl:inline">{{ $menu['title'] }}</span>
+        <span @class(['xl:hidden' => ! $current, '2xl:hidden' => $current])>{{ $menu['short'] }}</span><span @class(['hidden', 'xl:inline' => ! $current, '2xl:inline' => $current])>{{ $menu['title'] }}</span>
         <x-heroicon-m-chevron-down class="size-4 opacity-50 transition" x-bind:class="open && 'rotate-180'" />
     </button>
 
@@ -35,7 +37,7 @@
                         <li>
                             <a href="{{ $item->url() }}" @if ($current?->key === $key) aria-current="page" @endif
                                class="block rounded-lg px-2.5 py-2 transition hover:bg-(--l50) aria-[current]:bg-(--l50) dark:hover:bg-(--l400)/10 dark:aria-[current]:bg-(--l400)/10">
-                                <span class="text-sm font-semibold text-zinc-900 dark:text-white">{{ $item->name() }}</span>
+                                <span class="font-mono text-sm font-semibold text-zinc-900 dark:text-white">{{ $item->name() }}</span>
                                 <span class="mt-0.5 block text-xs leading-5 text-zinc-500 dark:text-zinc-400">{{ $layer['packages'][$key] }}</span>
                             </a>
                         </li>

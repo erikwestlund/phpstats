@@ -72,31 +72,24 @@ $chart = \Phiz\Plot::of($monthly)
     {{-- The packages, by category --}}
     <section id="packages" class="scroll-mt-16 py-16 sm:py-20">
         <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-            <div class="grid divide-y divide-zinc-200 rounded-2xl ring-1 ring-zinc-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-white/10 dark:ring-white/10">
+            <div class="grid divide-y divide-zinc-200 rounded-2xl ring-1 ring-zinc-200 md:grid-cols-3 md:divide-x md:divide-y-0 dark:divide-white/10 dark:ring-white/10">
                 @foreach (config('phpstats.layers') as $layer)
-                    <div class="layer-{{ $layer['color'] }} flex flex-col items-center px-6 py-8 text-center">
-                        <x-dynamic-component :component="'heroicon-o-'.$layer['icon']" class="size-7 text-(--l500) dark:text-(--l300)" />
-                        <h2 class="mt-4 font-semibold text-zinc-950 dark:text-white">{{ $layer['title'] }}</h2>
-                        <p class="mt-2 text-zinc-500 dark:text-zinc-400">
-                            @foreach (array_keys($layer['packages']) as $key)
-                                <a href="{{ $packages[$key]->url() }}" class="transition hover:text-(--l600) dark:hover:text-(--l300)">{{ $packages[$key]->name() }}</a>@unless ($loop->last) <span aria-hidden="true">·</span> @endunless
+                    <div class="layer-{{ $layer['color'] }} px-6 py-8 sm:px-8">
+                        <div class="text-center">
+                            <x-dynamic-component :component="'heroicon-o-'.$layer['icon']" class="mx-auto size-7 text-(--l500) dark:text-(--l300)" />
+                            <h2 class="mt-4 font-semibold text-zinc-950 dark:text-white">{{ $layer['title'] }}</h2>
+                        </div>
+                        <ul class="mt-6 space-y-5">
+                            @foreach ($layer['packages'] as $key => $description)
+                                <li class="group relative">
+                                    <a href="{{ $packages[$key]->url() }}" class="font-mono text-sm font-semibold text-zinc-950 after:absolute after:inset-0 group-hover:text-(--l600) dark:text-white dark:group-hover:text-(--l300)">{{ $packages[$key]->name() }}</a>
+                                    <p class="mt-1 text-sm leading-6 text-zinc-600 dark:text-zinc-400">{{ $description }}</p>
+                                </li>
                             @endforeach
-                        </p>
+                        </ul>
                     </div>
                 @endforeach
             </div>
-
-            <ul class="mt-8 divide-y divide-zinc-100 dark:divide-white/5">
-                @foreach (config('phpstats.layers') as $layer)
-                    @foreach ($layer['packages'] as $key => $description)
-                        <li class="layer-{{ $layer['color'] }} group relative flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:gap-6">
-                            <a href="{{ $packages[$key]->url() }}" class="shrink-0 font-semibold text-zinc-950 after:absolute after:inset-0 group-hover:text-(--l600) sm:w-36 dark:text-white dark:group-hover:text-(--l300)">{{ $packages[$key]->name() }}</a>
-                            <span class="flex-1 text-zinc-600 dark:text-zinc-400">{{ $description }}</span>
-                            <x-status :project="$packages[$key]->project" />
-                        </li>
-                    @endforeach
-                @endforeach
-            </ul>
         </div>
     </section>
 
@@ -121,12 +114,7 @@ $chart = \Phiz\Plot::of($monthly)
                 </div>
                 @foreach ($tabs as $tab)
                     <div role="tabpanel" x-show="tab === '{{ $tab['id'] }}'" @unless ($loop->first) x-cloak @endunless class="min-w-0 p-6 sm:p-10">
-                        <div class="flex flex-wrap items-center gap-3">
-                            <h3 class="text-xl font-semibold tracking-tight">{{ $tab['meta']['title'] }}</h3>
-                            @foreach ($tab['meta']['packages'] ?? [] as $key)
-                                <x-package-chip :package="$key" />
-                            @endforeach
-                        </div>
+                        <h3 class="text-xl font-semibold tracking-tight">{{ $tab['meta']['title'] }}</h3>
                         <div class="prose prose-zinc prose-php mt-5 max-w-none dark:prose-invert prose-p:leading-7">
                             {!! $tab['html'] !!}
                         </div>

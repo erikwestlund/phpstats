@@ -10,7 +10,7 @@
                 <ul class="mt-3 space-y-2 text-sm">
                     @foreach (array_keys($layer['packages']) as $key)
                         <li>
-                            <a href="{{ \App\Content\Package::find($key)->url() }}" class="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">{{ \App\Content\Package::find($key)->name() }}</a>
+                            <a href="{{ \App\Content\Package::find($key)->url() }}" class="font-mono text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">{{ \App\Content\Package::find($key)->name() }}</a>
                         </li>
                     @endforeach
                 </ul>
