@@ -218,6 +218,17 @@ class Package
         return str_contains($path, '/') ? ucfirst(str_replace('-', ' ', strstr($path, '/', true))) : null;
     }
 
+    /**
+     * Every synced docs page, including those outside the nav, as the paths
+     * the docs route takes.
+     *
+     * @return list<string>
+     */
+    public function docsPaths(): array
+    {
+        return array_keys($this->docs['pages'] ?? []);
+    }
+
     /** @return array{title: string, headings: list<array>, math: bool, html: string}|null */
     public function docsPage(string $path): ?array
     {
