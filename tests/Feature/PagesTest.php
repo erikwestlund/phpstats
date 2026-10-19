@@ -60,6 +60,24 @@ class PagesTest extends TestCase
         }
     }
 
+    public function test_every_package_has_code_on_the_landing_page_and_it_runs(): void
+    {
+        $requires = ['phibble' => 'phibble', 'phpolars' => 'phpolars', 'phplyr' => 'phplyr', 'phiz' => 'phiz', 'phit' => 'phit'];
+
+        $response = $this->get('http://phpstats.test/')->assertOk();
+        foreach (Package::keys() as $key) {
+            $this->assertFileExists(Example::path("packages/{$key}"));
+            $response->assertSee("package-code-{$key}", false);
+        }
+
+        // CmdStanPHP's snippet needs CmdStan, which pages never run.
+        foreach ($requires as $key => $package) {
+            if (ScriptVignette::available($package) && ScriptVignette::available('phplyr')) {
+                $this->assertNotNull(Example::run("packages/{$key}"), $key);
+            }
+        }
+    }
+
     public function test_examples_give_the_same_result_with_the_pipe_and_the_chain(): void
     {
         $requires = ['model' => 'phit', 'polars' => 'phpolars'];

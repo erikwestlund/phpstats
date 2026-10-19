@@ -51,6 +51,9 @@ its own menu:
 - Don't put comments in example code.
 - Write `\Phibble\DataFrame` and `\Phiz\Plot` fully qualified in the code.
   Import models and phplyr functions with `use`.
+- Each package has a short snippet in `resources/examples/packages/{key}.php`
+  (with `{key}.chain.php` for phplyr's method chain). The landing page shows it
+  when the package is opened in the category columns; phibble is open by default.
 - Show every landing page example as its code and then its result, computed
   when the page renders. Add examples under `resources/examples` and show
   them with `<x-example>`.

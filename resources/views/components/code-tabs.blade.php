@@ -3,9 +3,10 @@
     first, and the method chain (PHP 8.3+). The choice is shared by every
     tabset on the page and remembered between pages, like the "syntax" tab
     group in the package docs. Without a chain, the pipe version is shown
-    alone. Slot text may be HTML-escaped; it is decoded before highlighting.
+    alone. monoLabel sets the label in the monospace font, for package names.
+    Slot text may be HTML-escaped; it is decoded before highlighting.
 --}}
-@props(['pipe', 'chain' => null, 'label' => null])
+@props(['pipe', 'chain' => null, 'label' => null, 'monoLabel' => false])
 
 @php
     $code = fn ($slot) => html_entity_decode(trim((string) $slot), ENT_QUOTES | ENT_HTML5);
@@ -15,7 +16,7 @@
     @if ($label || $hasChain)
     <div class="flex flex-wrap items-center gap-3 border-b border-white/5 px-3 py-2 text-xs">
         @if ($label)
-            <span class="px-1 font-medium text-php-200">{{ $label }}</span>
+            <span @class(['px-1 font-medium text-php-200', 'font-mono' => $monoLabel])>{{ $label }}</span>
         @endif
         @if ($hasChain)
         <div role="tablist" aria-label="Code syntax" class="ml-auto flex gap-1 rounded-lg bg-white/5 p-0.5">

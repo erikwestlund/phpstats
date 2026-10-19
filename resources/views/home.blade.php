@@ -69,8 +69,8 @@ $chart = \Phiz\Plot::of($monthly)
         </div>
     </section>
 
-    {{-- The packages, by category --}}
-    <section id="packages" class="scroll-mt-16 py-16 sm:py-20">
+    {{-- The packages, by category. Choosing a package shows its code from resources/examples/packages. --}}
+    <section id="packages" x-data="{ open: 'phibble' }" class="scroll-mt-16 py-16 sm:py-20">
         <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <div class="grid divide-y divide-zinc-200 rounded-2xl ring-1 ring-zinc-200 md:grid-cols-3 md:divide-x md:divide-y-0 dark:divide-white/10 dark:ring-white/10">
                 @foreach (config('phpstats.layers') as $layer)
@@ -79,17 +79,36 @@ $chart = \Phiz\Plot::of($monthly)
                             <x-dynamic-component :component="'heroicon-o-'.$layer['icon']" class="mx-auto size-7 text-(--l500) dark:text-(--l300)" />
                             <h2 class="mt-4 font-semibold text-zinc-950 dark:text-white">{{ $layer['title'] }}</h2>
                         </div>
-                        <ul class="mt-6 space-y-5">
+                        <hr class="mt-6 border-zinc-200 dark:border-white/10">
+                        <ul class="mt-4 space-y-1">
                             @foreach ($layer['packages'] as $key => $description)
-                                <li class="group relative">
-                                    <a href="{{ $packages[$key]->url() }}" class="font-mono text-sm font-semibold text-zinc-950 after:absolute after:inset-0 group-hover:text-(--l600) dark:text-white dark:group-hover:text-(--l300)">{{ $packages[$key]->name() }}</a>
-                                    <p class="mt-1 text-sm leading-6 text-zinc-600 dark:text-zinc-400">{{ $description }}</p>
+                                <li>
+                                    <button type="button" x-on:click="open = open === '{{ $key }}' ? null : '{{ $key }}'"
+                                            x-bind:aria-expanded="(open === '{{ $key }}').toString()" aria-expanded="{{ $key === 'phibble' ? 'true' : 'false' }}" aria-controls="package-code-{{ $key }}"
+                                            class="group -mx-2 flex w-[calc(100%+1rem)] gap-2 rounded-lg px-2 py-2 text-left transition hover:bg-(--l50) aria-expanded:bg-(--l50) dark:hover:bg-(--l400)/10 dark:aria-expanded:bg-(--l400)/10">
+                                        <x-heroicon-m-chevron-right class="mt-0.5 size-4 shrink-0 text-(--l500) transition group-aria-expanded:rotate-90 dark:text-(--l300)" />
+                                        <span>
+                                            <span class="font-mono text-sm font-semibold text-zinc-950 dark:text-white">{{ $packages[$key]->name() }}</span>
+                                            <span class="mt-1 block text-sm leading-6 text-zinc-600 dark:text-zinc-400">{{ $description }}</span>
+                                        </span>
+                                    </button>
                                 </li>
                             @endforeach
                         </ul>
                     </div>
                 @endforeach
             </div>
+
+            @foreach ($packages as $key => $package)
+                @php $code = \App\Content\Example::code("packages/{$key}"); @endphp
+                <div id="package-code-{{ $key }}" x-show="open === '{{ $key }}'" @unless ($key === 'phibble') x-cloak @endunless class="mt-6">
+                    <x-code-tabs :pipe="$code['pipe']" :chain="$code['chain']" :label="$package->name()" :mono-label="true" />
+                    <a href="{{ $package->url() }}" class="mt-3 inline-flex items-center gap-1 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
+                        More about <span class="font-mono">{{ $package->name() }}</span>
+                        <x-heroicon-m-arrow-right class="size-4" />
+                    </a>
+                </div>
+            @endforeach
         </div>
     </section>
 
