@@ -1,15 +1,9 @@
 ---
-title: Transform data as in dplyr
+title: Transform data with the pipe
 icon: adjustments-horizontal
 packages: [phplyr]
 ---
 
-phplyr covers most of dplyr and tidyr: filtering, mutating, grouping and summarising, joins, window functions, and reshaping. A pipeline is written once and can run in three places.
+phplyr ports dplyr and tidyr to PHP, with the same function names. On PHP 8.5, a pipeline is written with the pipe operator `|>`, as in R. PHP 8.3 and 8.4 use a method chain. The same pipeline runs on a phibble frame, in the database as SQL, or in Polars.
 
-| Backend | Where it runs | Suited to |
-| --- | --- | --- |
-| phibble frame | In PHP memory | Small and medium tables |
-| SQL | In the database, as one query | Tables that stay in the database |
-| phpolars | In the Polars engine | Large tables and heavy grouping |
-
-The functions keep their R names, so `group_by()`, `summarise()`, `pivot_longer()`, and `across()` work as they do in dplyr and tidyr.
+<x-example name="orders/transform" requires="phplyr" />

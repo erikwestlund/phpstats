@@ -1,7 +1,6 @@
 @php
     $packages = \App\Content\Package::all();
-    $stats = \App\Content\Stats::family();
-    // The "What you can do" tabs are Markdown files in resources/pages/home, in file name order.
+    // The example tabs are Markdown files in resources/pages/home, in file name order.
     $tabs = collect(glob(resource_path('pages/home/*.md')))->sort()->map(fn (string $file) => [
         'id' => \Illuminate\Support\Str::slug(pathinfo($file, PATHINFO_FILENAME)),
         ...\App\Content\Markdown::page($file),
@@ -15,92 +14,102 @@
 
         <div class="mx-auto grid max-w-7xl items-center gap-14 px-4 pb-20 pt-16 *:min-w-0 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:px-8 lg:pb-28 lg:pt-24">
             <div>
-                <p class="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-xs font-medium text-php-200 ring-1 ring-white/10">
-                    Inspired by the Tidyverse in R
-                </p>
-                <h1 class="mt-6 text-4xl font-semibold tracking-tight sm:text-6xl">
+                <h1 class="text-4xl font-semibold tracking-tight sm:text-6xl">
                     Modern statistical computing
                     <span class="block bg-gradient-to-r from-php-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent">for PHP</span>
                 </h1>
                 <p class="mt-6 max-w-xl text-lg leading-8 text-zinc-300">
-                    PHPstats is a family of libraries for data analysis in native PHP.
-                    Read data from your application, transform it, fit models checked against R, and draw charts, all in the code you already deploy.
+                    Data processing, analysis, visualization, and modeling in native PHP.
                 </p>
                 <div class="mt-9 flex flex-wrap items-center gap-3">
                     <a href="#packages" class="rounded-full bg-php-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-php-500/30 transition hover:bg-php-400">Explore the packages</a>
-                    <a href="{{ route('page', 'about') }}" class="rounded-full px-5 py-2.5 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/10">Why PHPstats</a>
+                    <a href="{{ route('page', 'about') }}" class="rounded-full px-5 py-2.5 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/10">About PHPstats</a>
                 </div>
             </div>
 
             <div class="relative">
                 <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-php-500/20 via-violet-500/10 to-transparent blur-2xl" aria-hidden="true"></div>
-                <x-code-tabs label="RentReport.php" class="shadow-2xl shadow-black/40 ring-white/10!">
-                    <x-slot:chain>use Phibble\DataFrame;
-use Phiz\Plot;
-use function Phplyr\{col, phplyr};
+                <x-code-tabs label="OrderReport.php" class="shadow-2xl shadow-black/40 ring-white/10!">
+                    <x-slot:pipe>use App\Models\Order;
+use function Phplyr\{col, filter, floor_date, group_by};
+use function Phplyr\{lm, mutate, sum, summarise};
 
-$rentals = phplyr(DataFrame::fromQuery(Rental::query()))
-    ->filter(col('bedrooms')->le(3))
-    ->mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')))
+$orders = \Phibble\DataFrame::fromQuery(Order::query());
+
+$monthly = $orders
+    |> filter(col('returned')->eq(0))
+    |> mutate(month: floor_date(col('placed_on'), 'month'))
+    |> group_by('month', 'channel')
+    |> summarise(revenue: sum('total'));
+
+$fit = $orders |> lm('total ~ items + coupon + channel');
+
+$chart = \Phiz\Plot::of($monthly)
+    ->aes(x: 'month', y: 'revenue', color: 'channel')
+    ->line();</x-slot:pipe>
+                    <x-slot:chain>use App\Models\Order;
+use function Phplyr\{col, floor_date, phplyr, sum};
+
+$orders = \Phibble\DataFrame::fromQuery(Order::query());
+
+$monthly = phplyr($orders)
+    ->filter(col('returned')->eq(0))
+    ->mutate(month: floor_date(col('placed_on'), 'month'))
+    ->group_by('month', 'channel')
+    ->summarise(revenue: sum('total'))
     ->get();
 
-$fit = phplyr($rentals)->lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');
+$fit = phplyr($orders)->lm('total ~ items + coupon + channel');
 
-$chart = Plot::of($rentals)
-    ->aes(x: 'area_m2', y: 'monthly_rent', color: 'neighborhood')
-    ->point(alpha: 0.5)
-    ->smooth(method: 'lm');</x-slot:chain>
-                    <x-slot:pipe>use Phibble\DataFrame;
-use Phiz\Plot;
-use function Phplyr\{col, filter, lm, mutate};
-
-$rentals = DataFrame::fromQuery(Rental::query())
-    |> filter(col('bedrooms')->le(3))
-    |> mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')));
-
-$fit = $rentals |> lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');
-
-$chart = Plot::of($rentals)
-    ->aes(x: 'area_m2', y: 'monthly_rent', color: 'neighborhood')
-    ->point(alpha: 0.5)
-    ->smooth(method: 'lm');</x-slot:pipe>
+$chart = \Phiz\Plot::of($monthly)
+    ->aes(x: 'month', y: 'revenue', color: 'channel')
+    ->line();</x-slot:chain>
                 </x-code-tabs>
-                <p class="mt-4 text-center text-sm text-zinc-400">
-                    phibble reads the query, phplyr transforms it, phit fits the model, and phiz draws the chart.
-                </p>
             </div>
-        </div>
-
-        {{-- Counts from the synced content --}}
-        <div class="border-t border-white/5 bg-white/[0.02]">
-            <dl class="mx-auto grid max-w-7xl grid-cols-2 gap-y-6 px-4 py-8 sm:px-6 lg:grid-cols-4 lg:px-8">
-                @foreach ([
-                    [$stats['packages'], 'packages that work together'],
-                    [number_format($stats['verified']), 'results checked against R and other references'],
-                    [$stats['vignettes'], 'live vignettes running on this server'],
-                    [$stats['benchmarks'], 'published benchmark reports'],
-                ] as [$value, $label])
-                    <div class="px-2">
-                        <dt class="sr-only">{{ $label }}</dt>
-                        <dd class="text-3xl font-semibold tracking-tight text-white">{{ $value }}</dd>
-                        <dd class="mt-1 text-sm text-zinc-400">{{ $label }}</dd>
-                    </div>
-                @endforeach
-            </dl>
         </div>
     </section>
 
-    {{-- What you can do --}}
+    {{-- The packages, by category --}}
+    <section id="packages" class="scroll-mt-16 py-16 sm:py-20">
+        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <div class="grid divide-y divide-zinc-200 rounded-2xl ring-1 ring-zinc-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-white/10 dark:ring-white/10">
+                @foreach (config('phpstats.layers') as $layer)
+                    <div class="layer-{{ $layer['color'] }} flex flex-col items-center px-6 py-8 text-center">
+                        <x-dynamic-component :component="'heroicon-o-'.$layer['icon']" class="size-7 text-(--l500) dark:text-(--l300)" />
+                        <h2 class="mt-4 font-semibold text-zinc-950 dark:text-white">{{ $layer['title'] }}</h2>
+                        <p class="mt-2 text-zinc-500 dark:text-zinc-400">
+                            @foreach (array_keys($layer['packages']) as $key)
+                                <a href="{{ $packages[$key]->url() }}" class="transition hover:text-(--l600) dark:hover:text-(--l300)">{{ $packages[$key]->name() }}</a>@unless ($loop->last) <span aria-hidden="true">·</span> @endunless
+                            @endforeach
+                        </p>
+                    </div>
+                @endforeach
+            </div>
+
+            <ul class="mt-8 divide-y divide-zinc-100 dark:divide-white/5">
+                @foreach (config('phpstats.layers') as $layer)
+                    @foreach ($layer['packages'] as $key => $description)
+                        <li class="layer-{{ $layer['color'] }} group relative flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:gap-6">
+                            <a href="{{ $packages[$key]->url() }}" class="shrink-0 font-semibold text-zinc-950 after:absolute after:inset-0 group-hover:text-(--l600) sm:w-36 dark:text-white dark:group-hover:text-(--l300)">{{ $packages[$key]->name() }}</a>
+                            <span class="flex-1 text-zinc-600 dark:text-zinc-400">{{ $description }}</span>
+                            <x-status :project="$packages[$key]->project" />
+                        </li>
+                    @endforeach
+                @endforeach
+            </ul>
+        </div>
+    </section>
+
+    {{-- Examples --}}
     <section class="bg-zinc-50 py-20 sm:py-24 dark:bg-zinc-900/40">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
-                <p class="text-sm font-semibold text-php-600 dark:text-php-300">What you can do</p>
-                <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">From the database to a fitted model</h2>
-                <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">Each panel below is computed by the packages when this page loads.</p>
+                <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">Simplify Data-driven PHP Applications using Native PHP</h2>
+                <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">Each example shows its code and then its result, computed when this page loads.</p>
             </div>
 
             <div x-data="{ tab: '{{ $tabs->first()['id'] ?? '' }}', ids: @js($tabs->pluck('id')) }" x-init="if (ids.includes(location.hash.slice(1))) tab = location.hash.slice(1)" class="mt-14 overflow-hidden rounded-2xl bg-white shadow-xl shadow-php-900/5 ring-1 ring-zinc-200 lg:grid lg:min-h-[36rem] lg:grid-cols-[18rem_1fr] dark:bg-zinc-900 dark:ring-white/10">
-                <div role="tablist" aria-label="What you can do" class="flex overflow-x-auto border-b border-zinc-200 lg:block lg:border-b-0 lg:border-r dark:border-white/10">
+                <div role="tablist" aria-label="Examples" class="flex overflow-x-auto border-b border-zinc-200 lg:block lg:border-b-0 lg:border-r dark:border-white/10">
                     @foreach ($tabs as $tab)
                         <button type="button" role="tab" x-on:click="tab = '{{ $tab['id'] }}'; history.replaceState(null, '', '#{{ $tab['id'] }}')"
                                 x-bind:aria-selected="(tab === '{{ $tab['id'] }}').toString()" aria-selected="{{ $loop->first ? 'true' : 'false' }}"
@@ -123,52 +132,6 @@ $chart = Plot::of($rentals)
                         </div>
                     </div>
                 @endforeach
-            </div>
-        </div>
-    </section>
-
-    {{-- The family --}}
-    <section id="packages" class="scroll-mt-16 py-20 sm:py-24">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="mx-auto max-w-2xl text-center">
-                <p class="text-sm font-semibold text-php-600 dark:text-php-300">The family</p>
-                <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">One job per package</h2>
-                <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-                    The packages share one data frame type.
-                    Use one, or use them together.
-                </p>
-            </div>
-
-            <div class="mt-14 space-y-4">
-                @foreach (config('phpstats.layers') as $layer)
-                    <div class="layer-{{ $layer['color'] }} grid gap-4 rounded-2xl bg-(--l50)/60 p-4 ring-1 ring-(--l100) sm:p-5 lg:grid-cols-[13rem_1fr] dark:bg-(--l400)/5 dark:ring-(--l400)/15">
-                        <div class="px-1 lg:py-2">
-                            <p class="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-(--l700) dark:text-(--l300)">{{ $layer['title'] }}
-                            </p>
-                            <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{{ $layer['role'] }}</p>
-                        </div>
-                        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                            @foreach ($layer['packages'] as $key => $description)
-                                @php $package = $packages[$key]; @endphp
-                                <div class="group relative flex flex-col rounded-xl bg-white p-4 shadow-sm ring-1 ring-zinc-200/80 transition hover:-translate-y-0.5 hover:shadow-md hover:ring-(--l300) dark:bg-zinc-900 dark:ring-white/10 dark:hover:ring-(--l400)/40">
-                                    <span class="flex items-center justify-between gap-3">
-                                        <a href="{{ $package->url() }}" class="font-semibold text-zinc-950 after:absolute after:inset-0 after:rounded-xl dark:text-white">{{ $package->name() }}</a>
-                                        <x-status :project="$package->project" />
-                                    </span>
-                                    <span class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">{{ $description }}</span>
-                                    <span class="mt-auto flex items-center gap-1 pt-3 text-xs font-medium text-(--l600) dark:text-(--l300)">
-                                        {{ preg_replace('#^https?://#', '', $package->url()) }}
-                                        <x-heroicon-m-arrow-right class="size-3.5 transition group-hover:translate-x-0.5" />
-                                    </span>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endforeach
-                <div class="rounded-2xl border-2 border-dashed border-zinc-200 p-5 text-center text-sm text-zinc-600 dark:border-white/10 dark:text-zinc-400">
-                    <span class="font-semibold text-zinc-900 dark:text-white">Your application.</span>
-                    Laravel controllers, Livewire dashboards, reports, and queued jobs.
-                </div>
             </div>
         </div>
     </section>

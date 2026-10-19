@@ -25,7 +25,7 @@
         ->width('container')
         ->height(max(160, 16 * count($rows)));
 @endphp
-<div class="not-prose rounded-xl bg-white p-4 ring-1 ring-zinc-200 dark:bg-white/[0.03] dark:ring-white/10">
+<div class="not-prose">
     <x-phiz :plot="$plot" class="w-full" />
     <p class="mt-2 text-xs text-zinc-500">{{ $fit['meta']['chains'] }} chains, CmdStan {{ $fit['meta']['cmdstan'] }}, model <code class="font-mono">{{ $fit['meta']['formula'] }}</code>.</p>
 </div>

@@ -3,7 +3,7 @@
     <nav class="mx-auto flex h-16 max-w-7xl items-center gap-2 px-4 sm:gap-4 sm:px-6 lg:px-8">
         <x-site-menus :dark="true" />
         <div class="ml-auto flex items-center gap-1 text-sm text-zinc-300">
-            <a href="{{ route('page', 'about') }}" @class(['hidden rounded-lg px-3 py-1.5 hover:bg-white/10 hover:text-white sm:block', 'text-white' => request()->routeIs('page')])>Why PHPstats</a>
+            <a href="{{ route('page', 'about') }}" @class(['hidden rounded-lg px-3 py-1.5 hover:bg-white/10 hover:text-white sm:block', 'text-white' => request()->routeIs('page')])>About PHPstats</a>
             <a href="https://github.com/phpstats" class="rounded-lg p-2 hover:bg-white/10 hover:text-white" aria-label="PHPstats on GitHub"><x-github-icon /></a>
         </div>
     </nav>

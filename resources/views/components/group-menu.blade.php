@@ -26,8 +26,9 @@
          class="fixed inset-x-4 top-16 z-50 overflow-hidden rounded-2xl bg-white p-2 shadow-2xl shadow-php-950/20 ring-1 ring-zinc-900/10 sm:absolute sm:inset-x-auto sm:left-0 sm:top-full sm:mt-2 sm:w-96 dark:bg-zinc-900 dark:ring-white/10">
         @foreach ($layers as $layer)
             <div class="layer-{{ $layer['color'] }} p-1">
-                <p class="flex items-center gap-2 px-2.5 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-(--l600) dark:text-(--l300)">{{ $layer['title'] }}
-                </p>
+                @if (count($layers) > 1)
+                    <p class="px-2.5 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-(--l600) dark:text-(--l300)">{{ $layer['title'] }}</p>
+                @endif
                 <ul>
                     @foreach (array_keys($layer['packages']) as $key)
                         @php $item = \App\Content\Package::find($key); @endphp

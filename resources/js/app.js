@@ -10,9 +10,9 @@ const SYNTAX_KEY = 'phpstats-syntax';
 
 function storedSyntax() {
     try {
-        return localStorage.getItem(SYNTAX_KEY) === 'pipe' ? 'pipe' : 'chain';
+        return localStorage.getItem(SYNTAX_KEY) === 'chain' ? 'chain' : 'pipe';
     } catch {
-        return 'chain';
+        return 'pipe';
     }
 }
 

@@ -1,11 +1,9 @@
 ---
-title: Fit models, checked against R
+title: Fit regression models
 icon: variable
 packages: [phit]
 ---
 
-phit fits linear, logistic, probit, and Poisson regression, linear mixed models, and mixed logistic regression from R formulas. It also provides probability distributions and descriptive statistics. It is a Rust extension, and phit-polyfill implements its functions in plain PHP for hosts that cannot install extensions.
+phit fits linear, logistic, probit, and Poisson regression and mixed models from R formulas. Factors such as `channel` become indicator columns, with the first level as the reference.
 
-Each verification report compares phit's results with R and other references at a stated tolerance.
-
-<x-explore.verification package="phit" />
+<x-example name="orders/model" :requires="['phplyr', 'phit']" />

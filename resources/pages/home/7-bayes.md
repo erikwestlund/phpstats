@@ -4,6 +4,8 @@ icon: sparkles
 packages: [cmdstanphp]
 ---
 
-CmdStanPHP runs Stan programs through CmdStan, with an API patterned after CmdStanR. It supports MCMC, optimization, variational inference, and Pathfinder, and it computes PSIS-LOO and WAIC. The chart shows school intercepts from a hierarchical model fit with cmdstanphp.
+CmdStanPHP runs Stan programs through CmdStan, with an API patterned after CmdStanR. This model gives each school in an example dataset of test scores its own intercept. It was fit once, and the page reads the stored draws.
 
-<x-explore.posterior-chart />
+<x-source path="resources/examples/schools/stan.php" label="SchoolIntercepts.php" />
+
+<x-result class="mt-3"><x-explore.posterior-chart /></x-result>

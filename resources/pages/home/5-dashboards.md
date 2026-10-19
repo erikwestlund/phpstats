@@ -1,9 +1,13 @@
 ---
 title: Build dashboards in Livewire
 icon: cursor-arrow-rays
-packages: [phiz, phplyr, phit]
+packages: [phplyr, phiz]
 ---
 
-With Laravel and Livewire, the analysis code also drives interactive pages, which makes PHPstats an alternative to Shiny for PHP teams. Inputs are component properties. When one changes, the server reruns the pipeline and refits the model, and `<x-phiz>` redraws the charts. These vignettes run live on this server.
+In a Livewire component, inputs are properties. When one changes, the server reruns the pipeline and phiz redraws the chart.
 
-<x-explore.vignettes :items="['phplyr/rent-dashboard', 'phit/school-shrinkage', 'phit/glm-models', 'phpolars/lazy-queries']" />
+<x-source path="app/Livewire/RevenueByMonth.php" />
+
+<x-source path="resources/views/livewire/revenue-by-month.blade.php" language="blade" class="mt-3" />
+
+<x-result class="mt-3"><livewire:revenue-by-month /></x-result>

@@ -33,18 +33,18 @@ return [
     /*
      * How the packages fit together. The landing page
      * draws these layers, and each package host shows its layer and color.
-     * Colors are Tailwind color names.
+     * Colors are Tailwind color names, and icons are Heroicons.
      */
     'layers' => [
-        'data' => ['title' => 'Data Frames', 'role' => 'Read, transform, and reshape tables', 'color' => 'indigo', 'packages' => [
+        'data' => ['title' => 'Data Frames', 'role' => 'Tables from databases, queries, and files', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => [
             'phibble' => 'Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine.',
             'phpolars' => 'Polars data frames as a PHP extension. Compatible with phibble.',
-            'phplyr' => "A PHP port of the Tidyverse's dplyr and tidyr.",
         ]],
-        'visualization' => ['title' => 'Data Visualization', 'role' => 'Charts in the grammar of graphics', 'color' => 'fuchsia', 'packages' => [
+        'processing' => ['title' => 'Processing & Visualization', 'role' => 'Pipelines and charts', 'color' => 'fuchsia', 'icon' => 'presentation-chart-line', 'packages' => [
+            'phplyr' => "A PHP port of the Tidyverse's dplyr and tidyr. Pipelines use PHP 8.5's pipe operator.",
             'phiz' => 'ggplot2-style charts, rendered with Vega-Lite.',
         ]],
-        'models' => ['title' => 'Statistical Modeling', 'role' => 'Models checked against R', 'color' => 'purple', 'packages' => [
+        'models' => ['title' => 'Statistical Modeling', 'role' => 'Regression, mixed, and Bayesian models', 'color' => 'purple', 'icon' => 'variable', 'packages' => [
             'phit' => 'Regression, mixed models, distributions, and descriptive statistics.',
             'cmdstanphp' => 'Bayesian models in Stan.',
         ]],
@@ -61,10 +61,12 @@ return [
 
     /*
      * The site bar's menus. Each lists the packages of its layers, so every
-     * package is in one menu. short is the label on narrow screens.
+     * package is in one menu. short is the label on narrow screens. A menu
+     * with one layer shows no layer heading.
      */
     'menus' => [
-        'data' => ['title' => 'Data Frames & Visualization', 'short' => 'Data', 'layers' => ['data', 'visualization']],
+        'data' => ['title' => 'Data Frames', 'short' => 'Data', 'layers' => ['data']],
+        'processing' => ['title' => 'Processing & Visualization', 'short' => 'Processing', 'layers' => ['processing']],
         'modeling' => ['title' => 'Statistical Modeling', 'short' => 'Modeling', 'layers' => ['models']],
     ],
 

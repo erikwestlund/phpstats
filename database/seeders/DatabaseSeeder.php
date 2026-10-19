@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Data\Orders;
 use App\Data\SimulatedRentals;
 use App\Models\HousingRental;
+use App\Models\Order;
 use App\Models\SimulatedRental;
 use App\Models\StudentScore;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -14,7 +16,7 @@ class DatabaseSeeder extends Seeder
     use WithoutModelEvents;
 
     /**
-     * Load the phit example datasets from database/data.
+     * Load the phit example datasets from database/data and the simulated datasets.
      */
     public function run(): void
     {
@@ -27,6 +29,11 @@ class DatabaseSeeder extends Seeder
         SimulatedRental::query()->delete();
         foreach (array_chunk(SimulatedRentals::generate(), 500) as $chunk) {
             SimulatedRental::insert($chunk);
+        }
+
+        Order::query()->delete();
+        foreach (array_chunk(Orders::generate(), 500) as $chunk) {
+            Order::insert($chunk);
         }
     }
 

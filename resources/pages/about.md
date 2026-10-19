@@ -1,26 +1,28 @@
 ---
-title: Why PHPstats
-lead: PHPstats is a family of libraries for data analysis in native PHP. It is inspired by the Tidyverse in R.
+title: About PHPstats
+lead: PHPstats is a family of PHP libraries for data processing, analysis, visualization, and modeling.
 ---
 
-## Analysis where the data already is
+## What PHPstats is
 
-Many teams keep their data in a PHP application. To analyze it, they export it to R or Python, or they run a separate service next to the app. PHPstats fits the models in the application itself. It reads tables from the application database through Eloquent, Doctrine, or PDO, and it fits regression and mixed models whose results are checked against R.
+Many teams keep their data in a PHP application. To analyze it, they often export it to R or Python, or they run a separate service next to the app. PHPstats does that work in the application. It reads tables from the application database through Eloquent, Doctrine, or PDO. It transforms them, fits statistical models, and draws charts, all in the code the team already deploys.
 
-## One job per package
+## The packages
 
-Each package does one job, and the packages share one data frame type. They compose with method chains or with the PHP 8.5 pipe operator.
+The packages fall into three groups: data frames, processing and visualization, and statistical modeling. They share one data frame type, so a table read by phibble can be transformed by phplyr, modeled by phit, and charted by phiz. Each package can also be used on its own.
 
 <x-family-table />
 
-## An alternative to Shiny for Laravel
+## Design
 
-With Laravel and Livewire, the same code drives interactive dashboards and reports. Inputs are component properties, the server refits the model when one changes, and phiz draws the charts. The page needs no separate R or Python server and no hand-written JavaScript. Every vignette on this site is built this way.
+The packages follow R's Tidyverse where it has a convention. phplyr keeps the function names and arguments of dplyr and tidyr, phiz follows the grammar of ggplot2, and phit and CmdStanPHP read R model formulas. On PHP 8.5, pipelines use the pipe operator `|>`. PHP 8.3 and 8.4 use a method chain with the same functions.
 
-## Checked against R
+The compute-heavy parts run in Rust extensions: phit for the models and phpolars for the Polars engine.
 
-The verification reports compare {{ number_format($stats['verified']) }} results with R, SciPy, statsmodels, mpmath, and py-polars. Each comparison is published with its tolerance. The benchmark reports give the machine, the PHP version, and the date of each run.
+## Dashboards with Livewire
 
-## Editing this site
+With Laravel and Livewire, the same code drives interactive dashboards and reports. Inputs are component properties. When one changes, the server reruns the pipeline, refits the model, and redraws the charts. The page needs no separate R or Python server and no hand-written JavaScript. Every vignette on this site is built this way.
+
+## This site
 
 The pages written for this site, including this one, are Markdown files in `resources/pages`. They can call PHP through Blade components and echoes, so a page can show live numbers and charts. Package documentation comes from each repository's Quarto site at a pinned commit.

@@ -4,6 +4,6 @@ icon: bolt
 packages: [phpolars]
 ---
 
-phpolars brings the Polars columnar engine to PHP as a Rust extension. Reading, grouping, and joining a million rows takes milliseconds.
+phpolars brings the Polars engine to PHP as an extension. A phplyr pipeline runs on a Polars table unchanged, and grouping and joining a million rows takes milliseconds.
 
-<x-explore.speedups package="phpolars" benchmark="php-arrays" />
+<x-example name="orders/polars" :requires="['phplyr', 'phpolars']" />

@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Content\Example;
 use App\Content\Markdown;
 use App\Content\Package;
-use App\Content\Stats;
 use App\Data\SchoolPosterior;
 use App\Data\SimulatedRentals;
 use App\Livewire\BayesianSchools;
@@ -21,6 +21,7 @@ use App\Models\SimulatedRental;
 use App\Models\StudentScore;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Phiz\Plot;
 use Tests\TestCase;
 
 class PagesTest extends TestCase
@@ -45,13 +46,42 @@ class PagesTest extends TestCase
 
     public function test_landing_tabs_come_from_markdown_pages_that_call_php(): void
     {
-        $stats = Stats::family();
-
-        $this->get('http://phpstats.test/')->assertOk()
-            ->assertSee('Fit models, checked against R')
-            ->assertSee('&lt;float&gt;', false)            // phibble's inferred column types
-            ->assertSee(number_format($stats['verified']))
+        $response = $this->get('http://phpstats.test/')->assertOk()
+            ->assertSee('Simplify Data-driven PHP Applications using Native PHP')
+            ->assertSee('Read data from your app')
+            ->assertSee('&lt;date&gt;', false)            // phibble's inferred column types
+            ->assertSee('2,400 rows')
+            ->assertDontSee('failed to run')
+            ->assertDontSee('checked against R')
             ->assertDontSee('<!--blade:', false);
+
+        if (function_exists('Phit\\fit_lm')) {
+            $response->assertSee('customerReturning');      // the lm() coefficients
+        }
+    }
+
+    public function test_examples_give_the_same_result_with_the_pipe_and_the_chain(): void
+    {
+        $requires = ['model' => 'phit', 'polars' => 'phpolars'];
+        $compared = 0;
+
+        foreach (glob(resource_path('examples/*/*.chain.php')) as $chain) {
+            $name = basename(dirname($chain)).'/'.basename($chain, '.chain.php');
+            if (! ScriptVignette::available($requires[basename($name)] ?? 'phplyr')) {
+                continue;
+            }
+            $normalize = fn (mixed $result) => match (true) {
+                $result instanceof Plot => $result->toArray(),
+                is_object($result) => [$result->types(), $result->toRows()],
+                default => $result,
+            };
+
+            $this->assertEquals($normalize(Example::run($name)), $normalize(Example::run($name, 'chain')), $name);
+            $this->assertStringNotContainsString('use function', Example::code($name)['chain']);
+            $compared++;
+        }
+
+        $this->assertGreaterThan(0, $compared);
     }
 
     public function test_markdown_pages_render_blade_outside_code_only(): void
@@ -70,7 +100,7 @@ class PagesTest extends TestCase
         $this->assertStringContainsString('http://phit.phpstats.test', $html);
         $this->assertStringContainsString('{{ not blade }}', html_entity_decode(strip_tags($html)));
 
-        $this->get('http://phpstats.test/about')->assertOk()->assertSee('Why PHPstats')->assertSee('dplyr and tidyr');
+        $this->get('http://phpstats.test/about')->assertOk()->assertSee('About PHPstats')->assertSee('dplyr and tidyr');
         $this->get('http://phpstats.test/no-such-page')->assertNotFound();
     }
 
@@ -78,11 +108,11 @@ class PagesTest extends TestCase
     {
         $response = $this->get('http://phplyr.phpstats.test/')->assertOk();
 
-        // The two menus link every package, and the mark links the landing page.
+        // The three menus link every package, and the mark links the landing page.
         foreach (Package::keys() as $key) {
             $response->assertSee("http://{$key}.phpstats.test", false);
         }
-        $response->assertSee('Data Frames &amp; Visualization', false)
+        $response->assertSee('Processing &amp; Visualization', false)
             ->assertSee('Statistical Modeling')
             ->assertSee('aria-label="PHPstats home"', false)
             ->assertSee('Connected packages')
