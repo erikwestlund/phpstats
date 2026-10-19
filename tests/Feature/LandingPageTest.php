@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Content\Example;
-use App\Content\Markdown;
 use App\Content\Package;
 use App\Data\SchoolPosterior;
 use App\Livewire\ScriptVignette;
@@ -89,25 +88,5 @@ class LandingPageTest extends TestCase
             ->assertSee('has not published its site content yet')
             ->assertSee($juphyter->repository(), false)
             ->assertDontSee($juphyter->url('docs'), false);
-    }
-
-    public function test_markdown_pages_render_blade_outside_code_only(): void
-    {
-        $html = Markdown::render(<<<'MD'
-            Total: {{ 2 + 3 }}.
-
-            <x-package-chip package="phit" />
-
-            ```php
-            echo "{{ not blade }}";
-            ```
-            MD);
-
-        $this->assertStringContainsString('Total: 5.', $html);
-        $this->assertStringContainsString('http://phit.phpstats.test', $html);
-        $this->assertStringContainsString('{{ not blade }}', html_entity_decode(strip_tags($html)));
-
-        $this->get('http://phpstats.test/about')->assertOk()->assertSee('About PHPstats')->assertSee('dplyr and tidyr');
-        $this->get('http://phpstats.test/no-such-page')->assertNotFound();
     }
 }

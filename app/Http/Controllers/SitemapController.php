@@ -36,17 +36,17 @@ class SitemapController extends Controller
     }
 
     /**
-     * The landing page, the Markdown pages in resources/pages, and each
-     * package's sections. A section is listed only where it has something to
-     * show, so the sitemap holds no page that says a package has no results
-     * yet, and docs are listed only for the packages whose docs are synced:
-     * the others redirect to their own site.
+     * The landing page, the index of every vignette, the Markdown pages in
+     * resources/pages, and each package's sections. A section is listed only
+     * where it has something to show, so the sitemap holds no page that says
+     * a package has no results yet, and docs are listed only for the packages
+     * whose docs are synced: the others redirect to their own site.
      *
      * @return list<string>
      */
     private function urls(): array
     {
-        $urls = [route('home')];
+        $urls = [route('home'), route('vignettes')];
 
         foreach (glob(resource_path('pages/*.md')) as $file) {
             $urls[] = route('page', ['page' => pathinfo($file, PATHINFO_FILENAME)]);

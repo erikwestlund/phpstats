@@ -5,6 +5,7 @@ use App\Content\Package;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\VignetteIndexController;
 use Illuminate\Support\Facades\Route;
 
 $packages = implode('|', array_map(fn (string $key) => preg_quote($key, '#'), Package::keys()));
@@ -66,6 +67,10 @@ Route::domain($paths ? null : config('phpstats.root_host'))->group(function () u
     Route::get('/{project}', fn (string $project) => redirect()->away(
         Package::find($renamed[$project] ?? $project)->url(), 301,
     ))->whereIn('project', $paths ? ['php-stats', 'php-stats-polyfill'] : [...Package::keys(), 'php-stats', 'php-stats-polyfill']);
+
+    // The index of every vignette on the site, before the {page} catch-all,
+    // which would otherwise look for a Markdown page named vignettes.
+    Route::get('/vignettes', VignetteIndexController::class)->name('vignettes');
     Route::get('/vignettes/{slug}', function (string $slug) use ($renamed) {
         $slug = $renamed[$slug] ?? $slug;
         $owner = config("phpstats.vignettes.{$slug}.packages.0") ?? abort(404);
