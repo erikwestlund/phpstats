@@ -51,37 +51,74 @@ return [
     ],
 
     /*
-     * The landing page's package explorer: a fuller description of each
-     * package, the label for its output, and, for examples that pages can't
-     * run, a callable that gives the stored result. Each package's code is
+     * The landing page's package explorer: a one-line summary for the list,
+     * what each package does for the "What it does" panel, the label for its
+     * output, and, for examples pages can't run, a callable that gives the
+     * stored result and a note saying so. Each package's code is
      * resources/examples/packages/{key}.php.
      */
     'explorer' => [
         'phibble' => [
-            'description' => 'Immutable, typed data frames for PHP. Column types are inferred on load, and missing values are null. Frames load from CSV files, PDO statements, and Eloquent or Doctrine queries, and every operation returns a new frame.',
-            'output' => 'Printed data frame',
+            'summary' => 'Immutable, typed data frames for PHP.',
+            'does' => [
+                'Every operation returns a new frame, and the original is never changed.',
+                'Columns are typed as float, int, bool, string, factor, or date, inferred on load. Missing values are null.',
+                'Loads CSV files, PDO statements, and Eloquent or Doctrine queries.',
+                'The table type that phplyr, phpolars, phiz, phit, and CmdStanPHP accept.',
+            ],
+            'output' => 'Data frame preview',
         ],
         'phpolars' => [
-            'description' => 'Polars data frames as a PHP extension, written in Rust, following the py-polars API with lazy queries, joins, and SQL. Its PolarsTable is compatible with phibble, so phplyr pipelines run on the Polars engine.',
-            'output' => 'Printed Polars DataFrame',
+            'summary' => 'Polars data frames for PHP, in a Rust extension.',
+            'does' => [
+                'Brings the Polars engine to PHP as an extension written in Rust.',
+                'Follows the py-polars API: DataFrame, LazyFrame, Series, and expressions.',
+                'Supports lazy queries, joins, time series windows, SQL, and Parquet and Arrow files.',
+                "Its PolarsTable implements phibble's table contract, so phplyr pipelines run in Polars.",
+            ],
+            'output' => 'Polars table',
         ],
         'phplyr' => [
-            'description' => "A PHP port of the Tidyverse's dplyr and tidyr, with their function names and arguments. Pipelines use PHP 8.5's pipe operator, or a method chain on 8.3 and 8.4, and run on phibble frames, in SQL, or in Polars.",
-            'output' => 'Printed data frame',
+            'summary' => 'dplyr and tidyr pipelines for PHP.',
+            'does' => [
+                "Ports dplyr and tidyr, keeping their function names, arguments, and results.",
+                "Pipelines use PHP 8.5's pipe operator, or a method chain on PHP 8.3 and 8.4.",
+                'Covers joins, window functions, across(), pivots, nesting, and filling missing values.',
+                'The same pipeline runs on a phibble frame, in the database as SQL, or in Polars.',
+            ],
+            'output' => 'Data frame preview',
         ],
         'phiz' => [
-            'description' => 'ggplot2-style charts built from aesthetics, layers, scales, and facets, rendered with Vega-Lite. Plots take phibble frames, rows, or Laravel collections, and a Blade component redraws them when Livewire updates.',
+            'summary' => 'ggplot2-style charts rendered with Vega-Lite.',
+            'does' => [
+                'Describes charts with the grammar of ggplot2: aesthetics, layers, scales, and facets.',
+                'Produces Vega-Lite specifications, which the browser renders.',
+                'Plots take phibble frames, arrays of rows, or Laravel collections.',
+                'Its Blade component redraws a chart when a Livewire component updates.',
+            ],
             'output' => 'Chart',
         ],
         'phit' => [
-            'description' => 'Regression, mixed models, probability distributions, and descriptive statistics, in a Rust extension. Formulas work as in R through fit_lm(), fit_glm(), fit_lmer(), and fit_glmer(), and results are plain PHP arrays.',
+            'summary' => 'Regression, mixed models, and descriptive statistics.',
+            'does' => [
+                'Fits models from R formulas with fit_lm(), fit_glm(), fit_lmer(), and fit_glmer().',
+                'Covers linear, logistic, probit, and Poisson regression and mixed models.',
+                'Also provides probability distributions and descriptive statistics.',
+                'A Rust extension that takes phibble frames and returns plain PHP arrays.',
+            ],
             'output' => 'Model summary',
         ],
         'cmdstanphp' => [
-            'description' => 'Bayesian models in Stan, run through CmdStan with an API patterned after CmdStanR. It supports MCMC, optimization, variational inference, and Pathfinder, with posterior summaries and convergence diagnostics.',
+            'summary' => 'Bayesian modeling in Stan from PHP.',
+            'does' => [
+                'Runs Stan programs through CmdStan, with an API patterned after CmdStanR.',
+                'Supports MCMC, optimization, variational inference, and Pathfinder.',
+                'Builds Stan data from R formulas and phibble frames.',
+                'Summarizes posterior draws with convergence diagnostics, PSIS-LOO, and WAIC.',
+            ],
             'output' => 'Posterior summary',
             'stored' => [\App\Data\SchoolPosterior::class, 'explorerSummary'],
-            'note' => 'Pages never run CmdStan. This summary is computed by CmdStanPHP from the stored draws of this fit (CmdStan 2.40.0).',
+            'note' => 'Pages never run CmdStan. CmdStanPHP computed this summary from the stored draws of this fit.',
         ],
     ],
 

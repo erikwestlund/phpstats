@@ -4,11 +4,11 @@ use App\Models\Order;
 
 use function Phplyr\{arrange, desc, group_by, mean, n, summarise};
 
-$orders = \Phibble\Polars\PolarsTable::fromTable(
-    \Phibble\DataFrame::fromQuery(Order::query()),
-);
+$orders = \Phibble\DataFrame::fromQuery(Order::query());
+// ---
+$table = \Phibble\Polars\PolarsTable::fromTable($orders);
 
-$byChannel = $orders |>
+$byChannel = $table |>
     group_by('channel', 'customer') |>
     summarise(orders: n(), average: mean('total')) |>
     arrange(desc('average'));

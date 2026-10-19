@@ -33,8 +33,9 @@ its own menu:
 
 - Keep package taglines (menus, package pages) short and plain, such as
   "Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine."
-  The landing page's package explorer uses fuller descriptions of two to four
-  lines, from `explorer` in `config/phpstats.php`, built only from documented
+  The landing page's package explorer lists each package with a one-line
+  summary and puts the detail in its "What it does" panel: three to five short
+  bullets from `explorer` in `config/phpstats.php`, built only from documented
   capabilities. Avoid label-colon phrasing such as "The shared data frame: …".
 - Leave out status badges, version pills, colored dots, and stats bars.
 - Keep "checked against R" and verification claims off the landing page and
@@ -61,7 +62,9 @@ its own menu:
 - Each package has an example in `resources/examples/packages/{key}.php`
   (with `{key}.chain.php` where a method chain exists). The package explorer
   shows the selected package's code and its output as the package prints it:
-  a tibble, Polars' table, a chart, or an R-style model summary. phibble is
+  a phibble frame, Polars' table, a chart, or an R-style model summary. Never
+  call phibble output a "tibble"; the site drops phibble's "# A tibble" header
+  line and shows the size in the output label. phibble is
   selected by default. Never invent output: run the example, or compute it
   from a stored fixture with the package's own code and say so on the page.
   Keep these examples different from the workflow examples below them.
