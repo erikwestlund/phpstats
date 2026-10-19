@@ -47,7 +47,7 @@ class PagesTest extends TestCase
     public function test_landing_tabs_come_from_markdown_pages_that_call_php(): void
     {
         $response = $this->get('http://phpstats.test/')->assertOk()
-            ->assertSee('Simplify Data-driven PHP Applications using Native PHP')
+            ->assertSee('Simplify Statistical Workflows in PHP Applications with Native PHP')
             ->assertSee('Read data from your app')
             ->assertSee('&lt;date&gt;', false)            // phibble's inferred column types
             ->assertSee('2,400 rows')

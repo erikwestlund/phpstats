@@ -116,8 +116,7 @@ $chart = \Phiz\Plot::of($monthly)
     <section class="bg-zinc-50 py-20 sm:py-24 dark:bg-zinc-900/40">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">Simplify Data-driven PHP Applications using Native PHP</h2>
-                <p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400">Each example shows its code and then its result, computed when this page loads.</p>
+                <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">Simplify Statistical Workflows in PHP Applications with Native PHP</h2>
             </div>
 
             <div x-data="{ tab: '{{ $tabs->first()['id'] ?? '' }}', ids: @js($tabs->pluck('id')) }" x-init="if (ids.includes(location.hash.slice(1))) tab = location.hash.slice(1)" class="mt-14 overflow-hidden rounded-2xl bg-white shadow-xl shadow-php-900/5 ring-1 ring-zinc-200 lg:grid lg:min-h-[36rem] lg:grid-cols-[18rem_1fr] dark:bg-zinc-900 dark:ring-white/10">
