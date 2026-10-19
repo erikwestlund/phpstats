@@ -36,16 +36,15 @@ return [
      * Colors are Tailwind color names, and icons are Heroicons.
      */
     'layers' => [
-        'data' => ['title' => 'Data Frames', 'role' => 'Tables from databases, queries, and files', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => [
+        'data' => ['title' => 'Data & Workflow', 'role' => 'Frames, pipelines, and notebooks', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => [
             'phibble' => 'Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine.',
             'phpolars' => 'Polars data frames as a PHP extension. Compatible with phibble.',
-        ]],
-        'processing' => ['title' => 'Processing & Visualization', 'role' => 'Pipelines and charts', 'color' => 'fuchsia', 'icon' => 'presentation-chart-line', 'packages' => [
             'phplyr' => "A PHP port of the Tidyverse's dplyr and tidyr. Pipelines use PHP 8.5's pipe operator.",
-            'phiz' => 'ggplot2-style charts, rendered with Vega-Lite.',
+            'juphyter' => 'PHP in Jupyter notebooks and Quarto documents.',
         ]],
-        'models' => ['title' => 'Statistical Modeling', 'role' => 'Regression, mixed, and Bayesian models', 'color' => 'purple', 'icon' => 'variable', 'packages' => [
+        'stats' => ['title' => 'Statistics, Modeling & Visualization', 'role' => 'Models, inference, and charts', 'color' => 'purple', 'icon' => 'variable', 'packages' => [
             'phit' => 'Regression, mixed models, distributions, and descriptive statistics.',
+            'phiz' => 'ggplot2-style charts, rendered with Vega-Lite.',
             'cmdstanphp' => 'Bayesian models in Stan.',
         ]],
     ],
@@ -57,6 +56,7 @@ return [
      * package names become links to their pages), the label for its output,
      * and, for examples pages can't run, a callable that gives the stored
      * result. Each package's code is resources/examples/packages/{key}.php.
+     * A package with no entry here, such as juphyter, gets no panel.
      */
     'explorer' => [
         'phibble' => [
@@ -143,9 +143,8 @@ return [
      * with one layer shows no layer heading.
      */
     'menus' => [
-        'data' => ['title' => 'Data Frames', 'short' => 'Data', 'layers' => ['data']],
-        'processing' => ['title' => 'Processing & Visualization', 'short' => 'Processing', 'layers' => ['processing']],
-        'modeling' => ['title' => 'Statistical Modeling', 'short' => 'Modeling', 'layers' => ['models']],
+        'data' => ['title' => 'Data & Workflow', 'short' => 'Data', 'layers' => ['data']],
+        'stats' => ['title' => 'Statistics, Modeling & Visualization', 'short' => 'Statistics', 'layers' => ['stats']],
     ],
 
     /*

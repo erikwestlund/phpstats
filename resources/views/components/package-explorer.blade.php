@@ -9,19 +9,25 @@
 @php
     $packages = \App\Content\Package::all();
     $explorer = config('phpstats.explorer');
-    $keys = array_keys(array_merge(...array_column(config('phpstats.layers'), 'packages')));
+    // Layer order, less the packages with no explorer entry, such as juphyter.
+    $keys = array_values(array_intersect(
+        array_keys(array_merge(...array_column(config('phpstats.layers'), 'packages'))),
+        array_keys($explorer),
+    ));
 @endphp
 <div x-data="{ open: 'phibble', keys: @js($keys), move(step) { const i = (this.keys.indexOf(this.open) + step + this.keys.length) % this.keys.length; this.open = this.keys[i]; this.$nextTick(() => document.getElementById('package-tab-' + this.open).focus()); } }"
      class="overflow-hidden rounded-2xl ring-1 ring-zinc-200 lg:grid lg:grid-cols-[2fr_3fr] dark:ring-white/10">
     <div class="divide-y divide-zinc-200 border-b border-zinc-200 lg:border-b-0 lg:border-r dark:divide-white/10 dark:border-white/10" x-on:keydown.down.prevent="move(1)" x-on:keydown.up.prevent="move(-1)">
         @foreach (config('phpstats.layers') as $layer)
+            @php $tabs = array_values(array_intersect(array_keys($layer['packages']), $keys)); @endphp
+            @continue ($tabs === [])
             <div class="layer-{{ $layer['color'] }} pt-5">
                 <h3 class="mb-3 flex items-center gap-2.5 px-6 text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
                     <x-dynamic-component :component="'heroicon-o-'.$layer['icon']" class="size-5 text-(--l500) dark:text-(--l300)" />
                     {{ $layer['title'] }}
                 </h3>
                 <div role="tablist" aria-label="{{ $layer['title'] }}" aria-orientation="vertical">
-                    @foreach (array_keys($layer['packages']) as $key)
+                    @foreach ($tabs as $key)
                         <button type="button" role="tab" id="package-tab-{{ $key }}" aria-controls="package-code-{{ $key }}"
                                 x-on:click="open = '{{ $key }}'" x-bind:aria-selected="(open === '{{ $key }}').toString()" aria-selected="{{ $key === 'phibble' ? 'true' : 'false' }}"
                                 class="block w-full border-l-[3px] border-transparent py-3 pl-[calc(1.5rem-3px)] pr-6 text-left transition hover:bg-zinc-50 focus-visible:bg-zinc-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--l500) aria-selected:border-(--l500) aria-selected:bg-(--l50) dark:hover:bg-white/[0.03] dark:focus-visible:bg-white/[0.03] dark:aria-selected:border-(--l400) dark:aria-selected:bg-(--l400)/10">

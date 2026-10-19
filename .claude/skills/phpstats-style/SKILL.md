@@ -10,8 +10,8 @@ that packages sync into it.
 
 ## Package names
 
-- Write each name exactly: phibble, phpolars, phplyr, phiz, phit, and
-  CmdStanPHP. Every name is lowercase except CmdStanPHP, which follows
+- Write each name exactly: phibble, phpolars, phplyr, juphyter, phiz, phit,
+  and CmdStanPHP. Every name is lowercase except CmdStanPHP, which follows
   CmdStanR and CmdStanPy. Keys, URLs, and Composer names stay lowercase.
 - Set package names in the monospace font wherever they stand as labels:
   headings, menus, lists, the package bar, the footer, links between
@@ -22,12 +22,11 @@ that packages sync into it.
 
 ## Categories
 
-The packages are grouped into three categories, in this order, each with
+The packages are grouped into two categories, in this order, each with
 its own menu:
 
-- Data Frames: phibble and phpolars.
-- Processing & Visualization: phplyr and phiz.
-- Statistical Modeling: phit and CmdStanPHP.
+- Data & Workflow: phibble, phpolars, phplyr, and juphyter.
+- Statistics, Modeling & Visualization: phit, phiz, and CmdStanPHP.
 
 ## Copy
 

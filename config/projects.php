@@ -110,6 +110,21 @@ return [
             'phplyr pipelines run 10 to 100 times faster in Polars than on an in-memory phibble frame. Converting results back to PHP values takes most of a PolarsTable pipeline\'s time, so pipelines that reduce the data before collecting gain the most.',
         ],
     ],
+    'juphyter' => [
+        'name' => 'juphyter',
+        'from_r' => 'IRkernel and knitr',
+        'summary' => 'A Jupyter and Quarto kernel for PHP.',
+        'status' => 'in-progress',
+        'status_label' => 'In progress',
+        'repo' => 'https://github.com/phpstats/juphyter',
+        'docs' => null,
+        'overview' => [
+            'juphyter is a Jupyter kernel for PHP. Its aim is to run PHP cells in a notebook, so analysis with the PHPstats packages can be written and read as a notebook rather than a script.',
+            'Quarto names a kernel in a document\'s front matter, so the same kernel is intended to execute PHP in a .qmd file and render it to HTML or PDF.',
+            'It corresponds to IRkernel, which runs R in Jupyter, and to knitr, which executes R in Quarto and R Markdown.',
+            'The kernel is in progress. There is nothing to install yet, and this page will say what it does as the work lands.',
+        ],
+    ],
     'cmdstanphp' => [
         'name' => 'CmdStanPHP',
         'from_r' => 'cmdstanr',

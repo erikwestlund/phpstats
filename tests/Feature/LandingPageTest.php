@@ -46,7 +46,7 @@ class LandingPageTest extends TestCase
         $requires = ['phibble' => 'phibble', 'phpolars' => 'phpolars', 'phplyr' => 'phplyr', 'phiz' => 'phiz', 'phit' => 'phit'];
 
         $response = $this->get('http://phpstats.test/')->assertOk();
-        foreach (Package::keys() as $key) {
+        foreach (array_keys(config('phpstats.explorer')) as $key) {
             $this->assertFileExists(Example::path("packages/{$key}"));
             $response->assertSee("package-code-{$key}", false);
         }
@@ -59,6 +59,36 @@ class LandingPageTest extends TestCase
         }
         $this->assertSame(['beta[1]', 'beta[2]', 'sigma', 'tau'], SchoolPosterior::explorerSummary()->column('variable'));
         $response->assertSee('PHP 8.3–8.4')->assertDontSee('· Pipe')->assertSee('More about')->assertDontSee("can't run the example");
+    }
+
+    public function test_juphyter_is_on_the_site_without_an_explorer_panel(): void
+    {
+        $juphyter = Package::find('juphyter');
+
+        // It is in the menus and the footer, but the explorer has no example for it.
+        $this->get('http://phpstats.test/')->assertOk()
+            ->assertSee($juphyter->url(), false)
+            ->assertSee('PHP in Jupyter notebooks and Quarto documents.')
+            ->assertDontSee('package-tab-juphyter', false)
+            ->assertDontSee('package-code-juphyter', false);
+
+        // The explorer still opens on phibble and panels every package that has an example.
+        $explorer = $this->get('http://phpstats.test/')->assertOk();
+        foreach (array_keys(config('phpstats.explorer')) as $key) {
+            $explorer->assertSee("package-code-{$key}", false);
+        }
+        $this->assertSame(
+            ['phibble', 'phpolars', 'phplyr', 'phiz', 'phit', 'cmdstanphp'],
+            array_keys(config('phpstats.explorer')),
+        );
+
+        // Its own page stands on the overview from config/projects.php, with no Docs tab.
+        $this->get($juphyter->url())->assertOk()
+            ->assertSee($juphyter->tagline())
+            ->assertSee('IRkernel')
+            ->assertSee('has not published its site content yet')
+            ->assertSee($juphyter->repository(), false)
+            ->assertDontSee($juphyter->url('docs'), false);
     }
 
     public function test_markdown_pages_render_blade_outside_code_only(): void

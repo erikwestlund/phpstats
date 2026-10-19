@@ -5,7 +5,14 @@
 @props(['package'])
 
 @php
-    $sections = ['overview' => 'Overview', 'docs' => 'Docs', 'vignettes' => 'Vignettes', 'benchmarks' => 'Benchmarks', 'verification' => 'Verification'];
+    // A section the package has nothing for is left out, rather than linking an empty page.
+    $sections = array_filter([
+        'overview' => 'Overview',
+        'docs' => $package->hasDocs() || $package->externalDocs() ? 'Docs' : null,
+        'vignettes' => $package->vignettes() ? 'Vignettes' : null,
+        'benchmarks' => $package->benchmarks() ? 'Benchmarks' : null,
+        'verification' => $package->verifications() ? 'Verification' : null,
+    ]);
     $active = match (true) {
         request()->routeIs('package.docs') => 'docs',
         request()->routeIs('package.vignettes', 'package.vignette') || request()->is('livewire*') => 'vignettes',
@@ -26,13 +33,11 @@
         <nav class="ml-2 hidden items-center gap-1 text-sm lg:flex" aria-label="{{ $package->name() }} sections">
             @foreach ($sections as $key => $label)
                 @php $external = $key === 'docs' && ! $package->hasDocs(); @endphp
-                @if ($key !== 'docs' || $package->hasDocs() || $package->externalDocs())
-                    <a href="{{ $external ? $package->externalDocs() : $package->url($key) }}" @if ($active === $key) aria-current="page" @endif
-                       class="relative whitespace-nowrap rounded-lg px-3 py-1.5 text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 aria-[current]:text-(--l700) dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white dark:aria-[current]:text-(--l300)">
-                        {{ $label }}@if ($external)<x-heroicon-m-arrow-up-right class="ml-0.5 inline size-3 opacity-60" />@endif
-                        @if ($active === $key)<span class="absolute inset-x-3 -bottom-[0.6rem] h-0.5 rounded-full bg-(--l500)"></span>@endif
-                    </a>
-                @endif
+                <a href="{{ $external ? $package->externalDocs() : $package->url($key) }}" @if ($active === $key) aria-current="page" @endif
+                   class="relative whitespace-nowrap rounded-lg px-3 py-1.5 text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-900 aria-[current]:text-(--l700) dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white dark:aria-[current]:text-(--l300)">
+                    {{ $label }}@if ($external)<x-heroicon-m-arrow-up-right class="ml-0.5 inline size-3 opacity-60" />@endif
+                    @if ($active === $key)<span class="absolute inset-x-3 -bottom-[0.6rem] h-0.5 rounded-full bg-(--l500)"></span>@endif
+                </a>
             @endforeach
         </nav>
 
@@ -47,10 +52,8 @@
     {{-- Sections on small screens --}}
     <nav class="flex gap-1 overflow-x-auto border-t border-zinc-100 px-3 py-1.5 text-sm lg:hidden dark:border-white/5" aria-label="{{ $package->name() }} sections">
         @foreach ($sections as $key => $label)
-            @if ($key !== 'docs' || $package->hasDocs() || $package->externalDocs())
-                <a href="{{ $key === 'docs' && ! $package->hasDocs() ? $package->externalDocs() : $package->url($key) }}" @if ($active === $key) aria-current="page" @endif
-                   class="shrink-0 rounded-md px-2.5 py-1 text-zinc-600 aria-[current]:bg-(--l50) aria-[current]:font-medium aria-[current]:text-(--l700) dark:text-zinc-400 dark:aria-[current]:bg-(--l400)/10 dark:aria-[current]:text-(--l300)">{{ $label }}</a>
-            @endif
+            <a href="{{ $key === 'docs' && ! $package->hasDocs() ? $package->externalDocs() : $package->url($key) }}" @if ($active === $key) aria-current="page" @endif
+               class="shrink-0 rounded-md px-2.5 py-1 text-zinc-600 aria-[current]:bg-(--l50) aria-[current]:font-medium aria-[current]:text-(--l700) dark:text-zinc-400 dark:aria-[current]:bg-(--l400)/10 dark:aria-[current]:text-(--l300)">{{ $label }}</a>
         @endforeach
     </nav>
 </header>

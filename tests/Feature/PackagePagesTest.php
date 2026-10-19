@@ -16,12 +16,12 @@ class PackagePagesTest extends TestCase
     {
         $response = $this->get('http://phplyr.phpstats.test/')->assertOk();
 
-        // The three menus link every package, and the mark links the landing page.
+        // The two menus link every package, and the mark links the landing page.
         foreach (Package::keys() as $key) {
             $response->assertSee("http://{$key}.phpstats.test", false);
         }
-        $response->assertSee('Processing &amp; Visualization', false)
-            ->assertSee('Statistical Modeling')
+        $response->assertSee('Data &amp; Workflow', false)
+            ->assertSee('Statistics, Modeling &amp; Visualization', false)
             ->assertSee('aria-label="PHPstats home"', false)
             ->assertSee('Connected packages')
             ->assertSee('phplyr functions take phibble frames and return new ones.');
@@ -38,6 +38,50 @@ class PackagePagesTest extends TestCase
             foreach (['vignettes', 'benchmarks', 'verification'] as $section) {
                 $this->get("http://{$key}.phpstats.test/{$section}")->assertOk();
             }
+        }
+    }
+
+    public function test_every_package_is_in_exactly_one_menu(): void
+    {
+        $menus = [];
+        foreach (config('phpstats.menus') as $menu) {
+            foreach ($menu['layers'] as $layer) {
+                foreach (array_keys(config("phpstats.layers.{$layer}.packages")) as $key) {
+                    $menus[$key][] = $menu['title'];
+                }
+            }
+        }
+
+        $this->assertEqualsCanonicalizing(Package::keys(), array_keys($menus));
+        foreach ($menus as $key => $titles) {
+            $this->assertCount(1, $titles, $key);
+        }
+    }
+
+    public function test_the_package_bar_hides_sections_with_no_content(): void
+    {
+        $sections = ['docs', 'vignettes', 'benchmarks', 'verification'];
+
+        // juphyter has no docs, vignettes, benchmarks, or verification yet.
+        $juphyter = Package::find('juphyter');
+        $bar = $this->get($juphyter->url())->assertOk();
+        foreach ($sections as $section) {
+            $bar->assertDontSee($juphyter->url($section), false);
+        }
+
+        // phibble has vignettes and docs off-site, but neither benchmarks nor verification.
+        $phibble = Package::find('phibble');
+        $this->get($phibble->url())->assertOk()
+            ->assertSee($phibble->url('vignettes'), false)
+            ->assertSee($phibble->externalDocs(), false)
+            ->assertDontSee($phibble->url('benchmarks'), false)
+            ->assertDontSee($phibble->url('verification'), false);
+
+        // phit has all four.
+        $phit = Package::find('phit');
+        $all = $this->get($phit->url())->assertOk();
+        foreach ($sections as $section) {
+            $all->assertSee($phit->url($section), false);
         }
     }
 

@@ -9,7 +9,7 @@ Many teams keep their data in a PHP application. To analyze it, they often expor
 
 ## The packages
 
-The packages fall into three groups: data frames, processing and visualization, and statistical modeling. They share one data frame type, so a table read by phibble can be transformed by phplyr, modeled by phit, and charted by phiz. Each package can also be used on its own.
+The packages fall into two groups: data and workflow, and statistics, modeling and visualization. They share one data frame type, so a table read by phibble can be transformed by phplyr, modeled by phit, and charted by phiz. Each package can also be used on its own.
 
 <x-family-table />
 

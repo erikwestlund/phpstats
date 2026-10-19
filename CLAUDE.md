@@ -27,11 +27,11 @@ The website for the PHPstats family: a Laravel 13 + Livewire 4 app.
   runs `resources/examples/orders/transform.php` (the pipe version, which returns its result) and
   shows it next to `transform.chain.php`. A test checks that both versions agree. The examples
   read the `orders` table, simulated by `App\Data\Orders` and loaded by `DatabaseSeeder`.
-- `config/phpstats.php` defines the layers (data frames, processing and visualization, and statistical modeling)
+- `config/phpstats.php` defines the layers (data and workflow, and statistics, modeling and visualization)
   with their colors, and the relations between packages that package pages
   list as "Uses" and "Used by". Its `companions` are packages folded into another's pages, such
   as phit-polyfill into phit's: no menu entry, and their host redirects. Its `menus` give the bar's
-  three dropdowns, one per layer: Data Frames, Processing & Visualization, and Statistical Modeling. Layer colors reach the markup as CSS
+  two dropdowns, one per layer: Data & Workflow and Statistics, Modeling & Visualization. Layer colors reach the markup as CSS
   variables: `class="layer-violet"` sets `--l50` to `--l950`.
 - Colors: `php-*` is PHP's elephant purple, and the `zinc` grays are
   redefined in `resources/css/app.css` to lean purple. Code is highlighted on
