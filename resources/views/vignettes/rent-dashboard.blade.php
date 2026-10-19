@@ -50,14 +50,14 @@
 
     public function render()
     {
-        $rentals = DataFrame::fromQuery(SimulatedRental::query())
-            |> filter(col('neighborhood')->isIn($this->neighborhoods),
-                      col('bedrooms')->between($this->minBedrooms, $this->maxBedrooms))
-            |> mutate(over_budget: col('monthly_rent')->gt($this->budget));
+        $rentals = DataFrame::fromQuery(SimulatedRental::query()) |>
+            filter(col('neighborhood')->isIn($this->neighborhoods),
+                      col('bedrooms')->between($this->minBedrooms, $this->maxBedrooms)) |>
+            mutate(over_budget: col('monthly_rent')->gt($this->budget));
 
-        $summary = $rentals
-            |> group_by('neighborhood')
-            |> summarise(rentals: n(), median_rent: median('monthly_rent'),
+        $summary = $rentals |>
+            group_by('neighborhood') |>
+            summarise(rentals: n(), median_rent: median('monthly_rent'),
                          share_over_budget: mean('over_budget'));
 
         $model = $rentals |> glm('over_budget ~ area_m2 + bedrooms', family: 'binomial');

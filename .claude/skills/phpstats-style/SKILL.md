@@ -45,7 +45,9 @@ its own menu:
 ## Code examples
 
 - Default to the pipe operator `|>` (PHP 8.5). The method chain is the
-  second tab. For phplyr, say that pipelines use PHP 8.5's pipe operator.
+  second tab.
+- Put `|>` at the end of a line, never at the start of the next one:
+  `$orders |>` then `    filter(...) |>` on the following lines. For phplyr, say that pipelines use PHP 8.5's pipe operator.
 - Use realistic application data, such as the `orders` table, instead of
   textbook datasets.
 - Don't put comments in example code.

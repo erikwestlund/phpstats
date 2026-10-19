@@ -11,8 +11,8 @@
         <x-code-tabs class="mt-3">
             <x-slot:chain>$fit = phplyr(DataFrame::fromQuery(StudentScore::query()))
     ->lm('score ~ study_hours + prior_score');</x-slot:chain>
-            <x-slot:pipe>$fit = DataFrame::fromQuery(StudentScore::query())
-    |> lm('score ~ study_hours + prior_score');</x-slot:pipe>
+            <x-slot:pipe>$fit = DataFrame::fromQuery(StudentScore::query()) |>
+    lm('score ~ study_hours + prior_score');</x-slot:pipe>
         </x-code-tabs>
     </article>
 

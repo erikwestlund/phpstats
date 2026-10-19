@@ -57,19 +57,19 @@ class RentDashboard extends Component
             return ['rentals' => 0, 'budget' => $budget, 'summary' => [], 'model' => null, 'error' => 'Select at least one neighborhood.'];
         }
 
-        $rentals = DataFrame::fromQuery(SimulatedRental::query()->orderBy('id'))
-            |> filter(col('neighborhood')->isIn($neighborhoods), col('bedrooms')->between($low, $high))
-            |> mutate(over_budget: col('monthly_rent')->gt($budget));
+        $rentals = DataFrame::fromQuery(SimulatedRental::query()->orderBy('id')) |>
+            filter(col('neighborhood')->isIn($neighborhoods), col('bedrooms')->between($low, $high)) |>
+            mutate(over_budget: col('monthly_rent')->gt($budget));
 
-        $summary = $rentals
-            |> group_by('neighborhood')
-            |> summarise(
+        $summary = $rentals |>
+            group_by('neighborhood') |>
+            summarise(
                 rentals: n(),
                 median_rent: median('monthly_rent'),
                 mean_area: mean('area_m2'),
                 share_over_budget: mean('over_budget'),
-            )
-            |> arrange('neighborhood');
+            ) |>
+            arrange('neighborhood');
 
         $model = null;
         $error = null;

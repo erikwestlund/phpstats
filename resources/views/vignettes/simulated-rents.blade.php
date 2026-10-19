@@ -34,13 +34,13 @@ $byNeighborhood = phplyr($rentals)
 
 $fit = phplyr($rentals)->lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');</x-slot:chain>
             <x-slot:pipe>$rentals = DataFrame::fromQuery(SimulatedRental::query()->orderBy('id'))
-    ->asFactor('neighborhood', ['Riverside', 'Old Town', 'Hillcrest', 'Harbor', 'University', 'Northgate'])
-    |> head($n);
+    ->asFactor('neighborhood', ['Riverside', 'Old Town', 'Hillcrest', 'Harbor', 'University', 'Northgate']) |>
+    head($n);
 
-$byNeighborhood = $rentals
-    |> group_by('neighborhood')
-    |> summarise(rentals: n(), mean_area: mean('area_m2'), mean_rent: mean('monthly_rent'))
-    |> arrange('neighborhood');
+$byNeighborhood = $rentals |>
+    group_by('neighborhood') |>
+    summarise(rentals: n(), mean_area: mean('area_m2'), mean_rent: mean('monthly_rent')) |>
+    arrange('neighborhood');
 
 $fit = $rentals |> lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');</x-slot:pipe>
         </x-code-tabs>

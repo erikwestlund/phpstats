@@ -42,15 +42,15 @@ class SimulatedRents extends Component
 
         // Riverside first, so it is the reference level.
         $rentals = DataFrame::fromQuery(SimulatedRental::query()->orderBy('id'))
-            ->asFactor('neighborhood', array_keys(SimulatedRentals::NEIGHBORHOODS))
-            |> head($n);
+            ->asFactor('neighborhood', array_keys(SimulatedRentals::NEIGHBORHOODS)) |>
+            head($n);
 
         $result = $rentals |> lm('monthly_rent ~ area_m2 + bedrooms + neighborhood');
 
-        $byNeighborhood = $rentals
-            |> group_by('neighborhood')
-            |> summarise(rentals: n(), mean_area: mean('area_m2'), mean_rent: mean('monthly_rent'))
-            |> arrange('neighborhood');
+        $byNeighborhood = $rentals |>
+            group_by('neighborhood') |>
+            summarise(rentals: n(), mean_area: mean('area_m2'), mean_rent: mean('monthly_rent')) |>
+            arrange('neighborhood');
 
         $terms = [];
         foreach (SimulatedRentals::coefficients() as $term => $true) {

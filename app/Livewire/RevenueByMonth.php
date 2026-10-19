@@ -16,10 +16,10 @@ class RevenueByMonth extends Component
         $orders = Order::query()
             ->when($this->channel !== 'All', fn ($query) => $query->where('channel', $this->channel));
 
-        $monthly = \Phibble\DataFrame::fromQuery($orders)
-            |> mutate(month: floor_date(col('placed_on'), 'month'))
-            |> group_by('month', 'customer')
-            |> summarise(revenue: sum('total'));
+        $monthly = \Phibble\DataFrame::fromQuery($orders) |>
+            mutate(month: floor_date(col('placed_on'), 'month')) |>
+            group_by('month', 'customer') |>
+            summarise(revenue: sum('total'));
 
         $chart = \Phiz\Plot::of($monthly)
             ->aes(x: 'month', y: 'revenue', color: 'customer')

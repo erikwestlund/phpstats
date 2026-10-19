@@ -36,11 +36,11 @@ use function Phplyr\{lm, mutate, sum, summarise};
 
 $orders = \Phibble\DataFrame::fromQuery(Order::query());
 
-$monthly = $orders
-    |> filter(col('returned')->eq(0))
-    |> mutate(month: floor_date(col('placed_on'), 'month'))
-    |> group_by('month', 'channel')
-    |> summarise(revenue: sum('total'));
+$monthly = $orders |>
+    filter(col('returned')->eq(0)) |>
+    mutate(month: floor_date(col('placed_on'), 'month')) |>
+    group_by('month', 'channel') |>
+    summarise(revenue: sum('total'));
 
 $fit = $orders |> lm('total ~ items + coupon + channel');
 
