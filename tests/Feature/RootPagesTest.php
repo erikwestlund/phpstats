@@ -49,6 +49,8 @@ class RootPagesTest extends TestCase
         $this->assertStringContainsString('published on Packagist yet', $text);
         $this->assertStringContainsString('run composer init first', $text);
         $this->assertStringContainsString('anonymous requests reach their rate limit', $text);
+        // The extensions are built, not installed from a package.
+        $this->assertStringContainsString('the php.ini that php --ini reports', $text);
         // The example runs here, because phplyr needs no extension.
         $this->assertStringContainsString('summarize(', $text);
         $this->assertStringContainsString('revenue', $text);

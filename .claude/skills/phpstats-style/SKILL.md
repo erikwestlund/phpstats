@@ -49,6 +49,13 @@ its own menu:
   bold monospace links to their pages on their own; write them as plain
   words. Link upstream projects (tibble, Polars, ggplot2, Stan) as ordinary
   Markdown links.
+- A Markdown page in `resources/pages` runs Blade only in self-contained
+  components and echoes, never in directives, and never as a link
+  destination: CommonMark percent-encodes the destination, so
+  `[text]({{ route('page', 'about') }})` renders a broken href. Write the
+  literal path, `/about`, which is the same on the landing host in host mode
+  and in path mode. A loop belongs in a component, as `<x-install-steps />`
+  holds the one over `Package::all()`.
 - Leave out status badges, version pills, colored dots, and stats bars.
 - Keep "checked against R" and verification claims off the landing page and
   the About page. Verification belongs on each package's Verification

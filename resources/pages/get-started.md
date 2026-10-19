@@ -26,8 +26,13 @@ resolves the package from there. Both assume a project that already has a
 `composer.json`, so run `composer init` first when you are starting from an
 empty directory. While Composer reads a VCS repository it calls the GitHub
 API, and it may ask you for a token once anonymous requests reach their rate
-limit. A line beginning with `pie` installs a PHP extension with PIE, and a
-line such as `extension=phit` belongs in your `php.ini`.
+limit.
+
+A block that clones a repository and runs `cargo build` belongs to an
+extension written in Rust, which has no package to install. The
+`php -d extension=...` line loads the library you have just built for a
+single run. To load it for every run, put the same `extension=` line, with
+the path to that library, in the `php.ini` that `php --ini` reports.
 
 <x-install-steps />
 
