@@ -72,7 +72,9 @@ These committed files are generated, not hand-edited:
   `config/phpstats.php`. Refresh with `php artisan site:sync [package]`, and
   add `--update` to move the pin to the newest main. The sync needs git and
   network access. It reads the committed .html next to each .qmd and never
-  runs Quarto.
+  runs Quarto. `site:sync {package} --from /path/to/checkout` reads a local
+  checkout instead of cloning, for content that is not pushed yet: it writes
+  no pin, marks `sync.json` as local, and takes exactly one package.
 
 ## Local phit
 

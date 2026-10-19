@@ -161,7 +161,12 @@
 
             @if ($sync = $package->sync())
                 <p class="text-xs text-zinc-500">
-                    Content from <a href="https://github.com/{{ $sync['repo'] }}/tree/{{ $sync['commit'] }}" class="font-mono underline decoration-zinc-300 underline-offset-2 hover:text-zinc-800 dark:hover:text-zinc-200">{{ $sync['repo'].'@'.substr($sync['commit'], 0, 7) }}</a>.
+                    @if ($sync['local'] ?? false)
+                        {{-- `site:sync --from` reads a working tree, which has no commit to link. --}}
+                        Content from a local checkout of <span class="font-mono">{{ $sync['repo'] }}</span>, not a pinned commit.
+                    @else
+                        Content from <a href="https://github.com/{{ $sync['repo'] }}/tree/{{ $sync['commit'] }}" class="font-mono underline decoration-zinc-300 underline-offset-2 hover:text-zinc-800 dark:hover:text-zinc-200">{{ $sync['repo'].'@'.substr($sync['commit'], 0, 7) }}</a>.
+                    @endif
                 </p>
             @endif
         </aside>

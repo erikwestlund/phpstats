@@ -21,7 +21,12 @@
 
     @if ($sync = $package->sync())
         <p class="mt-12 text-xs text-zinc-500">
-            Script: <a href="https://github.com/{{ $sync['repo'] }}/blob/{{ $sync['commit'] }}/site/vignettes/{{ $vignette['slug'] }}.php" class="font-mono underline decoration-zinc-300 underline-offset-2">site/vignettes/{{ $vignette['slug'] }}.php</a> in {{ $sync['repo'].'@'.substr($sync['commit'], 0, 7) }}.
+            @if ($sync['local'] ?? false)
+                {{-- `site:sync --from` reads a working tree, which has no commit to link. --}}
+                Script: <span class="font-mono">site/vignettes/{{ $vignette['slug'] }}.php</span> in a local checkout of <span class="font-mono">{{ $sync['repo'] }}</span>.
+            @else
+                Script: <a href="https://github.com/{{ $sync['repo'] }}/blob/{{ $sync['commit'] }}/site/vignettes/{{ $vignette['slug'] }}.php" class="font-mono underline decoration-zinc-300 underline-offset-2">site/vignettes/{{ $vignette['slug'] }}.php</a> in {{ $sync['repo'].'@'.substr($sync['commit'], 0, 7) }}.
+            @endif
         </p>
     @endif
 </x-layout>

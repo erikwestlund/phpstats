@@ -24,8 +24,12 @@
                 {{ $page['title'] }} <x-heroicon-m-chevron-up-down class="size-4 text-zinc-400" />
             </button>
             <div x-bind:class="open ? 'block' : 'hidden lg:block'" class="hidden pt-4 lg:block lg:pt-0">
-                @foreach ($package->docsGroups() as $group => $items)
-                    <p @class(['mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white', 'mt-7' => ! $loop->first])>{{ $group }}</p>
+                @php $groups = $package->docsGroups(); @endphp
+                @foreach ($groups as $group => $items)
+                    {{-- One group is the whole nav, so its heading says nothing, as with a menu of one layer. --}}
+                    @if (count($groups) > 1)
+                        <p @class(['mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white', 'mt-7' => ! $loop->first])>{{ $group }}</p>
+                    @endif
                     <ul class="space-y-0.5 border-l border-zinc-200 dark:border-white/10">
                         @foreach ($items as $item)
                             <li>
@@ -76,7 +80,12 @@
 
             @if ($sync = $package->sync())
                 <p class="mt-8 text-xs text-zinc-500">
-                    From <a href="https://github.com/{{ $sync['repo'] }}/tree/{{ $sync['commit'] }}" class="font-mono underline decoration-zinc-300 underline-offset-2">{{ $sync['repo'].'@'.substr($sync['commit'], 0, 7) }}</a>.
+                    @if ($sync['local'] ?? false)
+                        {{-- `site:sync --from` reads a working tree, which has no commit to link. --}}
+                        From a local checkout of <span class="font-mono">{{ $sync['repo'] }}</span>, not a pinned commit.
+                    @else
+                        From <a href="https://github.com/{{ $sync['repo'] }}/tree/{{ $sync['commit'] }}" class="font-mono underline decoration-zinc-300 underline-offset-2">{{ $sync['repo'].'@'.substr($sync['commit'], 0, 7) }}</a>.
+                    @endif
                 </p>
             @endif
         </article>

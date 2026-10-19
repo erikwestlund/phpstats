@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Content\DocsImporter;
+use App\Content\Example;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
@@ -16,33 +17,66 @@ class SyncSiteContent extends Command
 {
     protected $signature = 'site:sync
         {package?* : Packages to sync (default: every package in config/phpstats.php content)}
-        {--update : Move the pinned ref to the newest commit on main first}';
+        {--update : Move the pinned ref to the newest commit on main first}
+        {--from= : Read site/ and docs/ from this local checkout instead of cloning, and write no pin}';
 
     protected $description = 'Sync package docs, benchmarks, verifications, and vignettes at their pinned commits';
 
     public function handle(): int
     {
         $content = config('phpstats.content');
-        $packages = $this->argument('package') ?: array_keys($content);
+        $named = $this->argument('package');
+        $packages = $named ?: array_keys($content);
+        $from = $this->option('from');
+
+        if ($from !== null) {
+            if ($this->option('update')) {
+                $this->error('--from reads a local checkout, so there is no commit to pin: use it without --update.');
+
+                return self::FAILURE;
+            }
+            if (count($named) !== 1) {
+                $this->error('--from syncs one package: name exactly one, as in `site:sync phibble --from ../phibble`.');
+
+                return self::FAILURE;
+            }
+            if (! is_dir($from)) {
+                $this->error("{$from} is not a directory.");
+
+                return self::FAILURE;
+            }
+        }
 
         foreach ($packages as $package) {
-            if (! isset($content[$package])) {
+            // A local sync needs no content entry, because the packages it is
+            // for are the ones whose commit cannot be pinned yet.
+            if ($from === null && ! isset($content[$package])) {
                 $this->error("{$package} has no content entry in config/phpstats.php.");
 
                 return self::FAILURE;
+            }
+            if ($from !== null) {
+                $this->syncFromPath($package, $content[$package]['repo'] ?? null, $from);
+
+                continue;
             }
             $ref = $content[$package]['ref'];
             if ($this->option('update')) {
                 $ref = $this->newestMain($content[$package]['repo']);
                 $this->pin($package, $ref);
             }
-            $this->sync($package, $content[$package]['repo'], $ref);
+            $this->syncFromGit($package, $content[$package]['repo'], $ref);
         }
+
+        // The landing page's examples are cached per example file, so synced
+        // content they read would otherwise stay stale.
+        Example::flush();
+        $this->info('Cleared the cached example output.');
 
         return self::SUCCESS;
     }
 
-    private function sync(string $package, string $repo, string $ref): void
+    private function syncFromGit(string $package, string $repo, string $ref): void
     {
         $checkout = storage_path("app/site-sync/{$package}");
         File::deleteDirectory($checkout);
@@ -54,11 +88,40 @@ class SyncSiteContent extends Command
         $run(['git', 'checkout', '--quiet', $ref], $checkout);
         $commit = trim($run(['git', 'rev-parse', 'HEAD'], $checkout)->output());
 
-        $manifest = json_decode(File::get("{$checkout}/site/site.json"), true, flags: JSON_THROW_ON_ERROR);
-        if (($manifest['package'] ?? null) !== $package) {
-            throw new RuntimeException("{$repo}: site/site.json names package ".json_encode($manifest['package'] ?? null).", expected {$package}.");
+        $this->import($package, $repo, $checkout, ['repo' => $repo, 'commit' => $commit]);
+
+        File::deleteDirectory($checkout);
+    }
+
+    /**
+     * Sync from a checkout on this machine. Nothing is pinned, because the
+     * working tree it reads has no commit the site could name.
+     */
+    private function syncFromPath(string $package, ?string $repo, string $path): void
+    {
+        $source = realpath($path) ?: throw new RuntimeException("{$path} cannot be resolved.");
+        $manifest = $this->manifest($package, $source, $source);
+        // config/phpstats.php has no entry for a package that is not pinned yet.
+        $repo ??= preg_replace('#^https?://github\.com/#', '', rtrim($manifest['repository'] ?? '', '/'));
+        if ($repo === '' || $repo === null) {
+            throw new RuntimeException("{$source}/site/site.json has no repository, and {$package} has no content entry in config/phpstats.php.");
         }
 
+        $this->import($package, $repo, $source, ['repo' => $repo, 'local' => true, 'source' => $source]);
+    }
+
+    /**
+     * Copy a checkout's site/ content and rendered docs into
+     * resources/content/{package} and public/content/{package}. Both the
+     * pinned and the local path come through here, so they produce the same
+     * files; $provenance is what sync.json records about the source.
+     */
+    private function import(string $package, string $repo, string $checkout, array $provenance): void
+    {
+        $local = $provenance['local'] ?? false;
+        $label = $local ? $checkout : "{$repo}@{$provenance['commit']}";
+
+        $manifest = $this->manifest($package, $checkout, $label);
         $target = config('phpstats.content_path')."/{$package}";
         $assets = public_path("content/{$package}");
         File::deleteDirectory($target);
@@ -92,9 +155,14 @@ class SyncSiteContent extends Command
             foreach ($docs['nav'] ?? [] as $item) {
                 $page = preg_replace('/\.(qmd|md|ipynb)$/', '', $item['path']);
                 if (! in_array($page, $paths, true)) {
-                    throw new RuntimeException("{$repo}@{$commit}: docs.nav lists {$item['path']}, but its rendered HTML is missing.");
+                    throw new RuntimeException("{$label}: docs.nav lists {$item['path']}, but its rendered HTML is missing.");
                 }
-                $nav[] = ['title' => $item['title'], 'path' => $page];
+                // Package::docsGroups() groups by an item's own section first.
+                $nav[] = array_filter([
+                    'title' => $item['title'],
+                    'path' => $page,
+                    'section' => $item['section'] ?? null,
+                ], fn (mixed $value) => $value !== null);
             }
 
             $index = [];
@@ -111,15 +179,31 @@ class SyncSiteContent extends Command
 
         File::put("{$target}/site.json", json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
         File::put("{$target}/sync.json", json_encode([
-            'repo' => $repo,
-            'commit' => $commit,
+            ...$provenance,
             'synced_at' => now()->toIso8601String(),
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
 
-        File::deleteDirectory($checkout);
-
         $this->info(sprintf('%s @ %s: %d docs pages, %d benchmarks, %d verifications, %d vignettes.',
-            $package, substr($commit, 0, 7), $pageCount, $copied['benchmarks'], $copied['verifications'], $copied['vignettes']));
+            $package, $local ? "local {$checkout}" : substr($provenance['commit'], 0, 7),
+            $pageCount, $copied['benchmarks'], $copied['verifications'], $copied['vignettes']));
+        if ($local) {
+            $this->warn("Not pinned: {$package} was read from a local checkout, so config/phpstats.php is unchanged and sync.json records no commit.");
+        }
+    }
+
+    /** @return array<string, mixed> the checkout's site/site.json, checked against the package it is for */
+    private function manifest(string $package, string $checkout, string $label): array
+    {
+        $file = "{$checkout}/site/site.json";
+        if (! is_file($file)) {
+            throw new RuntimeException("{$label}: site/site.json is missing.");
+        }
+        $manifest = json_decode(File::get($file), true, flags: JSON_THROW_ON_ERROR);
+        if (($manifest['package'] ?? null) !== $package) {
+            throw new RuntimeException("{$label}: site/site.json names package ".json_encode($manifest['package'] ?? null).", expected {$package}.");
+        }
+
+        return $manifest;
     }
 
     private function copyFromSite(string $checkout, string $file, string $target): void
