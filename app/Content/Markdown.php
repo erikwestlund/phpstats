@@ -17,10 +17,12 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Markdown pages written for this site, in resources/pages.
  *
- * A page may start with YAML front matter. Its body is CommonMark with GitHub
- * tables, and it can call PHP through Blade: Blade components (<x-... />) and
- * echoes ({{ ... }}) outside fenced code are rendered with Blade and placed in
- * the converted HTML, with $meta (the front matter) and $stats (counts from
+ * A page may start with YAML front matter, whose keys the page's view reads:
+ * title and lead for the heading, and description for the meta description and
+ * the social cards. Its body is CommonMark with GitHub tables, and it can call
+ * PHP through Blade: Blade components (<x-... />) and echoes ({{ ... }})
+ * outside fenced code are rendered with Blade and placed in the converted
+ * HTML, with $meta (the front matter) and $stats (counts from
  * App\Content\Stats) in scope. Fenced code is highlighted, and any words after the
  * language become the block's label, as in ```r dplyr.
  */

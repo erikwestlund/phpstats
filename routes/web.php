@@ -3,6 +3,7 @@
 use App\Content\Markdown;
 use App\Content\Package;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 $packages = implode('|', array_map(fn (string $key) => preg_quote($key, '#'), Package::keys()));
@@ -37,6 +38,10 @@ Route::domain($paths ? null : config('phpstats.package_host'))
 
 Route::domain($paths ? null : config('phpstats.root_host'))->group(function () use ($paths) {
     Route::view('/', 'home')->name('home');
+
+    // Before the {page} catch-all below, so the sitemap is never looked for
+    // among the Markdown pages.
+    Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
     // Paths from the single-host site.
     $renamed = ['php-stats' => 'phit', 'php-stats-polyfill' => 'phit', 'school-effects' => 'school-shrinkage'];

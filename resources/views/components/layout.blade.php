@@ -2,15 +2,40 @@
     The page frame. Package hosts get the package bar; the landing host gets
     the site bar. bare drops the content container, for full-width pages.
 --}}
-@props(['title' => null, 'wide' => false, 'bare' => false])
+@props(['title' => null, 'description' => null, 'wide' => false, 'bare' => false])
 
-@php $current = $currentPackage ?? null; @endphp
+@php
+    $current = $currentPackage ?? null;
+    $heading = collect([$title, $current?->name(), 'PHPstats'])->filter()->unique()->implode(' · ');
+
+    // The description: the one the page gave, or, on a package host, its
+    // tagline, with the page title in front of it on docs and the sections.
+    $sentence = fn (string $text) => rtrim($text, ' .').'.';
+    $summary = $description
+        ?? ($current === null
+            ? 'A family of PHP libraries for data frames, pipelines, charts, and statistical models, run inside the application that holds the data.'
+            : trim(($title ? $sentence("{$title} in {$current->name()}") : '').' '.$sentence($current->tagline())));
+    $summary = \Illuminate\Support\Str::limit($summary, 160, preserveWords: true);
+
+    // Search engines and social cards want one address per page, without the query string.
+    $canonical = url()->current();
+@endphp
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ collect([$title, $current?->name(), 'PHPstats'])->filter()->unique()->implode(' · ') }}</title>
+    <title>{{ $heading }}</title>
+    <meta name="description" content="{{ $summary }}">
+    <link rel="canonical" href="{{ $canonical }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PHPstats">
+    <meta property="og:title" content="{{ $heading }}">
+    <meta property="og:description" content="{{ $summary }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $heading }}">
+    <meta name="twitter:description" content="{{ $summary }}">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     <script>
         // Set the color scheme before the page paints: the stored choice, or the system setting.

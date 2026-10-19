@@ -1,5 +1,5 @@
 {{-- A Markdown page from resources/pages, rendered by App\Content\Markdown. --}}
-<x-layout :title="$meta['title'] ?? null">
+<x-layout :title="$meta['title'] ?? null" :description="$meta['description'] ?? null">
     <article class="mx-auto max-w-3xl py-6">
         @if (! empty($meta['title']))
             <h1 class="text-4xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $meta['title'] }}</h1>

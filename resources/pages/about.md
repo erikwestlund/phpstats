@@ -1,6 +1,7 @@
 ---
 title: About PHPstats
 lead: PHPstats is a family of PHP libraries for data processing, analysis, visualization, and modeling.
+description: PHPstats is a family of PHP libraries that reads tables from the application database, transforms them, fits statistical models, and draws charts, all in PHP.
 ---
 
 ## What PHPstats is
