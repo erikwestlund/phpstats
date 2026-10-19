@@ -20,6 +20,15 @@ return [
     'paths' => (bool) env('PHPSTATS_PATHS', false),
 
     /*
+     * Whether robots.txt invites crawlers. Only production should: staging
+     * and previews serve the same pages, each with a canonical URL of its
+     * own, and would compete with production in search results. The hosts
+     * above still have to match, so a crawler is welcome on neither an
+     * unknown host nor a host that is not indexable.
+     */
+    'indexable' => (bool) env('PHPSTATS_INDEXABLE', env('APP_ENV') === 'production'),
+
+    /*
      * Package content synced from each repo's site/ folder and rendered docs
      * by `php artisan site:sync`. The ref is the pinned commit. Packages
      * without an entry show the overview from config/projects.php only.

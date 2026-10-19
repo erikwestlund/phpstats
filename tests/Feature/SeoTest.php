@@ -17,6 +17,12 @@ class SeoTest extends TestCase
     /** The length search engines show, which layout.blade.php cuts descriptions to. */
     private const LENGTH = 160;
 
+    /** robots.txt as a host the site is published on, or any other host, answers it. */
+    private function robots(bool $published, string $sitemapHost = 'phpstats.test'): string
+    {
+        return "User-agent: *\nDisallow:".($published ? '' : ' /')."\n\nSitemap: http://{$sitemapHost}/sitemap.xml\n";
+    }
+
     protected function tearDown(): void
     {
         putenv('PHPSTATS_PATHS');
@@ -64,6 +70,24 @@ class SeoTest extends TestCase
         // phibble's docs are not synced, so its /docs redirects to its own site.
         $this->assertFalse(Package::find('phibble')->hasDocs());
         $this->assertNotContains('http://phibble.phpstats.test/docs', $urls);
+
+        // The sections the package bar hides when a package has none of them.
+        foreach (Package::all() as $key => $package) {
+            foreach (['benchmarks' => $package->benchmarks(), 'verification' => $package->verifications(), 'vignettes' => $package->vignettes()] as $section => $content) {
+                $this->assertSame(
+                    $content !== [],
+                    in_array("http://{$key}.phpstats.test/{$section}", $urls, true),
+                    "{$key}/{$section}",
+                );
+            }
+        }
+
+        // phit publishes both; phibble, which syncs no content, publishes neither.
+        $this->assertContains('http://phit.phpstats.test/benchmarks', $urls);
+        $this->assertContains('http://phit.phpstats.test/verification', $urls);
+        $this->assertEmpty(Package::find('phibble')->benchmarks());
+        $this->assertNotContains('http://phibble.phpstats.test/benchmarks', $urls);
+        $this->assertNotContains('http://phibble.phpstats.test/verification', $urls);
 
         // A vignette belongs to the host of the package that owns it.
         $this->assertNotContains('http://phplyr.phpstats.test/vignettes/simulated-rents', $urls);
@@ -135,12 +159,68 @@ class SeoTest extends TestCase
         $this->assertStringEndsWith('...', $descriptions[0]);
     }
 
-    public function test_robots_points_at_the_sitemap(): void
+    public function test_robots_invites_crawlers_on_the_hosts_the_site_is_published_on(): void
     {
-        $this->assertStringContainsString(
-            'Sitemap: https://phpstats.org/sitemap.xml',
-            file_get_contents(public_path('robots.txt')),
+        // No file in public/, which the web server would serve ahead of the route.
+        $this->assertFileDoesNotExist(public_path('robots.txt'));
+
+        config(['phpstats.indexable' => true]);
+        $hosts = ['phpstats.test', 'phit.phpstats.test', 'cmdstanphp.phpstats.test', 'phit-polyfill.phpstats.test'];
+
+        foreach ($hosts as $host) {
+            $response = $this->get("http://{$host}/robots.txt")->assertOk();
+
+            $response->assertHeader('Content-Type', 'text/plain; charset=UTF-8');
+            $this->assertSame($this->robots(true), $response->content(), $host);
+        }
+    }
+
+    public function test_robots_keeps_crawlers_off_staging_and_any_other_host(): void
+    {
+        config(['phpstats.indexable' => true]);
+
+        // The staging and tunnel hosts, and a host the site does not answer on.
+        $hosts = ['phpstats.pequod.sh', 'phpstats-phit.pequod.sh', 'frosty-wasp.polyscope.test', 'not-a-package.phpstats.test'];
+
+        foreach ($hosts as $host) {
+            $this->assertSame($this->robots(false), $this->get("http://{$host}/robots.txt")->assertOk()->content(), $host);
+        }
+    }
+
+    public function test_robots_keeps_crawlers_off_a_published_host_that_is_not_indexable(): void
+    {
+        // Staging answers on its own root host, so only this switch keeps it out
+        // of search. APP_ENV is testing here, so it is off without being set.
+        $this->assertFalse(config('phpstats.indexable'));
+
+        foreach (['phpstats.test', 'phit.phpstats.test'] as $host) {
+            $this->assertSame($this->robots(false), $this->get("http://{$host}/robots.txt")->assertOk()->content(), $host);
+        }
+
+        config(['phpstats.indexable' => true]);
+        $this->assertSame($this->robots(true), $this->get('http://phpstats.test/robots.txt')->assertOk()->content());
+    }
+
+    public function test_robots_keeps_crawlers_off_a_path_mode_preview(): void
+    {
+        $this->enterPathMode();
+        config(['phpstats.indexable' => true]);
+
+        // The tunnel the preview is behind. In path mode the sitemap is on the
+        // host the request came in on, so the line names that host.
+        $this->assertSame(
+            $this->robots(false, 'preview.test'),
+            $this->get('http://preview.test/robots.txt')->assertOk()->content(),
         );
+
+        // Path mode serves no package hosts, so they invite nobody either.
+        $this->assertSame(
+            $this->robots(false, 'phit.phpstats.test'),
+            $this->get('http://phit.phpstats.test/robots.txt')->assertOk()->content(),
+        );
+
+        // The landing host is still the site itself, whichever mode it runs in.
+        $this->assertSame($this->robots(true), $this->get('http://phpstats.test/robots.txt')->assertOk()->content());
     }
 
     public function test_the_page_catch_all_still_serves_about_and_leaves_the_sitemap_alone(): void

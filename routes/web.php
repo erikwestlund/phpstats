@@ -3,6 +3,7 @@
 use App\Content\Markdown;
 use App\Content\Package;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\RobotsController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,23 @@ $companions = config('phpstats.companions');
 // staging. In path mode, for previews behind a single tunnel URL, each package
 // is served under /{package} on whatever host the request came in on.
 $paths = config('phpstats.paths');
+
+// Every host answers robots.txt, the hosts the site is not published on
+// included, so the route takes no domain. Laravel matches the routes that do
+// have one first, so the package hosts need their own, ahead of the companion
+// catch-all below. RouteCollection::get() returns domainRoutes before routes,
+// whatever order they were registered in.
+//
+// Do not delete the registration below because the suite is green. Without
+// it, phit-polyfill.phpstats.test/robots.txt answers the companion redirect,
+// a 301, instead of robots.txt. One reviewer's run passed the companion-host
+// test without it for reasons nobody could explain, so a green suite is not
+// evidence that one registration is enough. Check the response on a
+// companion host by hand before touching this.
+if (! $paths) {
+    Route::domain(config('phpstats.package_host'))->get('/robots.txt', RobotsController::class);
+}
+Route::get('/robots.txt', RobotsController::class)->name('robots');
 
 // Companions, such as phit-polyfill, are part of their parent's pages.
 Route::domain($paths ? null : config('phpstats.package_host'))

@@ -12,6 +12,9 @@ The website for the PHPstats family: a Laravel 13 + Livewire 4 app.
 - `PHPSTATS_PATHS=true` serves everything on one host, with each package under
   `/{package}`, for previews behind one tunnel URL (Polyscope or Expose). Add
   `TRUSTED_PROXIES=*` so links use the tunnel's host.
+- `robots.txt` is a route, not a file: it invites crawlers only on the hosts
+  above and only when `PHPSTATS_INDEXABLE` is true, which it is by default
+  just when `APP_ENV=production`, so staging and previews stay out of search.
 - Each package host has Overview, Docs, Vignettes, Benchmarks, and
   Verification sections, built from the package's synced content.
 - Vignettes are either Livewire components in this app, listed under

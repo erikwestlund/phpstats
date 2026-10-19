@@ -1,4 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://phpstats.org/sitemap.xml
