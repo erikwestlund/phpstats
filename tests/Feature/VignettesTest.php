@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Content\Example;
-use App\Content\Markdown;
 use App\Content\Package;
 use App\Data\SchoolPosterior;
 use App\Data\SimulatedRentals;
@@ -21,10 +19,9 @@ use App\Models\SimulatedRental;
 use App\Models\StudentScore;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use Phiz\Plot;
 use Tests\TestCase;
 
-class PagesTest extends TestCase
+class VignettesTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -33,197 +30,6 @@ class PagesTest extends TestCase
     private function vignette(string $slug): string
     {
         return Package::find(config("phpstats.vignettes.{$slug}.packages.0"))->url('vignette', ['slug' => $slug]);
-    }
-
-    public function test_landing_page_links_every_package(): void
-    {
-        $response = $this->get('http://phpstats.test/')->assertOk()->assertSee('Modern statistical computing for PHP.');
-
-        foreach (Package::keys() as $key) {
-            $response->assertSee("http://{$key}.phpstats.test", false);
-        }
-    }
-
-    public function test_landing_tabs_come_from_markdown_pages_that_call_php(): void
-    {
-        $response = $this->get('http://phpstats.test/')->assertOk()
-            ->assertSee('Simplify Statistical Workflows in PHP Applications with Native PHP')
-            ->assertSee('Read data from your app')
-            ->assertSee('&lt;date&gt;', false)            // phibble's inferred column types
-            ->assertSee('2,400 rows')
-            ->assertDontSee('failed to run')
-            ->assertDontSee('checked against R')
-            ->assertDontSee('<!--blade:', false);
-
-        if (function_exists('Phit\\fit_lm')) {
-            $response->assertSee('customerReturning');      // the lm() coefficients
-        }
-    }
-
-    public function test_every_package_has_code_on_the_landing_page_and_it_runs(): void
-    {
-        $requires = ['phibble' => 'phibble', 'phpolars' => 'phpolars', 'phplyr' => 'phplyr', 'phiz' => 'phiz', 'phit' => 'phit'];
-
-        $response = $this->get('http://phpstats.test/')->assertOk();
-        foreach (Package::keys() as $key) {
-            $this->assertFileExists(Example::path("packages/{$key}"));
-            $response->assertSee("package-code-{$key}", false);
-        }
-
-        // CmdStanPHP's snippet needs CmdStan, which pages never run: its output is the stored fit's summary.
-        foreach ($requires as $key => $package) {
-            if (ScriptVignette::available($package) && ScriptVignette::available('phplyr')) {
-                $this->assertNotNull(Example::run("packages/{$key}"), $key);
-            }
-        }
-        $this->assertSame(['beta[1]', 'beta[2]', 'sigma', 'tau'], SchoolPosterior::explorerSummary()->column('variable'));
-        $response->assertSee('PHP 8.3–8.4')->assertDontSee('· Pipe')->assertSee('More about')->assertDontSee("can't run the example");
-    }
-
-    public function test_examples_give_the_same_result_with_the_pipe_and_the_chain(): void
-    {
-        $requires = ['model' => 'phit', 'polars' => 'phpolars', 'phpolars' => 'phpolars'];
-        $compared = 0;
-
-        foreach (glob(resource_path('examples/*/*.chain.php')) as $chain) {
-            $name = basename(dirname($chain)).'/'.basename($chain, '.chain.php');
-            if (! ScriptVignette::available($requires[basename($name)] ?? 'phplyr')) {
-                continue;
-            }
-            $normalize = fn (mixed $result) => match (true) {
-                $result instanceof Plot => $result->toArray(),
-                is_object($result) => [$result->types(), $result->toRows()],
-                default => $result,
-            };
-
-            $this->assertEquals($normalize(Example::run($name)), $normalize(Example::run($name, 'chain')), $name);
-            // Imports are shown only when the example puts them below its "// ---" line.
-            if (! preg_match('/^\/\/ ---\nuse /m', file_get_contents($chain))) {
-                $this->assertStringNotContainsString('use function', Example::code($name)['chain']);
-            }
-            $compared++;
-        }
-
-        $this->assertGreaterThan(0, $compared);
-    }
-
-    public function test_markdown_pages_render_blade_outside_code_only(): void
-    {
-        $html = Markdown::render(<<<'MD'
-            Total: {{ 2 + 3 }}.
-
-            <x-package-chip package="phit" />
-
-            ```php
-            echo "{{ not blade }}";
-            ```
-            MD);
-
-        $this->assertStringContainsString('Total: 5.', $html);
-        $this->assertStringContainsString('http://phit.phpstats.test', $html);
-        $this->assertStringContainsString('{{ not blade }}', html_entity_decode(strip_tags($html)));
-
-        $this->get('http://phpstats.test/about')->assertOk()->assertSee('About PHPstats')->assertSee('dplyr and tidyr');
-        $this->get('http://phpstats.test/no-such-page')->assertNotFound();
-    }
-
-    public function test_package_pages_link_the_family_and_related_packages(): void
-    {
-        $response = $this->get('http://phplyr.phpstats.test/')->assertOk();
-
-        // The three menus link every package, and the mark links the landing page.
-        foreach (Package::keys() as $key) {
-            $response->assertSee("http://{$key}.phpstats.test", false);
-        }
-        $response->assertSee('Processing &amp; Visualization', false)
-            ->assertSee('Statistical Modeling')
-            ->assertSee('aria-label="PHPstats home"', false)
-            ->assertSee('Connected packages')
-            ->assertSee('phplyr functions take phibble frames and return new ones.');
-
-        // The other side of the relation lists it too.
-        $this->get('http://phibble.phpstats.test/')->assertSee('Used by')->assertSee('phplyr functions take phibble frames');
-    }
-
-    public function test_docs_nav_is_grouped_by_folder(): void
-    {
-        $groups = Package::find('phpolars')->docsGroups();
-
-        $this->assertSame(['Guide', 'Reference'], array_keys($groups));
-        $this->assertContains('reference/series', array_column($groups['Reference'], 'path'));
-        $this->assertSame('Notebooks', Package::find('phit')->docsGroupOf('notebooks/lmm-math'));
-    }
-
-    public function test_each_package_has_an_overview_on_its_own_host(): void
-    {
-        foreach (Package::keys() as $key) {
-            $package = Package::find($key);
-            $this->get("http://{$key}.phpstats.test/")->assertOk()->assertSee($package->tagline());
-            foreach (['vignettes', 'benchmarks', 'verification'] as $section) {
-                $this->get("http://{$key}.phpstats.test/{$section}")->assertOk();
-            }
-        }
-    }
-
-    public function test_unknown_hosts_and_paths_are_not_found(): void
-    {
-        $this->get('http://not-a-package.phpstats.test/')->assertNotFound();
-        $this->get('http://phit.phpstats.test/vignettes/not-a-vignette')->assertNotFound();
-        $this->get('http://phit.phpstats.test/docs/not-a-page')->assertNotFound();
-        $this->get('http://phpstats.test/not-a-project')->assertNotFound();
-    }
-
-    public function test_companions_are_part_of_their_parent(): void
-    {
-        $this->assertArrayNotHasKey('phit-polyfill', Package::all());
-        $this->get('http://phit-polyfill.phpstats.test/docs')->assertRedirect('http://phit.phpstats.test');
-        $this->get('http://phpstats.test/php-stats-polyfill')->assertRedirect('http://phit.phpstats.test');
-        $this->get('http://phit.phpstats.test/')->assertSee('defines the same functions in plain PHP');
-        $this->get('http://phpstats.test/')->assertDontSee('phit-polyfill.phpstats.test');
-    }
-
-    public function test_old_paths_redirect_to_package_hosts(): void
-    {
-        $this->get('http://phpstats.test/php-stats')->assertRedirect('http://phit.phpstats.test');
-        $this->get('http://phpstats.test/phibble')->assertRedirect('http://phibble.phpstats.test');
-        $this->get('http://phpstats.test/vignettes/school-effects')->assertRedirect('http://phit.phpstats.test/vignettes/school-shrinkage');
-        $this->get('http://phpstats.test/vignettes/sql-pipeline')->assertRedirect('http://phibble.phpstats.test/vignettes/sql-pipeline');
-        $this->get('http://phpstats.test/benchmarks')->assertRedirect('http://phit.phpstats.test/benchmarks');
-    }
-
-    public function test_synced_docs_render_with_resolved_links(): void
-    {
-        $package = Package::find('phit');
-        $this->assertTrue($package->hasDocs());
-
-        $index = $this->get('http://phit.phpstats.test/docs')->assertOk();
-        foreach ($package->docsNav() as $item) {
-            $index->assertSee($item['title']);
-            $page = $this->get($package->url('docs', ['path' => $item['path'] === 'index' ? null : $item['path']]))->assertOk();
-            $this->assertStringNotContainsString('phpstats://', $page->getContent());
-        }
-
-        $this->get('http://phit.phpstats.test/docs/notebooks/lmm-math')->assertOk()
-            ->assertSee('class="math inline"', false)
-            ->assertSee('mathjax@4', false);
-    }
-
-    public function test_benchmarks_and_verification_render_every_file(): void
-    {
-        foreach (['phit', 'phpolars'] as $key) {
-            $package = Package::find($key);
-            $this->assertNotEmpty($package->benchmarks());
-            $this->assertNotEmpty($package->verifications());
-
-            $benchmarks = $this->get($package->url('benchmarks'))->assertOk();
-            foreach ($package->benchmarks() as $benchmark) {
-                $benchmarks->assertSee($benchmark['title']);
-            }
-            $verification = $this->get($package->url('verification'))->assertOk();
-            foreach ($package->verifications() as $report) {
-                $verification->assertSee($report['title']);
-            }
-        }
     }
 
     public function test_script_vignettes_run_or_explain_what_is_missing(): void
