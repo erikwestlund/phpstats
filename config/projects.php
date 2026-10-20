@@ -114,15 +114,18 @@ return [
         'name' => 'juphyter',
         'from_r' => 'IRkernel and knitr',
         'summary' => 'A Jupyter and Quarto kernel for PHP.',
-        'status' => 'in-progress',
-        'status_label' => 'In progress',
+        'status' => 'working',
+        'status_label' => 'Working',
         'repo' => 'https://github.com/phpstats/juphyter',
+        // juphyter publishes no documentation site yet, so there is nothing to
+        // point at: https://phpstats.github.io/juphyter/ is a 404.
         'docs' => null,
         'overview' => [
-            'juphyter is a Jupyter kernel for PHP. Its aim is to run PHP cells in a notebook, so analysis with the PHPstats packages can be written and read as a notebook rather than a script.',
-            'Quarto names a kernel in a document\'s front matter, so the same kernel is intended to execute PHP in a .qmd file and render it to HTML or PDF.',
+            'juphyter is a Jupyter kernel for PHP. It runs PHP cells in a notebook, so analysis with the PHPstats packages can be written and read as a notebook rather than a script.',
+            'Quarto names a kernel in a document\'s front matter, so the same kernel executes PHP in a .qmd file and renders it to HTML or PDF.',
             'It corresponds to IRkernel, which runs R in Jupyter, and to knitr, which executes R in Quarto and R Markdown.',
-            'The kernel is in progress. There is nothing to install yet, and this page will say what it does as the work lands.',
+            'Nothing in the family is on Packagist, so a project registers the repository with composer config, requires phpstats/juphyter as a dev dependency, then runs vendor/bin/juphyter install. That writes the kernelspec JupyterLab and Quarto read.',
+            'The kernel needs PHP 8.3 or later and a Python installation that has Jupyter, because its wrapper runs inside ipykernel.',
         ],
     ],
     'cmdstanphp' => [

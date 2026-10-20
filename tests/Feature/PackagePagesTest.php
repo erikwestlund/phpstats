@@ -139,6 +139,39 @@ class PackagePagesTest extends TestCase
         $this->assertEqualsCanonicalizing(['phibble', 'phplyr', 'phpolars', 'phit', 'phiz', 'cmdstanphp'], $cards);
     }
 
+    public function test_juphyter_is_not_described_as_unfinished(): void
+    {
+        $package = Package::find('juphyter');
+        $text = preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(
+            $this->get($package->url())->assertOk()->getContent(),
+        )));
+
+        // The kernel installs and runs, so the page must not say it is
+        // unfinished or that there is nothing to install.
+        foreach (['in progress', 'nothing to install yet', 'as the work lands'] as $claim) {
+            $this->assertStringNotContainsStringIgnoringCase($claim, $text, $claim);
+        }
+
+        // The label itself reaches no page: nothing renders status(), so the
+        // config is pinned here instead.
+        $this->assertSame('Working', $package->status());
+
+        // How it is actually installed, which the overview now carries.
+        $this->assertStringContainsString('vendor/bin/juphyter install', $text);
+        $this->assertStringContainsString('writes the kernelspec', $text);
+
+        // The same claim reaches /get-started through install-steps, which
+        // branches on status and not on status_label: juphyter has no synced
+        // install lines, so 'in-progress' printed "has nothing to install
+        // yet" there too. RootPagesTest accepts either sentence for every
+        // package, so only this pins juphyter to the right one.
+        $started = preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(
+            $this->get('http://phpstats.test/get-started')->assertOk()->getContent(),
+        )));
+        $this->assertStringNotContainsStringIgnoringCase('nothing to install yet', $started);
+        $this->assertStringContainsString('does not carry install lines for', $started);
+    }
+
     // Overview content (task 11a): summary lists, pipe-only examples, the
     // tibble header, and the aside that used to render empty.
 
