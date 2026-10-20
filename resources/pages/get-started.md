@@ -22,11 +22,12 @@ package publishes for itself.
 
 A line beginning with `composer config` registers a package's repository in
 the project you are installing into, and the `composer require` line after it
-resolves the package from there. Both assume a project that already has a
-`composer.json`, so run `composer init` first when you are starting from an
-empty directory. While Composer reads a VCS repository it calls the GitHub
-API, and it may ask you for a token once anonymous requests reach their rate
-limit.
+resolves the package from there. Its `dev-main` constraint follows that
+repository's main branch, which is where the current work is until the
+packages are tagged. Both assume a project that already has a `composer.json`,
+so run `composer init` first when you are starting from an empty directory.
+While Composer reads a VCS repository it calls the GitHub API, and it may ask
+you for a token once anonymous requests reach their rate limit.
 
 A block that clones a repository and runs `cargo build` belongs to an
 extension written in Rust, which has no package to install. The

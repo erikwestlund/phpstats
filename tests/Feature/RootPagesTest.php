@@ -17,18 +17,8 @@ class RootPagesTest extends TestCase
 
     protected bool $seed = true;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        // Package caches its config and synced content statically, and the
-        // fixture tests below rewrite both.
-        Package::flush();
-    }
-
     protected function tearDown(): void
     {
-        Package::flush();
         putenv('PHPSTATS_PATHS');
         unset($_ENV['PHPSTATS_PATHS'], $_SERVER['PHPSTATS_PATHS']);
 
