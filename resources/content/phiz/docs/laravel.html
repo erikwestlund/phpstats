@@ -1,0 +1,68 @@
+<p>phiz’s Laravel service provider is discovered automatically. It registers the <code>&lt;x-phiz&gt;</code> Blade component and the <code>@phizScripts</code> directive. Without Laravel, the same classes are never loaded.</p>
+<section id="blade" class="level2">
+<h2 class="anchored" data-anchor-id="blade">Blade</h2>
+<pre class="blade"><code>&lt;x-phiz :plot="$plot" class="h-80" /&gt;</code></pre>
+<p>The component accepts a <code>Plot</code>, a <code>Compose</code>, a specification array, or specification JSON. <code>:options</code> passes vega-embed options, merged over <code>config('phiz.embed_options')</code>. Other attributes go to the container element.</p>
+<p>The first <code>&lt;x-phiz&gt;</code> on a page adds the script tags. To place them yourself, put <code>@phizScripts</code> in the layout.</p>
+</section>
+<section id="livewire" class="level2">
+<h2 class="anchored" data-anchor-id="livewire">Livewire</h2>
+<p>The component re-renders inside Livewire without extra code. The specification is an attribute of the container, which Livewire’s morphing updates on each render. The drawn chart sits in a child element marked <code>wire:ignore</code>, and the phiz loader embeds the new specification when the attribute changes. When a component renders several charts, give each a <code>wire:key</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RentChart <span class="kw">extends</span> Component</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">int</span> <span class="va">$bedrooms</span> <span class="op">=</span> <span class="dv">2</span><span class="ot">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">function</span> render()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">$plot</span> <span class="op">=</span> Plot::of(Rental::where(<span class="st">'bedrooms'</span><span class="ot">,</span> <span class="va">$this</span>-&gt;bedrooms)-&gt;get())</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            -&gt;aes(x<span class="ot">:</span> <span class="st">'area_m2'</span><span class="ot">,</span> y<span class="ot">:</span> <span class="st">'rent'</span><span class="ot">,</span> color<span class="ot">:</span> <span class="st">'neighborhood'</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>            -&gt;point(alpha<span class="ot">:</span> <span class="fl">0.6</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            -&gt;smooth(method<span class="ot">:</span> <span class="st">'lm'</span><span class="ot">,</span> se<span class="ot">:</span> <span class="kw">false</span>)<span class="ot">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> view(<span class="st">'livewire.rent-chart'</span><span class="ot">,</span> [<span class="st">'plot'</span> =&gt; <span class="va">$plot</span>])<span class="ot">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></div>
+<pre class="blade"><code>&lt;div&gt;
+    &lt;select wire:model.live="bedrooms"&gt;...&lt;/select&gt;
+    &lt;x-phiz :plot="$plot" wire:key="rents" :options="['theme' =&gt; 'auto']" /&gt;
+&lt;/div&gt;</code></pre>
+<p><code>'theme' =&gt; 'auto'</code> follows the reader’s light or dark mode preference. <a href="phpstats://phiz/docs/dashboard">Dashboards with Livewire</a> builds a complete example with several linked charts.</p>
+</section>
+<section id="configuration" class="level2">
+<h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
+<p>Publish the configuration with <code>php artisan vendor:publish --tag=phiz-config</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>assets</code></td>
+<td><code>cdn</code></td>
+<td><code>cdn</code>, a URL prefix serving the three library files, or <code>none</code></td>
+</tr>
+<tr class="even">
+<td><code>inject_scripts</code></td>
+<td><code>true</code></td>
+<td>whether <code>&lt;x-phiz&gt;</code> adds the script tags once per page</td>
+</tr>
+<tr class="odd">
+<td><code>embed_options</code></td>
+<td><code>['actions' =&gt; false]</code></td>
+<td>default vega-embed options</td>
+</tr>
+</tbody>
+</table>
+<p>If your Vite bundle already imports vega-embed, set <code>assets</code> to <code>none</code> and assign it to <code>window.vegaEmbed</code> in your bundle. The phiz loader uses it.</p>
+
+
+</section>

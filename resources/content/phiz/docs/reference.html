@@ -1,0 +1,133 @@
+<section id="plot" class="level2">
+<h2 class="anchored" data-anchor-id="plot">Plot</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Group</th>
+<th>Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Start</td>
+<td><code>Plot::of($data, $aes)</code>, <code>aes(...)</code>, <code>data($data)</code></td>
+</tr>
+<tr class="even">
+<td>Geoms</td>
+<td><code>point</code>, <code>jitter</code>, <code>line</code>, <code>path</code>, <code>step</code>, <code>area</code>, <code>ribbon</code>, <code>bar</code>, <code>col</code>, <code>histogram</code>, <code>freqpoly</code>, <code>density</code>, <code>boxplot</code>, <code>violin</code>, <code>errorbar</code>, <code>linerange</code>, <code>pointrange</code>, <code>hline</code>, <code>vline</code>, <code>abline</code>, <code>rule</code>, <code>segment</code>, <code>text</code>, <code>label</code>, <code>tile</code>, <code>raster</code>, <code>rect</code>, <code>bin2d</code>, <code>hex</code>, <code>smooth</code>, <code>curve</code>, <code>rug</code>, <code>ecdf</code>, <code>qq</code>, <code>qqLine</code>, <code>arc</code>, <code>pie</code>, <code>layer</code>, <code>geom</code></td>
+</tr>
+<tr class="odd">
+<td>Scales</td>
+<td><code>scale</code>, <code>scaleX</code>, <code>scaleY</code>, <code>scaleColor</code>, <code>scaleFill</code>, <code>scaleSize</code>, <code>scaleShape</code>, <code>scaleOpacity</code>, <code>scaleLinetype</code>, <code>xlim</code>, <code>ylim</code></td>
+</tr>
+<tr class="even">
+<td>Coordinates and facets</td>
+<td><code>coordFlip</code>, <code>coordCartesian</code>, <code>facetWrap</code>, <code>facetGrid</code></td>
+</tr>
+<tr class="odd">
+<td>Labels, theme, size</td>
+<td><code>labs</code>, <code>title</code>, <code>theme</code>, <code>size</code>, <code>width</code>, <code>height</code>, <code>description</code></td>
+</tr>
+<tr class="even">
+<td>Interaction</td>
+<td><code>tooltip</code>, <code>interactive</code>, <code>brush</code>, <code>highlight</code>, <code>slider</code>, <code>dropdown</code>, <code>param</code>, <code>select</code></td>
+</tr>
+<tr class="odd">
+<td>Escape hatches</td>
+<td><code>transform</code>, <code>raw</code>, <code>apply</code></td>
+</tr>
+<tr class="even">
+<td>Output</td>
+<td><code>toArray</code>, <code>toJson</code>, <code>toSpec</code>, <code>embed</code>, <code>html</code>, <code>svg</code>, <code>png</code>, <code>pdf</code>, <code>save</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aesthetics" class="level2">
+<h2 class="anchored" data-anchor-id="aesthetics">Aesthetics</h2>
+<p><code>x</code>, <code>y</code>, <code>xmin</code>, <code>xmax</code>, <code>ymin</code>, <code>ymax</code>, <code>xend</code>, <code>yend</code>, <code>color</code> (or <code>colour</code>), <code>fill</code>, <code>size</code>, <code>shape</code>, <code>opacity</code> (or <code>alpha</code>), <code>linetype</code>, <code>group</code>, <code>detail</code>, <code>tooltip</code>, <code>label</code> (or <code>text</code>), <code>order</code>, <code>href</code>, <code>theta</code>, <code>radius</code>, <code>xintercept</code>, <code>yintercept</code>, <code>sample</code>, <code>key</code>, and <code>description</code>.</p>
+</section>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
+<p>The <code>Phiz\</code> namespace provides:</p>
+<ul>
+<li>Construction: <code>aes</code>, <code>ggplot</code>, <code>field</code>, <code>factor</code>, <code>calc</code>, and <code>expr</code>.</li>
+<li>Every geom as <code>geom_*</code>, plus <code>stat_ecdf</code>, <code>stat_qq</code>, and <code>stat_qq_line</code>.</li>
+<li>Scales: <code>scale_x_continuous</code>, <code>scale_x_log10</code>, <code>scale_x_sqrt</code>, <code>scale_x_reverse</code>, <code>scale_x_date</code>, and their <code>y</code> versions, plus <code>scale_color</code>, <code>scale_fill</code>, <code>scale_*_manual</code>, <code>scale_*_scheme</code>, <code>scale_*_viridis</code>, <code>scale_*_brewer</code>, <code>scale_*_gradient</code>, <code>scale_*_gradient2</code>, <code>scale_size</code>, <code>scale_shape</code>, <code>scale_alpha</code>, and <code>scale_linetype</code>.</li>
+<li>Layout and labels: <code>xlim</code>, <code>ylim</code>, <code>coord_flip</code>, <code>coord_cartesian</code>, <code>facet_wrap</code>, <code>facet_grid</code>, <code>labs</code>, <code>ggtitle</code>, <code>xlab</code>, and <code>ylab</code>.</li>
+<li>Themes and size: <code>theme</code>, the <code>theme_*</code> presets, and <code>size</code>.</li>
+<li>Interaction: <code>tooltip</code>, <code>interactive</code>, <code>brush</code>, and <code>highlight</code>.</li>
+<li>Statistics: <code>coefplot</code>, <code>residual_plot</code>, <code>qq_plot</code>, <code>fitted_plot</code>, <code>scale_location_plot</code>, <code>diagnostic_plots</code>, <code>effect_plot</code>, <code>predictions</code>, <code>marginal_means</code>, <code>random_effects_plot</code>, and <code>interval_plot</code>.</li>
+</ul>
+</section>
+<section id="other-classes" class="level2">
+<h2 class="anchored" data-anchor-id="other-classes">Other classes</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Compose</code></td>
+<td><code>beside</code>, <code>stack</code>, and <code>grid</code> compositions</td>
+</tr>
+<tr class="even">
+<td><code>Data</code></td>
+<td><code>from</code>, <code>url</code>, and <code>named</code> data sources</td>
+</tr>
+<tr class="odd">
+<td><code>Field</code></td>
+<td>field definitions and shorthand parsing</td>
+</tr>
+<tr class="even">
+<td><code>Scale</code>, <code>Theme</code>, <code>Style</code></td>
+<td>scale, theme, and style translation</td>
+</tr>
+<tr class="odd">
+<td><code>Palette</code></td>
+<td>ggplot2’s hue palette and R’s <code>hcl()</code> colors</td>
+</tr>
+<tr class="even">
+<td><code>Html</code>, <code>Assets</code></td>
+<td>HTML output and the pinned browser libraries</td>
+</tr>
+<tr class="odd">
+<td><code>Export</code></td>
+<td>vl-convert export</td>
+</tr>
+<tr class="even">
+<td><code>Datasets</code></td>
+<td><code>mpg</code>, <code>mtcars</code>, <code>economics</code>, and <code>faithful</code></td>
+</tr>
+<tr class="odd">
+<td><code>Bin</code></td>
+<td>histograms, 2D and hexagonal bins, LTTB downsampling, and sampling in PHP</td>
+</tr>
+<tr class="even">
+<td><code>Config</code></td>
+<td>large-data thresholds: <code>$serverRows</code> and <code>$warnRows</code></td>
+</tr>
+<tr class="odd">
+<td><code>Stats\Charts</code></td>
+<td>the statistics helpers</td>
+</tr>
+<tr class="even">
+<td><code>Stats\Fit</code></td>
+<td>least squares, smoothing bands, and normal and t quantiles</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>

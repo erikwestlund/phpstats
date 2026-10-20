@@ -1,0 +1,66 @@
+<p>phibble separates what a pipeline does from where it runs. Every verb is part of the <code>Phibble\Contracts\Table</code> interface, and three classes implement it:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Backend</th>
+<th>Class</th>
+<th>Runs</th>
+<th>Use it for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>In memory</td>
+<td><code>Phibble\DataFrame</code></td>
+<td>PHP arrays</td>
+<td>Small and medium data, closures, anything</td>
+</tr>
+<tr class="even">
+<td>SQL</td>
+<td><code>Phibble\Sql\SqlTable</code></td>
+<td>SQLite, PostgreSQL, or MySQL</td>
+<td>Data that lives in a database</td>
+</tr>
+<tr class="odd">
+<td>Polars</td>
+<td><code>Phibble\Polars\PolarsTable</code></td>
+<td>Polars, through the php_polars extension</td>
+<td>Large data in memory</td>
+</tr>
+</tbody>
+</table>
+<p>Code written against <code>Table</code>, including phplyr’s verbs, runs on any of them. A pipeline gives the same result on each backend, because a backend that cannot run a step exactly (a PHP closure, or a function with no exact translation) hands that step to <code>DataFrame</code> and continues. The <a href="phpstats://phibble/docs/contract">Table contract</a> page states the rules each backend follows.</p>
+<section id="choosing-and-switching" class="level2">
+<h2 class="anchored" data-anchor-id="choosing-and-switching">Choosing and switching</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> Phibble\DataFrame<span class="ot">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="kw">function</span> Phibble\{tbl<span class="ot">,</span> polars}<span class="ot">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="kw">function</span> Phibble\Expr\{col<span class="ot">,</span> mean<span class="ot">,</span> n}<span class="ot">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="va">$frame</span> <span class="op">=</span> DataFrame::fromCsv(<span class="st">'sales.csv'</span>)<span class="ot">;</span>      <span class="co">// in memory</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">$sql</span> <span class="op">=</span> tbl(<span class="va">$pdo</span><span class="ot">,</span> <span class="st">'sales'</span>)<span class="ot">;</span>                     <span class="co">// in the database</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="va">$fast</span> <span class="op">=</span> polars(<span class="va">$frame</span>)<span class="ot">;</span>                        <span class="co">// in Polars</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="va">$summary</span> <span class="op">=</span> <span class="kw">fn</span> (<span class="va">$t</span>) =&gt; <span class="va">$t</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(col(<span class="st">'units'</span>)-&gt;gt(<span class="dv">0</span>))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    -&gt;groupBy([<span class="st">'store'</span>])</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    -&gt;summarise([<span class="st">'n'</span> =&gt; n()<span class="ot">,</span> <span class="st">'avg'</span> =&gt; mean(col(<span class="st">'price'</span>))])<span class="ot">;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="va">$summary</span>(<span class="va">$frame</span>)<span class="ot">;</span>             <span class="co">// a DataFrame</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="va">$summary</span>(<span class="va">$sql</span>)-&gt;collect()<span class="ot">;</span>    <span class="co">// runs as one SQL query</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="va">$summary</span>(<span class="va">$fast</span>)-&gt;collect()<span class="ot">;</span>   <span class="co">// runs in Polars</span></span></code></pre></div></div>
+<p><code>collect()</code> turns any table into a <code>DataFrame</code>. <code>PolarsTable::fromTable()</code> and <code>polars()</code> move a table into Polars; <code>tbl()</code> opens a database table or query.</p>
+</section>
+<section id="the-polars-backend" class="level2">
+<h2 class="anchored" data-anchor-id="the-polars-backend">The Polars backend</h2>
+<p>The Polars backend needs the php_polars extension from <a href="https://github.com/phpstats/phpolars">phpolars</a>. phibble does not require it: <code>composer.json</code> lists it as a suggestion, and the class is only loaded when used. Expressions, joins (including <code>join_by</code> comparisons and rolling joins), pivots, and the lubridate and stringr functions run natively in Polars. Steps it cannot run, such as PHP closures and <code>str_to_title()</code>, run in <code>DataFrame</code>. <code>PolarsTable::$fallbacks</code> counts those steps.</p>
+<p>Two kinds of list-column stay in <code>DataFrame</code>. Polars stores named arrays as structs, which have every key in every row, so <code>fromTable()</code> throws when a list-column holds named arrays with different keys. A list-column of <code>DataFrame</code>s cannot be stored in Polars either.</p>
+<p>The Polars test suite runs phibble’s dplyr, tidyr, lubridate, and stringr reference cases on <code>PolarsTable</code> and skips when the extension is not loaded.</p>
+
+
+</section>

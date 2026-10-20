@@ -1,0 +1,53 @@
+<section id="tests" class="level2">
+<h2 class="anchored" data-anchor-id="tests">Tests</h2>
+<p>The test suite uses Pest and runs on PHP 8.3, 8.4, and 8.5. Tests that use the <code>|&gt;</code> operator are in <code>tests/Php85</code>, which <code>phpunit.xml</code> loads only on PHP 8.5:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">composer</span> install</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> vendor/bin/pest</span></code></pre></div></div>
+<p>The tests that fit models need the phit extension and are skipped without it. To run them, load the extension:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-d</span> extension=/path/to/libphit.dylib vendor/bin/pest</span></code></pre></div></div>
+</section>
+<section id="comparing-with-r" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-with-r">Comparing with R</h2>
+<p>Many tests compare phibble with R. Scripts in <code>tests/r/</code> run the same operations in R and write the expected results to <code>tests/fixtures/</code>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Script</th>
+<th>Checks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tests/r/print.R</code></td>
+<td>Printing and <code>glimpse()</code> against tibble.</td>
+</tr>
+<tr class="even">
+<td><code>tests/r/io.R</code></td>
+<td>CSV reading and writing against readr.</td>
+</tr>
+<tr class="odd">
+<td><code>tests/r/expr.R</code></td>
+<td>Expressions against dplyr.</td>
+</tr>
+</tbody>
+</table>
+<p>The fixtures are committed, so the tests do not need R. After changing a script, regenerate its fixtures from the repository root, for example with <code>Rscript tests/r/expr.R</code>. The scripts need the tibble, readr, dplyr, stringr, and jsonlite packages.</p>
+</section>
+<section id="database-tests" class="level2">
+<h2 class="anchored" data-anchor-id="database-tests">Database tests</h2>
+<p><code>tests/SqlTest.php</code> runs against an in-memory SQLite database. It also runs against PostgreSQL and MySQL when these environment variables hold PDO DSNs:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PHIBBLE_TEST_PGSQL</span><span class="op">=</span><span class="st">"pgsql:host=127.0.0.1;port=5432;dbname=postgres"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PHIBBLE_TEST_PGSQL_USER</span><span class="op">=</span>postgres</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PHIBBLE_TEST_MYSQL</span><span class="op">=</span><span class="st">"mysql:host=127.0.0.1;port=3306"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PHIBBLE_TEST_MYSQL_USER</span><span class="op">=</span>root</span></code></pre></div></div>
+<p><code>PHIBBLE_TEST_PGSQL_PASSWORD</code> and <code>PHIBBLE_TEST_MYSQL_PASSWORD</code> set passwords. The tests only run <code>SELECT</code> statements over inline data and create no tables.</p>
+</section>
+<section id="documentation" class="level2">
+<h2 class="anchored" data-anchor-id="documentation">Documentation</h2>
+<p>The site is a Quarto project in <code>docs/</code>. Every example is a PHP file in <code>docs/examples/</code>. <code>bin/docs-examples</code> runs each example with <code>docs/data</code> as the working directory and writes its code and output to <code>docs/examples/_&lt;name&gt;.md</code>, which the pages include. Quarto never runs PHP.</p>
+<p><code>bin/render-docs</code> refreshes the examples, renders the site, and copies the result into <code>docs/</code> for GitHub Pages:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>php85 <span class="ex">bin/render-docs</span></span></code></pre></div></div>
+<p><code>bin/docs-examples name</code> refreshes one example. Set <code>QUARTO</code> when the <code>quarto</code> command is not on the path.</p>
+
+
+</section>

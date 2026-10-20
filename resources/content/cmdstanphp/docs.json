@@ -1,0 +1,240 @@
+{
+    "nav": [
+        {
+            "title": "Overview",
+            "path": "index"
+        },
+        {
+            "title": "Installation",
+            "path": "installation"
+        },
+        {
+            "title": "Inference guide",
+            "path": "inference"
+        },
+        {
+            "title": "API reference",
+            "path": "api"
+        },
+        {
+            "title": "Compatibility contract",
+            "path": "compatibility"
+        },
+        {
+            "title": "Testing and GitHub Pages",
+            "path": "testing"
+        }
+    ],
+    "pages": {
+        "api": {
+            "title": "API reference",
+            "headings": [
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "global-options",
+                    "text": "Global options",
+                    "level": 3
+                },
+                {
+                    "id": "model-methods",
+                    "text": "Model methods",
+                    "level": 2
+                },
+                {
+                    "id": "shared-options",
+                    "text": "Shared options",
+                    "level": 3
+                },
+                {
+                    "id": "method-specific-options",
+                    "text": "Method-specific options",
+                    "level": 3
+                },
+                {
+                    "id": "fit-methods",
+                    "text": "Fit methods",
+                    "level": 2
+                },
+                {
+                    "id": "model-methods-1",
+                    "text": "Model methods",
+                    "level": 3
+                },
+                {
+                    "id": "method-specific-fit-methods",
+                    "text": "Method-specific fit methods",
+                    "level": 3
+                },
+                {
+                    "id": "statistics-helpers",
+                    "text": "Statistics helpers",
+                    "level": 3
+                },
+                {
+                    "id": "data-frames-and-the-phpstats-family",
+                    "text": "Data frames and the phpstats family",
+                    "level": 2
+                },
+                {
+                    "id": "data-in",
+                    "text": "Data in",
+                    "level": 3
+                },
+                {
+                    "id": "regression-data",
+                    "text": "Regression data",
+                    "level": 3
+                },
+                {
+                    "id": "draws-and-summaries-out",
+                    "text": "Draws and summaries out",
+                    "level": 3
+                },
+                {
+                    "id": "part-of-the-phpstats-family",
+                    "text": "Part of the phpstats family",
+                    "level": 3
+                },
+                {
+                    "id": "errors",
+                    "text": "Errors",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "compatibility": {
+            "title": "Compatibility contract",
+            "headings": [
+                {
+                    "id": "supported-workflows",
+                    "text": "Supported workflows",
+                    "level": 2
+                },
+                {
+                    "id": "php-adaptations",
+                    "text": "PHP adaptations",
+                    "level": 2
+                },
+                {
+                    "id": "not-implemented",
+                    "text": "Not implemented",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "index": {
+            "title": "CmdStanPHP",
+            "headings": [],
+            "math": false
+        },
+        "inference": {
+            "title": "Inference guide",
+            "headings": [
+                {
+                    "id": "mcmc",
+                    "text": "MCMC",
+                    "level": 2
+                },
+                {
+                    "id": "initialization-from-fits",
+                    "text": "Initialization from fits",
+                    "level": 2
+                },
+                {
+                    "id": "optimization-and-laplace",
+                    "text": "Optimization and Laplace",
+                    "level": 2
+                },
+                {
+                    "id": "advi-and-pathfinder",
+                    "text": "ADVI and Pathfinder",
+                    "level": 2
+                },
+                {
+                    "id": "generated-quantities-and-fixed-parameters",
+                    "text": "Generated quantities and fixed parameters",
+                    "level": 2
+                },
+                {
+                    "id": "diagnostics-and-log-density",
+                    "text": "Diagnostics and log density",
+                    "level": 2
+                },
+                {
+                    "id": "model-methods-and-stan-functions",
+                    "text": "Model methods and Stan functions",
+                    "level": 2
+                },
+                {
+                    "id": "loo-and-waic",
+                    "text": "LOO and WAIC",
+                    "level": 2
+                },
+                {
+                    "id": "moment-matching",
+                    "text": "Moment matching",
+                    "level": 3
+                },
+                {
+                    "id": "figures",
+                    "text": "Figures",
+                    "level": 2
+                },
+                {
+                    "id": "results-and-persistence",
+                    "text": "Results and persistence",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "installation": {
+            "title": "Installation",
+            "headings": [
+                {
+                    "id": "package-setup",
+                    "text": "Package setup",
+                    "level": 2
+                },
+                {
+                    "id": "cmdstan-selection",
+                    "text": "CmdStan selection",
+                    "level": 2
+                },
+                {
+                    "id": "compile-a-model",
+                    "text": "Compile a model",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "testing": {
+            "title": "Testing and GitHub Pages",
+            "headings": [
+                {
+                    "id": "local-verification",
+                    "text": "Local verification",
+                    "level": 2
+                },
+                {
+                    "id": "continuous-integration",
+                    "text": "Continuous integration",
+                    "level": 2
+                },
+                {
+                    "id": "documentation-site",
+                    "text": "Documentation site",
+                    "level": 2
+                }
+            ],
+            "math": false
+        }
+    }
+}

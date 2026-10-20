@@ -1,0 +1,31 @@
+<section id="tests" class="level2">
+<h2 class="anchored" data-anchor-id="tests">Tests</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">composer</span> test</span></code></pre></div></div>
+<p>The suite runs with Pest and covers several layers:</p>
+<ul>
+<li>Spec snapshots for every geom, feature, statistics helper, and gallery example, in <code>tests/.pest/snapshots/</code>. After an intended change, run <code>vendor/bin/pest --update-snapshots</code> and review the diff.</li>
+<li>Validation of every specification against the pinned Vega-Lite 6.1.0 JSON schema in <code>tests/fixtures/</code>.</li>
+<li>Numerical checks of quantiles, least squares, smoothing bands, and predictions against values from R.</li>
+<li>Blade component tests on Orchestra Testbench.</li>
+<li>When vl-convert is available, a render of every gallery example to SVG. Some specifications pass the schema but fail to compile, and this smoke test catches them.</li>
+</ul>
+<p>Tests that need the php_stats extension skip when it is not loaded. The saved fits in <code>tests/fixtures/fits.json</code> cover the rest.</p>
+</section>
+<section id="gallery" class="level2">
+<h2 class="anchored" data-anchor-id="gallery">Gallery</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> examples/gallery.php <span class="pp">[</span><span class="ss">output.html</span><span class="pp">]</span> <span class="pp">[--</span><span class="ss">svg=dir</span><span class="pp">]</span></span></code></pre></div></div>
+<p>The gallery writes an HTML page of every example in <code>examples/catalog.php</code>, with each example’s code. The catalog is a plain PHP array, so other projects can reuse it.</p>
+</section>
+<section id="documentation" class="level2">
+<h2 class="anchored" data-anchor-id="documentation">Documentation</h2>
+<p>The documentation is a Quarto website in <code>docs/</code>. The pages include generated fragments for their examples:</p>
+<ol type="1">
+<li>Each file in <code>docs/examples/</code> returns a chart.</li>
+<li><code>php scripts/docs-examples.php</code> runs every example. For each one it writes the code and the resulting specification to <code>docs/_generated/</code>, and an SVG to <code>docs/figures/</code>. It also copies the gallery.</li>
+<li><code>quarto render docs</code> builds the site into <code>docs/_site/</code>.</li>
+<li><code>scripts/render-docs</code> runs steps 2 and 3, then copies the site into <code>docs/</code> for GitHub Pages.</li>
+</ol>
+<p>Some statistics examples build designs from model formulas with <code>stats_model_matrix()</code>, so the documentation build loads the php_stats extension: <code>PHP="php -d extension=/path/to/php_stats" scripts/render-docs</code>.</p>
+
+
+</section>

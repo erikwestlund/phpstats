@@ -90,8 +90,8 @@
             "title": "Deployment",
             "headings": [
                 {
-                    "id": "installing-with-pie",
-                    "text": "Installing with PIE",
+                    "id": "installing",
+                    "text": "Installing",
                     "level": 2
                 },
                 {

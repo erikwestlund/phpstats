@@ -1,0 +1,513 @@
+<p><code>Phibble\Expr</code> describes a computation over columns as a tree of objects. The in-memory <code>DataFrame</code> evaluates the tree, <code>SqlTable</code> compiles it to SQL, and phpolars maps it to Polars expressions. An expression gives the same result on each backend because every backend implements the same list of functions with R’s semantics.</p>
+<p>A PHP closure can only be run. An expression can also be inspected, translated, and serialized. phibble’s verbs accept either, and a backend that cannot run a closure itself loads the rows and runs it in memory.</p>
+<section id="building-expressions" class="level2">
+<h2 class="anchored" data-anchor-id="building-expressions">Building expressions</h2>
+<p>An expression has four kinds of nodes:</p>
+<ul>
+<li><code>Col</code> reads a column: <code>col('price')</code>.</li>
+<li><code>Lit</code> holds a literal value: <code>lit(3)</code>, <code>lit('north')</code>, a date, or a list of values for <code>in</code>.</li>
+<li><code>Call</code> applies a registered function to arguments.</li>
+<li><code>Desc</code> marks a sort key or ranking as descending.</li>
+</ul>
+<p>Methods on any expression build operator calls. Arguments that are not expressions are wrapped in <code>lit()</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Operator</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>add</code>, <code>sub</code>, <code>mul</code>, <code>div</code>, <code>mod</code>, <code>pow</code></td>
+<td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%%</code>, <code>^</code></td>
+</tr>
+<tr class="even">
+<td><code>neg</code></td>
+<td>unary minus</td>
+</tr>
+<tr class="odd">
+<td><code>eq</code>, <code>ne</code>, <code>lt</code>, <code>le</code>, <code>gt</code>, <code>ge</code></td>
+<td><code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code></td>
+</tr>
+<tr class="even">
+<td><code>and</code>, <code>or</code>, <code>not</code></td>
+<td><code>&amp;</code>, <code>|</code>, <code>!</code></td>
+</tr>
+<tr class="odd">
+<td><code>isNa()</code></td>
+<td><code>is.na()</code></td>
+</tr>
+<tr class="even">
+<td><code>isIn([...])</code></td>
+<td><code>%in%</code></td>
+</tr>
+<tr class="odd">
+<td><code>between($low, $high)</code></td>
+<td><code>between()</code></td>
+</tr>
+<tr class="even">
+<td><code>desc()</code></td>
+<td><code>desc()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Functions in the <code>Phibble\Expr</code> namespace build the other calls. Options are named arguments, as in <code>mean(col('x'), na_rm: true)</code> or <code>lag(col('x'), n: 2, default: 0)</code>. <code>var_()</code> stands for <code>var()</code>, which is a reserved word in PHP. <code>call('name', ...)</code> builds a call to any registered function by name.</p>
+<p><code>columns()</code> lists the columns an expression reads, and <code>toArray()</code> returns the tree as plain arrays:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$heavy</span> <span class="op">=</span> col(<span class="st">'body_mass'</span>)-&gt;gt(<span class="dv">5000</span>)-&gt;<span class="op">and</span>(col(<span class="st">'species'</span>)-&gt;isIn([<span class="st">'Gentoo'</span><span class="ot">,</span> <span class="st">'Chinstrap'</span>]))<span class="ot">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">json_encode</span>(<span class="va">$heavy</span>-&gt;toArray()<span class="ot">,</span> <span class="cn">JSON_PRETTY_PRINT</span>)<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">json_encode</span>(<span class="va">$heavy</span>-&gt;columns())<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span></code></pre></div></div>
+<pre class="text output"><code>{
+    "type": "call",
+    "fn": "&amp;",
+    "args": [
+        {
+            "type": "call",
+            "fn": "&gt;",
+            "args": [
+                {
+                    "type": "col",
+                    "name": "body_mass"
+                },
+                {
+                    "type": "lit",
+                    "value": 5000
+                }
+            ]
+        },
+        {
+            "type": "call",
+            "fn": "in",
+            "args": [
+                {
+                    "type": "col",
+                    "name": "species"
+                },
+                {
+                    "type": "lit",
+                    "value": [
+                        "Gentoo",
+                        "Chinstrap"
+                    ]
+                }
+            ]
+        }
+    ]
+}
+["body_mass","species"]</code></pre>
+</section>
+<section id="using-expressions-with-verbs" class="level2">
+<h2 class="anchored" data-anchor-id="using-expressions-with-verbs">Using expressions with verbs</h2>
+<p>Each verb evaluates expressions per group:</p>
+<ul>
+<li><code>filter()</code> keeps rows where the expression is true. NA counts as false.</li>
+<li><code>mutate()</code> adds a column with one value per row. An aggregate such as <code>mean()</code> gives one value per group, which is repeated for each row of the group.</li>
+<li><code>summarise()</code> needs one value per group. Anything else throws a <code>LengthException</code>.</li>
+<li><code>arrange()</code> sorts by expressions over the whole table, ignoring groups. Wrap a key in <code>desc()</code> to sort it in descending order.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$penguins</span> <span class="op">=</span> DataFrame::fromCsv(<span class="st">'penguins.csv'</span>)<span class="ot">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">$out</span> <span class="op">=</span> <span class="va">$penguins</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(is_na(col(<span class="st">'body_mass'</span>))-&gt;not())</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    -&gt;groupBy([<span class="st">'species'</span>])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    -&gt;mutate([</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'z'</span> =&gt; col(<span class="st">'body_mass'</span>)-&gt;sub(mean(col(<span class="st">'body_mass'</span>)))-&gt;div(sd(col(<span class="st">'body_mass'</span>)))<span class="ot">,</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'rank'</span> =&gt; min_rank(desc(col(<span class="st">'body_mass'</span>)))<span class="ot">,</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'size'</span> =&gt; case_when(</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            col(<span class="st">'body_mass'</span>)-&gt;ge(<span class="dv">5000</span>)<span class="ot">,</span> <span class="st">'large'</span><span class="ot">,</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            col(<span class="st">'body_mass'</span>)-&gt;ge(<span class="dv">3500</span>)<span class="ot">,</span> <span class="st">'medium'</span><span class="ot">,</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">default</span><span class="ot">:</span> <span class="st">'small'</span><span class="ot">,</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        )<span class="ot">,</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(col(<span class="st">'rank'</span>)-&gt;le(<span class="dv">2</span>))</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    -&gt;select([<span class="st">'species'</span><span class="ot">,</span> <span class="st">'body_mass'</span><span class="ot">,</span> <span class="st">'z'</span><span class="ot">,</span> <span class="st">'rank'</span><span class="ot">,</span> <span class="st">'size'</span>])<span class="ot">;</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$out</span><span class="ot">;</span></span></code></pre></div></div>
+<pre class="text output"><code># A tibble: 6 × 5
+# Groups:   species [3]
+  species   body_mass     z  rank size  
+  &lt;chr&gt;         &lt;int&gt; &lt;dbl&gt; &lt;int&gt; &lt;chr&gt; 
+1 Adelie         4725  2.23     2 medium
+2 Adelie         4775  2.34     1 medium
+3 Gentoo         6300  2.43     1 large 
+4 Gentoo         6050  1.93     2 large 
+5 Chinstrap      4550  2.13     2 medium
+6 Chinstrap      4800  2.78     1 medium</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">$penguins</span> <span class="op">=</span> DataFrame::fromCsv(<span class="st">'penguins.csv'</span>)<span class="ot">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$penguins</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    -&gt;groupBy([<span class="st">'island'</span>])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    -&gt;summarise([</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'n'</span> =&gt; n()<span class="ot">,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'mass'</span> =&gt; mean(col(<span class="st">'body_mass'</span>))<span class="ot">,</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'mass_rm'</span> =&gt; mean(col(<span class="st">'body_mass'</span>)<span class="ot">,</span> na_rm<span class="ot">:</span> <span class="kw">true</span>)<span class="ot">,</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'q90'</span> =&gt; quantile(col(<span class="st">'body_mass'</span>)<span class="ot">,</span> <span class="fl">0.9</span><span class="ot">,</span> na_rm<span class="ot">:</span> <span class="kw">true</span>)<span class="ot">,</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'species'</span> =&gt; n_distinct(col(<span class="st">'species'</span>))<span class="ot">,</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'any_heavy'</span> =&gt; any(col(<span class="st">'body_mass'</span>)-&gt;gt(<span class="dv">6000</span>)<span class="ot">,</span> na_rm<span class="ot">:</span> <span class="kw">true</span>)<span class="ot">,</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    ])<span class="ot">;</span></span></code></pre></div></div>
+<pre class="text output"><code># A tibble: 3 × 7
+  island        n  mass mass_rm   q90 species any_heavy
+  &lt;chr&gt;     &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;int&gt; &lt;lgl&gt;    
+1 Biscoe      168   NA    4716.  5670       2 TRUE     
+2 Dream       124 3713.   3713.  4300       2 FALSE    
+3 Torgersen    52   NA    3706.  4300       1 FALSE</code></pre>
+</section>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
+<p>The registry in <code>Phibble\Expr\Functions::REGISTRY</code> lists every function an expression may call, with its arguments and options. Calling anything else throws when the expression is built.</p>
+<section id="scalar-functions" class="level3">
+<h3 class="anchored" data-anchor-id="scalar-functions">Scalar functions</h3>
+<p>Scalar functions return one value per row.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>is_na(x)</code></td>
+<td>True for NA and NaN.</td>
+</tr>
+<tr class="even">
+<td><code>if_else(cond, true, false, missing:)</code></td>
+<td><code>missing</code> is used where <code>cond</code> is NA.</td>
+</tr>
+<tr class="odd">
+<td><code>case_when(c1, v1, c2, v2, ..., default:)</code></td>
+<td>The first true condition wins. NA conditions count as false.</td>
+</tr>
+<tr class="even">
+<td><code>coalesce(x, y, ...)</code></td>
+<td>The first non-NA value.</td>
+</tr>
+<tr class="odd">
+<td><code>x-&gt;isIn([...])</code></td>
+<td>Never NA. NA is in the set only if NA is listed.</td>
+</tr>
+<tr class="even">
+<td><code>between(x, low, high)</code></td>
+<td>Inclusive. NA if any argument is NA.</td>
+</tr>
+<tr class="odd">
+<td><code>na_if(x, y)</code></td>
+<td>NA where <code>x == y</code>.</td>
+</tr>
+<tr class="even">
+<td><code>near(x, y, tol:)</code></td>
+<td>Equality within a tolerance.</td>
+</tr>
+<tr class="odd">
+<td><code>abs</code>, <code>sqrt</code>, <code>exp</code>, <code>log(x, base:)</code>, <code>log10</code>, <code>floor</code>, <code>ceiling</code></td>
+<td>Math functions.</td>
+</tr>
+<tr class="even">
+<td><code>round(x, digits:)</code></td>
+<td>Rounds as R 4 does.</td>
+</tr>
+<tr class="odd">
+<td><code>as_int</code>, <code>as_float</code>, <code>as_string</code>, <code>as_bool</code></td>
+<td>Casts with R’s <code>as.*()</code> rules.</td>
+</tr>
+<tr class="even">
+<td><code>paste0(...)</code>, <code>paste(..., sep:)</code></td>
+<td>NA becomes the text <code>NA</code>, as in R.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="text-functions-stringr" class="level3">
+<h3 class="anchored" data-anchor-id="text-functions-stringr">Text functions (stringr)</h3>
+<p>As in stringr, a pattern given as text is a regular expression. phibble uses PCRE and matches by Unicode character; stringr uses ICU, and the two agree on common patterns. <code>fixed('...')</code> matches the text literally, and <code>regex('...', ignore_case: true)</code> sets options.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>str_detect</code>, <code>str_starts</code>, <code>str_ends</code> (with <code>negate:</code>)</td>
+<td><code>str_starts</code> and <code>str_ends</code> anchor the pattern.</td>
+</tr>
+<tr class="even">
+<td><code>str_count(x, pattern)</code></td>
+<td>Non-overlapping matches.</td>
+</tr>
+<tr class="odd">
+<td><code>str_extract(x, pattern)</code></td>
+<td>The first match, or NA.</td>
+</tr>
+<tr class="even">
+<td><code>str_extract_all(x, pattern)</code>, <code>str_split(x, pattern)</code></td>
+<td>A list-column. NA gives a list holding NA.</td>
+</tr>
+<tr class="odd">
+<td><code>str_split_i(x, pattern, i)</code></td>
+<td>The i-th piece; negative <code>i</code> counts from the end; NA when out of range.</td>
+</tr>
+<tr class="even">
+<td><code>str_replace</code>, <code>str_replace_all</code></td>
+<td><code>\1</code> in the replacement refers to a group. An NA replacement gives NA where the pattern matches.</td>
+</tr>
+<tr class="odd">
+<td><code>str_pad(x, width, side:, pad:)</code></td>
+<td><code>side</code> is <code>left</code> (default), <code>right</code>, or <code>both</code>.</td>
+</tr>
+<tr class="even">
+<td><code>str_trunc(x, width, side:, ellipsis:)</code></td>
+<td><code>side</code> is <code>right</code> (default), <code>left</code>, or <code>center</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>str_to_upper</code>, <code>str_to_lower</code>, <code>str_to_title</code>, <code>str_squish</code></td>
+<td>Title case capitalizes after a hyphen but not after an apostrophe, as ICU does.</td>
+</tr>
+<tr class="even">
+<td><code>str_length</code>, <code>str_trim(x, side:)</code>, <code>str_sub(x, start, end)</code></td>
+<td><code>str_sub</code> is 1-based and inclusive; negative positions count from the end.</td>
+</tr>
+<tr class="odd">
+<td><code>str_lower</code>, <code>str_upper</code></td>
+<td>Aliases of <code>str_to_lower</code> and <code>str_to_upper</code>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dates-and-times-lubridate" class="level3">
+<h3 class="anchored" data-anchor-id="dates-and-times-lubridate">Dates and times (lubridate)</h3>
+<p>Date functions accept dates and datetimes, and a date stays a date: results such as <code>floor_date(d, 'month')</code> or <code>d + days(1)</code> are dates when <code>d</code> is.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ymd</code>, <code>dmy</code>, <code>mdy</code>, <code>ymd_hms</code>, <code>dmy_hms</code>, <code>mdy_hms</code> (with <code>tz:</code>)</td>
+<td>Parse text. Separators are optional; invalid input gives NA.</td>
+</tr>
+<tr class="even">
+<td><code>parse_date_time(x, orders, tz:)</code></td>
+<td>Orders made of <code>Y</code>, <code>y</code>, <code>m</code>, <code>d</code>, <code>H</code>, <code>M</code>, and <code>S</code>, such as <code>'Ymd HMS'</code>; the first that fits wins.</td>
+</tr>
+<tr class="odd">
+<td><code>year</code>, <code>month</code>, <code>day</code>, <code>yday</code>, <code>quarter</code>, <code>hour</code>, <code>minute</code>, <code>second</code></td>
+<td>Parts as numbers.</td>
+</tr>
+<tr class="even">
+<td><code>wday(x, week_start:)</code></td>
+<td>1 is Sunday by default, as in lubridate; <code>week_start: 1</code> makes Monday 1.</td>
+</tr>
+<tr class="odd">
+<td><code>floor_date</code>, <code>ceiling_date</code>, <code>round_date</code> (<code>x, unit, week_start:</code>)</td>
+<td>Units from <code>second</code> to <code>year</code>, with multiples such as <code>'15 minutes'</code>. <code>ceiling_date</code> moves a date that is already on a boundary to the next one, as lubridate does for dates.</td>
+</tr>
+<tr class="even">
+<td><code>seconds</code>, <code>minutes</code>, <code>hours</code>, <code>days</code>, <code>weeks</code>, <code>months</code>, <code>years</code></td>
+<td>Periods, used as <code>col('d')-&gt;add(months(1))</code>. Month and year arithmetic that lands on a date that does not exist gives NA.</td>
+</tr>
+<tr class="odd">
+<td><code>difftime(x, y, units:)</code></td>
+<td>A number in <code>secs</code>, <code>mins</code>, <code>hours</code>, <code>days</code> (default), or <code>weeks</code>. <code>date - date</code> gives days and <code>datetime - datetime</code> seconds.</td>
+</tr>
+<tr class="even">
+<td><code>with_tz(x, tz)</code>, <code>force_tz(x, tz)</code></td>
+<td>The same instant in another zone; the same clock time in another zone (NA for a time the zone skips).</td>
+</tr>
+<tr class="odd">
+<td><code>today(tz:)</code>, <code>now(tz:)</code></td>
+<td>Read <code>Phibble\Expr\Clock</code>, which tests can freeze.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="aggregates" class="level3">
+<h3 class="anchored" data-anchor-id="aggregates">Aggregates</h3>
+<p>An aggregate returns one value per group. Each takes <code>na_rm:</code>, which is false by default, so an aggregate over a group containing NA returns NA unless <code>na_rm: true</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>n()</code></td>
+<td>Rows in the group.</td>
+</tr>
+<tr class="even">
+<td><code>sum</code>, <code>mean</code>, <code>median</code>, <code>min</code>, <code>max</code></td>
+<td><code>sum</code> of no values is 0 and <code>mean</code> is NaN.</td>
+</tr>
+<tr class="odd">
+<td><code>sd</code>, <code>var_</code></td>
+<td>Sample statistics, with <code>n - 1</code>.</td>
+</tr>
+<tr class="even">
+<td><code>quantile(x, p)</code>, <code>iqr(x)</code></td>
+<td>R’s default type 7. These throw on NA unless <code>na_rm: true</code>, as R does.</td>
+</tr>
+<tr class="odd">
+<td><code>n_distinct(x, ...)</code></td>
+<td>Counts NA as a value unless <code>na_rm: true</code>. Takes several columns.</td>
+</tr>
+<tr class="even">
+<td><code>first</code>, <code>last</code>, <code>nth(x, n)</code></td>
+<td>Take <code>default:</code> and <code>order_by:</code>. Negative <code>n</code> counts from the end.</td>
+</tr>
+<tr class="odd">
+<td><code>any</code>, <code>all</code></td>
+<td>Three-valued, as in R.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="window-functions" class="level3">
+<h3 class="anchored" data-anchor-id="window-functions">Window functions</h3>
+<p>A window function returns one value per row, computed over the rows of the group in row order.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>lag(x, n:, default:, order_by:)</code>, <code>lead(...)</code></td>
+<td>Shift values within the group.</td>
+</tr>
+<tr class="even">
+<td><code>row_number(x)</code></td>
+<td>Ranks with ties broken by position. Without <code>x</code>, the row’s position.</td>
+</tr>
+<tr class="odd">
+<td><code>min_rank</code>, <code>dense_rank</code>, <code>percent_rank</code>, <code>cume_dist</code></td>
+<td>NA values stay NA and are not counted. Pass <code>desc(x)</code> to rank in descending order.</td>
+</tr>
+<tr class="even">
+<td><code>ntile(x, n:)</code></td>
+<td>Splits rows into <code>n</code> groups of nearly equal size, larger groups first.</td>
+</tr>
+<tr class="odd">
+<td><code>cumsum</code>, <code>cumprod</code>, <code>cummean</code>, <code>cummin</code>, <code>cummax</code></td>
+<td>Every value after the first NA is NA.</td>
+</tr>
+<tr class="even">
+<td><code>cumall</code>, <code>cumany</code></td>
+<td>Follow dplyr’s NA rules.</td>
+</tr>
+<tr class="odd">
+<td><code>consecutive_id(...)</code></td>
+<td>Increments when any argument changes.</td>
+</tr>
+</tbody>
+</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$sales</span> <span class="op">=</span> tribble(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'store'</span><span class="ot">,</span> <span class="st">'week'</span><span class="ot">,</span> <span class="st">'units'</span>]<span class="ot">,</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'a'</span><span class="ot">,</span> <span class="dv">1</span><span class="ot">,</span> <span class="dv">10</span>]<span class="ot">,</span> [<span class="st">'a'</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">,</span> <span class="dv">14</span>]<span class="ot">,</span> [<span class="st">'a'</span><span class="ot">,</span> <span class="dv">3</span><span class="ot">,</span> <span class="dv">9</span>]<span class="ot">,</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'b'</span><span class="ot">,</span> <span class="dv">1</span><span class="ot">,</span> <span class="dv">7</span>]<span class="ot">,</span> [<span class="st">'b'</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">,</span> <span class="dv">7</span>]<span class="ot">,</span> [<span class="st">'b'</span><span class="ot">,</span> <span class="dv">3</span><span class="ot">,</span> <span class="dv">12</span>]<span class="ot">,</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$sales</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    -&gt;groupBy([<span class="st">'store'</span>])</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    -&gt;mutate([</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'prev'</span> =&gt; lag(col(<span class="st">'units'</span>))<span class="ot">,</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'change'</span> =&gt; col(<span class="st">'units'</span>)-&gt;sub(lag(col(<span class="st">'units'</span>)))<span class="ot">,</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">'running'</span> =&gt; cumsum(col(<span class="st">'units'</span>))<span class="ot">,</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">'rank'</span> =&gt; min_rank(desc(col(<span class="st">'units'</span>)))<span class="ot">,</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">'tile'</span> =&gt; ntile(col(<span class="st">'units'</span>)<span class="ot">,</span> n<span class="ot">:</span> <span class="dv">2</span>)<span class="ot">,</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    ])<span class="ot">;</span></span></code></pre></div></div>
+<pre class="text output"><code># A tibble: 6 × 8
+# Groups:   store [2]
+  store  week units  prev change running  rank  tile
+  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1 a         1    10    NA     NA      10     2     1
+2 a         2    14    10      4      24     1     2
+3 a         3     9    14     -5      33     3     1
+4 b         1     7    NA     NA       7     2     1
+5 b         2     7     7      0      14     2     1
+6 b         3    12     7      5      26     1     2</code></pre>
+</section>
+</section>
+<section id="na-and-arithmetic" class="level2">
+<h2 class="anchored" data-anchor-id="na-and-arithmetic">NA and arithmetic</h2>
+<p>Expressions follow R’s rules for missing values and arithmetic:</p>
+<ul>
+<li>Arithmetic and comparisons with NA give NA.</li>
+<li><code>&amp;</code> and <code>|</code> use three-valued logic. <code>FALSE &amp; NA</code> is false and <code>TRUE | NA</code> is true.</li>
+<li><code>/</code> and <code>^</code> always return floats. Division by zero gives <code>Inf</code>, <code>-Inf</code>, or <code>NaN</code>.</li>
+<li><code>%%</code> takes the sign of the divisor, so <code>-7 %% 3</code> is 2.</li>
+<li><code>round()</code> takes, of the two candidates, the one closer to the stored value, and an exact tie goes to the even digit. <code>round(2.5)</code> is 2, and <code>round(2.675, digits: 2)</code> is 2.67 because 2.675 is stored as slightly less than 2.675.</li>
+<li>Text compares and sorts in byte order.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">$frame</span> <span class="op">=</span> tibble(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    a<span class="ot">:</span> [<span class="kw">true</span><span class="ot">,</span> <span class="kw">false</span><span class="ot">,</span> <span class="kw">null</span><span class="ot">,</span> <span class="kw">null</span>]<span class="ot">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    b<span class="ot">:</span> [<span class="kw">null</span><span class="ot">,</span> <span class="kw">null</span><span class="ot">,</span> <span class="kw">true</span><span class="ot">,</span> <span class="kw">false</span>]<span class="ot">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    x<span class="ot">:</span> [<span class="fl">2.5</span><span class="ot">,</span> <span class="fl">0.5</span><span class="ot">,</span> <span class="op">-</span><span class="fl">1.5</span><span class="ot">,</span> <span class="fl">2.675</span>]<span class="ot">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    y<span class="ot">:</span> [<span class="dv">1</span><span class="ot">,</span> <span class="kw">null</span><span class="ot">,</span> <span class="dv">3</span><span class="ot">,</span> <span class="dv">4</span>]<span class="ot">,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$frame</span>-&gt;mutate([</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'and'</span> =&gt; col(<span class="st">'a'</span>)-&gt;<span class="op">and</span>(col(<span class="st">'b'</span>))<span class="ot">,</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'or'</span> =&gt; col(<span class="st">'a'</span>)-&gt;<span class="op">or</span>(col(<span class="st">'b'</span>))<span class="ot">,</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sum'</span> =&gt; col(<span class="st">'y'</span>)-&gt;add(<span class="dv">1</span>)<span class="ot">,</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'round'</span> =&gt; Phibble\Expr\<span class="fu">round</span>(col(<span class="st">'x'</span>))<span class="ot">,</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'round2'</span> =&gt; Phibble\Expr\<span class="fu">round</span>(col(<span class="st">'x'</span>)<span class="ot">,</span> digits<span class="ot">:</span> <span class="dv">2</span>)<span class="ot">,</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'mod'</span> =&gt; lit(<span class="op">-</span><span class="dv">7</span>)-&gt;mod(<span class="dv">3</span>)<span class="ot">,</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'cumsum'</span> =&gt; cumsum(col(<span class="st">'y'</span>))<span class="ot">,</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>])<span class="ot">;</span></span></code></pre></div></div>
+<pre class="text output"><code># A tibble: 4 × 11
+  a     b         x     y and   or      sum round round2   mod cumsum
+  &lt;lgl&gt; &lt;lgl&gt; &lt;dbl&gt; &lt;int&gt; &lt;lgl&gt; &lt;lgl&gt; &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;int&gt;
+1 TRUE  NA     2.5      1 NA    TRUE      2     2   2.5      2      1
+2 FALSE NA     0.5     NA FALSE NA       NA     0   0.5      2     NA
+3 NA    TRUE  -1.5      3 NA    TRUE      4    -2  -1.5      2     NA
+4 NA    FALSE  2.68     4 FALSE NA        5     3   2.67     2     NA</code></pre>
+</section>
+<section id="serialization" class="level2">
+<h2 class="anchored" data-anchor-id="serialization">Serialization</h2>
+<p><code>toArray()</code> returns a JSON-friendly array, and <code>Expr::fromArray()</code> rebuilds the expression. Each node has a <code>type</code> key: <code>col</code>, <code>lit</code>, <code>call</code>, or <code>desc</code>. A call lists its positional arguments under <code>args</code> and its options under <code>named</code>. A date literal carries <code>dtype</code> (<code>date</code> or <code>datetime</code>).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">$expr</span> <span class="op">=</span> lag(col(<span class="st">'score'</span>)<span class="ot">,</span> n<span class="ot">:</span> <span class="dv">2</span><span class="ot">,</span> <span class="cf">default</span><span class="ot">:</span> <span class="dv">0</span><span class="ot">,</span> order_by<span class="ot">:</span> col(<span class="st">'week'</span>))<span class="ot">;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="va">$json</span> <span class="op">=</span> <span class="fu">json_encode</span>(<span class="va">$expr</span>-&gt;toArray())<span class="ot">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$json</span><span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="va">$back</span> <span class="op">=</span> Phibble\Expr\Expr::fromArray(<span class="fu">json_decode</span>(<span class="va">$json</span><span class="ot">,</span> <span class="kw">true</span>))<span class="ot">;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">var_dump</span>(<span class="va">$back</span> <span class="op">==</span> <span class="va">$expr</span>)<span class="ot">;</span></span></code></pre></div></div>
+<pre class="text output"><code>{"type":"call","fn":"lag","args":[{"type":"col","name":"score"}],"named":{"n":{"type":"lit","value":2},"default":{"type":"lit","value":0},"order_by":{"type":"col","name":"week"}}}
+bool(true)</code></pre>
+<p>The test suite checks the in-memory evaluator against dplyr. The script <code>tests/r/expr.R</code> evaluates the same expressions in R and stores the results in <code>tests/fixtures/expr/expected.json</code>, which other backends can reuse.</p>
+
+
+</section>

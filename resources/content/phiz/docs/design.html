@@ -1,0 +1,85 @@
+<section id="vega-lite-does-the-drawing" class="level2">
+<h2 class="anchored" data-anchor-id="vega-lite-does-the-drawing">Vega-Lite does the drawing</h2>
+<p>phiz does not draw graphics. It translates a ggplot2-style description into a Vega-Lite specification. Vega-Lite then resolves scales, lays out facets and legends, runs transforms, handles interaction, and renders to canvas or SVG. The PHP side stays small, and plots behave the same in the browser and in static export.</p>
+<p>Most statistics run where Vega-Lite runs them: bins, densities, loess fits, aggregates, quantiles, and window functions are Vega-Lite transforms. phiz computes a statistic in PHP only when Vega-Lite cannot:</p>
+<ul>
+<li>the confidence bands of <code>smooth()</code> with <code>lm</code>, <code>quad</code>, or <code>poly</code></li>
+<li><code>curve()</code> evaluations of PHP functions</li>
+<li>the bandwidth behind <code>density(adjust:)</code></li>
+<li>the statistics helpers’ intervals and predictions</li>
+</ul>
+</section>
+<section id="mapping-ggplot2-to-vega-lite" class="level2">
+<h2 class="anchored" data-anchor-id="mapping-ggplot2-to-vega-lite">Mapping ggplot2 to Vega-Lite</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ggplot2</th>
+<th>phiz</th>
+<th>Vega-Lite</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ggplot(data, aes(...))</code></td>
+<td><code>Plot::of($data)-&gt;aes(...)</code></td>
+<td><code>data</code> and <code>encoding</code></td>
+</tr>
+<tr class="even">
+<td><code>geom_*()</code></td>
+<td><code>-&gt;point()</code>, <code>-&gt;line()</code>, …</td>
+<td>a layer with a <code>mark</code></td>
+</tr>
+<tr class="odd">
+<td><code>stat_*()</code></td>
+<td>geom parameters</td>
+<td><code>transform</code></td>
+</tr>
+<tr class="even">
+<td><code>position = "dodge"</code></td>
+<td><code>position: 'dodge'</code></td>
+<td><code>xOffset</code></td>
+</tr>
+<tr class="odd">
+<td><code>scale_*()</code></td>
+<td><code>-&gt;scaleX()</code>, …</td>
+<td>the channel’s <code>scale</code>, <code>axis</code>, and <code>legend</code></td>
+</tr>
+<tr class="even">
+<td><code>coord_flip()</code></td>
+<td><code>-&gt;coordFlip()</code></td>
+<td>swapped channels</td>
+</tr>
+<tr class="odd">
+<td><code>facet_wrap()</code>, <code>facet_grid()</code></td>
+<td><code>-&gt;facetWrap()</code>, <code>-&gt;facetGrid()</code></td>
+<td><code>facet</code> with an inner <code>spec</code></td>
+</tr>
+<tr class="even">
+<td><code>theme()</code></td>
+<td><code>-&gt;theme()</code></td>
+<td><code>config</code></td>
+</tr>
+<tr class="odd">
+<td>patchwork</td>
+<td><code>Compose</code></td>
+<td><code>hconcat</code>, <code>vconcat</code>, <code>concat</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="differences-from-ggplot2" class="level2">
+<h2 class="anchored" data-anchor-id="differences-from-ggplot2">Differences from ggplot2</h2>
+<p><a href="phpstats://phiz/docs/ggplot2">Coming from ggplot2</a> lists the translations and the behaviors that differ.</p>
+</section>
+<section id="versions" class="level2">
+<h2 class="anchored" data-anchor-id="versions">Versions</h2>
+<p>phiz emits Vega-Lite 6 specifications. The pinned browser libraries are vega 6.4.0, vega-lite 6.4.3, and vega-embed 7.3.0. Static export uses vl-convert with Vega-Lite 6.1, and the tests validate every specification against the Vega-Lite 6.1.0 JSON schema, the version both renderers support.</p>
+
+
+</section>

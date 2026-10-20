@@ -1,0 +1,248 @@
+<p>phibble follows tibble, readr, and forcats closely. Function names become camelCase methods on <code>DataFrame</code>, R’s named arguments become PHP named arguments, and <code>NULL</code>/<code>NA</code> become PHP <code>null</code>. The tables below map the R functions to their phibble equivalents.</p>
+<section id="tibble" class="level2">
+<h2 class="anchored" data-anchor-id="tibble">tibble</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>R</th>
+<th>phibble</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tibble(x = 1:3, y = x * 2)</code></td>
+<td><code>tibble(x: [1, 2, 3], y: fn ($t) =&gt; ...)</code></td>
+</tr>
+<tr class="even">
+<td><code>tribble(~x, ~y, 1, "a")</code></td>
+<td><code>tribble(['x', 'y'], [1, 'a'])</code> or <code>tribble(['x', 'y'], 1, 'a')</code></td>
+</tr>
+<tr class="odd">
+<td><code>as_tibble(x)</code></td>
+<td><code>as_tibble($x)</code> or <code>DataFrame::asTibble($x)</code></td>
+</tr>
+<tr class="even">
+<td><code>add_row(df, x = 1, .before = 2)</code></td>
+<td><code>$df-&gt;addRow(['x' =&gt; 1], before: 1)</code></td>
+</tr>
+<tr class="odd">
+<td><code>add_column(df, z = 0, .after = "x")</code></td>
+<td><code>$df-&gt;addColumn(['z' =&gt; 0], after: 'x')</code></td>
+</tr>
+<tr class="even">
+<td><code>enframe(x)</code>, <code>deframe(df)</code></td>
+<td><code>enframe($x)</code>, <code>$df-&gt;deframe()</code></td>
+</tr>
+<tr class="odd">
+<td><code>glimpse(df)</code></td>
+<td><code>echo $df-&gt;glimpse()</code></td>
+</tr>
+<tr class="even">
+<td><code>print(df, n = 30)</code></td>
+<td><code>echo $df-&gt;format(n: 30)</code></td>
+</tr>
+<tr class="odd">
+<td><code>df$x</code>, <code>df[["x"]]</code></td>
+<td><code>$df-&gt;x</code>, <code>$df['x']</code></td>
+</tr>
+<tr class="even">
+<td><code>nrow(df)</code>, <code>ncol(df)</code>, <code>names(df)</code></td>
+<td><code>$df-&gt;nrow()</code>, <code>$df-&gt;ncol()</code>, <code>$df-&gt;columns()</code></td>
+</tr>
+<tr class="odd">
+<td><code>.name_repair = "unique"</code></td>
+<td><code>nameRepair: 'unique'</code> (also <code>check_unique</code>, <code>universal</code>, <code>minimal</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>In a <code>tibble()</code> call, a closure receives the frame built so far and returns a list or a single value. Only single values are recycled, and incompatible lengths throw with tibble’s message.</p>
+</section>
+<section id="readr" class="level2">
+<h2 class="anchored" data-anchor-id="readr">readr</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>R</th>
+<th>phibble</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>read_csv(file)</code></td>
+<td><code>DataFrame::fromCsv($file)</code></td>
+</tr>
+<tr class="even">
+<td><code>read_delim(file, delim = ";")</code></td>
+<td><code>DataFrame::fromCsv($file, delimiter: ';')</code></td>
+</tr>
+<tr class="odd">
+<td><code>read_csv(I("a,b\n1,2"))</code></td>
+<td><code>DataFrame::fromCsvString("a,b\n1,2")</code></td>
+</tr>
+<tr class="even">
+<td><code>col_types = "icd"</code></td>
+<td><code>types: 'icd'</code></td>
+</tr>
+<tr class="odd">
+<td><code>col_types = cols(x = col_factor())</code></td>
+<td><code>types: ['x' =&gt; 'factor']</code></td>
+</tr>
+<tr class="even">
+<td><code>col_select</code>, <code>col_names</code>, <code>skip</code>, <code>n_max</code></td>
+<td><code>select:</code>, <code>colNames:</code>, <code>skip:</code>, <code>nMax:</code></td>
+</tr>
+<tr class="odd">
+<td><code>na</code>, <code>comment</code>, <code>trim_ws</code>, <code>guess_max</code></td>
+<td><code>na:</code>, <code>comment:</code>, <code>trimWs:</code>, <code>guessMax:</code></td>
+</tr>
+<tr class="even">
+<td><code>locale(decimal_mark = ",")</code></td>
+<td><code>decimalMark: ','</code>, <code>groupingMark: '.'</code></td>
+</tr>
+<tr class="odd">
+<td><code>write_csv(df, file)</code></td>
+<td><code>$df-&gt;writeCsv($file)</code></td>
+</tr>
+<tr class="even">
+<td><code>format_csv(df)</code></td>
+<td><code>$df-&gt;toCsv()</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="forcats" class="level2">
+<h2 class="anchored" data-anchor-id="forcats">forcats</h2>
+<p>Factor functions are methods that take the column name first.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>R</th>
+<th>phibble</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>factor(x)</code>, <code>factor(x, levels = l)</code></td>
+<td><code>$df-&gt;asFactor('x')</code>, <code>$df-&gt;asFactor('x', $l)</code></td>
+</tr>
+<tr class="even">
+<td><code>ordered(x, levels = l)</code></td>
+<td><code>$df-&gt;asOrdered('x', $l)</code></td>
+</tr>
+<tr class="odd">
+<td><code>levels(x)</code></td>
+<td><code>$df-&gt;levels('x')</code></td>
+</tr>
+<tr class="even">
+<td><code>fct_relevel(x, "b")</code></td>
+<td><code>$df-&gt;fctRelevel('x', ['b'])</code></td>
+</tr>
+<tr class="odd">
+<td><code>fct_rev</code>, <code>fct_inorder</code>, <code>fct_infreq</code></td>
+<td><code>fctRev</code>, <code>fctInorder</code>, <code>fctInfreq</code></td>
+</tr>
+<tr class="even">
+<td><code>fct_reorder(x, y)</code></td>
+<td><code>$df-&gt;fctReorder('x', 'y')</code></td>
+</tr>
+<tr class="odd">
+<td><code>fct_recode(x, new = "old")</code></td>
+<td><code>$df-&gt;fctRecode('x', ['new' =&gt; 'old'])</code></td>
+</tr>
+<tr class="even">
+<td><code>fct_collapse(x, ab = c("a", "b"))</code></td>
+<td><code>$df-&gt;fctCollapse('x', ['ab' =&gt; ['a', 'b']])</code></td>
+</tr>
+<tr class="odd">
+<td><code>fct_drop(x)</code>, <code>droplevels(df)</code></td>
+<td><code>$df-&gt;fctDrop('x')</code>, <code>$df-&gt;fctDrop()</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dplyr-and-tidyr-basics" class="level2">
+<h2 class="anchored" data-anchor-id="dplyr-and-tidyr-basics">dplyr and tidyr basics</h2>
+<p>phibble’s methods cover the verbs that other backends need to implement natively. <a href="https://github.com/phpstats/phplyr">phplyr</a> provides the full dplyr and tidyr interface as pipe-able functions.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>R</th>
+<th>phibble</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>filter</code>, <code>mutate</code>, <code>select</code>, <code>rename</code>, <code>arrange</code></td>
+<td>methods of the same names</td>
+</tr>
+<tr class="even">
+<td><code>rename(df, new = old)</code></td>
+<td><code>$df-&gt;rename(['new' =&gt; 'old'])</code></td>
+</tr>
+<tr class="odd">
+<td><code>group_by</code>, <code>ungroup</code>, <code>rowwise</code></td>
+<td><code>groupBy</code>, <code>ungroup</code>, <code>rowwise</code></td>
+</tr>
+<tr class="even">
+<td><code>summarise(.groups = "drop")</code></td>
+<td><code>$df-&gt;summarise([...], 'drop')</code></td>
+</tr>
+<tr class="odd">
+<td><code>left_join(x, y, by = "k")</code></td>
+<td><code>$x-&gt;join($y, ['k'], 'left')</code></td>
+</tr>
+<tr class="even">
+<td><code>left_join(x, y, by = c("a" = "b"))</code></td>
+<td><code>$x-&gt;join($y, [['a', 'b']], 'left')</code></td>
+</tr>
+<tr class="odd">
+<td><code>bind_rows</code>, <code>bind_cols</code></td>
+<td><code>DataFrame::concat([...])</code>, <code>DataFrame::bindCols([...])</code></td>
+</tr>
+<tr class="even">
+<td><code>nest(df, data = c(x, y))</code>, <code>unnest(df, data)</code></td>
+<td><code>$df-&gt;nest(['x', 'y'])</code>, <code>$df-&gt;unnest('data')</code></td>
+</tr>
+<tr class="odd">
+<td><code>pivot_longer_spec(df, spec)</code>, <code>pivot_wider_spec(df, spec)</code></td>
+<td><code>$df-&gt;pivotLongerSpec($spec)</code>, <code>$df-&gt;pivotWiderSpec($spec)</code>; phplyr’s <code>pivot_longer()</code> and <code>pivot_wider()</code> build the spec</td>
+</tr>
+<tr class="even">
+<td><code>drop_na(df, x)</code></td>
+<td><code>$df-&gt;dropNa(['x'])</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="differences" class="level2">
+<h2 class="anchored" data-anchor-id="differences">Differences</h2>
+<p>phibble differs from R in these places:</p>
+<ul>
+<li><strong>Whole numbers guess as int.</strong> readr guesses <code>1,2,3</code> as double. phibble guesses int, which suits PHP. Pass <code>types: 'd'</code> to read a double.</li>
+<li><strong>Positions are 0-based.</strong> <code>addRow(before:)</code>, <code>addColumn(before:)</code>, <code>take()</code>, <code>slice()</code>, and <code>row()</code> count rows and columns from 0.</li>
+<li><strong>String functions use fixed patterns.</strong> <code>str_detect()</code>, <code>str_starts()</code>, <code>str_ends()</code>, <code>str_replace()</code>, and <code>str_replace_all()</code> match literal text. SQL backends have no portable regular expressions.</li>
+<li><strong>There is no time-of-day type.</strong> readr’s <code>hms</code> columns and the <code>t</code> column type stay strings.</li>
+<li><strong>JSON keeps null values.</strong> jsonlite drops NA fields from records. <code>toJson()</code> writes them as <code>null</code>.</li>
+<li><strong>Datetimes are UTC.</strong> Text without an offset is read as UTC, and text with an offset is converted to UTC, as readr does.</li>
+<li><strong>Strings sort in byte order.</strong> Sorting, grouping, and factor levels use the C locale, as dplyr’s <code>arrange()</code> does. Base R’s <code>factor()</code> uses the system locale, which can order mixed-case levels differently.</li>
+<li><strong>Packed data frame columns are not supported.</strong> An unnamed table in <code>tibble()</code> is spliced into columns. A named one throws.</li>
+</ul>
+
+
+</section>

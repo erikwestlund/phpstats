@@ -1,0 +1,446 @@
+{
+    "nav": [
+        {
+            "title": "Overview",
+            "path": "index"
+        },
+        {
+            "title": "Getting started",
+            "path": "getting-started"
+        },
+        {
+            "title": "Coming from tibble",
+            "path": "coming-from-tibble"
+        },
+        {
+            "title": "Types",
+            "path": "types"
+        },
+        {
+            "title": "Reading and writing data",
+            "path": "io"
+        },
+        {
+            "title": "Expressions",
+            "path": "expr"
+        },
+        {
+            "title": "SQL tables",
+            "path": "sql"
+        },
+        {
+            "title": "Laravel",
+            "path": "laravel"
+        },
+        {
+            "title": "Backends",
+            "path": "backends"
+        },
+        {
+            "title": "The Table contract",
+            "path": "contract"
+        },
+        {
+            "title": "Development",
+            "path": "development"
+        }
+    ],
+    "pages": {
+        "backends": {
+            "title": "Backends",
+            "headings": [
+                {
+                    "id": "choosing-and-switching",
+                    "text": "Choosing and switching",
+                    "level": 2
+                },
+                {
+                    "id": "the-polars-backend",
+                    "text": "The Polars backend",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "coming-from-tibble": {
+            "title": "Coming from tibble",
+            "headings": [
+                {
+                    "id": "tibble",
+                    "text": "tibble",
+                    "level": 2
+                },
+                {
+                    "id": "readr",
+                    "text": "readr",
+                    "level": 2
+                },
+                {
+                    "id": "forcats",
+                    "text": "forcats",
+                    "level": 2
+                },
+                {
+                    "id": "dplyr-and-tidyr-basics",
+                    "text": "dplyr and tidyr basics",
+                    "level": 2
+                },
+                {
+                    "id": "differences",
+                    "text": "Differences",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "contract": {
+            "title": "The Table contract",
+            "headings": [
+                {
+                    "id": "rules",
+                    "text": "Rules",
+                    "level": 2
+                },
+                {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
+                    "id": "shape-and-data",
+                    "text": "Shape and data",
+                    "level": 3
+                },
+                {
+                    "id": "verbs",
+                    "text": "Verbs",
+                    "level": 3
+                },
+                {
+                    "id": "joins",
+                    "text": "Joins",
+                    "level": 3
+                },
+                {
+                    "id": "errors-and-allowed-differences",
+                    "text": "Errors and allowed differences",
+                    "level": 2
+                },
+                {
+                    "id": "testing-a-backend",
+                    "text": "Testing a backend",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "development": {
+            "title": "Development",
+            "headings": [
+                {
+                    "id": "tests",
+                    "text": "Tests",
+                    "level": 2
+                },
+                {
+                    "id": "comparing-with-r",
+                    "text": "Comparing with R",
+                    "level": 2
+                },
+                {
+                    "id": "database-tests",
+                    "text": "Database tests",
+                    "level": 2
+                },
+                {
+                    "id": "documentation",
+                    "text": "Documentation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "expr": {
+            "title": "Expressions",
+            "headings": [
+                {
+                    "id": "building-expressions",
+                    "text": "Building expressions",
+                    "level": 2
+                },
+                {
+                    "id": "using-expressions-with-verbs",
+                    "text": "Using expressions with verbs",
+                    "level": 2
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "scalar-functions",
+                    "text": "Scalar functions",
+                    "level": 3
+                },
+                {
+                    "id": "text-functions-stringr",
+                    "text": "Text functions (stringr)",
+                    "level": 3
+                },
+                {
+                    "id": "dates-and-times-lubridate",
+                    "text": "Dates and times (lubridate)",
+                    "level": 3
+                },
+                {
+                    "id": "aggregates",
+                    "text": "Aggregates",
+                    "level": 3
+                },
+                {
+                    "id": "window-functions",
+                    "text": "Window functions",
+                    "level": 3
+                },
+                {
+                    "id": "na-and-arithmetic",
+                    "text": "NA and arithmetic",
+                    "level": 2
+                },
+                {
+                    "id": "serialization",
+                    "text": "Serialization",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "getting-started": {
+            "title": "Getting started",
+            "headings": [
+                {
+                    "id": "imports",
+                    "text": "Imports",
+                    "level": 2
+                },
+                {
+                    "id": "building-frames",
+                    "text": "Building frames",
+                    "level": 2
+                },
+                {
+                    "id": "printing",
+                    "text": "Printing",
+                    "level": 2
+                },
+                {
+                    "id": "types-and-na",
+                    "text": "Types and NA",
+                    "level": 2
+                },
+                {
+                    "id": "reading-values",
+                    "text": "Reading values",
+                    "level": 2
+                },
+                {
+                    "id": "verbs",
+                    "text": "Verbs",
+                    "level": 2
+                },
+                {
+                    "id": "groups",
+                    "text": "Groups",
+                    "level": 2
+                },
+                {
+                    "id": "distinct-rows-and-joins",
+                    "text": "Distinct rows and joins",
+                    "level": 2
+                },
+                {
+                    "id": "immutability",
+                    "text": "Immutability",
+                    "level": 2
+                },
+                {
+                    "id": "method-chains-and-the-pipe-operator",
+                    "text": "Method chains and the pipe operator",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "index": {
+            "title": "phibble",
+            "headings": [
+                {
+                    "id": "install",
+                    "text": "Install",
+                    "level": 2
+                },
+                {
+                    "id": "where-to-go-next",
+                    "text": "Where to go next",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "io": {
+            "title": "Reading and writing data",
+            "headings": [
+                {
+                    "id": "csv-files",
+                    "text": "CSV files",
+                    "level": 2
+                },
+                {
+                    "id": "column-types",
+                    "text": "Column types",
+                    "level": 2
+                },
+                {
+                    "id": "guessing",
+                    "text": "Guessing",
+                    "level": 2
+                },
+                {
+                    "id": "writing-csv",
+                    "text": "Writing CSV",
+                    "level": 2
+                },
+                {
+                    "id": "json",
+                    "text": "JSON",
+                    "level": 2
+                },
+                {
+                    "id": "databases",
+                    "text": "Databases",
+                    "level": 2
+                },
+                {
+                    "id": "laravel-collections",
+                    "text": "Laravel collections",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "laravel": {
+            "title": "phibble for Laravel developers",
+            "headings": [
+                {
+                    "id": "from-a-collection-or-query-to-a-dataframe",
+                    "text": "From a collection or query to a DataFrame",
+                    "level": 2
+                },
+                {
+                    "id": "queries-that-stay-in-the-database",
+                    "text": "Queries that stay in the database",
+                    "level": 2
+                },
+                {
+                    "id": "with-phplyr",
+                    "text": "With phplyr",
+                    "level": 2
+                },
+                {
+                    "id": "charts-with-phiz",
+                    "text": "Charts with phiz",
+                    "level": 2
+                },
+                {
+                    "id": "using-the-result",
+                    "text": "Using the result",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "sql": {
+            "title": "SQL tables",
+            "headings": [
+                {
+                    "id": "opening-a-table",
+                    "text": "Opening a table",
+                    "level": 2
+                },
+                {
+                    "id": "what-compiles-to-sql",
+                    "text": "What compiles to SQL",
+                    "level": 2
+                },
+                {
+                    "id": "when-the-table-falls-back-to-memory",
+                    "text": "When the table falls back to memory",
+                    "level": 2
+                },
+                {
+                    "id": "known-differences",
+                    "text": "Known differences",
+                    "level": 2
+                },
+                {
+                    "id": "window-functions",
+                    "text": "Window functions",
+                    "level": 2
+                },
+                {
+                    "id": "joins",
+                    "text": "Joins",
+                    "level": 2
+                },
+                {
+                    "id": "dialects",
+                    "text": "Dialects",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "types": {
+            "title": "Types",
+            "headings": [
+                {
+                    "id": "column-types",
+                    "text": "Column types",
+                    "level": 2
+                },
+                {
+                    "id": "inference",
+                    "text": "Inference",
+                    "level": 2
+                },
+                {
+                    "id": "casts",
+                    "text": "Casts",
+                    "level": 2
+                },
+                {
+                    "id": "factors",
+                    "text": "Factors",
+                    "level": 2
+                },
+                {
+                    "id": "dates-and-datetimes",
+                    "text": "Dates and datetimes",
+                    "level": 2
+                },
+                {
+                    "id": "list-columns",
+                    "text": "List-columns",
+                    "level": 2
+                },
+                {
+                    "id": "model-data",
+                    "text": "Model data",
+                    "level": 2
+                }
+            ],
+            "math": false
+        }
+    }
+}

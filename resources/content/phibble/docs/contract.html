@@ -1,0 +1,188 @@
+<p><code>Phibble\Contracts\Table</code> is the interface that every table backend implements. phplyr’s verbs call its methods, so a pipeline runs unchanged on any backend. phibble ships two implementations: <code>DataFrame</code>, which holds data in PHP arrays, and <code>SqlTable</code>, which compiles verbs to SQL. phpolars implements it over Polars.</p>
+<p>This page is for authors of backends. It lists the rules that every implementation follows and the semantics of each method.</p>
+<section id="rules" class="level2">
+<h2 class="anchored" data-anchor-id="rules">Rules</h2>
+<ul>
+<li><strong>Immutability.</strong> Every method returns a new table and leaves the original unchanged.</li>
+<li><strong>Return types.</strong> Verbs are declared to return <code>Table</code>. A backend may return a different implementation. <code>SqlTable</code> returns a <code>DataFrame</code> when it falls back to memory for a closure. <code>DataFrame</code> declares <code>static</code>.</li>
+<li><strong>NA.</strong> PHP <code>null</code> is NA in every column type.</li>
+<li><strong>Grouping.</strong> <code>groupBy()</code> records grouping columns as metadata. <code>filter()</code>, <code>mutate()</code>, <code>mutateGroups()</code>, <code>filterGroups()</code>, <code>summarise()</code>, and <code>eachGroup()</code> work per group. The other verbs keep the grouping.</li>
+<li><strong>Group order.</strong> Groups are visited in sorted key order, as in dplyr: ascending, factors by level order, NA last, and strings in byte order. <code>filter()</code>, <code>mutate()</code>, and <code>arrange()</code> keep the input row order.</li>
+<li><strong>Rowwise tables.</strong> <code>rowwise()</code> makes every row its own group, in row order. <code>groups()</code> returns its id columns.</li>
+<li><strong>Row closures.</strong> A row closure receives <code>(Phibble\Row $row, Table $group)</code>. <code>$group</code> is the row’s group, or the whole table when ungrouped.</li>
+<li><strong>Expressions.</strong> Wherever a verb accepts a closure, it also accepts a <code>Phibble\Expr\Expr</code>, evaluated per group with the semantics in the <a href="phpstats://phibble/docs/expr">expression reference</a>.</li>
+<li><strong>Errors.</strong> An unknown column name throws <code>Phibble\Exception\ColumnNotFound</code>.</li>
+<li><strong>Countable and iterable.</strong> <code>count()</code> equals <code>nrow()</code>, and iterating yields one <code>Phibble\Row</code> per row.</li>
+</ul>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<section id="shape-and-data" class="level3">
+<h3 class="anchored" data-anchor-id="shape-and-data">Shape and data</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>columns()</code></td>
+<td>Column names in order.</td>
+</tr>
+<tr class="even">
+<td><code>types()</code></td>
+<td>Column name to <code>Phibble\Type</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>nrow()</code>, <code>ncol()</code></td>
+<td>Row and column counts.</td>
+</tr>
+<tr class="even">
+<td><code>column($name)</code></td>
+<td>One column as a list. Factors return their labels.</td>
+</tr>
+<tr class="odd">
+<td><code>toRows()</code></td>
+<td>A list of associative arrays.</td>
+</tr>
+<tr class="even">
+<td><code>toColumns()</code></td>
+<td>An array of lists by column name.</td>
+</tr>
+<tr class="odd">
+<td><code>collect()</code></td>
+<td>The rows as an in-memory <code>DataFrame</code>. A <code>DataFrame</code> returns itself.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="verbs" class="level3">
+<h3 class="anchored" data-anchor-id="verbs">Verbs</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Semantics</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>select($names)</code></td>
+<td>Keeps the named columns in the given order. Grouping columns are always kept.</td>
+</tr>
+<tr class="even">
+<td><code>filter($predicate)</code></td>
+<td>Keeps rows where the closure or expression is true. NA counts as false.</td>
+</tr>
+<tr class="odd">
+<td><code>filterGroups($fn)</code></td>
+<td>Runs <code>$fn</code> once per group with the group’s table. It returns one value per row, and truthy values keep the row.</td>
+</tr>
+<tr class="even">
+<td><code>mutate($columns)</code></td>
+<td>Adds or replaces columns. A value is a row closure, an expression, a list with one value per row, or a scalar. Later entries see earlier ones. Replaced columns keep their position.</td>
+</tr>
+<tr class="odd">
+<td><code>mutateGroups($columns)</code></td>
+<td>Like <code>mutate()</code>, but a closure runs once per group and returns a list for the group’s rows or a scalar. This is the primitive for window functions.</td>
+</tr>
+<tr class="even">
+<td><code>rename($map)</code></td>
+<td>Renames columns, with <code>new =&gt; old</code> entries as in dplyr.</td>
+</tr>
+<tr class="odd">
+<td><code>arrange($keys)</code></td>
+<td>Sorts stably. Keys are names, <code>[name, 'asc'|'desc']</code> pairs, or expressions, and NA sorts last in both directions. It ignores grouping.</td>
+</tr>
+<tr class="even">
+<td><code>groupBy($names)</code>, <code>ungroup()</code>, <code>groups()</code></td>
+<td>Set, clear, or read the grouping columns.</td>
+</tr>
+<tr class="odd">
+<td><code>groupBy($names, drop: false)</code>, <code>dropsEmptyGroups()</code></td>
+<td>dplyr’s <code>.drop = FALSE</code>: grouped verbs also visit empty groups. A factor key yields every level; a non-factor key yields its observed values, or NA under an empty group. Row verbs keep the flag; <code>groupBy()</code> and <code>ungroup()</code> reset it.</td>
+</tr>
+<tr class="even">
+<td><code>rowwise($idColumns)</code>, <code>isRowwise()</code></td>
+<td>Set or read rowwise mode. <code>groupBy()</code> and <code>ungroup()</code> clear it.</td>
+</tr>
+<tr class="odd">
+<td><code>eachGroup()</code></td>
+<td>Yields <code>['key' =&gt; [...], 'table' =&gt; Table]</code> for each group, with ungrouped tables. An ungrouped table yields one group with an empty key.</td>
+</tr>
+<tr class="even">
+<td><code>summarise($aggregates)</code></td>
+<td>Returns one row per group: the keys, then one column per entry. Each entry is a closure given the group’s table or an expression of size 1. The result drops the last grouping level, and a rowwise table keeps its id columns. The optional second argument is dplyr’s <code>.groups</code>: <code>'drop_last'</code> (the default), <code>'drop'</code>, <code>'keep'</code>, or <code>'rowwise'</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>distinct($names)</code></td>
+<td>Keeps the first row of each combination of the named columns (and the grouping columns), and only those columns. An empty list means all columns.</td>
+</tr>
+<tr class="even">
+<td><code>pivotLongerSpec($spec, dropNa:)</code></td>
+<td>tidyr’s <code>pivot_longer_spec()</code>. Spec rows are <code>['.name' =&gt; source, '.value' =&gt; value column, ...name parts]</code>. Output: id columns, name parts, then one column per <code>.value</code>; each input row yields one row per name-part combination in spec order. Values combine by vctrs rules.</td>
+</tr>
+<tr class="odd">
+<td><code>pivotWiderSpec($spec, idColumns:, valuesFill:)</code></td>
+<td>tidyr’s <code>pivot_wider_spec()</code>. Spec rows are <code>['.name' =&gt; new column, '.value' =&gt; values column, ...names_from values]</code>. New columns follow spec order; rows follow the first appearance of each id combination. Duplicates make every new column a list-column and raise tidyr’s warning.</td>
+</tr>
+<tr class="even">
+<td><code>take($indices)</code></td>
+<td>Rows by 0-based position, in the given order. A <code>null</code> index gives an all-NA row. Keeps types, factor levels, and grouping.</td>
+</tr>
+<tr class="odd">
+<td><code>slice($offset, $length)</code>, <code>head($n)</code></td>
+<td>Rows by position. These ignore grouping.</td>
+</tr>
+<tr class="even">
+<td><code>join($other, $by, $type, ...)</code></td>
+<td>Joins with dplyr 1.1 semantics, described below.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="joins" class="level3">
+<h3 class="anchored" data-anchor-id="joins">Joins</h3>
+<p><code>join()</code> takes the other table, a list of conditions, and the join type: <code>inner</code>, <code>left</code>, <code>right</code>, <code>full</code>, <code>semi</code>, <code>anti</code>, or <code>cross</code>. A cross join takes no conditions. The conditions follow dplyr’s <code>join_by()</code>, and all of them must hold:</p>
+<ul>
+<li><code>'k'</code>, <code>[$l, $r]</code>, or <code>$l =&gt; $r</code>: equality.</li>
+<li><code>[$l, $op, $r]</code> with <code>$op</code> in <code>==</code>, <code>&gt;=</code>, <code>&gt;</code>, <code>&lt;=</code>, or <code>&lt;</code>: a comparison.</li>
+<li><code>['closest', $l, $op, $r]</code>, at most one per join: of the y rows that satisfy the other conditions and the comparison, keep only those with the largest <code>$r</code> (for <code>&gt;=</code> and <code>&gt;</code>) or the smallest (for <code>&lt;=</code> and <code>&lt;</code>). Ties keep every tied row.</li>
+</ul>
+<p>dplyr’s <code>between()</code>, <code>within()</code>, and <code>overlaps()</code> are expressed as pairs of comparisons.</p>
+<ul>
+<li><strong>Columns.</strong> The result has x’s columns, then y’s columns. Clashing names get the suffixes, <code>.x</code> and <code>.y</code> by default.</li>
+<li><strong>Keys.</strong> <code>keep</code> is <code>null</code> by default. Equality keys then come from x only, and for rows that only y has (right and full joins) they are filled from y’s keys. Columns used in comparisons are kept from both tables. With <code>keep: true</code> every key column is kept from both tables. <code>keep: false</code> throws when a comparison or closest condition is present, as in dplyr.</li>
+<li><strong>Rows.</strong> Rows follow x’s order, and each x row’s matches follow y’s order. Right and full joins then add y’s unmatched rows in y’s order. Semi and anti joins keep x’s rows and columns and never duplicate rows.</li>
+<li><strong>Matching.</strong> NA keys match each other unless <code>naMatches: false</code>. In a comparison, NA against NA satisfies <code>&gt;=</code> and <code>&lt;=</code> but not <code>&gt;</code> or <code>&lt;</code>, and NA never matches a value. <code>1</code> matches <code>1.0</code>, and a factor matches text by its label.</li>
+<li><strong>Options.</strong> <code>multiple</code> picks <code>all</code>, <code>any</code>, <code>first</code>, or <code>last</code> match per x row. <code>relationship</code> (<code>one-to-one</code>, <code>one-to-many</code>, <code>many-to-one</code>, or <code>many-to-many</code>) throws when the data violates it. Without it, an unexpected many-to-many equality join raises a warning, as dplyr does. <code>unmatched: 'error'</code> throws when the join would drop rows.</li>
+<li><strong>Grouping.</strong> The result keeps x’s grouping.</li>
+</ul>
+</section>
+</section>
+<section id="errors-and-allowed-differences" class="level2">
+<h2 class="anchored" data-anchor-id="errors-and-allowed-differences">Errors and allowed differences</h2>
+<p><code>DataFrame</code> follows R, and other backends match it. The following rules apply where R raises an error or where exact agreement is impractical.</p>
+<ul>
+<li><code>quantile()</code> and <code>iqr()</code> over values that include NA, without <code>na_rm: true</code>, throw an error, as R does. A backend must not return NA.</li>
+<li>A summary entry that is not size 1 throws <code>LengthException</code>, and the message mentions <code>reframe()</code>.</li>
+<li>Aggregates over zero rows may return NA. <code>DataFrame</code> returns R’s values (<code>NaN</code> for <code>mean()</code>, <code>Inf</code> and <code>-Inf</code> for <code>min()</code> and <code>max()</code>). This case only arises for an ungrouped table with no rows.</li>
+<li><code>as_string()</code> on doubles with very large or very small magnitudes may differ from R’s scientific notation. <code>Phibble\Column\Infer::formatFloat()</code> states R’s rule: 15 significant digits, in fixed or scientific notation, whichever is shorter.</li>
+</ul>
+</section>
+<section id="testing-a-backend" class="level2">
+<h2 class="anchored" data-anchor-id="testing-a-backend">Testing a backend</h2>
+<p>The simplest test of a backend is to run the same operations on the backend and on <code>DataFrame</code> and compare the results. <code>tests/SqlTest.php</code> does this for <code>SqlTable</code>. It loads the same data into a database, runs each operation both ways, and compares the collected rows. It also runs every case in <code>tests/fixtures/expr/expected.json</code>, the dplyr results that <code>tests/r/expr.R</code> produces, so each backend is checked against R as well as against <code>DataFrame</code>.</p>
+
+
+</section>

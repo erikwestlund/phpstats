@@ -1,0 +1,565 @@
+{
+    "nav": [
+        {
+            "title": "Overview",
+            "path": "index"
+        },
+        {
+            "title": "Get started",
+            "path": "get-started"
+        },
+        {
+            "title": "Coming from ggplot2",
+            "path": "ggplot2"
+        },
+        {
+            "title": "Data and fields",
+            "path": "data"
+        },
+        {
+            "title": "Geoms",
+            "path": "geoms"
+        },
+        {
+            "title": "Scales, coordinates, and labels",
+            "path": "scales"
+        },
+        {
+            "title": "Facets and composition",
+            "path": "facets"
+        },
+        {
+            "title": "Themes",
+            "path": "themes"
+        },
+        {
+            "title": "Interaction",
+            "path": "interaction"
+        },
+        {
+            "title": "Statistics",
+            "path": "statistics"
+        },
+        {
+            "title": "Rendering",
+            "path": "rendering"
+        },
+        {
+            "title": "Laravel and Livewire",
+            "path": "laravel"
+        },
+        {
+            "title": "Dashboards with Livewire",
+            "path": "dashboard"
+        },
+        {
+            "title": "Large data",
+            "path": "large-data"
+        },
+        {
+            "title": "Design",
+            "path": "design"
+        },
+        {
+            "title": "API reference",
+            "path": "reference"
+        },
+        {
+            "title": "Plan: CmdStanPHP figures",
+            "path": "cmdstanphp"
+        },
+        {
+            "title": "Development",
+            "path": "development"
+        }
+    ],
+    "pages": {
+        "cmdstanphp": {
+            "title": "Plan: CmdStanPHP figures on phiz",
+            "headings": [
+                {
+                    "id": "background",
+                    "text": "Background",
+                    "level": 2
+                },
+                {
+                    "id": "proposed-steps",
+                    "text": "Proposed steps",
+                    "level": 2
+                },
+                {
+                    "id": "translations",
+                    "text": "Translations",
+                    "level": 2
+                },
+                {
+                    "id": "open-questions",
+                    "text": "Open questions",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "dashboard": {
+            "title": "Dashboards with Livewire",
+            "headings": [
+                {
+                    "id": "the-charts",
+                    "text": "The charts",
+                    "level": 2
+                },
+                {
+                    "id": "the-livewire-component",
+                    "text": "The Livewire component",
+                    "level": 2
+                },
+                {
+                    "id": "linking-in-the-browser",
+                    "text": "Linking in the browser",
+                    "level": 2
+                },
+                {
+                    "id": "choosing-where-to-compute",
+                    "text": "Choosing where to compute",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "data": {
+            "title": "Data and fields",
+            "headings": [
+                {
+                    "id": "data-inputs",
+                    "text": "Data inputs",
+                    "level": 2
+                },
+                {
+                    "id": "field-types",
+                    "text": "Field types",
+                    "level": 2
+                },
+                {
+                    "id": "aggregates-and-time-units",
+                    "text": "Aggregates and time units",
+                    "level": 2
+                },
+                {
+                    "id": "computed-fields",
+                    "text": "Computed fields",
+                    "level": 2
+                },
+                {
+                    "id": "field-definitions",
+                    "text": "Field definitions",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "design": {
+            "title": "Design",
+            "headings": [
+                {
+                    "id": "vega-lite-does-the-drawing",
+                    "text": "Vega-Lite does the drawing",
+                    "level": 2
+                },
+                {
+                    "id": "mapping-ggplot2-to-vega-lite",
+                    "text": "Mapping ggplot2 to Vega-Lite",
+                    "level": 2
+                },
+                {
+                    "id": "differences-from-ggplot2",
+                    "text": "Differences from ggplot2",
+                    "level": 2
+                },
+                {
+                    "id": "versions",
+                    "text": "Versions",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "development": {
+            "title": "Development",
+            "headings": [
+                {
+                    "id": "tests",
+                    "text": "Tests",
+                    "level": 2
+                },
+                {
+                    "id": "gallery",
+                    "text": "Gallery",
+                    "level": 2
+                },
+                {
+                    "id": "documentation",
+                    "text": "Documentation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "facets": {
+            "title": "Facets and composition",
+            "headings": [
+                {
+                    "id": "small-multiples",
+                    "text": "Small multiples",
+                    "level": 2
+                },
+                {
+                    "id": "composition",
+                    "text": "Composition",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "geoms": {
+            "title": "Geoms",
+            "headings": [
+                {
+                    "id": "distributions",
+                    "text": "Distributions",
+                    "level": 2
+                },
+                {
+                    "id": "amounts",
+                    "text": "Amounts",
+                    "level": 2
+                },
+                {
+                    "id": "lines-and-areas",
+                    "text": "Lines and areas",
+                    "level": 2
+                },
+                {
+                    "id": "intervals",
+                    "text": "Intervals",
+                    "level": 2
+                },
+                {
+                    "id": "reference-lines",
+                    "text": "Reference lines",
+                    "level": 2
+                },
+                {
+                    "id": "text",
+                    "text": "Text",
+                    "level": 2
+                },
+                {
+                    "id": "fitted-curves",
+                    "text": "Fitted curves",
+                    "level": 2
+                },
+                {
+                    "id": "summaries",
+                    "text": "Summaries",
+                    "level": 2
+                },
+                {
+                    "id": "two-dimensional-densities-and-contours",
+                    "text": "Two-dimensional densities and contours",
+                    "level": 2
+                },
+                {
+                    "id": "annotations",
+                    "text": "Annotations",
+                    "level": 2
+                },
+                {
+                    "id": "raw-layers",
+                    "text": "Raw layers",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "get-started": {
+            "title": "Get started",
+            "headings": [
+                {
+                    "id": "a-first-plot",
+                    "text": "A first plot",
+                    "level": 2
+                },
+                {
+                    "id": "layers",
+                    "text": "Layers",
+                    "level": 2
+                },
+                {
+                    "id": "pipes",
+                    "text": "Pipes",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "ggplot2": {
+            "title": "Coming from ggplot2",
+            "headings": [
+                {
+                    "id": "translating-a-plot",
+                    "text": "Translating a plot",
+                    "level": 2
+                },
+                {
+                    "id": "geoms-and-stats",
+                    "text": "Geoms and stats",
+                    "level": 2
+                },
+                {
+                    "id": "scales-coordinates-facets-and-themes",
+                    "text": "Scales, coordinates, facets, and themes",
+                    "level": 2
+                },
+                {
+                    "id": "differences",
+                    "text": "Differences",
+                    "level": 2
+                },
+                {
+                    "id": "additions",
+                    "text": "Additions",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "index": {
+            "title": "phiz",
+            "headings": [
+                {
+                    "id": "install",
+                    "text": "Install",
+                    "level": 2
+                },
+                {
+                    "id": "what-phiz-covers",
+                    "text": "What phiz covers",
+                    "level": 2
+                },
+                {
+                    "id": "the-phpstats-family",
+                    "text": "The phpstats family",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "interaction": {
+            "title": "Interaction",
+            "headings": [
+                {
+                    "id": "tooltips-pan-and-zoom",
+                    "text": "Tooltips, pan, and zoom",
+                    "level": 2
+                },
+                {
+                    "id": "brushing-and-linked-views",
+                    "text": "Brushing and linked views",
+                    "level": 2
+                },
+                {
+                    "id": "legend-highlighting",
+                    "text": "Legend highlighting",
+                    "level": 2
+                },
+                {
+                    "id": "sliders-and-inputs",
+                    "text": "Sliders and inputs",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "laravel": {
+            "title": "Laravel and Livewire",
+            "headings": [
+                {
+                    "id": "blade",
+                    "text": "Blade",
+                    "level": 2
+                },
+                {
+                    "id": "livewire",
+                    "text": "Livewire",
+                    "level": 2
+                },
+                {
+                    "id": "configuration",
+                    "text": "Configuration",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "large-data": {
+            "title": "Large data",
+            "headings": [
+                {
+                    "id": "sizes-to-expect",
+                    "text": "Sizes to expect",
+                    "level": 2
+                },
+                {
+                    "id": "binning-in-php",
+                    "text": "Binning in PHP",
+                    "level": 2
+                },
+                {
+                    "id": "tables-stay-columnar",
+                    "text": "Tables stay columnar",
+                    "level": 2
+                },
+                {
+                    "id": "downsampling-lines",
+                    "text": "Downsampling lines",
+                    "level": 2
+                },
+                {
+                    "id": "the-bin-helpers",
+                    "text": "The Bin helpers",
+                    "level": 2
+                },
+                {
+                    "id": "other-approaches",
+                    "text": "Other approaches",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference": {
+            "title": "API reference",
+            "headings": [
+                {
+                    "id": "plot",
+                    "text": "Plot",
+                    "level": 2
+                },
+                {
+                    "id": "aesthetics",
+                    "text": "Aesthetics",
+                    "level": 2
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "other-classes",
+                    "text": "Other classes",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "rendering": {
+            "title": "Rendering",
+            "headings": [
+                {
+                    "id": "specifications",
+                    "text": "Specifications",
+                    "level": 2
+                },
+                {
+                    "id": "html",
+                    "text": "HTML",
+                    "level": 2
+                },
+                {
+                    "id": "static-export",
+                    "text": "Static export",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "scales": {
+            "title": "Scales, coordinates, and labels",
+            "headings": [
+                {
+                    "id": "scales",
+                    "text": "Scales",
+                    "level": 2
+                },
+                {
+                    "id": "label-formatters",
+                    "text": "Label formatters",
+                    "level": 3
+                },
+                {
+                    "id": "guides",
+                    "text": "Guides",
+                    "level": 3
+                },
+                {
+                    "id": "coordinates",
+                    "text": "Coordinates",
+                    "level": 2
+                },
+                {
+                    "id": "labels",
+                    "text": "Labels",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "statistics": {
+            "title": "Statistics",
+            "headings": [
+                {
+                    "id": "coefficient-plots",
+                    "text": "Coefficient plots",
+                    "level": 2
+                },
+                {
+                    "id": "regression-diagnostics",
+                    "text": "Regression diagnostics",
+                    "level": 2
+                },
+                {
+                    "id": "predicted-values",
+                    "text": "Predicted values",
+                    "level": 2
+                },
+                {
+                    "id": "marginal-means",
+                    "text": "Marginal means",
+                    "level": 2
+                },
+                {
+                    "id": "random-effects",
+                    "text": "Random effects",
+                    "level": 2
+                },
+                {
+                    "id": "posterior-intervals",
+                    "text": "Posterior intervals",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "themes": {
+            "title": "Themes",
+            "headings": [],
+            "math": false
+        }
+    }
+}
