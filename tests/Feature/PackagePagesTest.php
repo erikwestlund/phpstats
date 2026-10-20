@@ -70,11 +70,12 @@ class PackagePagesTest extends TestCase
             $bar->assertDontSee($juphyter->url($section), false);
         }
 
-        // phibble has vignettes and docs off-site, but neither benchmarks nor verification.
+        // phibble has docs and vignettes since task 10 pinned its content, but
+        // it ships neither benchmarks nor verification.
         $phibble = Package::find('phibble');
         $this->get($phibble->url())->assertOk()
             ->assertSee($phibble->url('vignettes'), false)
-            ->assertSee($phibble->externalDocs(), false)
+            ->assertSee($phibble->url('docs'), false)
             ->assertDontSee($phibble->url('benchmarks'), false)
             ->assertDontSee($phibble->url('verification'), false);
 
@@ -110,6 +111,32 @@ class PackagePagesTest extends TestCase
         $this->get('http://phpstats.test/vignettes/school-effects')->assertRedirect('http://phit.phpstats.test/vignettes/school-shrinkage');
         $this->get('http://phpstats.test/vignettes/sql-pipeline')->assertRedirect('http://phibble.phpstats.test/vignettes/sql-pipeline');
         $this->get('http://phpstats.test/benchmarks')->assertRedirect('http://phit.phpstats.test/benchmarks');
+    }
+
+    // Task 10: the install card each package publishes in its own site.json.
+
+    public function test_each_synced_package_shows_its_install_lines(): void
+    {
+        $cards = [];
+        foreach (Package::all() as $key => $package) {
+            if ($package->install() === []) {
+                continue;
+            }
+            $cards[] = $key;
+
+            // The lines are highlighted, so the markup splits them into spans:
+            // compare the text of the page rather than its HTML.
+            $text = html_entity_decode(strip_tags($this->get($package->url())->assertOk()->getContent()));
+            foreach ($package->install() as $line) {
+                $this->assertStringContainsString($line, $text, "{$key}: {$line}");
+            }
+            foreach ($package->requires() as $requirement) {
+                $this->assertStringContainsString($requirement, $text, "{$key}: {$requirement}");
+            }
+        }
+
+        // juphyter is the only package with no content to install from.
+        $this->assertEqualsCanonicalizing(['phibble', 'phplyr', 'phpolars', 'phit', 'phiz', 'cmdstanphp'], $cards);
     }
 
     // Overview content (task 11a): summary lists, pipe-only examples, the

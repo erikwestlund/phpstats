@@ -13,6 +13,9 @@ class DocsTest extends TestCase
 
     protected bool $seed = true;
 
+    /** @var array<string, array<string, list<string>>> ids per package and docs page */
+    private array $anchors = [];
+
     public function test_docs_nav_is_grouped_by_folder(): void
     {
         $groups = Package::find('phpolars')->docsGroups();
@@ -24,14 +27,20 @@ class DocsTest extends TestCase
 
     public function test_synced_docs_render_with_resolved_links(): void
     {
-        $package = Package::find('phit');
-        $this->assertTrue($package->hasDocs());
+        // Every library package serves its docs here since task 10 pinned
+        // phibble, phiz, and cmdstanphp. juphyter ships none yet.
+        $this->assertEqualsCanonicalizing(
+            ['phibble', 'phplyr', 'phpolars', 'phit', 'phiz', 'cmdstanphp'],
+            array_keys(array_filter(Package::all(), fn (Package $package) => $package->hasDocs())),
+        );
 
-        $index = $this->get('http://phit.phpstats.test/docs')->assertOk();
-        foreach ($package->docsNav() as $item) {
-            $index->assertSee($item['title']);
-            $page = $this->get($package->url('docs', ['path' => $item['path'] === 'index' ? null : $item['path']]))->assertOk();
-            $this->assertStringNotContainsString('phpstats://', $page->getContent());
+        foreach (array_filter(Package::all(), fn (Package $package) => $package->hasDocs()) as $key => $package) {
+            $index = $this->get($package->url('docs'))->assertOk();
+            foreach ($package->docsNav() as $item) {
+                $index->assertSee($item['title']);
+                $page = $this->get($package->url('docs', ['path' => $item['path'] === 'index' ? null : $item['path']]))->assertOk();
+                $this->assertStringNotContainsString('phpstats://', $page->getContent(), "{$key}/{$item['path']}");
+            }
         }
 
         $this->get('http://phit.phpstats.test/docs/notebooks/lmm-math')->assertOk()
@@ -41,20 +50,155 @@ class DocsTest extends TestCase
 
     public function test_benchmarks_and_verification_render_every_file(): void
     {
-        foreach (['phit', 'phpolars'] as $key) {
-            $package = Package::find($key);
-            $this->assertNotEmpty($package->benchmarks());
-            $this->assertNotEmpty($package->verifications());
-
-            $benchmarks = $this->get($package->url('benchmarks'))->assertOk();
-            foreach ($package->benchmarks() as $benchmark) {
-                $benchmarks->assertSee($benchmark['title']);
+        $shipping = [];
+        foreach (Package::all() as $key => $package) {
+            if ($package->benchmarks() === [] && $package->verifications() === []) {
+                continue;
             }
-            $verification = $this->get($package->url('verification'))->assertOk();
-            foreach ($package->verifications() as $report) {
-                $verification->assertSee($report['title']);
+            $shipping[] = $key;
+
+            if ($package->benchmarks() !== []) {
+                $benchmarks = $this->get($package->url('benchmarks'))->assertOk();
+                foreach ($package->benchmarks() as $benchmark) {
+                    $benchmarks->assertSee($benchmark['title']);
+                }
+            }
+            if ($package->verifications() !== []) {
+                $verification = $this->get($package->url('verification'))->assertOk();
+                foreach ($package->verifications() as $report) {
+                    $verification->assertSee($report['title']);
+                }
             }
         }
+
+        // phibble, phiz, and cmdstanphp ship docs and nothing else: their
+        // site/ folders hold no benchmark or verification reports, which is
+        // why neither section appears in their bars.
+        $this->assertEqualsCanonicalizing(['phit', 'phplyr', 'phpolars'], $shipping);
+    }
+
+    // Task 10: the three packages that joined the site, and the audits that
+    // keep a re-pin from quietly breaking a link or dropping a figure.
+
+    public function test_the_newly_pinned_packages_serve_their_own_docs(): void
+    {
+        foreach (['phibble' => 'types', 'phiz' => 'geoms', 'cmdstanphp' => 'installation'] as $key => $path) {
+            $package = Package::find($key);
+            $this->assertTrue($package->hasDocs(), $key);
+            $this->assertNotNull($package->sync(), $key);
+
+            $this->get($package->url('docs'))->assertOk();
+            $this->get($package->url('docs', ['path' => $path]))->assertOk();
+
+            // The Docs button on the overview no longer leaves the site.
+            $this->get($package->url())->assertOk()
+                ->assertSee($package->url('docs'), false)
+                ->assertDontSee('phpstats.github.io', false);
+        }
+    }
+
+    public function test_phiz_ships_every_docs_page_but_its_gallery(): void
+    {
+        // phiz renders 19 pages; docs/gallery.html has no .qmd beside it, so
+        // DocsImporter::discover() skips it. That is known and accepted: the
+        // gallery is a rendered artifact rather than a source page.
+        $paths = Package::find('phiz')->docsPaths();
+
+        $this->assertCount(18, $paths);
+        $this->assertNotContains('gallery', $paths);
+        $this->get('http://phiz.phpstats.test/docs/gallery')->assertNotFound();
+    }
+
+    public function test_every_content_asset_the_synced_docs_reference_exists(): void
+    {
+        $referenced = 0;
+        $missing = [];
+        foreach ($this->syncedDocs() as $file => $html) {
+            preg_match_all('#(?:src|href)="(/content/[^"\#?]+)#', $html, $matches);
+            foreach (array_unique($matches[1]) as $asset) {
+                $referenced++;
+                if (! is_file(public_path(ltrim($asset, '/')))) {
+                    $missing[] = "{$file} -> {$asset}";
+                }
+            }
+        }
+
+        $this->assertGreaterThan(0, $referenced);
+        $this->assertSame([], $missing);
+    }
+
+    /**
+     * Links between packages' docs are stored as phpstats:// placeholders and
+     * resolved per host. A re-pin that renames a page or a heading would leave
+     * one pointing at nothing, so both halves are checked here.
+     */
+    public function test_every_docs_placeholder_resolves_to_a_page_and_an_anchor(): void
+    {
+        $links = 0;
+        $fragments = 0;
+        $broken = [];
+        foreach ($this->syncedDocs() as $file => $html) {
+            preg_match_all('#phpstats://([a-z0-9-]+)/docs/([^"\'\#\s]*)(\#[^"\'\s]*)?#', $html, $matches, PREG_SET_ORDER);
+            foreach ($matches as $match) {
+                $links++;
+                [$key, $path] = [$match[1], $match[2]];
+                $fragment = ltrim($match[3] ?? '', '#');
+                $package = Package::find($key);
+                if ($package === null || ! in_array($path, $package->docsPaths(), true)) {
+                    $broken[] = "{$file} -> {$key}/{$path}";
+
+                    continue;
+                }
+                if ($fragment !== '') {
+                    $fragments++;
+                    if (! in_array($fragment, $this->anchors($package, $path), true)) {
+                        $broken[] = "{$file} -> {$key}/{$path}#{$fragment}";
+                    }
+                }
+            }
+        }
+
+        $this->assertGreaterThan(0, $links);
+        $this->assertGreaterThan(0, $fragments);
+        $this->assertSame([], $broken);
+    }
+
+    /**
+     * Every rendered page of every synced package, as path => HTML.
+     *
+     * @return array<string, string>
+     */
+    private function syncedDocs(): array
+    {
+        $html = [];
+        foreach (Package::all() as $package) {
+            if (! $package->hasDocs()) {
+                continue;
+            }
+            foreach (File::allFiles($package->path('docs')) as $file) {
+                if ($file->getExtension() === 'html') {
+                    $html[$package->key.'/'.$file->getRelativePathname()] = $file->getContents();
+                }
+            }
+        }
+
+        return $html;
+    }
+
+    /**
+     * The ids a docs page offers as link targets.
+     *
+     * @return list<string>
+     */
+    private function anchors(Package $package, string $path): array
+    {
+        $this->anchors[$package->key][$path] ??= preg_match_all(
+            '#\bid="([^"]+)"#',
+            File::get($package->path("docs/{$path}.html")),
+            $matches,
+        ) ? $matches[1] : [];
+
+        return $this->anchors[$package->key][$path];
     }
 
     // Sidebar group headings (task 9). A package whose nav is one group gets no
