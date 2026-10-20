@@ -66,9 +66,12 @@ class ProseTest extends TestCase
             "Before.\n```php\n\$frame = new DataFrame;\n```\nAfter.",
             // A Blade comment is a note to the next reader, not site prose.
             "{{-- The printed frame sits below. --}}\nIt runs on the server.",
-            // A view's code slots hold code, whatever it names.
-            "<x-code-tabs>\n<x-slot:chain>\$frame = read_csv(\$path);\n</x-slot>\n</x-code-tabs>",
-            "<x-slot:pipe>frame(\$rows)\n</x-slot>",
+            // A view's code slots hold code, whatever it names. The views
+            // close a slot with its own name, so that form has to be the
+            // case that matters; the bare close is tolerated as well.
+            "<x-code-tabs>\n<x-slot:chain>\$rows |> frame(\$rows);\n</x-slot:chain>\n</x-code-tabs>",
+            "<x-slot:pipe>frame(\$rows)\n</x-slot:pipe>",
+            "<x-slot:chain>read_csv(\$path)->frame()\n</x-slot>",
         ] as $prose) {
             $this->assertSame([], $this->bareFrames($prose), $prose);
         }
@@ -78,9 +81,15 @@ class ProseTest extends TestCase
      * Each place this text uses "frame" or "frames" as a noun of its own,
      * with a little context. Fenced blocks, inline code, Blade comments, the
      * code in a view's pipe and chain slots, and HTML tags are dropped
-     * first, because code and the notes about it name their own things, and a
-     * name joined by a word character, "-", "_", "$", "\", or "/" is an identifier rather
-     * than the noun.
+     * first, because code and the notes about it name their own things, and
+     * a name joined by a word character, "-", "_", "$", "\", or "/" is an
+     * identifier rather than the noun.
+     *
+     * A slot closes with either </x-slot:pipe> or the bare </x-slot>, and
+     * every view in this repository writes the first form, so the pattern
+     * has to accept both. Matching only the bare close reads a slot's code
+     * as prose, and a vignette that calls a function named frame() then
+     * fails this test for writing code.
      *
      * @return list<string>
      */
@@ -89,7 +98,7 @@ class ProseTest extends TestCase
         $text = preg_replace('/^(```|~~~).*?^(```|~~~)[ \t]*$/ms', '', $text);
         $text = preg_replace('/`[^`]*`/', '', $text);
         $text = preg_replace('/\{\{--.*?--\}\}/s', '', $text);
-        $text = preg_replace('/<x-slot:(pipe|chain)>.*?<\/x-slot>/s', '', $text);
+        $text = preg_replace('#<x-slot:(pipe|chain)>.*?</x-slot(?::\1)?>#s', '', $text);
         $text = preg_replace('/<[^>]*>/', '', $text);
 
         // Collapsed, so copy wrapped between "data" and "frames" still reads
