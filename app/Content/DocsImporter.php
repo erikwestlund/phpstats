@@ -2,10 +2,10 @@
 
 namespace App\Content;
 
-use Dom\Element;
 use Dom\HTMLDocument;
 use Illuminate\Support\Facades\File;
 use RuntimeException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Turns a package's rendered Quarto pages into fragments for the site layout.
@@ -33,10 +33,16 @@ class DocsImporter
     /** @var array<string, true> page paths without extension, relative to the docs root */
     private array $pages = [];
 
+    /** @var list<array{target: string, reason: string}> sidebar entries the site cannot serve */
+    private array $skipped = [];
+
+    /** Whether discover() has run, which a package with nothing rendered cannot show by its pages. */
+    private bool $discovered = false;
+
     /**
-     * @param string $docsRoot absolute path to the docs root in the checkout
-     * @param string $assetsDir absolute path where copied files go (public/content/{package}/docs)
-     * @param string $assetsUrl URL path for that directory (/content/{package}/docs)
+     * @param  string  $docsRoot  absolute path to the docs root in the checkout
+     * @param  string  $assetsDir  absolute path where copied files go (public/content/{package}/docs)
+     * @param  string  $assetsUrl  URL path for that directory (/content/{package}/docs)
      */
     public function __construct(
         private readonly string $package,
@@ -67,8 +73,163 @@ class DocsImporter
         }
         sort($found);
         $this->pages = array_fill_keys($found, true);
+        $this->discovered = true;
 
         return $found;
+    }
+
+    /**
+     * The docs nav as the package's own Quarto sidebar orders it.
+     *
+     * A package maintains `docs/_quarto.yml` because its docs do not render
+     * without it, so the sidebar there is the one nav that cannot quietly go
+     * stale. Entries come back in sidebar order, each with the title Quarto
+     * would show for it (its `text`, or none, which leaves the caller to fill
+     * in a better one) and the enclosing `section` as task 9 carries it.
+     * Null when the docs hold no sidebar at all, which leaves the caller
+     * site.json's `docs.nav`.
+     *
+     * An entry the site cannot serve is left out and recorded for
+     * skippedNavEntries(): a link off the docs, and a rendered page with no
+     * `.qmd` beside it, such as phiz's `docs/gallery.html`.
+     *
+     * @return ?list<array{path: string, title: ?string, section: ?string}>
+     */
+    public function quartoNav(): ?array
+    {
+        $file = null;
+        foreach (['_quarto.yml', '_quarto.yaml'] as $name) {
+            if (is_file("{$this->docsRoot}/{$name}")) {
+                $file = "{$this->docsRoot}/{$name}";
+                break;
+            }
+        }
+        if ($file === null) {
+            return null;
+        }
+        if (! $this->discovered) {
+            throw new RuntimeException("{$this->package}: discover() has to run before the nav is derived from {$file}.");
+        }
+
+        $yaml = Yaml::parseFile($file);
+        $contents = is_array($yaml) ? $this->sidebarContents($yaml['website'] ?? []) : null;
+        if ($contents === null) {
+            return null;
+        }
+
+        $this->skipped = [];
+        $items = [];
+        $this->walkSidebar($contents, null, $items);
+
+        return array_values($items);
+    }
+
+    /**
+     * The sidebar entries quartoNav() left out, so the caller can tell a
+     * rendered page it simply does not serve from a page whose HTML is gone.
+     *
+     * @return list<array{target: string, reason: string}>
+     */
+    public function skippedNavEntries(): array
+    {
+        return $this->skipped;
+    }
+
+    /**
+     * A website's sidebar contents, or its navbar's when it has no sidebar.
+     * Quarto allows several sidebars, so the first one with contents wins.
+     *
+     * @param  array<mixed>  $website
+     * @return ?array<mixed>
+     */
+    private function sidebarContents(array $website): ?array
+    {
+        $sidebar = $website['sidebar'] ?? null;
+        $sidebars = is_array($sidebar) && array_is_list($sidebar) ? $sidebar : [$sidebar];
+        foreach ($sidebars as $candidate) {
+            if (is_array($candidate) && is_array($candidate['contents'] ?? null)) {
+                return $candidate['contents'];
+            }
+        }
+
+        $navbar = $website['navbar'] ?? null;
+        foreach (['contents', 'left', 'right'] as $side) {
+            if (is_array($navbar) && is_array($navbar[$side] ?? null)) {
+                return $navbar[$side];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array<mixed>  $nodes
+     * @param  array<string, array{path: string, title: ?string, section: ?string}>  $items
+     */
+    private function walkSidebar(array $nodes, ?string $section, array &$items): void
+    {
+        foreach ($nodes as $node) {
+            if (is_string($node)) {
+                $this->addNavItem($node, null, $section, $items);
+
+                continue;
+            }
+            if (! is_array($node)) {
+                continue;
+            }
+            if (is_array($node['contents'] ?? null)) {
+                // The group's own name, or the one it sits in when Quarto's
+                // entry is nothing but a container.
+                $name = $node['section'] ?? $node['text'] ?? null;
+                $named = is_string($name) && trim($name) !== '' && ! str_contains($name, '.qmd');
+                $this->walkSidebar($node['contents'], $named ? trim($name) : $section, $items);
+
+                continue;
+            }
+            $target = $node['href'] ?? $node['file'] ?? null;
+            if (is_string($target)) {
+                $title = $node['text'] ?? null;
+                $this->addNavItem($target, is_string($title) ? trim($title) : null, $section, $items);
+            }
+        }
+    }
+
+    /**
+     * @param  array<string, array{path: string, title: ?string, section: ?string}>  $items
+     */
+    private function addNavItem(string $target, ?string $title, ?string $section, array &$items): void
+    {
+        if ($target === '' || preg_match('#^([a-z][a-z0-9+.-]*:|/|\#)#i', $target)) {
+            $this->skipped[] = ['target' => $target, 'reason' => 'off-site'];
+
+            return;
+        }
+
+        [$path] = $this->splitFragment($target);
+        $path = $this->normalize($path);
+        if ($path === null) {
+            $this->skipped[] = ['target' => $target, 'reason' => 'off-site'];
+
+            return;
+        }
+        if ($path === '' || str_ends_with($path, '/')) {
+            $path .= 'index.qmd';
+        }
+
+        $page = preg_replace('/\.(qmd|md|ipynb|html)$/', '', $path);
+        if (! isset($this->pages[$page])) {
+            // A .qmd the sidebar names should have rendered; anything else is
+            // a file the site does not serve as a page.
+            $this->skipped[] = [
+                'target' => $target,
+                'reason' => str_ends_with($path, '.qmd') ? 'unrendered' : 'not-a-page',
+            ];
+
+            return;
+        }
+
+        // A sidebar may name a page twice; the first entry decides its place.
+        $items[$page] ??= ['path' => $page, 'title' => $title, 'section' => $section];
     }
 
     /**

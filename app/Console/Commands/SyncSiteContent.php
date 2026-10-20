@@ -22,6 +22,37 @@ class SyncSiteContent extends Command
 
     protected $description = 'Sync package docs, benchmarks, verifications, and vignettes at their pinned commits';
 
+    /**
+     * Rendered pages that are deliberately outside the docs nav, as page
+     * paths or `directory/` prefixes.
+     *
+     * The nav itself is derived from the package's own `docs/_quarto.yml`, so
+     * the question this answers is the other half: how a package says that a
+     * page it renders is not documentation of the library. It declares
+     * `docs.exclude` in `site/site.json`, and this is the default when it
+     * declares nothing.
+     *
+     * The default is a directory rather than a list of pages because the only
+     * case the family has is a directory, and because the directory is already
+     * a convention: four of the six synced packages keep a `docs/data` of the
+     * CSVs, checksums and provenance notes their examples read, and `site/data`
+     * and `database/data` give `data` that same meaning elsewhere in the sync.
+     * phit is the one package that renders a page in there,
+     * `docs/data/lmm/index.qmd`, which documents the datasets rather than the
+     * library and which no nav has ever named. Naming the directory means a
+     * package can add another dataset note without this site having to agree.
+     *
+     * Neither half may go quiet, which is the whole point of deriving the nav:
+     * a rendered page that is in no nav and no exclusion fails the sync, a
+     * declared exclusion that covers no page fails it, and an exclusion that
+     * covers a page the nav lists fails it too. Every rule is printed with the
+     * pages it covered, so an exclusion swallowing real documentation shows up
+     * in the sync's own output. The default is exempt from the covers-nothing
+     * check, because it is this site's convention rather than a package's
+     * claim, and in five of the six packages it covers no page.
+     */
+    private const DOCS_EXCLUDE = ['data/'];
+
     public function handle(): int
     {
         $content = config('phpstats.content');
@@ -151,20 +182,8 @@ class SyncSiteContent extends Command
             $importer = new DocsImporter($package, $root, "{$assets}/docs", "/content/{$package}/docs", basename($repo));
             $paths = $importer->discover();
 
-            $nav = [];
-            foreach ($docs['nav'] ?? [] as $item) {
-                $page = preg_replace('/\.(qmd|md|ipynb)$/', '', $item['path']);
-                if (! in_array($page, $paths, true)) {
-                    throw new RuntimeException("{$label}: docs.nav lists {$item['path']}, but its rendered HTML is missing.");
-                }
-                // Package::docsGroups() groups by an item's own section first.
-                $nav[] = array_filter([
-                    'title' => $item['title'],
-                    'path' => $page,
-                    'section' => $item['section'] ?? null,
-                ], fn (mixed $value) => $value !== null);
-            }
-
+            // The pages are imported before the nav is built, because a nav
+            // entry with no title of its own falls back to the page's heading.
             $index = [];
             foreach ($paths as $path) {
                 $page = $importer->import($path);
@@ -173,6 +192,8 @@ class SyncSiteContent extends Command
                 $index[$path] = ['title' => $page['title'], 'headings' => $page['headings'], 'math' => $page['math']];
             }
             $pageCount = count($paths);
+
+            $nav = $this->nav($importer, $docs, $index, $label);
 
             File::put("{$target}/docs.json", json_encode(['nav' => $nav, 'pages' => $index], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)."\n");
         }
@@ -189,6 +210,123 @@ class SyncSiteContent extends Command
         if ($local) {
             $this->warn("Not pinned: {$package} was read from a local checkout, so config/phpstats.php is unchanged and sync.json records no commit.");
         }
+    }
+
+    /**
+     * The docs nav, derived from the package's own `docs/_quarto.yml` sidebar
+     * and falling back to site.json's `docs.nav` when the docs hold none.
+     *
+     * Deriving it is what stops the nav going stale: `_quarto.yml` has to name
+     * a page for Quarto to render it, while a page missing from site.json is
+     * invisible. When this was written phit rendered 52 pages and named 16, so
+     * 36 were synced, reachable by URL, and in no sidebar.
+     *
+     * Titles stay curated. An entry's own `text` in `_quarto.yml` wins, then
+     * the title site.json gives that page, then the page's own heading, which
+     * is what the package's docs site shows for a bare entry. So site.json's
+     * `docs.nav` keeps its labels and stops deciding which pages exist.
+     *
+     * @param  array<string, mixed>  $docs  site.json's docs block
+     * @param  array<string, array{title: string, headings: list<array<string, mixed>>, math: bool}>  $pages
+     * @return list<array{title: string, path: string, section?: string}>
+     */
+    private function nav(DocsImporter $importer, array $docs, array $pages, string $label): array
+    {
+        $labels = [];
+        foreach ($docs['nav'] ?? [] as $item) {
+            $labels[$this->page($item['path'])] = $item['title'];
+        }
+
+        $derived = $importer->quartoNav();
+        if ($derived === null) {
+            $this->warn("{$label}: the docs hold no _quarto.yml sidebar, so the nav is site.json's.");
+            $derived = array_map(fn (array $item) => [
+                'path' => $this->page($item['path']),
+                'title' => null,
+                'section' => $item['section'] ?? null,
+            ], $docs['nav'] ?? []);
+        }
+
+        // A label for a page the sidebar no longer names is only cosmetic, so
+        // it is said out loud rather than failing the sync.
+        $stale = array_values(array_diff(array_keys($labels), array_column($derived, 'path')));
+        if ($stale !== []) {
+            $this->line("  {$label}: site.json docs.nav titles ".implode(', ', $stale).', which the nav does not list, so they go unused.');
+        }
+
+        foreach ($importer->skippedNavEntries() as $entry) {
+            if ($entry['reason'] === 'unrendered') {
+                throw new RuntimeException("{$label}: the docs nav lists {$entry['target']}, but its rendered HTML is missing.");
+            }
+            $this->line("  {$label}: the nav entry {$entry['target']} is no page of this site, and is left out.");
+        }
+
+        $nav = [];
+        foreach ($derived as $item) {
+            $path = $item['path'];
+            if (! isset($pages[$path])) {
+                throw new RuntimeException("{$label}: the docs nav lists {$path}, but its rendered HTML is missing.");
+            }
+            // Package::docsGroups() groups by an item's own section first.
+            $nav[] = array_filter([
+                'title' => $item['title'] ?? $labels[$path] ?? $pages[$path]['title'],
+                'path' => $path,
+                'section' => $item['section'] ?? null,
+            ], fn (mixed $value) => $value !== null);
+        }
+
+        $this->checkEveryPageIsPlaced(array_keys($pages), array_column($nav, 'path'), $docs['exclude'] ?? null, $label);
+
+        return $nav;
+    }
+
+    /**
+     * Fail the sync unless every rendered page is either in the nav or
+     * excluded on purpose, and unless every exclusion still earns its place.
+     * See DOCS_EXCLUDE for the rule and why it is this one.
+     *
+     * @param  list<string>  $pages  every rendered page
+     * @param  list<string>  $navigated  the pages the nav lists
+     * @param  ?list<string>  $declared  site.json's docs.exclude, when it has one
+     */
+    private function checkEveryPageIsPlaced(array $pages, array $navigated, ?array $declared, string $label): void
+    {
+        $covered = [];
+        foreach ($declared ?? self::DOCS_EXCLUDE as $rule) {
+            $covered[$rule] = array_values(array_filter(
+                $pages,
+                fn (string $page) => str_ends_with($rule, '/') ? str_starts_with($page, $rule) : $page === $rule,
+            ));
+        }
+        $excluded = array_merge([], ...array_values($covered));
+
+        $hidden = array_values(array_intersect($excluded, $navigated));
+        if ($hidden !== []) {
+            throw new RuntimeException("{$label}: docs.exclude covers ".implode(', ', $hidden)
+                .', which the nav lists. Drop the exclusion or the nav entry.');
+        }
+        foreach ($covered as $rule => $matched) {
+            if ($matched === [] && $declared !== null) {
+                throw new RuntimeException("{$label}: docs.exclude has {$rule}, which covers no rendered page.");
+            }
+            if ($matched !== []) {
+                $this->line(sprintf('  %s: docs.exclude %s leaves out %d page%s: %s.',
+                    $label, $rule, count($matched), count($matched) === 1 ? '' : 's', implode(', ', $matched)));
+            }
+        }
+
+        $unplaced = array_values(array_diff($pages, $navigated, $excluded));
+        if ($unplaced !== []) {
+            throw new RuntimeException(sprintf('%s: %d rendered page%s in no nav and no docs.exclude rule: %s. '
+                ."Name each one in docs/_quarto.yml's sidebar, or declare it in site.json docs.exclude.",
+                $label, count($unplaced), count($unplaced) === 1 ? ' is' : 's are', implode(', ', $unplaced)));
+        }
+    }
+
+    /** A nav path as the site keys its pages: the source extension dropped. */
+    private function page(string $path): string
+    {
+        return preg_replace('/\.(qmd|md|ipynb)$/', '', $path);
     }
 
     /** @return array<string, mixed> the checkout's site/site.json, checked against the package it is for */

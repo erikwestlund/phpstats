@@ -5,64 +5,253 @@
             "path": "index"
         },
         {
-            "title": "Formulas: fit_lm, fit_glm, fit_lmer, predict",
-            "path": "formulas"
-        },
-        {
-            "title": "Function reference and contracts",
-            "path": "contracts"
-        },
-        {
-            "title": "Probability distributions",
-            "path": "distributions"
-        },
-        {
-            "title": "Descriptive statistics",
-            "path": "descriptive"
-        },
-        {
-            "title": "Random numbers",
-            "path": "rng"
-        },
-        {
-            "title": "Posterior draws",
-            "path": "draw-numerics"
-        },
-        {
-            "title": "Reading CSV files",
-            "path": "io"
-        },
-        {
-            "title": "Missing data",
-            "path": "missing-data"
-        },
-        {
-            "title": "R compatibility",
-            "path": "r-compatibility"
-        },
-        {
-            "title": "Installation and deployment",
-            "path": "deployment"
-        },
-        {
-            "title": "Building from source",
-            "path": "development"
-        },
-        {
-            "title": "Math walkthroughs",
-            "path": "notebooks/index"
-        },
-        {
-            "title": "Verification approach",
-            "path": "verification"
-        },
-        {
-            "title": "Design philosophy",
-            "path": "design-philosophy"
+            "title": "Figure conventions and reproducibility",
+            "path": "visualization",
+            "section": "Project"
         },
         {
             "title": "Licensing",
-            "path": "licensing"
+            "path": "licensing",
+            "section": "Project"
+        },
+        {
+            "title": "v0.1 stabilization and release assessment",
+            "path": "v0.1",
+            "section": "Project"
+        },
+        {
+            "title": "v0.2 numerical API readiness",
+            "path": "v0.2",
+            "section": "Project"
+        },
+        {
+            "title": "Design philosophy",
+            "path": "design-philosophy",
+            "section": "Project"
+        },
+        {
+            "title": "Function reference and contracts",
+            "path": "contracts",
+            "section": "Project"
+        },
+        {
+            "title": "Formulas: fit_lm, fit_glm, fit_lmer, predict",
+            "path": "formulas",
+            "section": "Project"
+        },
+        {
+            "title": "R compatibility",
+            "path": "r-compatibility",
+            "section": "Project"
+        },
+        {
+            "title": "Missing data",
+            "path": "missing-data",
+            "section": "Project"
+        },
+        {
+            "title": "Building from source",
+            "path": "development",
+            "section": "Project"
+        },
+        {
+            "title": "Installation and deployment",
+            "path": "deployment",
+            "section": "Project"
+        },
+        {
+            "title": "Verification approach",
+            "path": "verification",
+            "section": "Project"
+        },
+        {
+            "title": "Posterior draws",
+            "path": "draw-numerics",
+            "section": "Project"
+        },
+        {
+            "title": "Posterior-draw scale validation and performance",
+            "path": "benchmarks/draws",
+            "section": "Project"
+        },
+        {
+            "title": "Reading CSV files",
+            "path": "io",
+            "section": "Project"
+        },
+        {
+            "title": "Building and maintaining the documentation",
+            "path": "documentation",
+            "section": "Project"
+        },
+        {
+            "title": "Walkthrough index",
+            "path": "notebooks/index"
+        },
+        {
+            "title": "Probability distributions",
+            "path": "distributions",
+            "section": "Probability distributions & statistical utilities"
+        },
+        {
+            "title": "Descriptive statistics",
+            "path": "descriptive",
+            "section": "Probability distributions & statistical utilities"
+        },
+        {
+            "title": "Random numbers",
+            "path": "rng",
+            "section": "Probability distributions & statistical utilities"
+        },
+        {
+            "title": "Seeded sampling verification and performance",
+            "path": "benchmarks/rng",
+            "section": "Probability distributions & statistical utilities"
+        },
+        {
+            "title": "Distribution and utility verification",
+            "path": "verifications/distributions",
+            "section": "Probability distributions & statistical utilities"
+        },
+        {
+            "title": "Distribution performance and regression preservation",
+            "path": "benchmarks/distributions",
+            "section": "Probability distributions & statistical utilities"
+        },
+        {
+            "title": "Estimation walkthrough",
+            "path": "notebooks/ols-math",
+            "section": "OLS"
+        },
+        {
+            "title": "R and statsmodels comparison",
+            "path": "notebooks/ols-verification",
+            "section": "OLS"
+        },
+        {
+            "title": "Verification record",
+            "path": "verifications/ols",
+            "section": "OLS"
+        },
+        {
+            "title": "Scale and performance",
+            "path": "benchmarks/ols",
+            "section": "OLS"
+        },
+        {
+            "title": "Math and Rust implementation notes",
+            "path": "ols-math",
+            "section": "OLS"
+        },
+        {
+            "title": "Estimation walkthrough",
+            "path": "notebooks/logistic-math",
+            "section": "Binary logistic regression"
+        },
+        {
+            "title": "R and statsmodels comparison",
+            "path": "notebooks/logistic-verification",
+            "section": "Binary logistic regression"
+        },
+        {
+            "title": "Verification record",
+            "path": "verifications/logistic",
+            "section": "Binary logistic regression"
+        },
+        {
+            "title": "Scale and performance",
+            "path": "benchmarks/logistic",
+            "section": "Binary logistic regression"
+        },
+        {
+            "title": "Estimation walkthrough",
+            "path": "notebooks/probit-math",
+            "section": "Probit regression"
+        },
+        {
+            "title": "R and statsmodels comparison",
+            "path": "notebooks/probit-verification",
+            "section": "Probit regression"
+        },
+        {
+            "title": "Verification record",
+            "path": "verifications/probit",
+            "section": "Probit regression"
+        },
+        {
+            "title": "Scale and performance",
+            "path": "benchmarks/probit",
+            "section": "Probit regression"
+        },
+        {
+            "title": "Estimation walkthrough",
+            "path": "notebooks/poisson-math",
+            "section": "Poisson regression"
+        },
+        {
+            "title": "R and statsmodels comparison",
+            "path": "notebooks/poisson-verification",
+            "section": "Poisson regression"
+        },
+        {
+            "title": "Verification record",
+            "path": "verifications/poisson",
+            "section": "Poisson regression"
+        },
+        {
+            "title": "Scale and performance",
+            "path": "benchmarks/poisson",
+            "section": "Poisson regression"
+        },
+        {
+            "title": "Random slopes and REML walkthrough",
+            "path": "notebooks/lmm-general-math",
+            "section": "Gaussian mixed model"
+        },
+        {
+            "title": "Expanded R and optimizer audit",
+            "path": "notebooks/r-compatibility",
+            "section": "Gaussian mixed model"
+        },
+        {
+            "title": "Estimation walkthrough",
+            "path": "notebooks/lmm-math",
+            "section": "Gaussian mixed model"
+        },
+        {
+            "title": "Synthetic reference comparison",
+            "path": "notebooks/lmm-verification",
+            "section": "Gaussian mixed model"
+        },
+        {
+            "title": "Published dataset comparison",
+            "path": "notebooks/lmm-public-verification",
+            "section": "Gaussian mixed model"
+        },
+        {
+            "title": "Verification record",
+            "path": "verifications/lmm",
+            "section": "Gaussian mixed model"
+        },
+        {
+            "title": "Scale and performance",
+            "path": "benchmarks/lmm",
+            "section": "Gaussian mixed model"
+        },
+        {
+            "title": "Likelihood and integration walkthrough",
+            "path": "notebooks/logistic-mixed-math",
+            "section": "Binomial mixed models"
+        },
+        {
+            "title": "R and independent Python verification",
+            "path": "notebooks/logistic-mixed-verification",
+            "section": "Binomial mixed models"
+        },
+        {
+            "title": "Scale and performance",
+            "path": "benchmarks/logistic-mixed",
+            "section": "Binomial mixed models"
         }
     ],
     "pages": {

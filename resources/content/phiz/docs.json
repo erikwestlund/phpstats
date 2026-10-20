@@ -14,63 +14,78 @@
         },
         {
             "title": "Data and fields",
-            "path": "data"
+            "path": "data",
+            "section": "Guide"
         },
         {
             "title": "Geoms",
-            "path": "geoms"
+            "path": "geoms",
+            "section": "Guide"
         },
         {
             "title": "Scales, coordinates, and labels",
-            "path": "scales"
+            "path": "scales",
+            "section": "Guide"
         },
         {
             "title": "Facets and composition",
-            "path": "facets"
+            "path": "facets",
+            "section": "Guide"
         },
         {
             "title": "Themes",
-            "path": "themes"
+            "path": "themes",
+            "section": "Guide"
         },
         {
             "title": "Interaction",
-            "path": "interaction"
+            "path": "interaction",
+            "section": "Guide"
         },
         {
             "title": "Statistics",
-            "path": "statistics"
+            "path": "statistics",
+            "section": "Guide"
         },
         {
             "title": "Rendering",
-            "path": "rendering"
+            "path": "rendering",
+            "section": "Output"
         },
         {
             "title": "Laravel and Livewire",
-            "path": "laravel"
+            "path": "laravel",
+            "section": "Output"
         },
         {
             "title": "Dashboards with Livewire",
-            "path": "dashboard"
+            "path": "dashboard",
+            "section": "Output"
         },
         {
             "title": "Large data",
-            "path": "large-data"
+            "path": "large-data",
+            "section": "Output"
         },
         {
             "title": "Design",
-            "path": "design"
+            "path": "design",
+            "section": "Project"
         },
         {
             "title": "API reference",
-            "path": "reference"
+            "path": "reference",
+            "section": "Project"
         },
         {
             "title": "Plan: CmdStanPHP figures",
-            "path": "cmdstanphp"
+            "path": "cmdstanphp",
+            "section": "Project"
         },
         {
             "title": "Development",
-            "path": "development"
+            "path": "development",
+            "section": "Project"
         }
     ],
     "pages": {

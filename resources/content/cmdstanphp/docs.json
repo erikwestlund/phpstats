@@ -14,11 +14,13 @@
         },
         {
             "title": "API reference",
-            "path": "api"
+            "path": "api",
+            "section": "Reference"
         },
         {
             "title": "Compatibility contract",
-            "path": "compatibility"
+            "path": "compatibility",
+            "section": "Reference"
         },
         {
             "title": "Testing and GitHub Pages",

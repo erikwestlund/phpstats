@@ -14,39 +14,48 @@
         },
         {
             "title": "Single-table functions",
-            "path": "reference/single-table"
+            "path": "reference/single-table",
+            "section": "Reference"
         },
         {
             "title": "Joins, binding, and set operations",
-            "path": "reference/two-table"
+            "path": "reference/two-table",
+            "section": "Reference"
         },
         {
             "title": "Grouping",
-            "path": "reference/grouping"
+            "path": "reference/grouping",
+            "section": "Reference"
         },
         {
             "title": "Vector helpers",
-            "path": "reference/vectors"
+            "path": "reference/vectors",
+            "section": "Reference"
         },
         {
             "title": "Strings and dates",
-            "path": "reference/strings-dates"
+            "path": "reference/strings-dates",
+            "section": "Reference"
         },
         {
             "title": "Selecting columns",
-            "path": "reference/tidyselect"
+            "path": "reference/tidyselect",
+            "section": "Reference"
         },
         {
             "title": "Reshaping with tidyr",
-            "path": "reference/tidyr"
+            "path": "reference/tidyr",
+            "section": "Reference"
         },
         {
             "title": "Models",
-            "path": "reference/models"
+            "path": "reference/models",
+            "section": "Reference"
         },
         {
             "title": "Databases",
-            "path": "reference/databases"
+            "path": "reference/databases",
+            "section": "Reference"
         },
         {
             "title": "Gallery",

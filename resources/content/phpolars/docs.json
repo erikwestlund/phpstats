@@ -14,23 +14,28 @@
         },
         {
             "title": "DataFrame and LazyFrame",
-            "path": "reference/dataframe"
+            "path": "reference/dataframe",
+            "section": "Reference"
         },
         {
             "title": "Expressions",
-            "path": "reference/expressions"
+            "path": "reference/expressions",
+            "section": "Reference"
         },
         {
             "title": "Series",
-            "path": "reference/series"
+            "path": "reference/series",
+            "section": "Reference"
         },
         {
             "title": "Input and output",
-            "path": "reference/io"
+            "path": "reference/io",
+            "section": "Reference"
         },
         {
             "title": "Data types",
-            "path": "reference/types"
+            "path": "reference/types",
+            "section": "Reference"
         },
         {
             "title": "phibble and phplyr",

@@ -14,31 +14,38 @@
         },
         {
             "title": "Types",
-            "path": "types"
+            "path": "types",
+            "section": "Guides"
         },
         {
             "title": "Reading and writing data",
-            "path": "io"
+            "path": "io",
+            "section": "Guides"
         },
         {
             "title": "Expressions",
-            "path": "expr"
+            "path": "expr",
+            "section": "Guides"
         },
         {
             "title": "SQL tables",
-            "path": "sql"
+            "path": "sql",
+            "section": "Guides"
         },
         {
             "title": "Laravel",
-            "path": "laravel"
+            "path": "laravel",
+            "section": "Guides"
         },
         {
             "title": "Backends",
-            "path": "backends"
+            "path": "backends",
+            "section": "Backends"
         },
         {
             "title": "The Table contract",
-            "path": "contract"
+            "path": "contract",
+            "section": "Backends"
         },
         {
             "title": "Development",
