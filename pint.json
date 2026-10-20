@@ -1,4 +1,4 @@
 {
     "preset": "laravel",
-    "exclude": ["resources/examples"]
+    "exclude": ["resources/examples", "resources/content"]
 }
