@@ -4,7 +4,6 @@ namespace App\Content;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use Phiz\Laravel\ScriptState;
 
 /**
  * A runnable example from resources/examples: {name}.php uses the pipe
@@ -80,26 +79,15 @@ class Example
 
         $key = self::key($name, $variant);
         $cached = Cache::get($key);
-        if (is_array($cached)) {
-            // The first chart of a request carries the phiz runtime with it, so
-            // a fragment that captured it must stop later charts emitting it
-            // again. Task 13 replaces this with @phizScripts in the layout and
-            // phiz.inject_scripts => false, which also fixes the docs pages.
-            // Two reasons it should: ScriptState is @internal to phiz, and this
-            // flag records page order inside a per-example entry, so editing
-            // the examples or reordering the explorer can leave it wrong and
-            // the runtime missing, with no error to show it.
-            if ($cached['phiz']) {
-                app(ScriptState::class)->included = true;
-            }
-
-            return $cached['html'];
+        // A fragment is the rendered HTML and nothing else. The layout emits
+        // phiz's runtime for every page, so a cached chart no longer has to
+        // record whether it was the fragment that carried it.
+        if (is_string($cached)) {
+            return $cached;
         }
 
-        $state = app(ScriptState::class);
-        $hadPhiz = $state->included;
         $html = $render($result());
-        Cache::put($key, ['html' => $html, 'phiz' => ! $hadPhiz && $state->included], now()->addDays(self::TTL_DAYS));
+        Cache::put($key, $html, now()->addDays(self::TTL_DAYS));
 
         return $html;
     }

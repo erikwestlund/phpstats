@@ -248,6 +248,12 @@ pre,
     clip: rect(0 0 0 0);
 }
 
+/* phiz wraps each chart in a figure; a wide one scrolls rather than overflowing. */
+.phiz-figure {
+    margin: 1.5em 0;
+    overflow-x: auto;
+}
+
 .dark {
     .docs-content div.sourceCode {
         box-shadow: 0 0 0 1px var(--color-ink-line);

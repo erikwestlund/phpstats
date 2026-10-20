@@ -65,6 +65,13 @@
 
     <x-site-footer />
 
+    {{-- phiz's loader, which draws every [data-phiz] container: the charts in
+         <x-phiz>, and those in the packages' synced docs, whose own loader the
+         importer strips. config/phiz.php turns <x-phiz>'s injection off so this
+         is the only copy, and assets is 'none' because resources/js/app.js
+         bundles vega and wraps vegaEmbed for dark mode. --}}
+    @phizScripts
+
     @livewireScriptConfig
 </body>
 </html>

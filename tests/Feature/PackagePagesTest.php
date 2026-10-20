@@ -147,10 +147,12 @@ class PackagePagesTest extends TestCase
         $this->fixtureSite('phibble', ['summary' => ['The first paragraph.', 'The second paragraph.']]);
         $package = Package::find('phibble');
 
+        // A paragraph of "Array" is what a list reaching the view as one string
+        // would print; the bare word also sits in phiz's loader on every page.
         $this->assertSame(['The first paragraph.', 'The second paragraph.'], $package->summary());
         $this->get($package->url())->assertOk()
             ->assertSeeInOrder(['The first paragraph.', 'The second paragraph.'])
-            ->assertDontSee('Array');
+            ->assertDontSee('<p>Array</p>', false);
     }
 
     public function test_a_site_summary_string_keeps_the_shaped_paragraphs(): void
@@ -162,7 +164,7 @@ class PackagePagesTest extends TestCase
         $this->get($package->url())->assertOk()
             ->assertSee('phibble is the shared table type')
             ->assertDontSee('One dense paragraph.')
-            ->assertDontSee('Array');
+            ->assertDontSee('<p>Array</p>', false);
     }
 
     public function test_a_package_with_no_site_content_keeps_the_shaped_paragraphs(): void
@@ -171,7 +173,7 @@ class PackagePagesTest extends TestCase
         $package = Package::find('phibble');
 
         $this->assertSame(config('projects.phibble.overview'), $package->summary());
-        $this->get($package->url())->assertOk()->assertDontSee('Array');
+        $this->get($package->url())->assertOk()->assertDontSee('<p>Array</p>', false);
     }
 
     public function test_an_example_with_only_a_pipe_renders_one_plain_code_block(): void

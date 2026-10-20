@@ -171,6 +171,11 @@ class ExampleCacheTest extends TestCase
         }
     }
 
+    /**
+     * The layout emits phiz's loader for every page, so a cached chart no
+     * longer has to record whether its fragment carried the runtime. This
+     * stays as the regression it was: once cold, and once warm.
+     */
     public function test_the_phiz_runtime_is_emitted_once_on_a_warm_page(): void
     {
         $this->assertSame(1, substr_count($this->landing(), 'phiz: renders'));

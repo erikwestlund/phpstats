@@ -9,10 +9,10 @@ return [
     'assets' => env('PHIZ_ASSETS', 'none'),
 
     /*
-     * Whether <x-phiz> adds the script tags itself, once per page. Turn this off and put @phizScripts in
-     * your layout to control where they go.
+     * Whether <x-phiz> adds the script tags itself, once per page. Off here: the layout emits @phizScripts
+     * on every page, so a synced docs page draws its charts even though it holds no <x-phiz>.
      */
-    'inject_scripts' => true,
+    'inject_scripts' => false,
 
     /*
      * Default vega-embed options for every chart. 'theme' => 'auto' follows the visitor's light or dark
