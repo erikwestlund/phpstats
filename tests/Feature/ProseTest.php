@@ -7,8 +7,11 @@ use Tests\TestCase;
 /**
  * House style rules that are cheap to check across the site's own text: the
  * strings in config/phpstats.php and config/projects.php, which reach the
- * landing page and the package pages, and the Markdown pages in
- * resources/pages.
+ * landing page and the package pages, the Markdown pages in
+ * resources/pages, and the prose in the vignette views.
+ *
+ * The packages' synced content under resources/content is not scanned. It is
+ * generated from the package repositories and has to be fixed there.
  */
 class ProseTest extends TestCase
 {
@@ -24,7 +27,7 @@ class ProseTest extends TestCase
             }
         }
 
-        foreach ($this->pages() as $file => $source) {
+        foreach ([...$this->pages(), ...$this->vignetteViews()] as $file => $source) {
             foreach ($this->bareFrames($source) as $context) {
                 $offenders[] = "{$file}: {$context}";
             }
@@ -61,6 +64,11 @@ class ProseTest extends TestCase
             'The frame-table component prints it.',
             'Laravel is a framework.',
             "Before.\n```php\n\$frame = new DataFrame;\n```\nAfter.",
+            // A Blade comment is a note to the next reader, not site prose.
+            "{{-- The printed frame sits below. --}}\nIt runs on the server.",
+            // A view's code slots hold code, whatever it names.
+            "<x-code-tabs>\n<x-slot:chain>\$frame = read_csv(\$path);\n</x-slot>\n</x-code-tabs>",
+            "<x-slot:pipe>frame(\$rows)\n</x-slot>",
         ] as $prose) {
             $this->assertSame([], $this->bareFrames($prose), $prose);
         }
@@ -68,9 +76,10 @@ class ProseTest extends TestCase
 
     /**
      * Each place this text uses "frame" or "frames" as a noun of its own,
-     * with a little context. Fenced blocks, inline code, and HTML tags are
-     * dropped first, because code names its own things, and a name joined by
-     * a word character, "-", "_", "$", "\", or "/" is an identifier rather
+     * with a little context. Fenced blocks, inline code, Blade comments, the
+     * code in a view's pipe and chain slots, and HTML tags are dropped
+     * first, because code and the notes about it name their own things, and a
+     * name joined by a word character, "-", "_", "$", "\", or "/" is an identifier rather
      * than the noun.
      *
      * @return list<string>
@@ -79,6 +88,8 @@ class ProseTest extends TestCase
     {
         $text = preg_replace('/^(```|~~~).*?^(```|~~~)[ \t]*$/ms', '', $text);
         $text = preg_replace('/`[^`]*`/', '', $text);
+        $text = preg_replace('/\{\{--.*?--\}\}/s', '', $text);
+        $text = preg_replace('/<x-slot:(pipe|chain)>.*?<\/x-slot>/s', '', $text);
         $text = preg_replace('/<[^>]*>/', '', $text);
 
         // Collapsed, so copy wrapped between "data" and "frames" still reads
@@ -119,6 +130,24 @@ class ProseTest extends TestCase
         }
 
         return $strings;
+    }
+
+    /**
+     * The prose in the vignette views, which carry their own copy rather
+     * than reading it from a package.
+     *
+     * @return array<string, string>
+     */
+    private function vignetteViews(): array
+    {
+        $views = [];
+        foreach (glob(resource_path('views/vignettes/*.blade.php')) as $file) {
+            $views['resources/views/vignettes/'.basename($file)] = file_get_contents($file);
+        }
+
+        $this->assertNotEmpty($views, 'no vignette view was scanned');
+
+        return $views;
     }
 
     /** @return array<string, string> */

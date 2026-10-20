@@ -33,7 +33,7 @@ $mixed['random'][0]['covariance'];  // school variance
 $mixed['random'][0]['effects'];     // one random intercept per school</x-slot:pipe>
         </x-code-tabs>
         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-            Phit\fit_lmer() takes the phibble frame directly. Its results are verified against R's lme4.
+            Phit\fit_lmer() takes the phibble DataFrame directly. Its results are verified against R's lme4.
         </p>
     </article>
 
