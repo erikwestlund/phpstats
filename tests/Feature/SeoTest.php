@@ -67,9 +67,12 @@ class SeoTest extends TestCase
             );
         }
 
-        // phibble's docs are not synced, so its /docs redirects to its own site.
-        $this->assertFalse(Package::find('phibble')->hasDocs());
-        $this->assertNotContains('http://phibble.phpstats.test/docs', $urls);
+        // Every library package's docs are synced since task 10, so each is
+        // listed. juphyter has none, and its /docs is not a page.
+        $this->assertTrue(Package::find('phibble')->hasDocs());
+        $this->assertContains('http://phibble.phpstats.test/docs', $urls);
+        $this->assertFalse(Package::find('juphyter')->hasDocs());
+        $this->assertNotContains('http://juphyter.phpstats.test/docs', $urls);
 
         // The sections the package bar hides when a package has none of them.
         foreach (Package::all() as $key => $package) {
@@ -82,7 +85,7 @@ class SeoTest extends TestCase
             }
         }
 
-        // phit publishes both; phibble, which syncs no content, publishes neither.
+        // phit publishes both; phibble syncs docs and no reports, so neither.
         $this->assertContains('http://phit.phpstats.test/benchmarks', $urls);
         $this->assertContains('http://phit.phpstats.test/verification', $urls);
         $this->assertEmpty(Package::find('phibble')->benchmarks());
