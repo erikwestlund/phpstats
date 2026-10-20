@@ -16,13 +16,23 @@ class DocsTest extends TestCase
     /** @var array<string, array<string, list<string>>> ids per package and docs page */
     private array $anchors = [];
 
-    public function test_docs_nav_is_grouped_by_folder(): void
+    public function test_docs_nav_is_grouped_by_its_sections(): void
     {
         $groups = Package::find('phpolars')->docsGroups();
 
         $this->assertSame(['Guide', 'Reference'], array_keys($groups));
         $this->assertContains('reference/series', array_column($groups['Reference'], 'path'));
-        $this->assertSame('Notebooks', Package::find('phit')->docsGroupOf('notebooks/lmm-math'));
+
+        // Since task 21 the nav is derived from the package's own
+        // docs/_quarto.yml, so a page sits in the section phit files it under
+        // rather than under the folder it happens to live in.
+        $phit = Package::find('phit');
+        $this->assertSame('Gaussian mixed model', $phit->docsGroupOf('notebooks/lmm-math'));
+        $this->assertSame('OLS', $phit->docsGroupOf('benchmarks/ols'));
+
+        // The folder is still the fallback for a page no nav lists.
+        $this->assertNotContains('data/lmm/index', array_column($phit->docsNav(), 'path'));
+        $this->assertSame('Data', $phit->docsGroupOf('data/lmm/index'));
     }
 
     public function test_synced_docs_render_with_resolved_links(): void
@@ -95,6 +105,25 @@ class DocsTest extends TestCase
                 ->assertSee($package->url('docs'), false)
                 ->assertDontSee('phpstats.github.io', false);
         }
+    }
+
+    /**
+     * The drift task 21 removed: phit rendered 52 pages and named 16 in its
+     * nav, so 36 were synced and reachable and in no sidebar. The nav now
+     * holds every page the package publishes, less the one in docs/data that
+     * documents the datasets rather than the library.
+     */
+    public function test_every_page_a_package_renders_is_in_its_docs_nav(): void
+    {
+        $outside = [];
+        foreach (array_filter(Package::all(), fn (Package $package) => $package->hasDocs()) as $key => $package) {
+            foreach (array_diff($package->docsPaths(), array_column($package->docsNav(), 'path')) as $path) {
+                $outside[] = "{$key}/{$path}";
+            }
+        }
+
+        $this->assertSame(['phit/data/lmm/index'], $outside);
+        $this->assertCount(51, Package::find('phit')->docsNav());
     }
 
     public function test_phiz_ships_every_docs_page_but_its_gallery(): void

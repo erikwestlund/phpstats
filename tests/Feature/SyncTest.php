@@ -8,8 +8,10 @@ use App\Content\Package;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
+use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Yaml\Yaml;
 use Tests\TestCase;
 
 class SyncTest extends TestCase
@@ -108,6 +110,38 @@ class SyncTest extends TestCase
         return $files;
     }
 
+    /** Write a docs/_quarto.yml whose sidebar holds these entries. */
+    private function withQuarto(array $contents): void
+    {
+        File::put("{$this->source}/docs/_quarto.yml", Yaml::dump([
+            'project' => ['type' => 'website'],
+            'website' => ['title' => self::PACKAGE, 'sidebar' => ['style' => 'docked', 'contents' => $contents]],
+        ], 8));
+    }
+
+    /** Add a rendered page, with the .qmd beside it that makes it a page. */
+    private function addPage(string $path, string $title): void
+    {
+        File::ensureDirectoryExists(dirname("{$this->source}/docs/{$path}.html"));
+        File::put("{$this->source}/docs/{$path}.html", $this->page($title, '<p>Body.</p>'));
+        File::put("{$this->source}/docs/{$path}.qmd", "---\ntitle: {$title}\n---\n");
+    }
+
+    /** Declare site.json's docs.exclude, the way a package marks a page as not documentation. */
+    private function exclude(array $rules): void
+    {
+        $file = "{$this->source}/site/site.json";
+        $manifest = json_decode(File::get($file), true, flags: JSON_THROW_ON_ERROR);
+        $manifest['docs']['exclude'] = $rules;
+        File::put($file, json_encode($manifest));
+    }
+
+    /** The nav the sync wrote. */
+    private function nav(): array
+    {
+        return json_decode(File::get("{$this->content}/".self::PACKAGE.'/docs.json'), true)['nav'];
+    }
+
     private function syncFromPath(array $parameters = []): int
     {
         return $this->artisan('site:sync', [
@@ -189,6 +223,7 @@ class SyncTest extends TestCase
 
     public function test_the_nav_keeps_each_item_section(): void
     {
+        // The fixture holds no docs/_quarto.yml, so this is the site.json nav.
         $this->assertSame(0, $this->syncFromPath());
 
         $docs = json_decode(File::get("{$this->content}/".self::PACKAGE.'/docs.json'), true);
@@ -215,6 +250,213 @@ class SyncTest extends TestCase
             ['title' => 'Overview', 'path' => 'index'],
             ['title' => 'Advanced', 'path' => 'guide/advanced'],
         ], $docs['nav']);
+    }
+
+    // Task 21: the nav comes from the package's own docs/_quarto.yml, which
+    // Quarto has to agree with for the docs to render at all, so a page the
+    // package publishes can no longer be missing from the sidebar unnoticed.
+
+    public function test_the_nav_is_derived_from_the_quarto_sidebar(): void
+    {
+        $this->addPage('guide/basics', 'Basics');
+        $this->addPage('reference/api', 'The API');
+        $this->withQuarto([
+            'index.qmd',
+            ['section' => 'Guide', 'contents' => [
+                'guide/basics.qmd',
+                ['href' => 'guide/advanced.qmd', 'text' => 'Going further'],
+            ]],
+            ['section' => 'Reference', 'contents' => ['reference/api.qmd']],
+        ]);
+
+        $this->assertSame(0, $this->syncFromPath());
+
+        // Sidebar order, and the section each entry sits in, which is what
+        // Package::docsGroups() groups by.
+        $this->assertSame([
+            ['title' => 'Overview', 'path' => 'index'],
+            ['title' => 'Basics', 'path' => 'guide/basics', 'section' => 'Guide'],
+            ['title' => 'Going further', 'path' => 'guide/advanced', 'section' => 'Guide'],
+            ['title' => 'The API', 'path' => 'reference/api', 'section' => 'Reference'],
+        ], $this->nav());
+    }
+
+    public function test_a_nested_section_takes_the_nearest_name(): void
+    {
+        $this->addPage('guide/basics', 'Basics');
+        $this->withQuarto([
+            'index.qmd',
+            ['section' => 'Guide', 'contents' => [
+                ['section' => 'Getting started', 'contents' => ['guide/basics.qmd']],
+                'guide/advanced.qmd',
+            ]],
+        ]);
+
+        $this->assertSame(0, $this->syncFromPath());
+
+        $this->assertSame(
+            ['index' => null, 'guide/basics' => 'Getting started', 'guide/advanced' => 'Guide'],
+            array_combine(array_column($this->nav(), 'path'), array_map(
+                fn (array $item) => $item['section'] ?? null,
+                $this->nav(),
+            )),
+        );
+    }
+
+    /**
+     * The curated titles survive derivation. Quarto shows a bare sidebar entry
+     * under the page's own heading, which is rarely the label a sidebar wants,
+     * so site.json's docs.nav keeps deciding the wording and stops deciding
+     * which pages exist.
+     */
+    public function test_a_nav_entry_takes_its_title_from_quarto_then_site_json_then_the_page(): void
+    {
+        File::deleteDirectory($this->source);
+        $this->source = $this->makeCheckout([
+            ['title' => 'Start here', 'path' => 'index.qmd'],
+            ['title' => 'Deep dive', 'path' => 'guide/advanced.qmd'],
+        ]);
+        $this->addPage('extra', 'An extra page');
+        $this->withQuarto([
+            'index.qmd',
+            ['href' => 'guide/advanced.qmd', 'text' => 'Going further'],
+            'extra.qmd',
+        ]);
+
+        $this->assertSame(0, $this->syncFromPath());
+
+        $this->assertSame([
+            // No text: in _quarto.yml, so site.json's title, not the page's
+            // own heading, which is "Overview".
+            ['title' => 'Start here', 'path' => 'index'],
+            // _quarto.yml has a text: of its own, which beats site.json's.
+            ['title' => 'Going further', 'path' => 'guide/advanced'],
+            // Named in neither nav, so the heading the page renders.
+            ['title' => 'An extra page', 'path' => 'extra'],
+        ], $this->nav());
+    }
+
+    public function test_the_sync_fails_when_a_rendered_page_is_in_no_nav(): void
+    {
+        $this->addPage('orphan', 'An orphan');
+        $this->withQuarto(['index.qmd', 'guide/advanced.qmd']);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('1 rendered page is in no nav and no docs.exclude rule: orphan');
+
+        $this->syncFromPath();
+    }
+
+    public function test_a_package_keeps_a_page_out_of_the_nav_with_docs_exclude(): void
+    {
+        $this->addPage('notes/internal', 'Internal notes');
+        $this->addPage('changelog', 'Changelog');
+        $this->withQuarto(['index.qmd', 'guide/advanced.qmd']);
+        $this->exclude(['notes/', 'changelog']);
+
+        $this->artisan('site:sync', ['package' => [self::PACKAGE], '--from' => $this->source])
+            ->expectsOutputToContain('docs.exclude notes/ leaves out 1 page: notes/internal')
+            ->expectsOutputToContain('docs.exclude changelog leaves out 1 page: changelog')
+            ->assertSuccessful();
+
+        $this->assertSame(['index', 'guide/advanced'], array_column($this->nav(), 'path'));
+        // Excluded from the sidebar only: both pages are still synced and served.
+        $target = "{$this->content}/".self::PACKAGE.'/docs';
+        $this->assertFileExists("{$target}/notes/internal.html");
+        $this->assertFileExists("{$target}/changelog.html");
+    }
+
+    public function test_the_default_exclusion_covers_a_docs_data_directory(): void
+    {
+        // phit renders docs/data/lmm/index.qmd beside the CSVs and checksums
+        // its verifications read, and no nav has ever named it.
+        $this->addPage('data/lmm/index', 'Published data: provenance');
+        $this->withQuarto(['index.qmd', 'guide/advanced.qmd']);
+
+        $this->artisan('site:sync', ['package' => [self::PACKAGE], '--from' => $this->source])
+            ->expectsOutputToContain('docs.exclude data/ leaves out 1 page: data/lmm/index')
+            ->assertSuccessful();
+
+        $this->assertSame(['index', 'guide/advanced'], array_column($this->nav(), 'path'));
+    }
+
+    public function test_the_sync_fails_when_an_exclusion_covers_no_rendered_page(): void
+    {
+        $this->withQuarto(['index.qmd', 'guide/advanced.qmd']);
+        $this->exclude(['notes/']);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('docs.exclude has notes/, which covers no rendered page');
+
+        $this->syncFromPath();
+    }
+
+    public function test_the_sync_fails_when_an_exclusion_covers_a_page_the_nav_lists(): void
+    {
+        $this->withQuarto(['index.qmd', 'guide/advanced.qmd']);
+        $this->exclude(['guide/']);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('docs.exclude covers guide/advanced, which the nav lists');
+
+        $this->syncFromPath();
+    }
+
+    public function test_a_sidebar_entry_that_is_no_page_of_this_site_is_left_out(): void
+    {
+        // phiz's sidebar names docs/gallery.html, a rendered artifact with no
+        // .qmd beside it, so DocsImporter::discover() never serves it.
+        File::put("{$this->source}/docs/gallery.html", $this->page('Gallery', '<p>Charts.</p>'));
+        $this->withQuarto([
+            'index.qmd',
+            'guide/advanced.qmd',
+            ['href' => 'gallery.html', 'text' => 'Gallery'],
+            ['href' => 'https://example.test/elsewhere', 'text' => 'Elsewhere'],
+        ]);
+
+        $this->artisan('site:sync', ['package' => [self::PACKAGE], '--from' => $this->source])
+            ->expectsOutputToContain('the nav entry gallery.html is no page of this site')
+            ->assertSuccessful();
+
+        $this->assertSame(['index', 'guide/advanced'], array_column($this->nav(), 'path'));
+    }
+
+    public function test_the_sync_fails_when_the_sidebar_names_a_page_that_did_not_render(): void
+    {
+        File::put("{$this->source}/docs/missing.qmd", "---\ntitle: Missing\n---\n");
+        $this->withQuarto(['index.qmd', 'guide/advanced.qmd', 'missing.qmd']);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('the docs nav lists missing.qmd, but its rendered HTML is missing');
+
+        $this->syncFromPath();
+    }
+
+    public function test_the_nav_falls_back_to_site_json_without_a_quarto_sidebar(): void
+    {
+        $this->artisan('site:sync', ['package' => [self::PACKAGE], '--from' => $this->source])
+            ->expectsOutputToContain("no _quarto.yml sidebar, so the nav is site.json's")
+            ->assertSuccessful();
+
+        $this->assertSame(['index', 'guide/advanced'], array_column($this->nav(), 'path'));
+    }
+
+    public function test_a_site_json_title_for_a_page_the_sidebar_dropped_is_reported(): void
+    {
+        File::deleteDirectory($this->source);
+        $this->source = $this->makeCheckout([
+            ['title' => 'Overview', 'path' => 'index.qmd'],
+            ['title' => 'Renamed away', 'path' => 'guide/advanced.qmd'],
+        ]);
+        $this->exclude(['guide/']);
+        $this->withQuarto(['index.qmd']);
+
+        // Only a label went stale, so the sync says so and carries on.
+        $this->artisan('site:sync', ['package' => [self::PACKAGE], '--from' => $this->source])
+            ->expectsOutputToContain('site.json docs.nav titles guide/advanced, which the nav does not list')
+            ->assertSuccessful();
+
+        $this->assertSame([['title' => 'Overview', 'path' => 'index']], $this->nav());
     }
 
     public function test_a_sync_flushes_the_example_cache(): void
