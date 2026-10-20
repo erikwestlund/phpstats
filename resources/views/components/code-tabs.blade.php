@@ -6,8 +6,9 @@
     alone. spacious sets a larger header and more padding around the code, for
     the package explorer. monoLabel sets the label in the monospace font, for package names.
     Slot text may be HTML-escaped; it is decoded before highlighting.
+    language is what the code is highlighted as: php, or quarto for a .qmd.
 --}}
-@props(['pipe', 'chain' => null, 'label' => null, 'monoLabel' => false, 'spacious' => false])
+@props(['pipe', 'chain' => null, 'label' => null, 'monoLabel' => false, 'spacious' => false, 'language' => 'php'])
 
 @php
     // The pipe operator needs PHP 8.5; earlier versions use the method chain.
@@ -40,9 +41,9 @@
     </div>
     @endif
     @if ($hasChain)
-        <pre x-show="syntax === 'pipe'" class="{{ $preClass }}"><code>{!! \App\Content\Code::highlight($code($pipe)) !!}</code></pre>
-        <pre x-show="syntax === 'chain'" x-cloak class="{{ $preClass }}"><code>{!! \App\Content\Code::highlight($code($chain)) !!}</code></pre>
+        <pre x-show="syntax === 'pipe'" class="{{ $preClass }}"><code>{!! \App\Content\Code::highlight($code($pipe), $language) !!}</code></pre>
+        <pre x-show="syntax === 'chain'" x-cloak class="{{ $preClass }}"><code>{!! \App\Content\Code::highlight($code($chain), $language) !!}</code></pre>
     @else
-        <pre class="{{ $preClass }}"><code>{!! \App\Content\Code::highlight($code($pipe)) !!}</code></pre>
+        <pre class="{{ $preClass }}"><code>{!! \App\Content\Code::highlight($code($pipe), $language) !!}</code></pre>
     @endif
 </div>

@@ -66,6 +66,11 @@ These committed files are generated, not hand-edited:
 - `database/data/stan/school-intercepts.json`: posterior draws for the
   Bayesian vignette. Regenerate with `php artisan stan:fit-school-posterior`
   (needs CmdStan and phit). Pages never run CmdStan.
+- `database/data/juphyter/revenue-by-channel.html`: the cell that juphyter's
+  kernel rendered for the landing page's juphyter panel. A page never runs a
+  kernel or Quarto. Capture it again as `App\Data\JuphyterCell` describes
+  when `resources/examples/packages/juphyter.qmd` changes, then run
+  `php artisan examples:clear`.
 - `resources/content/{package}/` and `public/content/{package}/`: each
   package's `site/` folder (site.json, benchmarks, verifications, vignettes,
   and data) and its rendered Quarto docs, at the commit pinned in

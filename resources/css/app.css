@@ -281,3 +281,22 @@ pre,
     background-size: 44px 44px;
     mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
 }
+
+/* A cell drawn by juphyter's kernel: the table in the package explorer, and
+   the same markup in a package's synced notebook pages. Its stylesheet ships
+   with the cell and reads Jupyter's --jp-* variables, falling back to light
+   colors, so both schemes are set here and the fallbacks never apply. */
+.juphyter-table {
+    --jp-code-font-family: var(--font-mono);
+    --jp-code-font-size: 0.8125rem;
+    --jp-content-font-color1: var(--color-zinc-800);
+    --jp-content-font-color2: var(--color-zinc-500);
+    --jp-content-font-color3: var(--color-zinc-400);
+    --jp-border-color2: var(--color-zinc-200);
+}
+.dark .juphyter-table {
+    --jp-content-font-color1: var(--color-zinc-200);
+    --jp-content-font-color2: var(--color-zinc-400);
+    --jp-content-font-color3: var(--color-zinc-500);
+    --jp-border-color2: color-mix(in oklab, white 12%, transparent);
+}

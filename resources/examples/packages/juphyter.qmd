@@ -1,0 +1,22 @@
+---
+title: "Revenue by channel"
+jupyter: php
+---
+
+```{php}
+#| echo: false
+use function Phplyr\{arrange, desc, group_by, mean, n, round, sum, summarize};
+```
+
+```{php}
+$orders = \Phibble\DataFrame::fromRows(\App\Data\Orders::generate());
+
+$orders |>
+    group_by('channel') |>
+    summarize(
+        orders: n(),
+        revenue: round(sum('total'), 2),
+        items: round(mean('items'), 2),
+    ) |>
+    arrange(desc('revenue'));
+```

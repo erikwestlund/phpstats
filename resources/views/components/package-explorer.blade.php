@@ -44,13 +44,23 @@
         @foreach ($keys as $key)
             @php
                 $package = $packages[$key];
-                $code = \App\Content\Example::code("packages/{$key}");
+                // juphyter's example is a Quarto document rather than a
+                // PHP script, so an entry may name its own file and language.
+                $source = $explorer[$key]['source'] ?? null;
+                $code = $source === null
+                    ? \App\Content\Example::code("packages/{$key}")
+                    : ['pipe' => file_get_contents(resource_path('examples/'.$source['file'])), 'chain' => null];
                 $stored = $explorer[$key]['stored'] ?? null;
                 $label = $explorer[$key]['output'];
+                // Example::output keys its cache on the .php example's mtime,
+                // which a source entry has none of, so its own file's mtime
+                // goes in the variant. Re-capturing a stored result without
+                // touching the document needs `php artisan examples:clear`.
+                $variant = 'package-output|'.$label.($source === null ? '' : '|'.filemtime(resource_path('examples/'.$source['file'])));
                 try {
                     $output = \App\Content\Example::output(
                         "packages/{$key}",
-                        'package-output|'.$label,
+                        $variant,
                         fn (mixed $value) => view('components.package-output', ['value' => $value, 'label' => $label])->render(),
                         $stored ? fn () => $stored() : null,
                     );
@@ -70,7 +80,7 @@
                         @endforeach
                     </ul>
                 </section>
-                <x-code-tabs :pipe="$code['pipe']" :chain="$code['chain']" :label="$explorer[$key]['example']" :spacious="true" class="rounded-none! shadow-none! ring-0!" />
+                <x-code-tabs :pipe="$code['pipe']" :chain="$code['chain']" :language="$source['language'] ?? 'php'" :label="$explorer[$key]['example']" :spacious="true" class="rounded-none! shadow-none! ring-0!" />
                 <section class="flex flex-1 flex-col bg-zinc-50/70 dark:bg-white/[0.02]">
                     <h4 class="flex min-h-14 items-center border-b border-zinc-200 px-5 py-3 text-base font-semibold sm:px-7 text-zinc-950 dark:border-white/10 dark:text-white">Example output</h4>
                     @if ($failed)

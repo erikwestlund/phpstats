@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Content\Example;
 use App\Content\Package;
+use App\Data\JuphyterCell;
 use App\Data\SchoolPosterior;
 use App\Livewire\ScriptVignette;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,8 +46,13 @@ class LandingPageTest extends TestCase
         $requires = ['phibble' => 'phibble', 'phpolars' => 'phpolars', 'phplyr' => 'phplyr', 'phiz' => 'phiz', 'phit' => 'phit'];
 
         $response = $this->get('http://phpstats.test/')->assertOk();
-        foreach (array_keys(config('phpstats.explorer')) as $key) {
-            $this->assertFileExists(Example::path("packages/{$key}"));
+        foreach (config('phpstats.explorer') as $key => $entry) {
+            // juphyter's example is a Quarto document, which no page runs.
+            $this->assertFileExists(
+                isset($entry['source'])
+                    ? resource_path('examples/'.$entry['source']['file'])
+                    : Example::path("packages/{$key}"),
+            );
             $response->assertSee("package-code-{$key}", false);
         }
 
@@ -60,28 +66,47 @@ class LandingPageTest extends TestCase
         $response->assertSee('PHP 8.3–8.4')->assertDontSee('· Pipe')->assertSee('More about')->assertDontSee("can't run the example");
     }
 
-    public function test_juphyter_is_on_the_site_without_an_explorer_panel(): void
+    public function test_juphyter_has_an_explorer_panel_with_the_cell_its_kernel_rendered(): void
     {
         $juphyter = Package::find('juphyter');
+        Example::reset();
 
-        // It is in the menus and the footer, but the explorer has no example for it.
-        $this->get('http://phpstats.test/')->assertOk()
+        $response = $this->get('http://phpstats.test/')->assertOk()
             ->assertSee($juphyter->url(), false)
-            ->assertSee('PHP in Jupyter notebooks and Quarto documents.')
-            ->assertDontSee('package-tab-juphyter', false)
-            ->assertDontSee('package-code-juphyter', false);
+            ->assertSee('A Jupyter and Quarto kernel for PHP.')
+            ->assertSee('package-tab-juphyter', false)
+            ->assertSee('package-code-juphyter', false);
 
-        // The explorer still opens on phibble and panels every package that has an example.
-        $explorer = $this->get('http://phpstats.test/')->assertOk();
+        // The example is a Quarto document, so the panel shows the front
+        // matter line that makes the kernel run the cell below it.
+        $response->assertSee('jupyter: php')->assertSee('group_by');
+
+        // Its output is the cell the kernel drew, with phibble's size in the
+        // label rather than in the markup, and the word tibble nowhere.
+        $cell = JuphyterCell::explorerOutput();
+        $this->assertSame('3 × 4', $cell['size']);
+        $response->assertSee('Rendered notebook cell · 3 × 4')
+            ->assertSee('juphyter-table', false)
+            ->assertDontSee("can't run the example");
+        // phibble's own bullet links tibble, so the rule is checked on the
+        // cell rather than on the page.
+        $this->assertStringNotContainsString('tibble', $cell['html']);
+
+        // No page request may start a kernel or run Quarto: the cell is read
+        // from the committed fixture, so no example file runs for juphyter.
+        $this->assertArrayNotHasKey(Example::path('packages/juphyter'), Example::runs());
+
+        // Every package in a layer now has a panel, in the layers' order.
         foreach (array_keys(config('phpstats.explorer')) as $key) {
-            $explorer->assertSee("package-code-{$key}", false);
+            $response->assertSee("package-code-{$key}", false);
         }
         $this->assertSame(
-            ['phibble', 'phpolars', 'phplyr', 'phiz', 'phit', 'cmdstanphp'],
+            ['phibble', 'phpolars', 'phplyr', 'juphyter', 'phiz', 'phit', 'cmdstanphp'],
             array_keys(config('phpstats.explorer')),
         );
 
-        // Its own page stands on the overview from config/projects.php, with no Docs tab.
+        // Its own page still stands on the overview from config/projects.php,
+        // with no Docs tab, because it syncs no site content yet.
         $this->get($juphyter->url())->assertOk()
             ->assertSee($juphyter->tagline())
             ->assertSee('IRkernel')

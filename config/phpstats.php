@@ -67,8 +67,9 @@ return [
      * panel (inline Markdown, for links to upstream projects and `code`;
      * package names become links to their pages), the label for its output,
      * and, for examples pages can't run, a callable that gives the stored
-     * result. Each package's code is resources/examples/packages/{key}.php.
-     * A package with no entry here, such as juphyter, gets no panel.
+     * result. Each package's code is resources/examples/packages/{key}.php,
+     * unless the entry gives its own source file and language, as juphyter's
+     * Quarto document does. A package with no entry here gets no panel.
      */
     'explorer' => [
         'phibble' => [
@@ -103,6 +104,19 @@ return [
                 'The same pipeline runs on a phibble data frame, in the database as SQL, or in Polars.',
             ],
             'output' => 'Data frame preview',
+        ],
+        'juphyter' => [
+            'summary' => 'A Jupyter and Quarto kernel for PHP.',
+            'example' => 'Example: Work out an analysis before it reaches the application',
+            'does' => [
+                'Registers a PHP kernel with [Jupyter](https://jupyter.org/), so JupyterLab runs PHP cells and [Quarto](https://quarto.org/) executes a `{php}` block in a `.qmd`. The one front matter line `jupyter: php` is the whole setup.',
+                'Statistical work can be developed and checked in a notebook before any of it is wired into an application: load the data, try a pipeline, fit and compare models, and read each result under the code that produced it. What survives that reading is what moves into the app.',
+                "A notebook sees the project it sits in. The engine looks upward from the notebook for `vendor/autoload.php`, so a notebook inside a Composer project has that project's own classes and packages in scope with no configuration.",
+                'Each value gets the richest form the front end can draw: a phibble data frame becomes an HTML table and a phiz plot becomes a chart, with state kept across cells, so a variable bound in one cell is in scope in the next.',
+            ],
+            'output' => 'Rendered notebook cell',
+            'source' => ['file' => 'packages/juphyter.qmd', 'language' => 'quarto'],
+            'stored' => [\App\Data\JuphyterCell::class, 'explorerOutput'],
         ],
         'phiz' => [
             'summary' => 'ggplot2-style charts rendered with Vega-Lite.',
