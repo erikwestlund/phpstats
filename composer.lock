@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48d3f4a9710079260b004dd57ca26764",
+    "content-hash": "eff7fd4108fbe88879b407270fd2b811",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -289,70 +289,6 @@
                 }
             ],
             "time": "2026-09-06T14:11:38+00:00"
-        },
-        {
-            "name": "cmdstan/php",
-            "version": "dev-phpstats-family",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstats/CmdStanPHP.git",
-                "reference": "59baa928ecc501f1d21efc79a25ff04647728a9c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/CmdStanPHP/zipball/59baa928ecc501f1d21efc79a25ff04647728a9c",
-                "reference": "59baa928ecc501f1d21efc79a25ff04647728a9c",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": "^8.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^11.5"
-            },
-            "suggest": {
-                "erikwestlund/phibble": "Data frames: pass a Phibble\\Frame as model data, and get draws and summaries back with to_frame() and summary_frame() (PHP 8.5)",
-                "ext-ffi": "Required for model methods (log_prob, gradients, constrain/unconstrain) and expose_functions()",
-                "ext-php_stats": "Required for loo(moment_match: true): provides the stats_draw_moments, stats_draw_covariance_map, and stats_draw_affine kernels; StanData::fromFormula() also needs its stats_model_matrix()"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "CmdStan\\": "src/"
-                },
-                "files": [
-                    "src/functions.php"
-                ]
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "CmdStan\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit --exclude-group integration --exclude-group compatibility"
-                ],
-                "test:integration": [
-                    "phpunit --group integration"
-                ],
-                "lint": [
-                    "php scripts/lint.php"
-                ],
-                "test:compatibility": [
-                    "phpunit --group compatibility"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A PHP interface to CmdStan inspired by CmdStanR",
-            "support": {
-                "source": "https://github.com/erikwestlund/CmdStanPHP/tree/phpstats-family",
-                "issues": "https://github.com/erikwestlund/CmdStanPHP/issues"
-            },
-            "time": "2026-10-16T08:15:19+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -724,87 +660,6 @@
                 }
             ],
             "time": "2025-03-06T22:45:56+00:00"
-        },
-        {
-            "name": "erikwestlund/phiz",
-            "version": "v0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstats/phiz.git",
-                "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phiz/zipball/5d2f7a65c243abadbb9ebba22f7987d34253412e",
-                "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": "^8.5"
-            },
-            "require-dev": {
-                "erikwestlund/phibble": "dev-main",
-                "erikwestlund/phplyr": "dev-main",
-                "opis/json-schema": "^2.4",
-                "orchestra/testbench": "^10.0",
-                "pestphp/pest": "^4.0"
-            },
-            "suggest": {
-                "erikwestlund/phibble": "Data frames that phiz plots directly",
-                "illuminate/view": "For the <x-phiz> Blade component (auto-discovered in Laravel)"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Phiz\\Laravel\\PhizServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Phiz\\": "src/"
-                },
-                "files": [
-                    "src/functions.php"
-                ]
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Phiz\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "pest"
-                ],
-                "gallery": [
-                    "php examples/gallery.php"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Erik Westlund"
-                }
-            ],
-            "description": "A ggplot2-flavored grammar of graphics for PHP that emits Vega-Lite",
-            "keywords": [
-                "charts",
-                "ggplot2",
-                "grammar of graphics",
-                "statistics",
-                "vega-lite",
-                "visualization"
-            ],
-            "support": {
-                "source": "https://github.com/erikwestlund/phiz/tree/v0.3.0",
-                "issues": "https://github.com/erikwestlund/phiz/issues"
-            },
-            "time": "2026-10-16T10:15:07+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -2995,6 +2850,71 @@
             "time": "2026-08-24T00:54:40+00:00"
         },
         {
+            "name": "phpstats/cmdstanphp",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstats/CmdStanPHP.git",
+                "reference": "b3ae0e2519e8561dfbecb309214ad41f2acfc8fd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstats/CmdStanPHP/zipball/b3ae0e2519e8561dfbecb309214ad41f2acfc8fd",
+                "reference": "b3ae0e2519e8561dfbecb309214ad41f2acfc8fd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.5"
+            },
+            "suggest": {
+                "ext-ffi": "Required for model methods (log_prob, gradients, constrain/unconstrain) and expose_functions()",
+                "ext-phit": "Required for loo(moment_match: true): provides the Phit\\draws_moments, Phit\\draws_covariance_map, and Phit\\draws_affine kernels; StanData::fromFormula() also needs its Phit\\model_matrix()",
+                "phpstats/phibble": "Data frames: pass a Phibble\\DataFrame as model data, and get draws and summaries back with draws_table() and summary_table() (PHP 8.5)"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CmdStan\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "CmdStan\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit --exclude-group integration --exclude-group compatibility"
+                ],
+                "test:integration": [
+                    "phpunit --group integration"
+                ],
+                "lint": [
+                    "php scripts/lint.php"
+                ],
+                "test:compatibility": [
+                    "phpunit --group compatibility"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A PHP interface to CmdStan inspired by CmdStanR",
+            "support": {
+                "source": "https://github.com/phpstats/CmdStanPHP/tree/main",
+                "issues": "https://github.com/phpstats/CmdStanPHP/issues"
+            },
+            "time": "2026-10-19T17:32:53+00:00"
+        },
+        {
             "name": "phpstats/phibble",
             "version": "v0.3.0",
             "source": {
@@ -3051,6 +2971,87 @@
             ],
             "description": "A typed, immutable in-memory data frame for PHP.",
             "time": "2026-10-17T19:17:14+00:00"
+        },
+        {
+            "name": "phpstats/phiz",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstats/phiz.git",
+                "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstats/phiz/zipball/5d2f7a65c243abadbb9ebba22f7987d34253412e",
+                "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.5"
+            },
+            "require-dev": {
+                "erikwestlund/phibble": "dev-main",
+                "erikwestlund/phplyr": "dev-main",
+                "opis/json-schema": "^2.4",
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^4.0"
+            },
+            "suggest": {
+                "erikwestlund/phibble": "Data frames that phiz plots directly",
+                "illuminate/view": "For the <x-phiz> Blade component (auto-discovered in Laravel)"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Phiz\\Laravel\\PhizServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Phiz\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Phiz\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "pest"
+                ],
+                "gallery": [
+                    "php examples/gallery.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Erik Westlund"
+                }
+            ],
+            "description": "A ggplot2-flavored grammar of graphics for PHP that emits Vega-Lite",
+            "keywords": [
+                "charts",
+                "ggplot2",
+                "grammar of graphics",
+                "statistics",
+                "vega-lite",
+                "visualization"
+            ],
+            "support": {
+                "source": "https://github.com/phpstats/phiz/tree/v0.3.0",
+                "issues": "https://github.com/phpstats/phiz/issues"
+            },
+            "time": "2026-10-16T10:15:07+00:00"
         },
         {
             "name": "phpstats/phplyr",
@@ -8991,7 +8992,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cmdstan/php": 20
+        "phpstats/cmdstanphp": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
