@@ -3,13 +3,16 @@
     left, and for the selected one, a few points about it, its example code, and the
     example's output on the right. The points are inline Markdown, for links to
     upstream projects and `code`. Code is resources/examples/packages/{key}.php,
-    run when the page renders, or, for examples pages can't run, the stored
-    result named in config/phpstats.php explorer.
+    run when the page renders, and its result is the output. An entry in
+    config/phpstats.php explorer may instead name a source file and the
+    language to highlight it as, for an example that is not a PHP script, such
+    as juphyter's Quarto document; and a stored result, for output a page
+    cannot compute, such as a Stan fit or a cell a kernel rendered.
 --}}
 @php
     $packages = \App\Content\Package::all();
     $explorer = config('phpstats.explorer');
-    // Layer order, less the packages with no explorer entry, such as juphyter.
+    // Layer order, less any package with no explorer entry, which gets no panel.
     $keys = array_values(array_intersect(
         array_keys(array_merge(...array_column(config('phpstats.layers'), 'packages'))),
         array_keys($explorer),

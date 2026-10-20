@@ -92,6 +92,18 @@ class LandingPageTest extends TestCase
         // cell rather than on the page.
         $this->assertStringNotContainsString('tibble', $cell['html']);
 
+        // The fixture has to be the output of the code shown above it, which
+        // nothing else here would catch: the panel would look right with any
+        // table in it. These are the three rows the kernel returned for the
+        // document's grouped summary of the seeded orders.
+        foreach ([
+            'Web', '1185', '61735.9', '1.83',
+            'App', '723', '42157.12', '1.85',
+            'Marketplace', '492', '22817.18', '1.74',
+        ] as $value) {
+            $this->assertStringContainsString($value, $cell['html'], $value);
+        }
+
         // No page request may start a kernel or run Quarto: the cell is read
         // from the committed fixture, so no example file runs for juphyter.
         $this->assertArrayNotHasKey(Example::path('packages/juphyter'), Example::runs());
