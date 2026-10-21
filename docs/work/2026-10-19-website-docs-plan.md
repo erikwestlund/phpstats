@@ -1601,3 +1601,65 @@ so a vignette using an API added after the tag fails on the page. Task 23's
 `a28ebca` widened `VignettesTest` to render every package's script vignettes
 rather than two packages', which is what catches that, and it is the reason
 that widening matters beyond the rename it was written for.
+
+### Task 19 landed in four packages, and what it did not reach
+
+Approved at phibble `f146a90`, phit `7d93d54`, phiz `82ad2df`, and phpolars
+`bb7a609`, on branch `1-website-docs-6-tasks-opal-grizzly` in the family
+workspace. phplyr needed no work: its only remaining bare uses are two in
+`CHANGELOG.md`, which the rule excludes.
+
+**How it was verified, because a hand-render is the risk here.** The docs
+sources and the committed HTML were swept separately, with fenced blocks,
+inline code spans, `pre`, `code`, `script` and `style` removed, and `data
+frame`, the `DataFrame` compounds and R's dotted `data.frame` excluded. Both
+sweeps return the same single hit, `phit/docs/formulas.qmd:109`, "as in R's
+model frame", which is R's own term and was left deliberately. Source and
+render therefore agree.
+
+The renders are genuine rather than hand-edited HTML. Every range has
+insertions exactly equal to deletions and touches only the expected files, with
+no sitemap, `site_libs`, timestamp or version churn. The same edit also arrives
+transformed in opposite directions in the two artifacts: `getting-started.html`
+carries `import the <code>DataFrame</code> class` where the backticks became a
+code span, and `search.json` carries the same sentence with the markup
+stripped. Pandoc does one and Quarto's search index does the other.
+
+The two renamed heading anchors, `#building-frames` to `#building-data-frames`
+in phibble and `#creating-frames` to `#creating-data-frames` in phpolars, break
+no link. Nothing in the four packages or in this repository links to either old
+fragment. The hits under `resources/content` are the anchor definitions in the
+stale synced copies, which the next sync replaces.
+
+**An earlier count in this plan was high, and the reason is worth keeping.**
+This plan said 34 uses to fix. Group 3's inventory at the current tips lists
+31, and the difference is a definition rather than an error on either side:
+their generator puts a bare `frame` that directly follows the word `data` in an
+`ambiguous` bucket, because the line already spells a data frame out in prose,
+and their report says that treatment is provisional and awaits Erik's ruling.
+Both counts describe the same files.
+
+**Three things the sweep did not reach.**
+
+1. `phpolars/site/vignettes/time-series.php:60` holds "The frame holds a year of
+   daily unit sales" in a `text` block, which is prose rendered on a page of
+   this site rather than a docs file. It fell outside the brief's file list,
+   which is this plan's omission and not the worker's: the description above
+   said "the packages' `.qmd` plus two phpolars vignette scripts". It is one
+   string, needs no re-render, and belongs on the same phpolars branch.
+2. juphyter's docs carry bare uses in five `.qmd` files: `get-started`,
+   `index`, `jupyter`, `limitations` and `quarto`. They reach nobody while
+   juphyter syncs no site content. Whoever adds juphyter's content pin, once
+   task 18's blockers clear, should sweep its docs in the same change.
+3. `resources/views/components/layout.blade.php:2` reads "The page frame." in a
+   Blade comment. That is a page's surrounding structure and not a data frame,
+   so by the rule's own terms it is ambiguous and goes to Erik. It should stay.
+
+**The last step of task 19 is still open.** `ProseTest` does not scan
+`resources/content`, and its docblock says so. Widening it has to wait until
+these four merge and a re-sync brings the corrected content in. It carries a
+cost that should be stated when it is dispatched rather than discovered:
+`resources/content` is rewritten from each package's pinned commit, so once the
+test covers it, a prose regression in any package fails this site's suite and
+can only be fixed upstream. That is what the test is for, and it is also why it
+goes last.
