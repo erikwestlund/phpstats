@@ -34,11 +34,11 @@ return [
      * without an entry show the overview from config/projects.php only.
      */
     'content' => [
-        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '3a5604b2d7d6188385d288481fe95b17a8cfaba8'],
-        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => '5e95d30d1dd090d27f657b3dcde2e2ecb9d418c4'],
+        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => 'f146a9063107677c72093ef6cc0f49138139366b'],
+        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => '5936fb71f2acff350b7e728d3d53af8593d72ca2'],
         'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'a405963da0ee78e61e1c89e00b865baefa08f37c'],
-        'phit' => ['repo' => 'phpstats/phit', 'ref' => '5938c575aec108b15267825f0df4352a700fe8b9'],
-        'phiz' => ['repo' => 'phpstats/phiz', 'ref' => 'e5df583aba7a05392736759b04f48864bbf523ad'],
+        'phit' => ['repo' => 'phpstats/phit', 'ref' => '7d93d54536c226339595cbdfe47256e8a91b4187'],
+        'phiz' => ['repo' => 'phpstats/phiz', 'ref' => '82ad2df22ff7ab575795b2b7463c6c7ce20236fe'],
         'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => 'c3687a9fd7f2c3d4846cfd03b36e6ceba965b200'],
     ],
 
