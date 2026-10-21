@@ -1663,3 +1663,41 @@ cost that should be stated when it is dispatched rather than discovered:
 test covers it, a prose regression in any package fails this site's suite and
 can only be fixed upstream. That is what the test is for, and it is also why it
 goes last.
+
+### Task 19's last step is done, and the guardrail is now live
+
+Task 27 approved: the second re-sync at `a1fd392` and `1711e7e`, and
+`ProseTest` widened to the synced docs at `330959f`. All six pins equal live
+remote `main`, and the four that moved are the task 19 tips.
+
+`ProseTest` now reads the rendered prose of all 115 synced docs pages, with
+`script`, `style`, `pre` and `code` removed with their contents. One allowance
+remains, keyed by file and quoting the whole sentence: phit's
+`docs/formulas.html`, "as in R's model frame." The allowance removes only that
+sentence before scanning, so a second hit on the same page is still caught, and
+a stale entry fails the test rather than lingering, so the list can only shrink
+by being noticed.
+
+**The cost this plan recorded is now live, and the group should recognize it
+when it first appears.** `resources/content` is rewritten from each package's
+pinned commit, so a prose regression in any of the six now fails this site's
+suite and can be fixed only upstream and then re-pinned. The first such failure
+will look like a site bug and will not be one. The fix is always: change the
+package's `.qmd`, re-render, merge there, then move the pin and re-sync.
+
+**Two weaknesses in the scan, measured and left.**
+
+1. `syncedDocs()` decodes entities before `bareFrames()` strips the remaining
+   tags. A decoded `&lt;` becomes a real `<`, and the tag stripper then removes
+   everything up to the next `>`, which can swallow prose and a bare noun with
+   it. The error only ever misses a hit and never invents one. Two of the 115
+   pages carry an escaped `<` outside code and pre, and both orderings return
+   the same single hit, so nothing is missed today. The fix, whenever the file
+   is next touched, is to strip the remaining tags in `syncedDocs()` before
+   decoding, which keeps the no-break-space handling it needs.
+2. `assertNotEmpty($pages)` catches a scan that reads nothing but not one that
+   reads less. If a package's docs directory went missing from a sync, the test
+   would pass while that package's prose went unchecked. `DocsTest` covers most
+   of that gap. The stable strengthening is to assert that the package
+   directories found equal the synced packages in `config('phpstats.content')`,
+   rather than a page count, which would churn with every nav addition.
