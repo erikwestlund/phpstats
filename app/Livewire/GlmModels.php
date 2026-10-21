@@ -11,7 +11,7 @@ use function Phplyr\glm;
 
 /**
  * Vignette: binary and count outcomes through phplyr's glm(), which passes an
- * R formula and the phibble frame to Phit\fit_glm().
+ * R formula and the phibble data frame to Phit\fit_glm().
  */
 class GlmModels extends Component
 {
