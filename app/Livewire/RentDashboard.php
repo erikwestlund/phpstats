@@ -133,7 +133,7 @@ class RentDashboard extends Component
 
         $over = null;
         if ($model) {
-            $link = predict($model, $newdata, se_fit: true);
+            $link = predict($model, $newdata, seFit: true);
             $logistic = fn (float $eta) => 1 / (1 + exp(-$eta));
             [$eta, $se] = [$link['fit'][0], $link['se_fit'][0]];
             $over = ['fit' => $logistic($eta), 'lower' => $logistic($eta - 1.959964 * $se), 'upper' => $logistic($eta + 1.959964 * $se)];

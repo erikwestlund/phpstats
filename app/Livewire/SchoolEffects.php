@@ -96,7 +96,7 @@ class SchoolEffects extends Component
         return [
             'school' => $school,
             'hours' => $hours,
-            'conditional' => predict($mixed, $newdata, allow_new_levels: true)['fit'][0],
+            'conditional' => predict($mixed, $newdata, allowNewLevels: true)['fit'][0],
             'population' => predict($mixed, $newdata, random: false)['fit'][0],
         ];
     }

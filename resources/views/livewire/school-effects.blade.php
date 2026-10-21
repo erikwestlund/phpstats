@@ -152,7 +152,7 @@
                 Phit\predict() gives both predictions for a student who studies {{ $whatIf['hours'] }} hours.
                 The first adds the school's random intercept, as lme4's predict() does by default.
                 The second uses the fixed effects only, as predict() does with re.form = NA.
-                A school outside the data has no estimated random intercept, so with allow_new_levels it gets the population prediction.
+                A school outside the data has no estimated random intercept, so with allowNewLevels it gets the population prediction.
                 lme4 does not compute standard errors for these predictions, and neither does Phit\predict().
             </p>
         @endif
