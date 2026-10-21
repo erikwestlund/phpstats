@@ -34,8 +34,10 @@ class VignettesTest extends TestCase
 
     public function test_script_vignettes_run_or_explain_what_is_missing(): void
     {
-        foreach (['phit', 'phpolars'] as $key) {
-            $package = Package::find($key);
+        $seen = [];
+        // Every package that ships a script, so a renamed API in any of them
+        // is caught here rather than on the live page.
+        foreach (Package::all() as $key => $package) {
             foreach ($package->vignettes() as $vignette) {
                 if ($vignette['kind'] !== 'script') {
                     continue;
@@ -47,8 +49,11 @@ class VignettesTest extends TestCase
                 } else {
                     $response->assertDontSee('The vignette failed to run')->assertDontSee('bg-red-50', false);
                 }
+                $seen[] = "{$key}/{$vignette['slug']}";
             }
         }
+        $this->assertContains('phplyr/backends', $seen);
+        $this->assertContains('phpolars/phplyr-on-polars', $seen);
     }
 
     public function test_script_vignette_inputs_are_validated(): void
