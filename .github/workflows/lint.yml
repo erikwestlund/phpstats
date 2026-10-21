@@ -1,0 +1,29 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    # Held off until the last commit of this sequence turns the linter on.
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      # The app's post-install artisan hooks want an environment the linter
+      # does not need, so the autoloader is dumped without them.
+      - run: composer install --no-interaction --no-progress --no-scripts
+
+      - run: composer lint
