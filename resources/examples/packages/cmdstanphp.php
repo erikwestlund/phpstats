@@ -15,7 +15,7 @@ $data = StanData::fromFormula(
 $fit = cmdstan_model('school_intercepts.stan')
     ->sample(data: $data, chains: 4, thin: 4, seed: 20261016);
 
-$summary = $fit->summary_frame(
+$summary = $fit->summaryTable(
     variables: ['beta', 'sigma', 'tau'],
     measures: ['mean', 'sd', 'quantile2', 'rhat', 'ess_bulk', 'ess_tail'],
 );

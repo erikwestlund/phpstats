@@ -47,9 +47,9 @@ class FitSchoolPosterior extends Command
         );
 
         $variables = ['beta', 'sigma', 'tau', 'school_intercept'];
-        $draws = $fit->draws_columns($variables);
-        $summary = $fit->summary_columns($variables, measures: ['rhat', 'ess_bulk', 'ess_tail']);
-        $diagnostics = $fit->diagnostic_summary();
+        $draws = $fit->drawsColumns($variables);
+        $summary = $fit->summaryColumns($variables, measures: ['rhat', 'ess_bulk', 'ess_tail']);
+        $diagnostics = $fit->diagnosticSummary();
 
         $round = fn (array $values) => array_map(fn ($v) => is_float($v) ? round($v, 6) : $v, $values);
 

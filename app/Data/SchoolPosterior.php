@@ -37,7 +37,7 @@ final class SchoolPosterior
     }
 
     /**
-     * The summary that $fit->summary_frame($variables, measures: $measures)
+     * The summary that $fit->summaryTable($variables, measures: $measures)
      * gives for the stored fit, computed by CmdStanPHP's own
      * Summary::summarise() from the stored draws. The fit was thinned by 4,
      * so the stored draws are all of its draws.

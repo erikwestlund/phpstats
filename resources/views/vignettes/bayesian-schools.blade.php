@@ -18,7 +18,7 @@ $data = StanData::fromFormula('{{ \App\Data\SchoolPosterior::FORMULA }}', $df);
 
 $model = cmdstan_model('school_intercepts.stan');
 $fit = $model->sample(data: $data, seed: {{ \App\Data\SchoolPosterior::SEED }}, chains: 4, thin: 4);
-$draws = $fit->draws_columns(['beta', 'sigma', 'tau', 'school_intercept']);</code></pre>
+$draws = $fit->drawsColumns(['beta', 'sigma', 'tau', 'school_intercept']);</code></pre>
 
         <details class="mt-3 text-sm">
             <summary class="cursor-pointer text-zinc-600 dark:text-zinc-400">Stan program</summary>
