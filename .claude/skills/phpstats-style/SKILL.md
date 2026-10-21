@@ -59,7 +59,7 @@ its own menu:
 - Never write the bare noun "frame" or "frames" in site prose. Write "data
   frame", "data frames", or "table", and `DataFrame` where the class is
   meant. The rule is about prose only: `$frame` variables, the
-  `frame-table` component, and anything else in code keep their names.
+  `df-table` component, and anything else in code keep their names.
 - Leave out status badges, version pills, colored dots, and stats bars.
 - Keep "checked against R" and verification claims off the landing page and
   the About page. Verification belongs on each package's Verification
