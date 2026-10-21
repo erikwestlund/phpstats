@@ -41,7 +41,11 @@
         }
     },
     "scripts": {
-        "lint": "phpcs",
+        "lint": [
+            "phpcs",
+            "@test:sniffs"
+        ],
+        "test:sniffs": "php tools/phpcs/selftest/run.php",
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
