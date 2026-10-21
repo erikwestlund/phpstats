@@ -21,13 +21,13 @@
             <x-slot:chain>$pipeline = fn ($rentals) => phplyr($rentals)
     ->filter(col('bedrooms')->ge($minBedrooms))
     ->mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')))
-    ->group_by('neighborhood')
+    ->groupBy('neighborhood')
     ->summarise(rentals: n(), mean_rent_per_m2: mean('rent_per_m2'))
     ->arrange(desc('mean_rent_per_m2'))
     ->get();
 
 $sql = $pipeline(SimulatedRental::query()->phibble());
-phplyr($sql)->show_query();
+phplyr($sql)->showQuery();
 
 $memory = $pipeline(SimulatedRental::query()->toDataFrame());</x-slot:chain>
             <x-slot:pipe>$pipeline = fn ($rentals) => $rentals |>

@@ -31,7 +31,7 @@
             ->get();
 
         $summary = phplyr($rentals)
-            ->group_by('neighborhood')
+            ->groupBy('neighborhood')
             ->summarise(rentals: n(), median_rent: median('monthly_rent'),
                         share_over_budget: mean('over_budget'))
             ->get();

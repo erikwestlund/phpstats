@@ -12,9 +12,9 @@ $shares = $orders |>
     summarize(revenue: sum('total')) |>
     mutate(share: round(col('revenue')->div(sum('revenue')), 3)) |>
     pivot_wider(
-        id_cols: 'quarter',
-        names_from: 'channel',
-        values_from: 'share',
+        idCols: 'quarter',
+        namesFrom: 'channel',
+        valuesFrom: 'share',
     );
 
 return $shares;

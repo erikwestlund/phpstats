@@ -8,13 +8,13 @@ $orders = \Phibble\DataFrame::fromQuery(Order::query());
 // ---
 $shares = phplyr($orders)
     ->mutate(quarter: quarter(col('placed_on')))
-    ->group_by('quarter', 'channel')
+    ->groupBy('quarter', 'channel')
     ->summarize(revenue: sum('total'))
     ->mutate(share: round(col('revenue')->div(sum('revenue')), 3))
-    ->pivot_wider(
-        id_cols: 'quarter',
-        names_from: 'channel',
-        values_from: 'share',
+    ->pivotWider(
+        idCols: 'quarter',
+        namesFrom: 'channel',
+        valuesFrom: 'share',
     )
     ->get();
 

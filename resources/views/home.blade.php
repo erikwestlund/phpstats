@@ -55,7 +55,7 @@ $orders = \Phibble\DataFrame::fromQuery(Order::query());
 $monthly = phplyr($orders)
     ->filter(col('returned')->eq(0))
     ->mutate(month: floor_date(col('placed_on'), 'month'))
-    ->group_by('month', 'channel')
+    ->groupBy('month', 'channel')
     ->summarize(revenue: sum('total'))
     ->get();
 

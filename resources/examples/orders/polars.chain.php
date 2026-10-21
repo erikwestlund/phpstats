@@ -10,7 +10,7 @@ $table = \Phibble\Polars\PolarsTable::fromTable($orders);
 
 $revenue = phplyr($table)
     ->filter(col('returned')->eq(0))
-    ->group_by('channel')
+    ->groupBy('channel')
     ->summarize(orders: n(), revenue: sum('total'), average: mean('total'))
     ->arrange(desc('revenue'))
     ->get();

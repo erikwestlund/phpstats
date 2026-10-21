@@ -13,7 +13,7 @@ $orders = read_database(
 );
 
 $byChannel = phplyr(PolarsTable::fromPolars($orders))
-    ->group_by('channel', 'customer')
+    ->groupBy('channel', 'customer')
     ->summarize(orders: n(), average: mean('total'))
     ->arrange(desc('average'))
     ->get();

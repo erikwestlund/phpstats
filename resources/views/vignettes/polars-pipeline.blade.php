@@ -16,7 +16,7 @@
             <x-slot:chain>$pipeline = fn (Table $rentals) => phplyr($rentals)
     ->filter(col('bedrooms')->ge($minBedrooms))
     ->mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2')))
-    ->group_by('neighborhood')
+    ->groupBy('neighborhood')
     ->summarise(rentals: n(), mean_rent_per_m2: mean('rent_per_m2'))
     ->arrange(desc('mean_rent_per_m2'))
     ->get();

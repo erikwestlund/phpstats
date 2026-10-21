@@ -27,7 +27,7 @@
     ->get();
 
 $byNeighborhood = phplyr($rentals)
-    ->group_by('neighborhood')
+    ->groupBy('neighborhood')
     ->summarise(rentals: n(), mean_area: mean('area_m2'), mean_rent: mean('monthly_rent'))
     ->arrange('neighborhood')
     ->get();
