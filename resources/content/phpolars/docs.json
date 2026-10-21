@@ -246,8 +246,8 @@
             "title": "DataFrame and LazyFrame",
             "headings": [
                 {
-                    "id": "creating-frames",
-                    "text": "Creating frames",
+                    "id": "creating-data-frames",
+                    "text": "Creating data frames",
                     "level": 2
                 },
                 {
