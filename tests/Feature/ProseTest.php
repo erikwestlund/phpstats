@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use FilesystemIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Tests\TestCase;
 
 /**
@@ -10,11 +13,38 @@ use Tests\TestCase;
  * landing page and the package pages, the Markdown pages in
  * resources/pages, and the prose in the vignette views.
  *
- * The packages' synced content under resources/content is not scanned. It is
- * generated from the package repositories and has to be fixed there.
+ * Since task 27 the packages' synced docs under resources/content are
+ * scanned too, because the site publishes that prose under its own name.
+ * Those pages are generated, so a hit cannot be fixed here: the package's
+ * .qmd has to change and the pin then has to move. That is the cost of
+ * covering them, and it is also the point -- a package cannot quietly
+ * reintroduce the bare noun on this site.
+ *
+ * Only the rendered prose is read. Script, style, pre and code elements go
+ * first, with their contents, so nothing in an example, in printed output or
+ * in an identifier is judged as prose. site.json, the benchmark and
+ * verification JSON, and the vignette scripts are left alone.
  */
 class ProseTest extends TestCase
 {
+    /**
+     * The sentences in the synced docs where a bare "frame" is the right
+     * word, quoted in full and kept with the file they belong to, so an
+     * allowance covers one sentence rather than every hit on that page.
+     *
+     * R's model frame is R's own name for what model.frame() builds, and
+     * phit's formulas page says where its factor levels come from by naming
+     * it. "data frame" there would name something else.
+     *
+     * A stale entry fails the test rather than lingering, so the list can
+     * only shrink by being noticed.
+     *
+     * @var array<string, list<string>>
+     */
+    private const ALLOWED = [
+        'phit/docs/formulas.html' => ["as in R\u{2019}s model frame."],
+    ];
+
     public function test_no_prose_writes_the_bare_noun_frame(): void
     {
         $offenders = [];
@@ -29,6 +59,17 @@ class ProseTest extends TestCase
 
         foreach ([...$this->pages(), ...$this->vignetteViews()] as $file => $source) {
             foreach ($this->bareFrames($source) as $context) {
+                $offenders[] = "{$file}: {$context}";
+            }
+        }
+
+        foreach ($this->syncedDocs() as $file => $text) {
+            foreach (self::ALLOWED[$file] ?? [] as $sentence) {
+                $this->assertStringContainsString($sentence, $text,
+                    "{$file} no longer writes \"{$sentence}\", so drop that entry from ProseTest::ALLOWED.");
+                $text = str_replace($sentence, '', $text);
+            }
+            foreach ($this->bareFrames($text) as $context) {
                 $offenders[] = "{$file}: {$context}";
             }
         }
@@ -157,6 +198,42 @@ class ProseTest extends TestCase
         $this->assertNotEmpty($views, 'no vignette view was scanned');
 
         return $views;
+    }
+
+    /**
+     * The rendered text of every synced docs page, keyed as
+     * "{package}/docs/{path}.html".
+     *
+     * Script, style, pre and code elements are removed with their contents
+     * before anything is read, so an example, a printed table or an
+     * identifier is never judged as prose. Character entities are decoded
+     * afterwards, because a phrase written with an escaped space would
+     * otherwise read as the bare noun, and a decoded no-break space is
+     * folded into an ordinary one for the same reason.
+     *
+     * @return array<string, string>
+     */
+    private function syncedDocs(): array
+    {
+        $pages = [];
+        foreach (glob(resource_path('content/*/docs'), GLOB_ONLYDIR) as $directory) {
+            $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS));
+            foreach ($files as $file) {
+                if (! $file->isFile() || $file->getExtension() !== 'html') {
+                    continue;
+                }
+
+                $html = preg_replace('#<(script|style|pre|code)\b[^>]*>.*?</\1>#is', ' ', file_get_contents($file->getPathname()));
+                $text = str_replace("\u{A0}", ' ', html_entity_decode($html, ENT_QUOTES | ENT_HTML5));
+
+                $pages[ltrim(str_replace(resource_path('content'), '', $file->getPathname()), '/')] = $text;
+            }
+        }
+
+        $this->assertNotEmpty($pages, 'no synced docs page was scanned');
+        ksort($pages);
+
+        return $pages;
     }
 
     /** @return array<string, string> */
