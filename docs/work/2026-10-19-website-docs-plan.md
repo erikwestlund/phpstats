@@ -1484,3 +1484,120 @@ install with `--dev`, `vendor/bin/juphyter install`, the `jupyter: php` front
 matter, cell options through `#|`, session state across cells, and the
 limitations page. Whether the bullets mention the limitations is his call; the
 other six packages' bullets describe capabilities only.
+
+### Correction: a deploy does invalidate the example cache
+
+I reported twice, to the orchestrator and to Erik, that cached example
+fragments survive a deploy. That was wrong, and I had not measured it.
+
+`Example::key()` mixes the example files' modification times into every cache
+key. A Forge release is a fresh `git clone` into a new directory, so every file
+in it is written at deploy time. Measured on staging: release `80684102` has
+`resources/examples/packages/phibble.php` at 11:12:18 and its release directory
+at 11:12:21. Every mtime in a release is newer than the release before it, so
+every key changes and every fragment is recomputed on first request.
+
+`CACHE_STORE=database` on that server, so the rows do outlive a release swap,
+unlike a file or array store. They are unreachable rather than stale, and they
+fall out after the 7-day TTL.
+
+So the deploy script's missing `php artisan examples:clear` has no live
+consequence on Forge. What remains is that the protection is incidental: it
+holds because Forge clones a fresh release, and nothing records or tests that
+dependence. A pull-based deploy into a persistent checkout would not have it,
+because `git pull` rewrites only the files that changed, and synced content
+changing does not touch `resources/examples`.
+
+### Task 24: let the example cache's key follow the data it renders
+
+`Example::key()` is built from the example's own `.php` files. An entry whose
+output comes from a stored fixture rather than from running that file has no
+`.php` mtime in its key at all, and the fixture it actually renders is in no
+key. Two entries are in that position today, `cmdstanphp` with
+`database/data/stan/school-intercepts.json` and `juphyter` with
+`database/data/juphyter/revenue-by-channel.html`.
+
+Task 22 worked around this for juphyter by putting the Quarto document's mtime
+into the cache variant, which is the wrong layer: the variant is a label for
+what is being rendered, and the class that knows the fixture path is
+`App\Data\JuphyterCell`. Regenerating the Stan posterior with
+`php artisan stan:fit-school-posterior` changes no file in any key, so on a
+persistent checkout the old summary is served until the TTL expires. CLAUDE.md
+already tells a maintainer to run `php artisan examples:clear` after a capture,
+which is a documented manual step standing in for a key that would not need it.
+
+**Deliverable.** A stored entry declares the files its result is computed from,
+and their modification times enter the cache key the same way an example file's
+does. The `source` entry's mtime moves out of the variant in
+`package-explorer.blade.php` and into the key for the same reason.
+
+**Acceptance criteria.** Touching `database/data/stan/school-intercepts.json`
+changes that panel's cache key, and touching
+`database/data/juphyter/revenue-by-channel.html` changes juphyter's; a test
+asserts both by `touch`ing the fixture and showing the key moves. The variant
+in `package-explorer.blade.php` carries only the label again. `examples:clear`
+and `Example::flush()` keep working as they do. The full suite passes.
+
+**Files.** `app/Content/Example.php`, `config/phpstats.php` (the `explorer`
+entries' `stored` shape), `resources/views/components/package-explorer.blade.php`,
+and `tests/`.
+
+**Model.** A middling one. The change is small and the test is mechanical.
+
+**Not part of this task, and Erik's to do.** The Forge deploy script for
+phpstats.pequod.sh runs `composer install` and `artisan migrate` and nothing
+else; the deployment log for release `80458166` shows its whole body. Adding
+`php artisan examples:clear` to it costs nothing and makes the invalidation
+deliberate rather than a side effect of cloning. The script lives in Forge
+rather than in this repository, and the Forge CLI at version 2.0.0 has no
+command that edits it, so it is a change in the Forge interface.
+
+### Task 25: nothing keeps a content pin and composer.lock in step
+
+`config/phpstats.php` `content` pins the commit each package's synced docs and
+vignettes come from. `composer.lock` pins the commit its code is installed
+from. They are set by different tasks and nothing checks that they agree.
+
+That gap has already produced one defect. Group 3 renamed CmdStanPHP's methods
+to camelCase and updated this site's call sites in `ff20363`, whose message
+says the lock was moved for cmdstanphp as well. Its lock diff adds a stability
+flag for phplyr and never moves cmdstanphp's reference, which stayed at
+`b3ae0e2`. That commit declares `summary_table()` and `summary_columns()`, so
+`app/Console/Commands/FitSchoolPosterior.php:51` called a method the installed
+package did not have. The command needs CmdStan, so no test runs it, and the
+breakage sat on main until task 23's `f8bec62` moved the lock to `c3687a9`.
+
+**The invariant is narrower than equality.** Measured after `f8bec62`:
+
+    phplyr       pin a405963  lock dev-main a405963   agree
+    cmdstanphp   pin c3687a9  lock dev-main c3687a9   agree
+    phibble      pin 3a5604b  lock v0.3.0   b12503e   differ by design
+    phiz         pin e5df583  lock v0.3.0   5d2f7a6   differ by design
+    phpolars     pin 5e95d30  not a Composer dependency
+    phit         pin 5938c57  not a Composer dependency
+
+So the rule is that a dependency resolved as `dev-main` must have the lock
+reference its content pin names. A dependency installed from a tag is allowed
+to differ, because the tag is the released code while the docs follow main.
+
+**Deliverable.** A test that reads `config('phpstats.content')` and
+`composer.lock` and fails when a `dev-main` dependency's locked reference is
+not the content pin. It names both commits in the failure, because the fix
+depends on which one is behind.
+
+**Acceptance criteria.** The test passes on the current tree. Moving phplyr's
+or cmdstanphp's `content` pin without running `composer update` for it fails
+the test with both references in the message. A package installed from a tag,
+and an extension that is no Composer dependency, are skipped with that stated
+in the test rather than silently. The full suite passes.
+
+**Files.** `tests/` only. No application code changes.
+
+**Model.** A small one. The logic is a lock file read and a comparison.
+
+**The exposure the test does not close.** For phibble and phiz the synced
+vignettes execute against the tagged release while their docs come from main,
+so a vignette using an API added after the tag fails on the page. Task 23's
+`a28ebca` widened `VignettesTest` to render every package's script vignettes
+rather than two packages', which is what catches that, and it is the reason
+that widening matters beyond the rename it was written for.
