@@ -14,7 +14,7 @@
         "phpstats/cmdstanphp": "dev-main",
         "phpstats/phibble": "^0.3",
         "phpstats/phiz": "^0.3",
-        "phpstats/phplyr": "^0.3",
+        "phpstats/phplyr": "dev-main",
         "symfony/yaml": "^8.1",
         "tempest/highlight": "^2.28"
     },

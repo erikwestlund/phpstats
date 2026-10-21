@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ac83a77d09c507f84401b093e14179a",
+    "content-hash": "27bf887e8a0801861503d4779590138d",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -3055,16 +3055,16 @@
         },
         {
             "name": "phpstats/phplyr",
-            "version": "v0.3.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "git@github.com:phpstats/phplyr.git",
-                "reference": "ed999d8a69ef83555a0dde24925bbee237f541f1"
+                "reference": "a405963da0ee78e61e1c89e00b865baefa08f37c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/ed999d8a69ef83555a0dde24925bbee237f541f1",
-                "reference": "ed999d8a69ef83555a0dde24925bbee237f541f1",
+                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/a405963da0ee78e61e1c89e00b865baefa08f37c",
+                "reference": "a405963da0ee78e61e1c89e00b865baefa08f37c",
                 "shasum": ""
             },
             "require": {
@@ -3073,11 +3073,13 @@
                 "symfony/polyfill-php84": "^1.31"
             },
             "require-dev": {
-                "pestphp/pest": "^4.0"
+                "pestphp/pest": "^4.0",
+                "squizlabs/php_codesniffer": "^3.13"
             },
             "suggest": {
                 "ext-phit": "Native descriptives (Phit\\stat_*) and model fitting (Phit\\fit_*), needed for lm(), glm(), lmer(), and glmer()"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -3103,11 +3105,20 @@
                     "Phplyr\\Tests\\": "tests/"
                 }
             },
+            "scripts": {
+                "lint": [
+                    "phpcs",
+                    "@test:sniffs"
+                ],
+                "test:sniffs": [
+                    "php tools/phpcs/selftest/run.php"
+                ]
+            },
             "license": [
                 "MIT"
             ],
             "description": "A dplyr-style grammar of data manipulation for PHP 8.3+, with method chains or PHP 8.5 pipes",
-            "time": "2026-10-18T22:51:31+00:00"
+            "time": "2026-10-21T02:49:23+00:00"
         },
         {
             "name": "psr/clock",
@@ -9071,7 +9082,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpstats/cmdstanphp": 20
+        "phpstats/cmdstanphp": 20,
+        "phpstats/phplyr": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
