@@ -66,8 +66,10 @@ return [
      * the title of its example, points about each package for its "About"
      * panel (inline Markdown, for links to upstream projects and `code`;
      * package names become links to their pages), the label for its output,
-     * and, for examples pages can't run, a callable that gives the stored
-     * result. Each package's code is resources/examples/packages/{key}.php,
+     * and, for examples pages can't run, a stored result: the callable that
+     * gives it under result, and under files the paths it is computed from,
+     * whose modification times go in the output's cache key, so re-capturing
+     * one is enough. Each package's code is resources/examples/packages/{key}.php,
      * unless the entry gives its own source file and language, as juphyter's
      * Quarto document does. A package with no entry here gets no panel.
      */
@@ -116,7 +118,10 @@ return [
             ],
             'output' => 'Rendered notebook cell',
             'source' => ['file' => 'packages/juphyter.qmd', 'language' => 'quarto'],
-            'stored' => [\App\Data\JuphyterCell::class, 'explorerOutput'],
+            'stored' => [
+                'result' => [\App\Data\JuphyterCell::class, 'explorerOutput'],
+                'files' => [\App\Data\JuphyterCell::path()],
+            ],
         ],
         'phiz' => [
             'summary' => 'ggplot2-style charts rendered with Vega-Lite.',
@@ -150,7 +155,10 @@ return [
                 'Summarizes posteriors with convergence diagnostics and compares models with PSIS-LOO and WAIC.',
             ],
             'output' => 'Posterior summary',
-            'stored' => [\App\Data\SchoolPosterior::class, 'explorerSummary'],
+            'stored' => [
+                'result' => [\App\Data\SchoolPosterior::class, 'explorerSummary'],
+                'files' => [\App\Data\SchoolPosterior::path()],
+            ],
         ],
     ],
 

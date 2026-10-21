@@ -45,6 +45,53 @@ class ExampleCacheTest extends TestCase
     }
 
     /**
+     * The files a panel's output is computed from besides its example .php,
+     * built the way package-explorer.blade.php builds them: the document a
+     * source entry renders, and the fixtures a stored result is read from.
+     *
+     * @return list<string>
+     */
+    private function panelFiles(string $key): array
+    {
+        $panel = config("phpstats.explorer.{$key}");
+
+        return array_values(array_filter([
+            isset($panel['source']) ? resource_path('examples/'.$panel['source']['file']) : null,
+            ...($panel['stored']['files'] ?? []),
+        ]));
+    }
+
+    /**
+     * The panel's stored result, counting each time it is computed: a warm
+     * panel is a count that did not move. The counter is the caller's own
+     * variable, so the closure and the test see the same number.
+     */
+    private function counted(string $key, int &$calls): callable
+    {
+        $stored = config("phpstats.explorer.{$key}.stored");
+
+        return function () use (&$calls, $stored) {
+            $calls++;
+
+            return ($stored['result'])();
+        };
+    }
+
+    /** The output call the explorer view makes for one panel, with $result counted. */
+    private function panelOutput(string $key, callable $result): string
+    {
+        $label = config("phpstats.explorer.{$key}.output");
+
+        return Example::output(
+            "packages/{$key}",
+            'package-output|'.$label,
+            fn (mixed $value) => view('components.package-output', ['value' => $value, 'label' => $label])->render(),
+            $result,
+            $this->panelFiles($key),
+        );
+    }
+
+    /**
      * The examples this server cannot run, such as the phpolars one without
      * the extension. Running them throws, nothing is cached, and every
      * request retries them, which is what the empty-result sentence needs.
@@ -183,27 +230,15 @@ class ExampleCacheTest extends TestCase
     }
 
     /**
-     * CmdStanPHP's panel renders stored draws rather than running its example,
-     * and the key follows the example file, not the draws. This is why
-     * stan:fit-school-posterior flushes: without it the panel would keep
-     * showing the old posterior.
+     * CmdStanPHP's panel renders stored draws rather than running its example.
+     * A flush still recomputes it, as it does every panel; what the draws
+     * themselves do to the key is the test below.
      */
     public function test_a_flush_recomputes_the_stored_posterior_panel(): void
     {
-        $label = config('phpstats.explorer.cmdstanphp.output');
-        $stored = config('phpstats.explorer.cmdstanphp.stored');
         $calls = 0;
-        $read = function () use (&$calls, $stored) {
-            $calls++;
-
-            return $stored();
-        };
-        $output = fn () => Example::output(
-            'packages/cmdstanphp',
-            'package-output|'.$label,
-            fn (mixed $value) => view('components.package-output', ['value' => $value, 'label' => $label])->render(),
-            $read,
-        );
+        $read = $this->counted('cmdstanphp', $calls);
+        $output = fn () => $this->panelOutput('cmdstanphp', $read);
 
         $cold = $output();
         $this->assertSame(1, $calls);
@@ -216,6 +251,73 @@ class ExampleCacheTest extends TestCase
         Example::reset();
         $this->assertSame($cold, $output());
         $this->assertSame(2, $calls, 'a flush should read the draws again');
+    }
+
+    /**
+     * Task 24. A stored panel's output is computed from committed files
+     * rather than from running the example, so those files are in its key:
+     * re-capturing one reaches a warm page on its own, and regenerating the
+     * Stan posterior no longer needs `php artisan examples:clear`. Every
+     * file the entry declares has to count, which is why this walks them.
+     */
+    public function test_a_stored_panels_key_follows_every_file_it_declares(): void
+    {
+        // juphyter's two: the Quarto document it shows, whose mtime used to
+        // ride in the cache variant, and the capture of the cell it drew.
+        foreach (['cmdstanphp' => 1, 'juphyter' => 2] as $key => $declared) {
+            $files = $this->panelFiles($key);
+            $this->assertCount($declared, $files, $key);
+
+            foreach ($files as $path) {
+                // One panel, so each file's turn starts from a cold cache
+                // rather than from the fragment the file before it left.
+                Example::flush();
+                Example::reset();
+                $calls = 0;
+                $read = $this->counted($key, $calls);
+                $output = fn () => $this->panelOutput($key, $read);
+                $name = $key.': '.basename($path);
+
+                $cold = $output();
+                Example::reset();
+                $this->assertSame($cold, $output());
+                $this->assertSame(1, $calls, "{$name} should be read once and then cached");
+
+                $mtime = filemtime($path);
+                try {
+                    touch($path, $mtime + 10);
+                    clearstatcache(true, $path);
+                    Example::reset();
+                    $output();
+
+                    $this->assertSame(2, $calls, "touching {$name} should move the panel's key");
+                } finally {
+                    touch($path, $mtime);
+                    clearstatcache(true, $path);
+                }
+            }
+        }
+    }
+
+    /**
+     * The key the view builds is the key this test builds, so the files it
+     * passes are the ones the entry declares and its variant carries only
+     * the label: otherwise the page's fragment would be under another key
+     * and the panel below would read its result again.
+     */
+    public function test_a_page_caches_a_stored_panel_under_the_key_the_view_builds(): void
+    {
+        $page = $this->landing();
+
+        foreach (['cmdstanphp', 'juphyter'] as $key) {
+            $calls = 0;
+            $read = $this->counted($key, $calls);
+            Example::reset();
+            $fragment = $this->panelOutput($key, $read);
+
+            $this->assertSame(0, $calls, "{$key}: the fragment the page cached should come back as it is");
+            $this->assertStringContainsString($fragment, $page, $key);
+        }
     }
 
     public function test_debug_mode_skips_the_cache(): void

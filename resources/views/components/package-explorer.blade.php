@@ -55,17 +55,22 @@
                     : ['pipe' => file_get_contents(resource_path('examples/'.$source['file'])), 'chain' => null];
                 $stored = $explorer[$key]['stored'] ?? null;
                 $label = $explorer[$key]['output'];
-                // Example::output keys its cache on the .php example's mtime,
-                // which a source entry has none of, so its own file's mtime
-                // goes in the variant. Re-capturing a stored result without
-                // touching the document needs `php artisan examples:clear`.
-                $variant = 'package-output|'.$label.($source === null ? '' : '|'.filemtime(resource_path('examples/'.$source['file'])));
+                // The files behind the output, besides the .php example that
+                // Example::output already follows: a document rendered in
+                // place of a script, and what a stored result is read from.
+                // Their mtimes go in the key, so re-capturing one is served
+                // without `php artisan examples:clear`.
+                $files = array_values(array_filter([
+                    $source === null ? null : resource_path('examples/'.$source['file']),
+                    ...($stored['files'] ?? []),
+                ]));
                 try {
                     $output = \App\Content\Example::output(
                         "packages/{$key}",
-                        $variant,
+                        'package-output|'.$label,
                         fn (mixed $value) => view('components.package-output', ['value' => $value, 'label' => $label])->render(),
-                        $stored ? fn () => $stored() : null,
+                        $stored === null ? null : fn () => ($stored['result'])(),
+                        $files,
                     );
                     $failed = false;
                 } catch (\Throwable $e) {

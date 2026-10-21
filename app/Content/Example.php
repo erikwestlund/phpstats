@@ -14,9 +14,11 @@ use Illuminate\Support\Str;
  *
  * The landing page shows eleven examples, among them a Polars aggregation, a
  * model fit, and two chart specifications. Their results are not serializable,
- * so what `output()` caches is the rendered HTML, keyed by the example's
- * modification time. Clear it on deploy and after `site:sync`, with
- * `php artisan examples:clear` or `Example::flush()`.
+ * so what `output()` caches is the rendered HTML, keyed by the modification
+ * times of the files it is computed from: the example's own, and the ones the
+ * caller names, such as a stored fixture a result is read from. Clear it on
+ * deploy and after `site:sync`, with `php artisan examples:clear` or
+ * `Example::flush()`.
  */
 class Example
 {
@@ -66,10 +68,15 @@ class Example
      * The example's result as rendered HTML, computed once and then cached
      * until the example file changes. $render receives the result; $result
      * computes it, for the examples whose result is stored rather than run.
+     * $files are the other files the result is computed from, such as a
+     * stored fixture or a document rendered in place of a script: they are
+     * in the key as well, so re-capturing one is enough to serve it.
      * A throw is not cached, so a missing extension or a failure is shown by
      * the caller and tried again on the next request.
+     *
+     * @param  list<string>  $files
      */
-    public static function output(string $name, string $variant, callable $render, ?callable $result = null): string
+    public static function output(string $name, string $variant, callable $render, ?callable $result = null, array $files = []): string
     {
         $result ??= static fn () => self::run($name);
 
@@ -77,7 +84,7 @@ class Example
             return $render($result());
         }
 
-        $key = self::key($name, $variant);
+        $key = self::key($name, $variant, $files);
         $cached = Cache::get($key);
         // A fragment is the rendered HTML and nothing else. The layout emits
         // phiz's runtime for every page, so a cached chart no longer has to
@@ -113,15 +120,21 @@ class Example
         return self::$runs;
     }
 
-    /** An example's key: its name, what is rendered from it, and its mtimes. */
-    private static function key(string $name, string $variant): string
+    /**
+     * An example's key: its name, what is rendered from it, and the
+     * modification times of the files it is computed from, in the order
+     * given. A file that is not there contributes nothing, and appears in
+     * the key once it does, which moves the key as an edit would.
+     *
+     * @param  list<string>  $files
+     */
+    private static function key(string $name, string $variant, array $files = []): string
     {
-        $pipe = self::path($name);
-        $chain = self::path($name, 'chain');
-        $mtimes = implode('-', array_filter([
-            is_file($pipe) ? filemtime($pipe) : null,
-            is_file($chain) ? filemtime($chain) : null,
-        ]));
+        $paths = [self::path($name), self::path($name, 'chain'), ...$files];
+        $mtimes = implode('-', array_filter(array_map(
+            fn (string $path) => is_file($path) ? filemtime($path) : null,
+            $paths,
+        )));
 
         return 'examples:'.self::generation().':'.md5($name.'|'.$variant).':'.$mtimes;
     }

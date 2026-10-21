@@ -29,6 +29,12 @@ final class JuphyterCell
 {
     private const FIXTURE = 'data/juphyter/revenue-by-channel.html';
 
+    /** The capture explorerOutput() reads, which config/phpstats.php declares. */
+    public static function path(): string
+    {
+        return database_path(self::FIXTURE);
+    }
+
     /**
      * The cell for the package explorer, with the table's size taken out of
      * the markup so the output label can carry it.
@@ -37,7 +43,7 @@ final class JuphyterCell
      */
     public static function explorerOutput(): array
     {
-        $html = trim(file_get_contents(database_path(self::FIXTURE)));
+        $html = trim(file_get_contents(self::path()));
         $size = null;
 
         // phibble heads a table with its size, which the kernel draws as a
