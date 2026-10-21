@@ -4,12 +4,12 @@
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Method chain (PHP 8.3+)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Pipe (PHP 8.5)</a></li></ul>
 <div class="tab-content" data-group="syntax">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$schools</span> <span class="op">=</span> phplyr(DataFrame::fromCsv(<span class="st">'schools.csv'</span>))-&gt;group_by(<span class="st">'school'</span>)-&gt;get()<span class="ot">;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$schools</span> <span class="op">=</span> phplyr(DataFrame::fromCsv(<span class="st">'schools.csv'</span>))-&gt;groupBy(<span class="st">'school'</span>)-&gt;get()<span class="ot">;</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">json_encode</span>([</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'groups'</span> =&gt; phplyr(<span class="va">$schools</span>)-&gt;group_vars()<span class="ot">,</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_groups'</span> =&gt; phplyr(<span class="va">$schools</span>)-&gt;n_groups()<span class="ot">,</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sizes'</span> =&gt; \<span class="fu">array_slice</span>(phplyr(<span class="va">$schools</span>)-&gt;group_size()<span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">4</span>)<span class="ot">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'groups'</span> =&gt; phplyr(<span class="va">$schools</span>)-&gt;groupVars()<span class="ot">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_groups'</span> =&gt; phplyr(<span class="va">$schools</span>)-&gt;nGroups()<span class="ot">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'sizes'</span> =&gt; \<span class="fu">array_slice</span>(phplyr(<span class="va">$schools</span>)-&gt;groupSize()<span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">4</span>)<span class="ot">,</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>])<span class="ot">,</span> <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span><span class="ot">;</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Grouped mutate: helpers are evaluated within each group.</span></span>
@@ -19,7 +19,7 @@
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    -&gt;head(<span class="dv">4</span>)<span class="ot">;</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">// One table per group.</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="va">$parts</span> <span class="op">=</span> phplyr(<span class="va">$schools</span>)-&gt;group_split()<span class="ot">;</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="va">$parts</span> <span class="op">=</span> phplyr(<span class="va">$schools</span>)-&gt;groupSplit()<span class="ot">;</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">,</span> \<span class="fu">count</span>(<span class="va">$parts</span>)<span class="ot">,</span> <span class="st">' tables; the first has '</span><span class="ot">,</span> <span class="va">$parts</span>[<span class="dv">0</span>]-&gt;nrow()<span class="ot">,</span> <span class="st">" rows</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span></code></pre></div></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
@@ -108,7 +108,7 @@
 <td><code>group_nest()</code> as a rowwise table</td>
 </tr>
 <tr class="odd">
-<td><code>with_groups(groups, fn)</code></td>
+<td><code>with_groups(_groups, fn)</code></td>
 <td>The function’s result under other groups, with the original grouping restored</td>
 </tr>
 <tr class="even">

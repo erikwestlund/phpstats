@@ -118,6 +118,11 @@
                     "level": 2
                 },
                 {
+                    "id": "method-names",
+                    "text": "Method names",
+                    "level": 3
+                },
+                {
                     "id": "php-adaptations",
                     "text": "PHP adaptations",
                     "level": 2

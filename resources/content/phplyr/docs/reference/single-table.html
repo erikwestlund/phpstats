@@ -13,7 +13,7 @@
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    -&gt;head(<span class="dv">4</span>)<span class="ot">;</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">// filter_out() drops the rows where every condition is true.</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">,</span> phplyr(<span class="va">$schools</span>)-&gt;filter_out(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;prior_score <span class="op">&lt;</span> <span class="dv">70</span>)-&gt;<span class="fu">count</span>()<span class="ot">;</span></span></code></pre></div></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">,</span> phplyr(<span class="va">$schools</span>)-&gt;filterOut(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;prior_score <span class="op">&lt;</span> <span class="dv">70</span>)-&gt;<span class="fu">count</span>()<span class="ot">;</span></span></code></pre></div></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$schools</span> <span class="op">=</span> DataFrame::fromCsv(<span class="st">'schools.csv'</span>)<span class="ot">;</span></span>
@@ -43,7 +43,7 @@
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Inside a group, the second closure argument is the group's table, and</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">// vector helpers such as max() are evaluated per group.</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> phplyr(DataFrame::fromCsv(<span class="st">'schools.csv'</span>))</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    -&gt;group_by(<span class="st">'school'</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    -&gt;groupBy(<span class="st">'school'</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(<span class="kw">fn</span> (<span class="va">$r</span><span class="ot">,</span> <span class="va">$g</span>) =&gt; <span class="va">$r</span>-&gt;score <span class="op">===</span> <span class="fu">max</span>(<span class="st">'score'</span>)(<span class="va">$g</span>))</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    -&gt;select(<span class="st">'school'</span><span class="ot">,</span> <span class="st">'score'</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    -&gt;head(<span class="dv">4</span>)<span class="ot">;</span></span></code></pre></div></div>
@@ -67,7 +67,7 @@
 2 school-02  92.1
 3 school-03  84.0
 4 school-04  83.9</code></pre>
-<p><code>arrange()</code> sorts rows. It is stable and puts NA last. Keys are column names, <code>desc()</code>, or expressions, which are evaluated over the whole table. It ignores grouping unless you pass <code>_by_group: true</code>.</p>
+<p><code>arrange()</code> sorts rows. It is stable and puts NA last. Keys are column names, <code>desc()</code>, or expressions, which are evaluated over the whole table. It ignores grouping unless you pass <code>_byGroup: true</code>.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="syntax">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Method chain (PHP 8.3+)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">Pipe (PHP 8.5)</a></li></ul>
 <div class="tab-content" data-group="syntax">
@@ -92,7 +92,7 @@
 6    74.4        2        1879.
 7    93.9        3        2387.
 8    92.4        3        2240.</code></pre>
-<p><code>distinct()</code> keeps unique rows over the given columns, or over all columns. Named arguments add computed columns first, and <code>_keep_all: true</code> keeps every column from the first row of each combination.</p>
+<p><code>distinct()</code> keeps unique rows over the given columns, or over all columns. Named arguments add computed columns first, and <code>_keepAll: true</code> keeps every column from the first row of each combination.</p>
 <p>The slice family picks rows within each group:</p>
 <table class="caption-top table">
 <colgroup>
@@ -116,10 +116,10 @@
 </tr>
 <tr class="odd">
 <td><code>slice_min(x, n:)</code>, <code>slice_max(x, n:)</code></td>
-<td>The rows with the smallest or largest values, with ties kept unless <code>with_ties: false</code>.</td>
+<td>The rows with the smallest or largest values, with ties kept unless <code>withTies: false</code>.</td>
 </tr>
 <tr class="even">
-<td><code>slice_sample(n:, replace:, weight_by:)</code></td>
+<td><code>slice_sample(n:, replace:, weightBy:)</code></td>
 <td>Random rows. Seed with <code>mt_srand()</code>.</td>
 </tr>
 <tr class="odd">
@@ -145,11 +145,11 @@
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Method chain (PHP 8.3+)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">Pipe (PHP 8.5)</a></li></ul>
 <div class="tab-content" data-group="syntax">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">$schools</span> <span class="op">=</span> phplyr(DataFrame::fromCsv(<span class="st">'schools.csv'</span>))-&gt;group_by(<span class="st">'school'</span>)-&gt;get()<span class="ot">;</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">$schools</span> <span class="op">=</span> phplyr(DataFrame::fromCsv(<span class="st">'schools.csv'</span>))-&gt;groupBy(<span class="st">'school'</span>)-&gt;get()<span class="ot">;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">// The two best students in each of the first three schools.</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> phplyr(<span class="va">$schools</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    -&gt;slice_max(<span class="st">'score'</span><span class="ot">,</span> n<span class="ot">:</span> <span class="dv">2</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    -&gt;sliceMax(<span class="st">'score'</span><span class="ot">,</span> n<span class="ot">:</span> <span class="dv">2</span>)</span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;school <span class="op">&lt;=</span> <span class="st">'school-03'</span>)</span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    -&gt;select(<span class="st">'school'</span><span class="ot">,</span> <span class="st">'score'</span>)<span class="ot">;</span></span></code></pre></div></div>
 </div>
@@ -189,7 +189,7 @@
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">implode</span>(<span class="st">', '</span><span class="ot">,</span> (phplyr(<span class="va">$schools</span>)-&gt;select(where(<span class="st">'numeric'</span>))-&gt;get())-&gt;columns())<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">implode</span>(<span class="st">', '</span><span class="ot">,</span> (phplyr(<span class="va">$schools</span>)-&gt;select([<span class="st">'hours'</span> =&gt; <span class="st">'study_hours'</span>]<span class="ot">,</span> everything())-&gt;get())-&gt;columns())<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">implode</span>(<span class="st">', '</span><span class="ot">,</span> (phplyr(<span class="va">$schools</span>)-&gt;relocate(<span class="st">'score'</span><span class="ot">,</span> _before<span class="ot">:</span> <span class="st">'study_hours'</span>)-&gt;get())-&gt;columns())<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">implode</span>(<span class="st">', '</span><span class="ot">,</span> (phplyr(<span class="va">$schools</span>)-&gt;rename_with(<span class="fu">strtoupper</span>(...)<span class="ot">,</span> contains(<span class="st">'score'</span>))-&gt;get())-&gt;columns())<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span></code></pre></div></div>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">implode</span>(<span class="st">', '</span><span class="ot">,</span> (phplyr(<span class="va">$schools</span>)-&gt;renameWith(<span class="fu">strtoupper</span>(...)<span class="ot">,</span> contains(<span class="st">'score'</span>))-&gt;get())-&gt;columns())<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span></code></pre></div></div>
 </div>
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">$schools</span> <span class="op">=</span> DataFrame::fromCsv(<span class="st">'schools.csv'</span>)<span class="ot">;</span></span>
@@ -328,7 +328,7 @@ school, study_hours, PRIOR_SCORE, SCORE</code></pre>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>        median_hours<span class="ot">:</span> median(<span class="st">'study_hours'</span>)<span class="ot">,</span></span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        q90_score<span class="ot">:</span> quantile(<span class="st">'score'</span><span class="ot">,</span> <span class="fl">0.9</span>)<span class="ot">,</span></span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        iqr_score<span class="ot">:</span> iqr(<span class="st">'score'</span>)<span class="ot">,</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        top_school<span class="ot">:</span> <span class="kw">fn</span> (<span class="va">$g</span>) =&gt; (phplyr(<span class="va">$g</span>)-&gt;slice_max(<span class="st">'score'</span><span class="ot">,</span> n<span class="ot">:</span> <span class="dv">1</span>)-&gt;pull(<span class="st">'school'</span>))[<span class="dv">0</span>]<span class="ot">,</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        top_school<span class="ot">:</span> <span class="kw">fn</span> (<span class="va">$g</span>) =&gt; (phplyr(<span class="va">$g</span>)-&gt;sliceMax(<span class="st">'score'</span><span class="ot">,</span> n<span class="ot">:</span> <span class="dv">1</span>)-&gt;pull(<span class="st">'school'</span>))[<span class="dv">0</span>]<span class="ot">,</span></span>
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    )<span class="ot">;</span></span></code></pre></div></div>
 </div>
 <div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
@@ -355,7 +355,7 @@ school, study_hours, PRIOR_SCORE, SCORE</code></pre>
 <div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> phplyr(DataFrame::fromCsv(<span class="st">'schools.csv'</span>))</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(<span class="kw">fn</span> (<span class="va">$r</span>) =&gt; <span class="va">$r</span>-&gt;school <span class="op">&lt;=</span> <span class="st">'school-02'</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    -&gt;group_by(<span class="st">'school'</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    -&gt;groupBy(<span class="st">'school'</span>)</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    -&gt;reframe(</span>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        p<span class="ot">:</span> [<span class="fl">0.25</span><span class="ot">,</span> <span class="fl">0.5</span><span class="ot">,</span> <span class="fl">0.75</span>]<span class="ot">,</span></span>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        score<span class="ot">:</span> <span class="kw">fn</span> (<span class="va">$g</span>) =&gt; <span class="fu">array_map</span>(<span class="kw">fn</span> (<span class="va">$p</span>) =&gt; Stats::quantile(<span class="va">$g</span>-&gt;column(<span class="st">'score'</span>)<span class="ot">,</span> <span class="va">$p</span>)<span class="ot">,</span> [<span class="fl">0.25</span><span class="ot">,</span> <span class="fl">0.5</span><span class="ot">,</span> <span class="fl">0.75</span>])<span class="ot">,</span></span>

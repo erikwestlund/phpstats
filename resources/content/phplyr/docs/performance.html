@@ -7,7 +7,7 @@
 <li><code>dims.csv</code>: 100,000 rows of <code>key</code>, <code>label</code>, and <code>w</code>.</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> bench/generate.php 1000000</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> bench/harness.php <span class="at">--backend</span><span class="op">=</span>frame <span class="at">--runs</span><span class="op">=</span>3</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> bench/harness.php <span class="at">--backend</span><span class="op">=</span>dataframe <span class="at">--runs</span><span class="op">=</span>3</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> bench/harness.php <span class="at">--backend</span><span class="op">=</span>sqlite <span class="at">--runs</span><span class="op">=</span>3</span></code></pre></div></div>
 <p>Each timing includes <code>collect()</code>, so lazy backends do their work inside the timer. The numbers below are medians of three runs on an Apple Silicon Mac with PHP 8.5 and phibble fa978f6.</p>
 </section>
@@ -79,7 +79,7 @@
 <h2 class="anchored" data-anchor-id="choosing-a-backend">Choosing a backend</h2>
 <ul>
 <li><p><strong>In-memory <code>DataFrame</code></strong> suits data that fits in memory, up to a few million rows. Expression arguments are the fastest form: a grouped summary with <code>mean('x')</code> runs about four times faster than the same summary written as closures, because phibble computes it in one pass without building a table per group.</p></li>
-<li><p><strong>A database table (<code>Phibble\tbl()</code>)</strong> avoids loading the data into PHP. With expressions, <code>filter()</code> and <code>summarise()</code> run in the database, and only the result reaches PHP, so memory stays small. This is the right choice when the data lives in a database or doesn’t fit in memory. For data already in memory, a frame is faster: these timings exclude loading, and reading the 1M-row CSV into a frame takes about 1.4 seconds. Pipelines that return every row (<code>mutate()</code>, <code>arrange()</code>, unfiltered joins) spend most of their database time transferring rows to PHP.</p></li>
+<li><p><strong>A database table (<code>Phibble\tbl()</code>)</strong> avoids loading the data into PHP. With expressions, <code>filter()</code> and <code>summarise()</code> run in the database, and only the result reaches PHP, so memory stays small. This is the right choice when the data lives in a database or doesn’t fit in memory. For data already in memory, a data frame is faster: these timings exclude loading, and reading the 1M-row CSV into a data frame takes about 1.4 seconds. Pipelines that return every row (<code>mutate()</code>, <code>arrange()</code>, unfiltered joins) spend most of their database time transferring rows to PHP.</p></li>
 <li><p><strong>Closures on a database table</strong> load all rows first and then run in memory. Use <code>col()</code> expressions and phplyr’s helpers to keep the work in SQL.</p></li>
 <li><p><strong>SQLite columns need declared types.</strong> PDO binds values as strings. In an untyped column, SQLite stores them as text and compares numbers as text.</p></li>
 <li><p><strong>PolarsTable</strong> (phibble’s Polars backend, on the phpolars extension) runs the pipeline in Polars, 10 to 100 times faster than DataFrame, and pays mainly for bringing rows back into PHP. See below.</p></li>
@@ -90,7 +90,7 @@
 <p><code>bench/backends.php</code> times three phplyr pipelines on DataFrame, PolarsTable, and SQLite, and checks that all three backends return the same rows. It is adapted from phpolars’ benchmark script. The pipelines are:</p>
 <ul>
 <li><strong>A:</strong> filter, join a store lookup, two-key summarise, then a ranking window.</li>
-<li><strong>B:</strong> grouped <code>lag(order_by:)</code>, <code>cumsum()</code>, and a share of the group total over all rows.</li>
+<li><strong>B:</strong> grouped <code>lag(orderBy:)</code>, <code>cumsum()</code>, and a share of the group total over all rows.</li>
 <li><strong>C:</strong> pipeline A with a closure in <code>filter()</code>.</li>
 </ul>
 <p>Times are the best of three runs through <code>collect()</code>, on an Apple M5 Ultra with Homebrew PHP 8.5, phibble 0.3.0, and Polars 0.55.2 at two threads. In every case the three backends returned the same rows. The full results, with all repeat timings and version details, are in <a href="/content/phplyr/docs/benchmarks/backends-results.json"><code>benchmarks/backends-results.json</code></a>.</p>

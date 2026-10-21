@@ -26,13 +26,13 @@
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">// The same functions build a query. Nothing runs until collect().</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="va">$query</span> <span class="op">=</span> phplyr(tbl(<span class="va">$pdo</span><span class="ot">,</span> <span class="st">'schools'</span>))</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(col(<span class="st">'study_hours'</span>)-&gt;ge(<span class="dv">5</span>))</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    -&gt;group_by(<span class="st">'school'</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    -&gt;groupBy(<span class="st">'school'</span>)</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    -&gt;summarise(students<span class="ot">:</span> n()<span class="ot">,</span> avg_score<span class="ot">:</span> mean(<span class="st">'score'</span>))</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    -&gt;filter(col(<span class="st">'students'</span>)-&gt;ge(<span class="dv">12</span>))</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    -&gt;arrange(desc(<span class="st">'avg_score'</span>))</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    -&gt;get()<span class="ot">;</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> phplyr(<span class="va">$query</span>)-&gt;show_query()<span class="ot">,</span> <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span><span class="ot">;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> phplyr(<span class="va">$query</span>)-&gt;showQuery()<span class="ot">,</span> <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span><span class="ot">;</span></span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> phplyr(<span class="va">$query</span>)-&gt;collect()<span class="ot">;</span></span></code></pre></div></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
@@ -71,7 +71,7 @@
 7 school-05       13      75.8
 8 school-04       20      71.1
 9 school-08       12      67.5</code></pre>
-<p>Grouped <code>mutate()</code> and <code>filter()</code> compile aggregates and window functions to <code>OVER (PARTITION BY ...)</code>. Window functions need an order, so call <code>arrange()</code> first or pass <code>order_by:</code>.</p>
+<p>Grouped <code>mutate()</code> and <code>filter()</code> compile aggregates and window functions to <code>OVER (PARTITION BY ...)</code>. Window functions need an order, so call <code>arrange()</code> first or pass <code>orderBy:</code>.</p>
 <p>A function given a PHP closure runs the query so far, loads the rows, and continues in memory, returning a <code>DataFrame</code>. Expressions with no faithful SQL translation do the same. They include <code>round()</code> (R rounds halves to even), <code>first()</code>, <code>last()</code>, <code>nth()</code>, <code>iqr()</code>, <code>cumprod()</code>, <code>consecutive_id()</code>, and <code>median()</code> or <code>quantile()</code> outside PostgreSQL.</p>
 
 

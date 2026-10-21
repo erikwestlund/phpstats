@@ -89,6 +89,11 @@
                     "level": 2
                 },
                 {
+                    "id": "underscored-arguments",
+                    "text": "Underscored arguments",
+                    "level": 2
+                },
+                {
                     "id": "across-functions",
                     "text": "across() functions",
                     "level": 2
