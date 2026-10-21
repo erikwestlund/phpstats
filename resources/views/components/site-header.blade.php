@@ -5,6 +5,7 @@
     $pages = [
         ['label' => 'Get started', 'url' => route('page', 'get-started'), 'current' => request()->route('page') === 'get-started'],
         ['label' => 'Vignettes', 'url' => route('vignettes'), 'current' => request()->routeIs('vignettes')],
+        ['label' => 'CSV options', 'url' => route('page', 'csv-options'), 'current' => request()->route('page') === 'csv-options'],
         ['label' => 'About PHPstats', 'url' => route('page', 'about'), 'current' => request()->route('page') === 'about'],
     ];
 @endphp

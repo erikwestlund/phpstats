@@ -222,9 +222,9 @@ class RootPagesTest extends TestCase
 
     public function test_the_site_bar_links_both_pages_and_marks_the_current_one(): void
     {
-        // The bar carries all three links, in the bar itself and in the row
+        // The bar carries all four links, in the bar itself and in the row
         // that replaces it on small screens.
-        foreach (['Get started', 'Vignettes', 'About PHPstats'] as $label) {
+        foreach (['Get started', 'Vignettes', 'CSV options', 'About PHPstats'] as $label) {
             $this->assertSame(2, substr_count($this->bar($this->get('http://phpstats.test/about')->content()), ">{$label}</a>"), $label);
         }
 
@@ -233,6 +233,7 @@ class RootPagesTest extends TestCase
             'http://phpstats.test/about' => 'About PHPstats',
             'http://phpstats.test/get-started' => 'Get started',
             'http://phpstats.test/vignettes' => 'Vignettes',
+            'http://phpstats.test/csv-options' => 'CSV options',
         ];
 
         foreach ($pages as $url => $label) {
@@ -254,7 +255,7 @@ class RootPagesTest extends TestCase
 
     public function test_the_new_pages_carry_a_description_and_a_canonical_url_and_are_in_the_sitemap(): void
     {
-        foreach (['http://phpstats.test/get-started', 'http://phpstats.test/vignettes'] as $url) {
+        foreach (['http://phpstats.test/get-started', 'http://phpstats.test/vignettes', 'http://phpstats.test/csv-options'] as $url) {
             $html = $this->get($url)->assertOk()->content();
 
             $this->assertStringContainsString('<link rel="canonical" href="'.$url.'">', $html);
@@ -264,6 +265,68 @@ class RootPagesTest extends TestCase
         $sitemap = $this->get('http://phpstats.test/sitemap.xml')->assertOk()->content();
         $this->assertStringContainsString('<loc>http://phpstats.test/get-started</loc>', $sitemap);
         $this->assertStringContainsString('<loc>http://phpstats.test/vignettes</loc>', $sitemap);
+        $this->assertStringContainsString('<loc>http://phpstats.test/csv-options</loc>', $sitemap);
+    }
+
+    /**
+     * The CSV options page maps the readr-named options of phibble and phit
+     * onto the Polars-named ones of phpolars, and leaves none of them out. The
+     * two option lists are committed here rather than parsed out of
+     * phibble/src/Io/CsvOptions.php and phpolars/src/io.rs, because a test
+     * that parses PHP and Rust to check a documentation table is more fragile
+     * than the table it guards. Each list's source and count is in its
+     * comment, so a reader can check it against the package.
+     */
+    public function test_the_csv_options_page_names_every_option_of_both_readers(): void
+    {
+        // The 17 constructor parameters of Phibble\Io\CsvOptions.
+        $phibble = [
+            'types', 'delimiter', 'na', 'colNames', 'select', 'skip', 'nMax', 'quote',
+            'escapeDouble', 'escapeBackslash', 'comment', 'trimWs', 'skipEmptyRows',
+            'guessMax', 'nameRepair', 'decimalMark', 'groupingMark',
+        ];
+
+        // The 23 fields of struct CsvArgs in phpolars, in the camelCase names
+        // that Phpolars\read_csv() takes them under.
+        $phpolars = [
+            'hasHeader', 'separator', 'nullValues', 'schema', 'schemaOverrides', 'nRows',
+            'skipRows', 'skipRowsAfterHeader', 'inferSchemaLength', 'tryParseDates',
+            'commentPrefix', 'quoteChar', 'eolChar', 'encoding', 'ignoreErrors',
+            'missingUtf8IsEmptyString', 'truncateRaggedLines', 'decimalComma',
+            'rowIndexName', 'rowIndexOffset', 'newColumns', 'raiseIfEmpty', 'glob',
+        ];
+
+        $this->assertCount(17, $phibble, 'the committed phibble list is no longer 17 options');
+        $this->assertCount(23, $phpolars, 'the committed phpolars list is no longer 23 options');
+
+        $rows = $this->tableRows($this->get('http://phpstats.test/csv-options')->assertOk()->content());
+        $this->assertGreaterThan(20, count($rows), 'the options table is shorter than the two readers');
+
+        // Every option is named in a cell of its own, as a code span.
+        foreach ([...$phibble, ...$phpolars] as $option) {
+            $this->assertNotSame(
+                [],
+                array_values(array_filter($rows, fn (string $row) => str_contains($row, '<code>'.$option.'</code>'))),
+                "{$option} is not in the table",
+            );
+        }
+
+        // An option with no counterpart is marked absent rather than left out,
+        // so both of the other columns say so in its row.
+        foreach (['nameRepair', 'glob'] as $option) {
+            $row = array_values(array_filter($rows, fn (string $row) => str_contains($row, '<code>'.$option.'</code>')))[0];
+
+            $this->assertSame(2, substr_count($row, '>absent</td>'), "{$option} is not shown as absent on both other sides");
+        }
+
+        // The column headers name packages, so they are labels.
+        foreach (['phibble', 'phit', 'phpolars'] as $package) {
+            $this->assertMatchesRegularExpression(
+                '/<span[^>]*\bfont-mono\b[^>]*>\s*'.$package.'\s*<\/span>/',
+                $rows[0],
+                "{$package} is not monospace in the table head",
+            );
+        }
     }
 
     public function test_markdown_pages_render_blade_outside_code_only(): void
@@ -331,6 +394,20 @@ class RootPagesTest extends TestCase
     private function collapse(string $html): string
     {
         return preg_replace('/\s+/', ' ', $html);
+    }
+
+    /**
+     * The rows of the page's first table, head row first, each with its runs
+     * of whitespace collapsed.
+     *
+     * @return list<string>
+     */
+    private function tableRows(string $html): array
+    {
+        preg_match('#<table.*?</table>#s', $html, $table);
+        preg_match_all('#<tr.*?</tr>#s', $table[0] ?? '', $rows);
+
+        return array_map(fn (string $row) => $this->collapse($row), $rows[0]);
     }
 
     /** Just the site bar, so the assertions do not see the page body. */
