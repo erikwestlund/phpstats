@@ -306,7 +306,7 @@ class VignettesTest extends TestCase
         $this->assertSame(SimulatedRental::count(), $page->viewData('rowsIn'));
         $this->assertSame(
             SimulatedRental::where('bedrooms', '>=', 3)->count(),
-            array_sum(array_column($page->viewData('frameRows'), 'rentals')),
+            array_sum(array_column($page->viewData('dfRows'), 'rentals')),
         );
 
         if (! PolarsPipeline::polarsAvailable()) {

@@ -118,9 +118,9 @@ class CsvReader extends Component
                 return true;
             }, E_USER_WARNING);
             try {
-                $frame = DataFrame::fromCsv($path, delimiter: $delimiter);
+                $df = DataFrame::fromCsv($path, delimiter: $delimiter);
 
-                return ['types' => $frame->types(), 'columns' => $frame->toColumns(), 'warnings' => $warnings];
+                return ['types' => $df->types(), 'columns' => $df->toColumns(), 'warnings' => $warnings];
             } catch (Throwable $e) {
                 return ['error' => $e->getMessage(), 'warnings' => $warnings];
             } finally {

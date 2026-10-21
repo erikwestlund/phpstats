@@ -41,7 +41,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($frameRows as $i => $row)
+                @foreach ($dfRows as $i => $row)
                     <tr class="border-b border-zinc-100 dark:border-zinc-900">
                         <td class="py-2 pr-4">{{ $row['neighborhood'] }}</td>
                         <td class="py-2 pr-4 text-right">{{ number_format($row['rentals']) }}</td>
@@ -58,7 +58,7 @@
     <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">This request</h2>
     <ul class="mt-3 space-y-1 text-sm tabular-nums">
         <li>Input: {{ number_format($rowsIn) }} rows.</li>
-        <li>DataFrame pipeline: {{ number_format(1000 * $frameSeconds, 1) }} ms.</li>
+        <li>DataFrame pipeline: {{ number_format(1000 * $dfSeconds, 1) }} ms.</li>
         @if ($polars)
             <li>Copying the DataFrame into Polars: {{ number_format(1000 * $polars['load_seconds'], 1) }} ms.</li>
             <li>PolarsTable pipeline, including collecting the result: {{ number_format(1000 * $polars['seconds'], 1) }} ms.</li>

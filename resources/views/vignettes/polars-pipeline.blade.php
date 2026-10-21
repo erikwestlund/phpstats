@@ -21,8 +21,8 @@
     ->arrange(desc('mean_rent_per_m2'))
     ->get();
 
-$inMemory = $pipeline($frame);
-$inPolars = $pipeline(PolarsTable::fromTable($frame));</x-slot:chain>
+$inMemory = $pipeline($df);
+$inPolars = $pipeline(PolarsTable::fromTable($df));</x-slot:chain>
             <x-slot:pipe>$pipeline = fn (Table $rentals) => $rentals |>
     filter(col('bedrooms')->ge($minBedrooms)) |>
     mutate(rent_per_m2: col('monthly_rent')->div(col('area_m2'))) |>
@@ -30,8 +30,8 @@ $inPolars = $pipeline(PolarsTable::fromTable($frame));</x-slot:chain>
     summarise(rentals: n(), mean_rent_per_m2: mean('rent_per_m2')) |>
     arrange(desc('mean_rent_per_m2'));
 
-$inMemory = $frame |> $pipeline;
-$inPolars = PolarsTable::fromTable($frame) |> $pipeline;</x-slot:pipe>
+$inMemory = $df |> $pipeline;
+$inPolars = PolarsTable::fromTable($df) |> $pipeline;</x-slot:pipe>
         </x-code-tabs>
     </article>
 

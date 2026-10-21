@@ -4,7 +4,7 @@
 @if ($value instanceof \Phiz\Plot)
     <x-phiz :plot="$value->width('container')->height(280)" class="w-full" />
 @elseif (is_object($value) && method_exists($value, 'types') && method_exists($value, 'toRows'))
-    <x-frame-table :frame="$value" class="-m-4" />
+    <x-df-table :df="$value" class="-m-4" />
 @elseif (is_array($value) && isset($value['coefficients'], $value['columns']))
     <x-fit-table :fit="$value" class="-m-4" />
 @else

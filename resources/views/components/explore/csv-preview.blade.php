@@ -2,13 +2,13 @@
 @props(['file', 'rows' => 5])
 
 @php
-    $frame = \Phibble\DataFrame::fromCsv(database_path("data/{$file}"));
-    $types = $frame->types();
+    $df = \Phibble\DataFrame::fromCsv(database_path("data/{$file}"));
+    $types = $df->types();
 @endphp
 <div class="not-prose overflow-hidden rounded-xl ring-1 ring-zinc-200 dark:ring-white/10">
     <div class="flex items-center justify-between gap-4 border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-xs dark:border-white/10 dark:bg-white/[0.03]">
         <span class="font-mono text-zinc-600 dark:text-zinc-300">{{ $file }}</span>
-        <span class="text-zinc-500">{{ number_format($frame->nrow()) }} rows × {{ count($types) }} columns</span>
+        <span class="text-zinc-500">{{ number_format($df->nrow()) }} rows × {{ count($types) }} columns</span>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full text-sm tabular-nums">
@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-zinc-100 dark:divide-white/5">
-                @foreach ($frame->head($rows)->toRows() as $row)
+                @foreach ($df->head($rows)->toRows() as $row)
                     <tr>
                         @foreach ($row as $value)
                             <td class="px-4 py-1.5 text-zinc-600 dark:text-zinc-300">{{ is_float($value) ? rtrim(rtrim(number_format($value, 3, '.', ''), '0'), '.') : $value }}</td>

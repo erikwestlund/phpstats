@@ -22,7 +22,7 @@ $result['names'];     // column names
 $result['columns'];   // per column: type, values, and the count that failed to parse
 $result['problems'];  // ragged rows and unterminated quotes
 
-$frame = DataFrame::fromCsv($path);  // phibble, through the same reader</code></pre>
+$df = DataFrame::fromCsv($path);  // phibble, through the same reader</code></pre>
         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
             The phit documentation lists every option and guessing rule.
             In phibble's 1,000,000-row benchmark on an Apple Silicon Mac, DataFrame::fromCsv() takes 0.12 seconds with the extension and 1.0 seconds with the PHP reader.

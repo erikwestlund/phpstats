@@ -1,8 +1,8 @@
 {{-- The first rows of a phibble or phpolars table, with its size and column types. --}}
-@props(['frame', 'rows' => 6])
+@props(['df', 'rows' => 6])
 
 @php
-    $types = $frame->types();
+    $types = $df->types();
     $format = fn (mixed $value) => match (true) {
         $value === null => 'NA',
         $value instanceof \DateTimeInterface => $value->format('Y-m-d'),
@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-zinc-100 dark:divide-white/5">
-                @foreach ($frame->head($rows)->toRows() as $row)
+                @foreach ($df->head($rows)->toRows() as $row)
                     <tr>
                         @foreach ($row as $value)
                             <td class="px-4 py-1.5 whitespace-nowrap text-zinc-600 dark:text-zinc-300">{{ $format($value) }}</td>
@@ -38,6 +38,6 @@
         </table>
     </div>
     <p class="border-t border-zinc-100 px-4 py-2 text-xs text-zinc-500 dark:border-white/5">
-        {{ number_format($frame->nrow()) }} {{ $frame->nrow() === 1 ? 'row' : 'rows' }} × {{ count($types) }} columns{{ $frame->nrow() > $rows ? ', first '.$rows.' shown' : '' }}
+        {{ number_format($df->nrow()) }} {{ $df->nrow() === 1 ? 'row' : 'rows' }} × {{ count($types) }} columns{{ $df->nrow() > $rows ? ', first '.$rows.' shown' : '' }}
     </p>
 </div>

@@ -2,7 +2,7 @@
     The result of a package explorer example, in the form the package prints
     it: a chart for a phiz plot, Polars' table for a phpolars table, phibble's
     printed frame or its glimpse() text, and an R-style summary for a phit
-    fit, given alone or as ['fit' => $fit, 'table' => $frame] with a phibble
+    fit, given alone or as ['fit' => $fit, 'table' => $df] with a phibble
     frame computed from it shown below. phibble's printer heads a frame with
     "# A tibble: n × m"; that line is left out, and the size goes in the
     label instead.

@@ -30,8 +30,8 @@ class FitSchoolPosterior extends Command
         File::ensureDirectoryExists($workdir);
         File::copy(resource_path('stan/school_intercepts.stan'), "{$workdir}/school_intercepts.stan");
 
-        $frame = DataFrame::fromQuery(StudentScore::query()->orderBy('id'));
-        $data = StanData::fromFormula(SchoolPosterior::FORMULA, $frame);
+        $df = DataFrame::fromQuery(StudentScore::query()->orderBy('id'));
+        $data = StanData::fromFormula(SchoolPosterior::FORMULA, $df);
 
         $this->info('Compiling and sampling with CmdStan '.cmdstan_version().'...');
         $model = cmdstan_model("{$workdir}/school_intercepts.stan");

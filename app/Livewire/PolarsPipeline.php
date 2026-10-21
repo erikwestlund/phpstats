@@ -38,20 +38,20 @@ class PolarsPipeline extends Component
         $min = in_array($this->minBedrooms, SqlPipeline::BEDROOMS, true) ? $this->minBedrooms : 1;
 
         $base = SimulatedRental::query()->select(['neighborhood', 'area_m2', 'bedrooms', 'monthly_rent'])->toDataFrame();
-        $frame = $copies === 1 ? $base : DataFrame::concat(array_fill(0, $copies, $base));
+        $df = $copies === 1 ? $base : DataFrame::concat(array_fill(0, $copies, $base));
         $pipeline = $this->pipeline($min);
 
-        [$frameRows, $frameSeconds] = $this->timed(fn () => ($frame |> $pipeline)->toRows());
+        [$dfRows, $dfSeconds] = $this->timed(fn () => ($df |> $pipeline)->toRows());
 
         $polars = null;
         if (self::polarsAvailable()) {
-            [$table, $loadSeconds] = $this->timed(fn () => (self::POLARS_TABLE)::fromTable($frame));
+            [$table, $loadSeconds] = $this->timed(fn () => (self::POLARS_TABLE)::fromTable($df));
             [$rows, $seconds] = $this->timed(fn () => ($table |> $pipeline)->toRows());
             $polars = [
                 'rows' => $rows,
                 'load_seconds' => $loadSeconds,
                 'seconds' => $seconds,
-                'max_difference' => $this->maxDifference($frameRows, $rows),
+                'max_difference' => $this->maxDifference($dfRows, $rows),
                 'version' => phpversion('php_polars'),
             ];
         }
@@ -59,9 +59,9 @@ class PolarsPipeline extends Component
         return view('livewire.polars-pipeline', [
             'available' => self::polarsAvailable(),
             'extensionLoaded' => extension_loaded('php_polars'),
-            'rowsIn' => $frame->nrow(),
-            'frameRows' => $frameRows,
-            'frameSeconds' => $frameSeconds,
+            'rowsIn' => $df->nrow(),
+            'dfRows' => $dfRows,
+            'dfSeconds' => $dfSeconds,
             'polars' => $polars,
         ]);
     }
