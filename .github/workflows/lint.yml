@@ -11,8 +11,6 @@ permissions:
 
 jobs:
   lint:
-    # Held off until the last commit of this sequence turns the linter on.
-    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
