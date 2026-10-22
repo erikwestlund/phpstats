@@ -1701,3 +1701,74 @@ package's `.qmd`, re-render, merge there, then move the pin and re-sync.
    of that gap. The stable strengthening is to assert that the package
    directories found equal the synced packages in `config('phpstats.content')`,
    rather than a page count, which would churn with every nav addition.
+
+### Pinning juphyter's content: what it costs this repo, and who owns it
+
+Group 2's plan/review reports that Erik approved juphyter's three site
+prerequisites: a `site/site.json` manifest, rendered HTML committed beside the
+`.qmd` sources, and a freeze policy. It also asked which group should own two
+phpstats.org files: juphyter's absence from `config/phpstats.php`'s `content`
+array, and the comment at `config/projects.php:120-121` that calls
+`https://phpstats.github.io/juphyter/` a 404.
+
+**Both files belong to this group,** for a reason stronger than ownership of the
+repository. Each change is coupled to a site test that only this group can see.
+
+1. Adding the pin flips `Package::synced()`, which
+   `resources/views/package/overview.blade.php:126` branches on. That removes
+   the sentence "This package has not published its site content yet," which
+   `tests/Feature/LandingPageTest.php:125` asserts is present, and it adds the
+   Docs tab that line 127 asserts is absent. A group 2 worker adding one line
+   to `config/phpstats.php` would land a red suite in a repository whose tests
+   it was not briefed on.
+2. The pin also brings juphyter's docs under task 27's widened `ProseTest`
+   scan, which reads every `resources/content/*/docs/*.html`. Measured against
+   juphyter at 5fc6841 with the test's own matcher, its five synced pages carry
+   11 bare uses of the noun: four in `get-started.qmd`, three in
+   `limitations.qmd`, two in `quarto.qmd`, and one each in `index.qmd` and
+   `jupyter.qmd`. `docs/work/2026-10-19-juphyter-plan.md` carries ten more and
+   is not imported, because `DocsImporter` takes a page only where both
+   `.qmd` and `.html` exist.
+
+So the pin cannot be added until juphyter's prose is fixed upstream. That
+ordering sits behind the ordering group 2 already named, where the juphyter
+commit must be pushed before a ref can be pinned.
+
+**Four of the 11 are a sense the guardrail was not written for.** juphyter
+documents tracebacks, so `get-started.qmd` writes "the frames that raised it"
+and "each frame naming the cell and the line", `index.qmd` writes "a frame came
+from", and `limitations.qmd` writes "reports the frame without a location".
+These are stack frames. The convention that produced this test is about the
+data frame noun, and no spelling of the traceback sense satisfies the current
+pattern: its only lookbehind is `data `, so "stack frame" is still a hit.
+
+The cheap answer is four `ProseTest::ALLOWED` entries, and it is the wrong one.
+`ALLOWED` asserts that each listed sentence is still present, so the entries can
+only be written after juphyter's prose is final, and they go stale the next time
+a sentence is reworded. The better answer is one more lookbehind:
+
+```php
+'/(?<![\w$\\\\\\/-])(?<!data )(?<!stack )frames?(?![\w$\\\\\\/-])/i'
+```
+
+Measured: this admits "a stack frame holds" and "the stack frames that raised
+it" while still catching "a phibble frame", "the frames that raised it", and
+"the page frame." Nothing in `resources/content`, `resources/pages`,
+`resources/views`, `config`, or `app` writes "stack frame" today, so the change
+alters no current verdict. It splits the work along group lines: juphyter
+rewords its seven data frame uses and spells the four traceback uses "stack
+frame", and this repo widens the pattern once for the whole family.
+
+**Suggested task 28, this group.** Deliverable: juphyter pinned and synced.
+Files owned: `config/phpstats.php`, `config/projects.php`,
+`tests/Feature/ProseTest.php`, `tests/Feature/LandingPageTest.php`,
+`resources/content/juphyter/`, and `public/content/juphyter/`. Steps: widen the
+pattern with the `stack ` lookbehind; add the `content` entry and run
+`php artisan site:sync juphyter`; delete the `config/projects.php:120-121`
+comment and set `docs` to the published site once it exists; and move
+`LandingPageTest`'s three juphyter page assertions from "no synced content" to
+the Docs tab and a page the sync produced. Acceptance: the full suite passes
+with juphyter synced, and `ProseTest` reports no offender in juphyter's pages.
+Depends on juphyter's prose fix and its push. Testable before the pin with
+`php artisan site:sync juphyter --from=/Users/erik/Projects/phpstats/juphyter`,
+which writes no pin.
