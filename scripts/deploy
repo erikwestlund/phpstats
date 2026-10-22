@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# The steps that put a fresh checkout of the site into service. Forge runs this
+# inside the new release directory, so its deploy script is one line:
+#
+#   scripts/deploy
+#
+# PHP is whatever `php` is on the PATH, or $PHP.
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+PHP="${PHP:-php}"
+
+composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+npm ci
+npm run build
+
+"$PHP" artisan migrate --force
+"$PHP" artisan db:seed --force
+
+# The cache key follows an example's file, not the data or packages it reads,
+# so a release has to drop the rendered output.
+"$PHP" artisan examples:clear
+
+"$PHP" artisan optimize
