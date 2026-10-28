@@ -243,3 +243,6 @@ c168a66..330959f: a1fd392 pins, 1711e7e content (20 files; io.html also carries 
 ## Task 27 APPROVED; MERGE sent (c168a66..330959f)
 
 Planner non-blocking notes on ProseTest: (1) strip tags before decoding entities in syncedDocs(); (2) assert set of package dirs equals synced packages in config rather than non-empty. Queue empty on planner side. Remaining for final report: juphyter pin blocked; staging host; CLAUDE.md wording (Erik via planner); deploy Erik; task 16 (phiz docs links), importer follow-ups, task 12 search, task 11b, SyncSiteContent try/catch, walkSidebar docblock, pin/lock for tagged phibble/phiz; layout.blade.php:2 comment ambiguous.
+
+## Task 27 MERGED (2026-10-22)
+origin/main 1976dec. 122 tests, 111 passed, 11 skipped, 3431 assertions; lint clean; CI green. Also landed: a59f1fb scripts/deploy (not wired into Forge; Erik pastes `scripts/deploy`), planner plan updates, 18 briefs. Staging deployed at 330959f by Erik; phpstats-juphyter.pequod.sh has no subdomain. juphyter origin/main 47a45cf (install docs, bare frame fixed); pin only after task 13 lands.

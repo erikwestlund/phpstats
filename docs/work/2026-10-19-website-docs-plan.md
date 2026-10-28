@@ -1772,3 +1772,29 @@ with juphyter synced, and `ProseTest` reports no offender in juphyter's pages.
 Depends on juphyter's prose fix and its push. Testable before the pin with
 `php artisan site:sync juphyter --from=/Users/erik/Projects/phpstats/juphyter`,
 which writes no pin.
+
+**Code examples in the rendered HTML are not a third weakness.** Group 2 raised
+the worry that a `.qmd` fence is removed by `bareFrames()`'s fence strip while
+the `<pre>` it renders to would survive the `<[^>]*>` strip, leaving a bare noun
+inside a code example as an offender. It does not, because `syncedDocs()`
+removes `script`, `style`, `pre`, and `code` together with their contents before
+`bareFrames()` runs. The live suite already proves it: `phplyr/docs/performance`
+writes `--backend=frame` inside a `<pre>`, and `phit/docs/io` writes
+`Frame::fromCsv()` inside a `<code>`, both of which the pattern would match, and
+the test is green. Running the two stages over that phplyr page shows the three
+raw matches fall to the two in its prose, with `backend=frame` gone from the
+text entirely. The close-tag assumption behind the non-greedy strip also holds:
+across all 115 synced pages, `pre`, `code`, `script`, and `style` are balanced
+and no `pre` nests inside another. Task 28 needs no line for this.
+
+**Cite landed code by ref, not by a path in an agent's workspace.** This
+group lost real work to the opposite habit. The planning workspace sat 16
+commits behind main, and group 2's plan/review was pointed at
+`tests/Feature/ProseTest.php` by path. There the docblock still said synced
+content "is not scanned" and `syncedDocs()` did not exist, because the file
+predated task 27, so a gap in the scan was reported that the landed code does
+not have. The same staleness ran through `resources/content`, where phplyr's
+performance page read "a frame is faster" in the workspace and "a data frame is
+faster" on main. A planning or review workspace carries the tree it last needed
+rather than the tree that shipped, so quote `origin/main:<path>` when the
+question is what the code now does.
