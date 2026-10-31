@@ -537,7 +537,7 @@ class SyncTest extends TestCase
             'vignettes' => [[
                 'slug' => 'demo',
                 'title' => 'A demo vignette',
-                'summary' => 'Gated on an extension this server does not load.',
+                'summary' => 'Gated on an extension this server may not load.',
                 'uses' => ['php_polars'],
                 'script' => 'site/vignettes/demo.php',
             ]],
@@ -547,7 +547,9 @@ class SyncTest extends TestCase
 
             return [
                 'inputs' => [],
-                'run' => fn (array $input, string $data): array => ['text' => 'ran'],
+                // A list of blocks, so the page renders whether or not
+                // php_polars is loaded and the script runs.
+                'run' => fn (array $input, string $data): array => [['type' => 'text', 'markdown' => 'ran']],
             ];
             PHP);
         File::put("{$target}/sync.json", json_encode([
