@@ -65,7 +65,8 @@ class Markdown
 
         $html = (string) self::converter('allow')->convert(implode('', $parts));
 
-        return preg_replace_callback('/<!--blade:(\d+)-->/', fn (array $m) => Blade::render($snippets[(int) $m[1]], $data), $html);
+        // Trimmed, so an inline component is followed directly by its punctuation.
+        return preg_replace_callback('/<!--blade:(\d+)-->/', fn (array $m) => trim(Blade::render($snippets[(int) $m[1]], $data)), $html);
     }
 
     /**
