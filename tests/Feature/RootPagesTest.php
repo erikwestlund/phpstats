@@ -151,7 +151,7 @@ class RootPagesTest extends TestCase
         )));
 
         $phit = Package::find('phit');
-        $this->assertStringContainsString('prints the installed version, such as '.$phit->verify()['output'], $text);
+        $this->assertStringContainsString('Prints the installed version, such as '.$phit->verify()['output'], $text);
         $this->assertStringContainsString('phit installation guide', $text);
 
         $this->assertStringNotContainsString('Optional', $text);
@@ -181,6 +181,26 @@ class RootPagesTest extends TestCase
             $this->assertStringContainsString(">{$group}</p>", $nav[0]);
         }
         $this->assertStringContainsString('On this page', $html);
+    }
+
+    public function test_every_command_block_has_a_copy_button_and_juphyter_doctor_is_its_check(): void
+    {
+        $html = $this->get('http://phpstats.test/installation')->assertOk()->content();
+
+        foreach (Package::all() as $package) {
+            if ($package->install() === []) {
+                continue;
+            }
+            $this->assertStringContainsString('aria-label="Copy install command for '.$package->name().'"', $html, $package->key);
+            if ($package->verify()) {
+                $this->assertStringContainsString('aria-label="Copy verify command for '.$package->name().'"', $html, $package->key);
+            }
+        }
+
+        // juphyter doctor is the check, so it leaves the install block.
+        preg_match('#<section id="juphyter".*?</section>#s', $html, $juphyter);
+        $this->assertSame(1, substr_count(strip_tags($juphyter[0]), 'juphyter doctor'));
+        $this->assertStringContainsString('Copy verify command for juphyter', $juphyter[0]);
     }
 
     public function test_cmdstanphp_lists_cmdstan_as_required_and_its_compilers_apart(): void

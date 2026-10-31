@@ -2,7 +2,8 @@
 title: Installation
 description: The commands that install each PHPstats package, what each one requires, and how to check the install.
 sidebar:
-  - items:
+  - title: Installation
+    items:
       - { id: requirements, label: Requirements }
   - title: PHP libraries
     items:

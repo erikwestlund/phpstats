@@ -1,30 +1,33 @@
 {{--
     One package on the Installation page, all from its synced site.json: its
-    name, the commands that install it, its essential requirements, the command
-    that checks the install, and one link to its installation guide. An output
-    that is a version number is shown as an example, because the command
-    prints whichever version is installed.
+    name, its requirements, the commands that install it, the command that
+    checks the install, and one link to its installation guide. A check
+    command that is also the last install line, as juphyter doctor is, moves
+    to the Verify block. An output that is a version number is shown as an
+    example, because the command prints whichever version is installed.
 --}}
 @props(['package'])
 @php
     $package = \App\Content\Package::find($package);
     $verify = $package->verify();
     $guide = $package->installation();
-    $versioned = $verify && preg_match('/^\d+\.\d+(\.\d+)?$/', trim((string) $verify['output']));
+    $install = array_values(array_filter($package->install(), fn (string $line) => $verify === null || trim($line) !== trim($verify['command'])));
+    $output = $verify ? trim((string) $verify['output']) : '';
+    $versioned = preg_match('/^\d+\.\d+(\.\d+)?$/', $output);
     $code = 'font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200';
 @endphp
-<section id="{{ $package->key }}" class="not-prose mt-12 border-t border-zinc-200 pt-12 dark:border-white/10">
+<section id="{{ $package->key }}" class="not-prose mt-8 border-t border-zinc-200 pt-8 dark:border-white/10">
     <h2 class="font-mono text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $package->name() }}</h2>
-    @if ($package->install() !== [])
-        <x-code class="mt-4" lang="sh" :code="implode(PHP_EOL, $package->install())" />
+    @if ($install !== [])
         <x-requirements class="mt-4" :package="$package" compact />
+        <x-command class="mt-5" label="Install" :name="$package->name()" :code="implode(PHP_EOL, $install)" />
         @if ($verify)
-            <p class="mt-4 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                <code class="{{ $code }}">{{ $verify['command'] }}</code>
+            <x-command class="mt-4" label="Verify" :name="$package->name()" :code="$verify['command']" />
+            <p class="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
                 @if ($versioned)
-                    prints the installed version, such as <code class="{{ $code }}">{{ $verify['output'] }}</code>.
-                @elseif ($verify['output'])
-                    prints <code class="{{ $code }}">{{ $verify['output'] }}</code>@if (! preg_match('/[.!?]$/', trim((string) $verify['output']))).@endif
+                    Prints the installed version, such as <code class="{{ $code }}">{{ $output }}</code>.
+                @elseif ($output !== '')
+                    Prints <code class="{{ $code }}">{{ $output }}</code>@if (! preg_match('/[.!?]$/', $output)).@endif
                 @endif
                 {{ $verify['note'] }}
             </p>

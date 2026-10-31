@@ -66,6 +66,30 @@ Alpine.data('syntaxTabs', () => ({
 }));
 
 // "On this page" in the docs: highlight the last heading scrolled past.
+// <x-command>'s Copy button: the command exactly as shown. The textarea
+// fallback covers pages served over plain http, where navigator.clipboard is
+// missing.
+Alpine.data('copyCommand', (text) => ({
+    copied: false,
+    async copy() {
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch {
+            const area = Object.assign(document.createElement('textarea'), { value: text });
+            area.setAttribute('readonly', '');
+            area.style.position = 'fixed';
+            area.style.opacity = '0';
+            document.body.append(area);
+            area.select();
+            document.execCommand('copy');
+            area.remove();
+        }
+        this.copied = true;
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => (this.copied = false), 2000);
+    },
+}));
+
 Alpine.data('tocSpy', () => ({
     active: null,
     init() {
