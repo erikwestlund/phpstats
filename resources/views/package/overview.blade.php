@@ -3,7 +3,7 @@
     $verified = collect($package->verifications())->flatMap(fn ($v) => $v['cases']);
     $sections = array_filter([
         'docs' => $package->hasDocs() ? ['Docs', 'book-open', count($package->docsNav()).' pages of guides and reference'] : null,
-        'vignettes' => $package->vignettes() ? ['Examples', 'play-circle', count($package->vignettes()).' live examples on this server'] : null,
+        'examples' => $package->listedExamples() ? ['Examples', 'play-circle', count($package->listedExamples()).' short, runnable examples'] : null,
         'benchmarks' => $package->benchmarks() ? ['Benchmarks', 'clock', count($package->benchmarks()).' timing reports'] : null,
         'verification' => $package->verifications() ? ['Verification', 'check-badge', $verified->where('passed', true)->count().' of '.$verified->count().' results agree with the reference'] : null,
     ]);
@@ -27,8 +27,8 @@
                             <x-heroicon-m-book-open class="size-4" /> Read the docs
                         </a>
                     @endif
-                    @if ($package->vignettes())
-                        <a href="{{ $package->url('vignettes') }}" class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-zinc-900 ring-1 ring-zinc-200 transition hover:ring-(--l300) dark:bg-white/5 dark:text-white dark:ring-white/10">
+                    @if ($package->listedExamples())
+                        <a href="{{ $package->url('examples') }}" class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-zinc-900 ring-1 ring-zinc-200 transition hover:ring-(--l300) dark:bg-white/5 dark:text-white dark:ring-white/10">
                             <x-heroicon-m-play-circle class="size-4 text-(--l500)" /> Try an example
                         </a>
                     @endif
@@ -109,12 +109,12 @@
                 @endif
             @endif
 
-            @if ($vignettes = array_slice($package->vignettes(), 0, 4))
+            @if ($examples = array_slice($package->listedExamples(), 0, 4))
                 <div class="mt-12 flex items-baseline justify-between gap-4">
-                    <h2 class="text-lg font-semibold tracking-tight">Run it live</h2>
-                    <a href="{{ $package->url('vignettes') }}" class="text-sm font-medium text-(--l700) hover:text-(--l600) dark:text-(--l300)">All examples →</a>
+                    <h2 class="text-lg font-semibold tracking-tight">Examples</h2>
+                    <a href="{{ $package->url('examples') }}" class="text-sm font-medium text-(--l700) hover:text-(--l600) dark:text-(--l300)">All examples →</a>
                 </div>
-                <x-explore.vignettes class="mt-4" :items="array_map(fn ($v) => $v['owner'].'/'.$v['slug'], $vignettes)" />
+                <x-example-list class="mt-4" :examples="$examples" :package="$package" />
             @endif
 
             @unless ($package->synced())

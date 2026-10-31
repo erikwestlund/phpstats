@@ -46,7 +46,7 @@ class SitemapController extends Controller
      */
     private function urls(): array
     {
-        $urls = [route('home'), route('vignettes')];
+        $urls = [route('home'), route('examples')];
 
         foreach (glob(resource_path('pages/*.md')) as $file) {
             $urls[] = route('page', ['page' => pathinfo($file, PATHINFO_FILENAME)]);
@@ -60,8 +60,8 @@ class SitemapController extends Controller
             }
 
             $vignettes = $package->vignettes();
-            if ($vignettes !== []) {
-                $urls[] = $package->url('vignettes');
+            if ($package->listedExamples() !== [] || $vignettes !== []) {
+                $urls[] = $package->url('examples');
                 foreach ($vignettes as $vignette) {
                     // A vignette listed by several packages belongs to its owner's host.
                     if ($vignette['owner'] === $package->key) {

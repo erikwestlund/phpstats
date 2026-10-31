@@ -48,50 +48,50 @@ class RootPagesTest extends TestCase
         $this->assertStringNotContainsString('dev-main', $text);
     }
 
-    public function test_the_vignette_index_renders_on_the_root_host(): void
+    public function test_the_example_index_renders_on_the_root_host(): void
     {
-        $this->get('http://phpstats.test/vignettes')
-            ->assertOk()
-            ->assertSee('Examples')
-            ->assertSee('Every example on the site');
+        $this->get('http://phpstats.test/examples')->assertOk()->assertSee('Examples');
+        $this->get('http://phpstats.test/vignettes')->assertStatus(301)->assertRedirect('http://phpstats.test/examples');
     }
 
-    public function test_the_vignette_index_lists_every_vignette_once_with_a_link_to_its_owner(): void
+    public function test_the_example_index_lists_every_curated_example_once_under_its_owner(): void
     {
-        $response = $this->get('http://phpstats.test/vignettes')->assertOk();
+        $response = $this->get('http://phpstats.test/examples')->assertOk();
         $html = $response->content();
+        preg_match('#<nav aria-label="Sections".*?</nav>#s', $html, $nav);
 
-        // The expected set, computed the way the page computes it: the Livewire
-        // vignettes in config plus every synced script vignette.
-        $expected = [];
+        $owners = 0;
         foreach (Package::all() as $key => $package) {
-            foreach ($package->vignettes() as $vignette) {
-                if ($vignette['owner'] === $key) {
-                    $expected[] = [$key, $vignette['slug'], $vignette['title']];
-                }
+            if ($package->examples() === []) {
+                $this->assertStringNotContainsString('href="#'.$key.'"', $nav[0], $key);
+
+                continue;
+            }
+            $owners++;
+            $this->assertStringContainsString('href="#'.$key.'"', $nav[0], $key);
+            foreach ($package->examples() as $example) {
+                // Linked once, to its page in the owner's docs, with its description.
+                $this->assertSame(1, substr_count($html, 'href="'.e($example['url']).'"'), "{$key}/{$example['path']}");
+                $this->assertStringContainsString('/docs/examples/', $example['url']);
+                $response->assertSee($example['title'])->assertSee($example['description']);
             }
         }
-        $livewire = count(config('phpstats.vignettes'));
-        $scripts = count($expected) - $livewire;
+        $this->assertGreaterThanOrEqual(3, $owners);
 
-        $this->assertSame(10, $livewire, 'the Livewire vignettes in config changed');
-        $this->assertGreaterThan(0, $scripts, 'no synced script vignette was found');
-        $owners = count(array_unique(array_column($expected, 0)));
-        $this->assertStringContainsString(count($expected).' examples across '.$owners.' packages.', $html);
-
-        foreach ($expected as [$key, $slug, $title]) {
-            $url = Package::find($key)->url('vignette', ['slug' => $slug]);
-            $this->assertSame(1, substr_count($html, 'href="'.e($url).'"'), "{$key}/{$slug} is not linked exactly once");
-            $response->assertSee($title);
-        }
+        // No live badges, package chips, or notes on how the site runs examples.
+        $response->assertDontSee('>Live<', false)->assertDontSee('runs on the server');
     }
 
-    public function test_the_vignette_index_does_not_swallow_a_vignette_redirect(): void
+    public function test_old_example_urls_redirect_to_their_docs_pages(): void
     {
         $this->get('http://phpstats.test/vignettes/sql-pipeline')
-            ->assertRedirect('http://phibble.phpstats.test/vignettes/sql-pipeline');
+            ->assertRedirect('http://phibble.phpstats.test/docs/examples/database-table');
         $this->get('http://phpstats.test/vignettes/school-effects')
             ->assertRedirect('http://phit.phpstats.test/vignettes/school-shrinkage');
+        $this->get('http://phit.phpstats.test/vignettes/simulated-rents')
+            ->assertRedirect('http://phit.phpstats.test/docs/examples/linear-model');
+        $this->get('http://phplyr.phpstats.test/vignettes/reshaping')
+            ->assertRedirect('http://phplyr.phpstats.test/docs/examples/pivot');
         $this->get('http://phpstats.test/vignettes/not-a-vignette')->assertNotFound();
     }
 
@@ -100,8 +100,8 @@ class RootPagesTest extends TestCase
         $this->get('http://phpstats.test/about')->assertOk()->assertSee('About PHPstats');
         $this->get('http://phpstats.test/installation')->assertOk()->assertSee('Installation');
 
-        // /vignettes is a route of its own, not a Markdown page.
-        $this->assertFileDoesNotExist(resource_path('pages/vignettes.md'));
+        // /examples is a route of its own, not a Markdown page.
+        $this->assertFileDoesNotExist(resource_path('pages/examples.md'));
         $this->get('http://phpstats.test/no-such-page')->assertNotFound();
     }
 
@@ -111,10 +111,10 @@ class RootPagesTest extends TestCase
 
         $this->get('http://preview.test/installation')->assertOk()->assertSee('installs the PHP libraries from Packagist.');
         $this->get('http://preview.test/get-started')->assertStatus(301)->assertRedirect('http://preview.test/installation');
-        $response = $this->get('http://preview.test/vignettes')->assertOk()->assertSee('Every example on the site');
+        $response = $this->get('http://preview.test/examples')->assertOk()->assertSee('Examples');
 
-        // Vignette links point into /{package} on the host the request came in on.
-        $response->assertSee('http://preview.test/phit/vignettes/school-scores', false);
+        // Example links point into /{package} on the host the request came in on.
+        $response->assertSee('http://preview.test/phit/docs/examples/linear-model', false);
         $this->assertStringNotContainsString('phit.phpstats.test', $response->content());
     }
 
@@ -217,10 +217,12 @@ class RootPagesTest extends TestCase
 
     public function test_package_names_are_monospace_on_both_root_pages(): void
     {
-        foreach (['http://phpstats.test/installation', 'http://phpstats.test/vignettes'] as $url) {
+        foreach (['http://phpstats.test/installation', 'http://phpstats.test/examples'] as $url) {
             $html = $this->get($url)->assertOk()->content();
 
-            foreach (Package::all() as $package) {
+            // The Examples index names only the packages that own an example.
+            $packages = str_ends_with($url, 'examples') ? array_filter(Package::all(), fn (Package $package) => $package->examples() !== []) : Package::all();
+            foreach ($packages as $package) {
                 // Every name that labels something sits in a font-mono element.
                 $this->assertMatchesRegularExpression(
                     '/<(a|span|p|h[1-6])[^>]*\bfont-mono\b[^>]*>\s*'.preg_quote($package->name(), '/').'\s*</',
@@ -243,7 +245,7 @@ class RootPagesTest extends TestCase
         $pages = [
             'http://phpstats.test/about' => 'About',
             'http://phpstats.test/installation' => 'Installation',
-            'http://phpstats.test/vignettes' => 'Examples',
+            'http://phpstats.test/examples' => 'Examples',
         ];
 
         foreach ($pages as $url => $label) {
@@ -267,7 +269,7 @@ class RootPagesTest extends TestCase
 
     public function test_the_new_pages_carry_a_description_and_a_canonical_url_and_are_in_the_sitemap(): void
     {
-        foreach (['http://phpstats.test/installation', 'http://phpstats.test/vignettes', 'http://phpstats.test/csv-options'] as $url) {
+        foreach (['http://phpstats.test/installation', 'http://phpstats.test/examples', 'http://phpstats.test/csv-options'] as $url) {
             $html = $this->get($url)->assertOk()->content();
 
             $this->assertStringContainsString('<link rel="canonical" href="'.$url.'">', $html);
@@ -277,7 +279,7 @@ class RootPagesTest extends TestCase
         $sitemap = $this->get('http://phpstats.test/sitemap.xml')->assertOk()->content();
         $this->assertStringContainsString('<loc>http://phpstats.test/installation</loc>', $sitemap);
         $this->assertStringNotContainsString('<loc>http://phpstats.test/get-started</loc>', $sitemap);
-        $this->assertStringContainsString('<loc>http://phpstats.test/vignettes</loc>', $sitemap);
+        $this->assertStringContainsString('<loc>http://phpstats.test/examples</loc>', $sitemap);
         $this->assertStringContainsString('<loc>http://phpstats.test/csv-options</loc>', $sitemap);
     }
 

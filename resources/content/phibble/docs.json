@@ -9,6 +9,16 @@
             "path": "getting-started"
         },
         {
+            "title": "Read a CSV file into a typed table",
+            "path": "examples/read-a-csv",
+            "section": "Examples"
+        },
+        {
+            "title": "Query a database table",
+            "path": "examples/database-table",
+            "section": "Examples"
+        },
+        {
             "title": "Coming from tibble",
             "path": "coming-from-tibble",
             "section": "Guides"
@@ -167,6 +177,16 @@
                     "level": 2
                 }
             ],
+            "math": false
+        },
+        "examples/database-table": {
+            "title": "Query a database table",
+            "headings": [],
+            "math": false
+        },
+        "examples/read-a-csv": {
+            "title": "Read a CSV file into a typed table",
+            "headings": [],
             "math": false
         },
         "expr": {

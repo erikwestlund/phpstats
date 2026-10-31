@@ -34,12 +34,12 @@ return [
      * without an entry show the overview from config/projects.php only.
      */
     'content' => [
-        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => 'a753030b1aba8560ff42d7a5713b71579bf6b8d9'],
-        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'c5412f335a1aad7994e4264f922968683192a212'],
-        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => '4b856da01e26c851ed71ec1ff371d20804ded597'],
-        'phit' => ['repo' => 'phpstats/phit', 'ref' => 'f3ee4817880d1b445c4bf5b4b7d652292cd51034'],
+        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '7ebf06835bab65ca8facde2ab0165ba1b995cc12'],
+        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'dda391fb5e233c6ab39d5517fb9a2589618a9b27'],
+        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => '0c2d613ac44a62dd750e810ae7b5cd4cc7acafc8'],
+        'phit' => ['repo' => 'phpstats/phit', 'ref' => '5690153bc6fa8bb0058aad21b267d0a850eec8a3'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => 'af37e1b45f4dbf2009f80a47de83cc1d996b786e'],
-        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => 'c88830938f1be8201e5e3b8732760dfce9638108'],
+        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '4b89c39283f78133431f1d4981f9e97229c08d68'],
         'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '36f0b5c08a006e86f3356065e898175aa555f4b7'],
     ],
 
@@ -211,16 +211,33 @@ return [
      * the others list it too.
      */
     'vignettes' => [
-        'simulated-rents' => ['packages' => ['phit', 'phplyr'], 'title' => 'Simulated rents', 'summary' => 'Linear regression with a factor, compared with the coefficients that generated the data.'],
-        'school-scores' => ['packages' => ['phit'], 'title' => 'School scores', 'summary' => 'Linear regression with a choice of predictors and an observed-against-fitted chart.'],
-        'glm-models' => ['packages' => ['phit'], 'title' => 'Binary and count outcomes', 'summary' => 'Logistic, probit, and Poisson regression from R formulas, with predictions and confidence bands.'],
         'school-shrinkage' => ['packages' => ['phit'], 'title' => 'School effects and shrinkage', 'summary' => 'A linear mixed model with random school intercepts, variance components, shrinkage, and what-if predictions.'],
-        'random-effects' => ['packages' => ['phit', 'phiz'], 'title' => 'Random-effect intervals', 'summary' => 'A caterpillar plot of school effects with intervals from their conditional variances.'],
-        'csv-reader' => ['packages' => ['phit', 'phibble'], 'title' => 'Reading CSV files', 'summary' => 'The native CSV reader on editable text: guessed types, parse failures, problems, and agreement with phibble.'],
-        'sql-pipeline' => ['packages' => ['phibble', 'phplyr'], 'title' => 'SQL pipeline', 'summary' => 'One phplyr pipeline run as a single SQL query and in memory, with the generated SQL.'],
-        'rent-dashboard' => ['packages' => ['phplyr', 'phiz', 'phit'], 'title' => 'Rent dashboard', 'summary' => 'A reactive Livewire dashboard: filters, a phplyr summary, two phiz charts, a logistic model, and what-if predictions.'],
-        'polars-pipeline' => ['packages' => ['phpolars', 'phibble', 'phplyr'], 'title' => 'Polars pipeline', 'summary' => 'The same pipeline on an in-memory data frame and in Polars, with timings for up to 300,000 rows.'],
-        'bayesian-schools' => ['packages' => ['cmdstanphp', 'phit'], 'title' => 'Bayesian school effects', 'summary' => 'The school effects model in Stan through CmdStanPHP, with posterior intervals next to Phit\fit_lmer().'],
+        'bayesian-schools' => ['packages' => ['cmdstanphp', 'phit'], 'title' => 'Bayesian school effects', 'summary' => 'The school effects model in Stan through CmdStanPHP, with posterior intervals next to Phit\\fit_lmer().'],
+        'rent-dashboard' => ['packages' => ['phiz', 'phplyr', 'phit'], 'title' => 'Rent dashboard', 'summary' => 'A Livewire dashboard: filters, a phplyr summary, two phiz charts, a logistic model, and what-if predictions.'],
+    ],
+
+    /*
+     * Examples that left the site's live pages or a package's site/vignettes
+     * in the 2026-10-31 curation, and the package docs page that replaced
+     * each: [package, docs path]. /vignettes/{slug} redirects there.
+     */
+    'example_redirects' => [
+        'simulated-rents' => ['phit', 'examples/linear-model'],
+        'rent-model' => ['phit', 'examples/linear-model'],
+        'school-scores' => ['phit', 'examples/mixed-model'],
+        'school-effects' => ['phit', 'examples/mixed-model'],
+        'random-effects' => ['phit', 'examples/mixed-model'],
+        'glm-models' => ['phit', 'examples/glm'],
+        'distributions' => ['phit', 'examples/distributions'],
+        'csv-reader' => ['phibble', 'examples/read-a-csv'],
+        'sql-pipeline' => ['phibble', 'examples/database-table'],
+        'reshaping' => ['phplyr', 'examples/pivot'],
+        'port-r-script' => ['phplyr', 'port-r-script'],
+        'backends' => ['phplyr', 'performance'],
+        'polars-pipeline' => ['phpolars', 'phibble'],
+        'phplyr-on-polars' => ['phpolars', 'phibble'],
+        'lazy-queries' => ['phpolars', 'examples/lazy-csv'],
+        'time-series' => ['phpolars', 'examples/time-series'],
     ],
 
 ];

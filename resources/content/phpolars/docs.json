@@ -9,6 +9,21 @@
             "path": "getting-started"
         },
         {
+            "title": "Aggregate with expressions",
+            "path": "examples/expressions",
+            "section": "Examples"
+        },
+        {
+            "title": "Query a large CSV file lazily",
+            "path": "examples/lazy-csv",
+            "section": "Examples"
+        },
+        {
+            "title": "Rolling windows and as-of joins",
+            "path": "examples/time-series",
+            "section": "Examples"
+        },
+        {
             "title": "Coming from py-polars",
             "path": "coming-from-python",
             "section": "Guides"
@@ -206,6 +221,21 @@
                     "level": 2
                 }
             ],
+            "math": false
+        },
+        "examples/expressions": {
+            "title": "Aggregate with expressions",
+            "headings": [],
+            "math": false
+        },
+        "examples/lazy-csv": {
+            "title": "Query a large CSV file lazily",
+            "headings": [],
+            "math": false
+        },
+        "examples/time-series": {
+            "title": "Rolling windows and as-of joins",
+            "headings": [],
             "math": false
         },
         "getting-started": {

@@ -65,7 +65,7 @@ class PhizScriptsTest extends TestCase
             'overview' => 'http://phiz.phpstats.test/',
             'docs with charts' => 'http://phiz.phpstats.test/docs/geoms',
             'docs without charts' => 'http://phiz.phpstats.test/docs/ggplot2',
-            'vignettes' => 'http://phit.phpstats.test/vignettes',
+            'examples' => 'http://phit.phpstats.test/examples',
         ];
 
         foreach ($pages as $name => $url) {

@@ -65,6 +65,11 @@
             "section": "Reference"
         },
         {
+            "title": "Compile, sample, and summarize a Stan model",
+            "path": "examples/sample",
+            "section": "Examples"
+        },
+        {
             "title": "Examples",
             "path": "examples",
             "section": "Examples"
@@ -276,6 +281,32 @@
                 {
                     "id": "programs-in-the-repository",
                     "text": "Programs in the repository",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "examples/sample": {
+            "title": "Compile, sample, and summarize a Stan model",
+            "headings": [
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "code",
+                    "text": "Code",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "explanation",
+                    "text": "Explanation",
                     "level": 2
                 }
             ],

@@ -6,15 +6,9 @@ use App\Content\Package;
 use App\Data\SchoolPosterior;
 use App\Data\SimulatedRentals;
 use App\Livewire\BayesianSchools;
-use App\Livewire\CsvReader;
-use App\Livewire\GlmModels;
-use App\Livewire\PolarsPipeline;
-use App\Livewire\RandomEffects;
 use App\Livewire\RentDashboard;
 use App\Livewire\SchoolEffects;
 use App\Livewire\ScriptVignette;
-use App\Livewire\SimulatedRents;
-use App\Livewire\SqlPipeline;
 use App\Models\SimulatedRental;
 use App\Models\StudentScore;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -32,30 +26,6 @@ class VignettesTest extends TestCase
         return Package::find(config("phpstats.vignettes.{$slug}.packages.0"))->url('vignette', ['slug' => $slug]);
     }
 
-    public function test_script_vignettes_run_or_explain_what_is_missing(): void
-    {
-        $seen = [];
-        // Every package that ships a script, so a renamed API in any of them
-        // is caught here rather than on the live page.
-        foreach (Package::all() as $key => $package) {
-            foreach ($package->vignettes() as $vignette) {
-                if ($vignette['kind'] !== 'script') {
-                    continue;
-                }
-                $response = $this->get($package->url('vignette', ['slug' => $vignette['slug']]))->assertOk()->assertSee($vignette['title']);
-                $missing = array_filter($vignette['uses'], fn ($use) => ! ScriptVignette::available($use));
-                if ($missing !== []) {
-                    $response->assertSee('which this server does not have');
-                } else {
-                    $response->assertDontSee('The vignette failed to run')->assertDontSee('bg-red-50', false);
-                }
-                $seen[] = "{$key}/{$vignette['slug']}";
-            }
-        }
-        $this->assertContains('phplyr/backends', $seen);
-        $this->assertContains('phpolars/phplyr-on-polars', $seen);
-    }
-
     public function test_script_vignette_inputs_are_validated(): void
     {
         $inputs = [
@@ -69,18 +39,6 @@ class VignettesTest extends TestCase
             ScriptVignette::cleanInputs($inputs, ['rows' => 'DROP', 'hours' => 'x']));
     }
 
-    public function test_school_scores_vignette_fits_the_model(): void
-    {
-        if (! function_exists('Phit\\fit_lm')) {
-            $this->markTestSkipped('phit is not loaded.');
-        }
-
-        $this->get($this->vignette('school-scores'))
-            ->assertOk()
-            ->assertSee('Study hours')
-            ->assertSee('n = 250');
-    }
-
     public function test_simulated_rents_are_seeded_reproducibly(): void
     {
         $this->assertSame(SimulatedRentals::ROWS, SimulatedRental::count());
@@ -89,24 +47,6 @@ class VignettesTest extends TestCase
             array_keys(SimulatedRentals::NEIGHBORHOODS),
             SimulatedRental::distinct()->pluck('neighborhood')->all(),
         );
-    }
-
-    public function test_simulated_rents_vignette_recovers_the_coefficients(): void
-    {
-        if (! function_exists('Phit\\fit_lm')) {
-            $this->markTestSkipped('phit is not loaded.');
-        }
-
-        $this->get($this->vignette('simulated-rents'))
-            ->assertOk()
-            ->assertSee('simulated')
-            ->assertSee('n = 3,000');
-
-        $fit = Livewire::test(SimulatedRents::class)->set('n', 3000)->viewData('fit');
-
-        foreach ($fit['terms'] as $term) {
-            $this->assertEqualsWithDelta($term['true'], $term['estimate'], 4 * $term['std_error'], $term['term']);
-        }
     }
 
     public function test_school_effects_vignette_reports_variance_components(): void
@@ -199,131 +139,6 @@ class VignettesTest extends TestCase
         $allOver = Livewire::test(RentDashboard::class)->set('minBedrooms', 4)->set('budget', 1750);
         $this->assertNull($allOver->viewData('model'));
         $this->assertStringContainsString('over the budget', $allOver->viewData('error'));
-    }
-
-    public function test_sql_pipeline_matches_the_in_memory_result(): void
-    {
-        $this->get($this->vignette('sql-pipeline'))
-            ->assertOk()
-            ->assertSee('GROUP BY &quot;neighborhood&quot;', false)
-            ->assertSee('same rows in the same order');
-
-        foreach (SqlPipeline::BEDROOMS as $bedrooms) {
-            $view = Livewire::test(SqlPipeline::class)->set('minBedrooms', $bedrooms);
-            $this->assertNotNull($view->viewData('maxDifference'), "min bedrooms {$bedrooms}");
-            $this->assertLessThan(1e-9, $view->viewData('maxDifference'));
-            $this->assertSame(
-                SimulatedRental::where('bedrooms', '>=', $bedrooms)->count(),
-                array_sum(array_column($view->viewData('sqlRows'), 'rentals')),
-            );
-        }
-    }
-
-    public function test_neighborhood_summary_matches_the_sample(): void
-    {
-        if (! function_exists('Phit\\fit_lm')) {
-            $this->markTestSkipped('phit is not loaded.');
-        }
-
-        $summary = Livewire::test(SimulatedRents::class)->set('n', 300)->viewData('fit')['by_neighborhood'];
-        $sample = SimulatedRental::query()->orderBy('id')->limit(300)->get();
-
-        $this->assertSame(300, array_sum(array_column($summary, 'rentals')));
-
-        foreach ($summary as $row) {
-            $rents = $sample->where('neighborhood', $row['neighborhood'])->pluck('monthly_rent');
-            $this->assertSame($rents->count(), $row['rentals']);
-            $this->assertEqualsWithDelta($rents->avg(), $row['mean_rent'], 1e-9);
-        }
-    }
-
-    public function test_glm_vignette_matches_r(): void
-    {
-        if (! function_exists('Phit\\fit_glm')) {
-            $this->markTestSkipped('phit is not loaded.');
-        }
-
-        $this->get($this->vignette('glm-models'))->assertOk()->assertSee('Odds ratio');
-
-        // R 4.6.1 glm() references from phit tests/fixtures/formula-r.json.
-        $logit = Livewire::test(GlmModels::class)->viewData('fit')['result'];
-        $this->assertEqualsWithDelta([-3.1709805238655515, 0.06367532072903229, 0.03424801009641754], $logit['coefficients'], 1e-9);
-        $this->assertEqualsWithDelta(104.96865011458223, $logit['aic'], 1e-9);
-
-        $probit = Livewire::test(GlmModels::class)->set('model', 'probit')->set('interaction', true)->viewData('fit')['result'];
-        $this->assertSame(['(Intercept)', 'study_hours', 'practice_score', 'study_hours:practice_score'], $probit['columns']);
-        $this->assertEqualsWithDelta([-1.5378267064499282, -0.03175571225494219, 0.014252493880737384, 0.001095948998577774], $probit['coefficients'], 1e-8);
-        $this->assertEqualsWithDelta(98.87535805695676, $probit['deviance'], 1e-9);
-
-        $poisson = Livewire::test(GlmModels::class)->set('model', 'poisson')->assertSee('Rate ratio')->viewData('fit')['result'];
-        $this->assertSame('poisson', $poisson['family']);
-        $this->assertSame(120, $poisson['n_observations']);
-    }
-
-    public function test_random_effect_intervals_use_the_conditional_variances(): void
-    {
-        if (! function_exists('Phit\\fit_lmer')) {
-            $this->markTestSkipped('phit is not loaded.');
-        }
-
-        $this->get($this->vignette('random-effects'))->assertOk()->assertSee('Caterpillar plot');
-
-        $fit = Livewire::test(RandomEffects::class)->viewData('fit');
-        if (! isset($fit['term']['effects_cond_var'])) {
-            $this->markTestSkipped('This phit build does not report conditional variances.');
-        }
-        foreach ($fit['schools'] as $school) {
-            $this->assertEqualsWithDelta($school['closed_form_sd'], $school['effects']['(Intercept)']['sd'], 1e-9, $school['school']);
-        }
-
-        $slopes = Livewire::test(RandomEffects::class)->set('structure', 'correlated')->set('level', 80)->viewData('fit');
-        $this->assertSame(['(Intercept)', 'study_hours'], $slopes['term']['columns']);
-        $this->assertCount(2 * count($slopes['schools']), $slopes['chart']->data->rows);
-    }
-
-    public function test_csv_reader_reports_types_and_problems(): void
-    {
-        if (! function_exists('Phit\\read_csv')) {
-            $this->markTestSkipped('phit is not loaded.');
-        }
-
-        $this->get($this->vignette('csv-reader'))->assertOk()->assertSee('expected 8 columns, got 5');
-
-        $page = Livewire::test(CsvReader::class);
-        $native = $page->viewData('native');
-        $types = array_combine($native['names'], array_column($native['columns'], 'type'));
-        $this->assertSame(['id' => 'int', 'zip' => 'string', 'signup' => 'date', 'last_seen' => 'datetime', 'plan' => 'string', 'active' => 'bool', 'monthly_spend' => 'float', 'visits' => 'int'], $types);
-        $this->assertSame(1, $native['columns'][2]['failed']);
-        $this->assertSame(['2026-01-15', '02139', '2026-10-01 08:30:00 UTC'], [$page->viewData('preview')[0][2], $page->viewData('preview')[0][1], $page->viewData('preview')[0][3]]);
-
-        $parity = $page->viewData('parity');
-        $this->assertTrue($parity['same_types'] && $parity['same_values'] && $parity['same_warnings']);
-
-        $semicolon = Livewire::test(CsvReader::class)->set('csv', "a;b\n1,5;x\n")->set('delimiter', ';')->viewData('native');
-        $this->assertSame(['a', 'b'], $semicolon['names']);
-
-        $this->assertSame('The text is longer than 20,000 bytes.', Livewire::test(CsvReader::class)->set('csv', str_repeat('x', 20_001))->viewData('error'));
-    }
-
-    public function test_polars_pipeline_runs_with_or_without_polars(): void
-    {
-        $page = Livewire::test(PolarsPipeline::class)->set('copies', 1)->set('minBedrooms', 3);
-        $this->assertSame(SimulatedRental::count(), $page->viewData('rowsIn'));
-        $this->assertSame(
-            SimulatedRental::where('bedrooms', '>=', 3)->count(),
-            array_sum(array_column($page->viewData('dfRows'), 'rentals')),
-        );
-
-        if (! PolarsPipeline::polarsAvailable()) {
-            $this->assertNull($page->viewData('polars'));
-            $this->get($this->vignette('polars-pipeline'))->assertOk()->assertSee('runs only on the in-memory DataFrame');
-
-            return;
-        }
-
-        $polars = Livewire::test(PolarsPipeline::class)->set('copies', 10)->viewData('polars');
-        $this->assertNotNull($polars['max_difference']);
-        $this->assertLessThan(1e-9, $polars['max_difference']);
     }
 
     public function test_what_if_predictions(): void

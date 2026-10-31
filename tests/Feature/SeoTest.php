@@ -42,8 +42,10 @@ class SeoTest extends TestCase
         $this->assertContains('http://phit.phpstats.test', $urls);
         $this->assertContains('http://phit.phpstats.test/docs', $urls);
         $this->assertContains('http://phit.phpstats.test/docs/formulas', $urls);
-        $this->assertContains('http://phit.phpstats.test/vignettes', $urls);
-        $this->assertContains('http://phit.phpstats.test/vignettes/school-scores', $urls);
+        $this->assertContains('http://phpstats.test/examples', $urls);
+        $this->assertContains('http://phit.phpstats.test/examples', $urls);
+        $this->assertContains('http://phit.phpstats.test/vignettes/school-shrinkage', $urls);
+        $this->assertContains('http://phit.phpstats.test/docs/examples/mixed-model', $urls);
         $this->assertContains('http://phit.phpstats.test/benchmarks', $urls);
         $this->assertContains('http://phit.phpstats.test/verification', $urls);
 
@@ -77,7 +79,7 @@ class SeoTest extends TestCase
 
         // The sections the package bar hides when a package has none of them.
         foreach (Package::all() as $key => $package) {
-            foreach (['benchmarks' => $package->benchmarks(), 'verification' => $package->verifications(), 'vignettes' => $package->vignettes()] as $section => $content) {
+            foreach (['benchmarks' => $package->benchmarks(), 'verification' => $package->verifications(), 'examples' => [...$package->listedExamples(), ...$package->vignettes()]] as $section => $content) {
                 $this->assertSame(
                     $content !== [],
                     in_array("http://{$key}.phpstats.test/{$section}", $urls, true),
@@ -93,9 +95,11 @@ class SeoTest extends TestCase
         $this->assertNotContains('http://phibble.phpstats.test/benchmarks', $urls);
         $this->assertNotContains('http://phibble.phpstats.test/verification', $urls);
 
-        // A vignette belongs to the host of the package that owns it.
-        $this->assertNotContains('http://phplyr.phpstats.test/vignettes/simulated-rents', $urls);
-        $this->assertContains('http://phit.phpstats.test/vignettes/simulated-rents', $urls);
+        // A live page belongs to the host of the package that owns it.
+        $this->assertNotContains('http://phplyr.phpstats.test/vignettes/rent-dashboard', $urls);
+        $this->assertContains('http://phiz.phpstats.test/vignettes/rent-dashboard', $urls);
+        // An example that left the live pages is listed only at its docs page.
+        $this->assertNotContains('http://phit.phpstats.test/vignettes/simulated-rents', $urls);
     }
 
     public function test_every_page_in_the_sitemap_answers_with_a_description_and_its_own_canonical_url(): void
@@ -131,14 +135,14 @@ class SeoTest extends TestCase
             'http://phit.phpstats.test/' => 'Regression, mixed models and probability distributions for PHP.',
             // Docs and the other sections: the page title, then the tagline.
             'http://phit.phpstats.test/docs/contracts' => 'API overview in phit. Regression, mixed models and probability distributions for PHP.',
-            'http://phit.phpstats.test/vignettes' => 'Examples in phit. Regression, mixed models and probability distributions for PHP.',
-            'http://phit.phpstats.test/vignettes/school-scores' => 'School scores in phit. Regression, mixed models and probability distributions for PHP.',
+            'http://phit.phpstats.test/examples' => 'Examples in phit. Regression, mixed models and probability distributions for PHP.',
+            'http://phit.phpstats.test/vignettes/school-shrinkage' => 'School effects in phit. Regression, mixed models and probability distributions for PHP.',
             'http://phit.phpstats.test/benchmarks' => 'Benchmarks in phit. Regression, mixed models and probability distributions for PHP.',
             'http://phit.phpstats.test/verification' => 'Verification in phit. Regression, mixed models and probability distributions for PHP.',
             // A tagline that does not end in a period still reads as a sentence.
             'http://phpolars.phpstats.test/benchmarks' => 'Benchmarks in phpolars. Polars data frames for PHP.',
-            // A Livewire vignette renders its own view through the same layout.
-            'http://phpolars.phpstats.test/vignettes/polars-pipeline' => 'Polars pipeline in phpolars. Polars data frames for PHP.',
+            // A Livewire page renders its own view through the same layout.
+            'http://cmdstanphp.phpstats.test/vignettes/bayesian-schools' => 'Bayesian school effects in CmdStanPHP. Stan modeling and inference from PHP.',
         ];
 
         foreach ($pages as $url => $description) {

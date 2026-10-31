@@ -36,7 +36,7 @@ class PackagePagesTest extends TestCase
         foreach (Package::keys() as $key) {
             $package = Package::find($key);
             $this->get("http://{$key}.phpstats.test/")->assertOk()->assertSee($package->tagline());
-            foreach (['vignettes', 'benchmarks', 'verification'] as $section) {
+            foreach (['examples', 'benchmarks', 'verification'] as $section) {
                 $this->get("http://{$key}.phpstats.test/{$section}")->assertOk();
             }
         }
@@ -61,20 +61,20 @@ class PackagePagesTest extends TestCase
 
     public function test_the_package_bar_hides_sections_with_no_content(): void
     {
-        $sections = ['docs', 'vignettes', 'benchmarks', 'verification'];
+        $sections = ['docs', 'examples', 'benchmarks', 'verification'];
 
-        // juphyter has docs, but no examples, benchmarks, or verification.
+        // juphyter has docs, but no benchmarks or verification.
         $juphyter = Package::find('juphyter');
         $bar = $this->get($juphyter->url())->assertOk()->assertSee($juphyter->url('docs'), false);
-        foreach (['vignettes', 'benchmarks', 'verification'] as $section) {
+        foreach (['benchmarks', 'verification'] as $section) {
             $bar->assertDontSee($juphyter->url($section), false);
         }
 
-        // phibble has docs and vignettes since task 10 pinned its content, but
-        // it ships neither benchmarks nor verification.
+        // phibble has docs and examples, but it ships neither benchmarks nor
+        // verification.
         $phibble = Package::find('phibble');
         $this->get($phibble->url())->assertOk()
-            ->assertSee($phibble->url('vignettes'), false)
+            ->assertSee($phibble->url('examples'), false)
             ->assertSee($phibble->url('docs'), false)
             ->assertDontSee($phibble->url('benchmarks'), false)
             ->assertDontSee($phibble->url('verification'), false);
@@ -109,7 +109,11 @@ class PackagePagesTest extends TestCase
         $this->get('http://phpstats.test/php-stats')->assertRedirect('http://phit.phpstats.test');
         $this->get('http://phpstats.test/phibble')->assertRedirect('http://phibble.phpstats.test');
         $this->get('http://phpstats.test/vignettes/school-effects')->assertRedirect('http://phit.phpstats.test/vignettes/school-shrinkage');
-        $this->get('http://phpstats.test/vignettes/sql-pipeline')->assertRedirect('http://phibble.phpstats.test/vignettes/sql-pipeline');
+        // An example that left the live pages goes to the docs page that replaced it.
+        $this->get('http://phpstats.test/vignettes/sql-pipeline')->assertRedirect('http://phibble.phpstats.test/docs/examples/database-table');
+        $this->get('http://phibble.phpstats.test/vignettes/sql-pipeline')->assertStatus(301)->assertRedirect('http://phibble.phpstats.test/docs/examples/database-table');
+        $this->get('http://phit.phpstats.test/vignettes')->assertStatus(301)->assertRedirect('http://phit.phpstats.test/examples');
+        $this->get('http://phpstats.test/vignettes')->assertStatus(301)->assertRedirect('http://phpstats.test/examples');
         $this->get('http://phpstats.test/benchmarks')->assertRedirect('http://phit.phpstats.test/benchmarks');
     }
 

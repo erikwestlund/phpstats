@@ -6,7 +6,7 @@
         <script src="https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-chtml.js" defer></script>
     @endpush
 
-    <a href="{{ $package->url('vignettes') }}" class="inline-flex items-center gap-1 text-sm font-medium text-(--l600) hover:text-(--l700) dark:text-(--l300)"><x-heroicon-m-arrow-left class="size-4" /> Examples</a>
+    <a href="{{ $package->url('examples') }}" class="inline-flex items-center gap-1 text-sm font-medium text-(--l600) hover:text-(--l700) dark:text-(--l300)"><x-heroicon-m-arrow-left class="size-4" /> Examples</a>
     <x-page-header class="mt-4" :title="$vignette['title']">{{ $vignette['summary'] }}</x-page-header>
     <div class="mt-5 flex flex-wrap items-center gap-1.5">
         <span class="mr-1 text-xs text-zinc-500">Uses</span>

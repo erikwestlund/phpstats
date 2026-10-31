@@ -4,7 +4,7 @@
     // parameter, so About is not marked current on another Markdown page.
     $pages = [
         ['label' => 'Installation', 'url' => route('page', 'installation'), 'current' => request()->route('page') === 'installation'],
-        ['label' => 'Examples', 'url' => route('vignettes'), 'current' => request()->routeIs('vignettes')],
+        ['label' => 'Examples', 'url' => route('examples'), 'current' => request()->routeIs('examples')],
         ['label' => 'About', 'url' => route('page', 'about'), 'current' => request()->route('page') === 'about'],
     ];
 @endphp

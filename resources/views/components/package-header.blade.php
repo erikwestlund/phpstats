@@ -10,13 +10,13 @@
     $sections = array_filter([
         'overview' => 'Overview',
         'docs' => $package->hasDocs() || $package->externalDocs() ? 'Docs' : null,
-        'vignettes' => $package->vignettes() ? 'Examples' : null,
+        'examples' => $package->listedExamples() || $package->vignettes() ? 'Examples' : null,
         'benchmarks' => $package->benchmarks() ? 'Benchmarks' : null,
         'verification' => $package->verifications() ? 'Verification' : null,
     ]);
     $active = match (true) {
         request()->routeIs('package.docs') => 'docs',
-        request()->routeIs('package.vignettes', 'package.vignette') || request()->is('livewire*') => 'vignettes',
+        request()->routeIs('package.examples', 'package.vignette') || request()->is('livewire*') => 'examples',
         request()->routeIs('package.benchmarks') => 'benchmarks',
         request()->routeIs('package.verification') => 'verification',
         default => 'overview',

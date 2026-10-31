@@ -69,6 +69,26 @@
             "section": "Reference"
         },
         {
+            "title": "Filter rows and add columns",
+            "path": "examples/filter-and-mutate",
+            "section": "Examples"
+        },
+        {
+            "title": "Summarize groups",
+            "path": "examples/group-and-summarize",
+            "section": "Examples"
+        },
+        {
+            "title": "Join two tables",
+            "path": "examples/join",
+            "section": "Examples"
+        },
+        {
+            "title": "Reshape with pivot_longer and pivot_wider",
+            "path": "examples/pivot",
+            "section": "Examples"
+        },
+        {
             "title": "Gallery",
             "path": "gallery",
             "section": "Examples"
@@ -179,6 +199,26 @@
                     "level": 2
                 }
             ],
+            "math": false
+        },
+        "examples/filter-and-mutate": {
+            "title": "Filter rows and add columns",
+            "headings": [],
+            "math": false
+        },
+        "examples/group-and-summarize": {
+            "title": "Summarize groups",
+            "headings": [],
+            "math": false
+        },
+        "examples/join": {
+            "title": "Join two tables",
+            "headings": [],
+            "math": false
+        },
+        "examples/pivot": {
+            "title": "Reshape with pivot_longer and pivot_wider",
+            "headings": [],
             "math": false
         },
         "gallery": {

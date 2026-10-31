@@ -20,7 +20,7 @@ class DocsTest extends TestCase
     {
         $groups = Package::find('phpolars')->docsGroups();
 
-        $this->assertSame(['Guide', 'Guides', 'Reference', 'Benchmarks and verification', 'Contributing'], array_keys($groups));
+        $this->assertSame(['Guide', 'Examples', 'Guides', 'Reference', 'Benchmarks and verification', 'Contributing'], array_keys($groups));
         $this->assertContains('reference/series', array_column($groups['Reference'], 'path'));
 
         // Since task 21 the nav is derived from the package's own
@@ -120,7 +120,7 @@ class DocsTest extends TestCase
         }
 
         $this->assertSame([], $outside);
-        $this->assertCount(60, Package::find('phit')->docsNav());
+        $this->assertCount(64, Package::find('phit')->docsNav());
     }
 
     public function test_a_docs_page_named_as_html_redirects_to_its_clean_url(): void

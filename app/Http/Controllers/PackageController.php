@@ -34,15 +34,22 @@ class PackageController extends Controller
         return $this->page($package, 'docs', ['page' => $page, 'path' => $path ?? 'index']);
     }
 
-    public function vignettes(string $package): View
+    public function examples(string $package): View
     {
-        return $this->page($package, 'vignettes');
+        return $this->page($package, 'examples');
     }
 
-    public function vignette(string $package, string $slug): View
+    /**
+     * A live page kept outside the curated examples, or a redirect to the
+     * docs page that replaced an example that left the live pages.
+     */
+    public function vignette(string $package, string $slug)
     {
         $item = $this->package($package);
-        $vignette = $item->vignette($slug) ?? abort(404);
+        $vignette = $item->vignette($slug);
+        if ($vignette === null) {
+            return redirect()->away(Package::exampleRedirect($slug) ?? abort(404), 301);
+        }
 
         if ($vignette['kind'] === 'livewire') {
             ViewFactory::share('currentPackage', $item);

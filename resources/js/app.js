@@ -66,24 +66,49 @@ Alpine.data('syntaxTabs', () => ({
 }));
 
 // "On this page" in the docs: highlight the last heading scrolled past.
-// <x-command>'s Copy button: the command exactly as shown. The textarea
-// fallback covers pages served over plain http, where navigator.clipboard is
-// missing.
+// Copies text, with a textarea fallback for pages served over plain http,
+// where navigator.clipboard is missing.
+async function copyText(text) {
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch {
+        const area = Object.assign(document.createElement('textarea'), { value: text });
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.append(area);
+        area.select();
+        document.execCommand('copy');
+        area.remove();
+    }
+}
+
+// A Copy button on every code block of a synced docs page. Quarto marks the
+// blocks for copying, but its own button is script the import leaves out.
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.docs-content div.sourceCode').forEach((block) => {
+        const code = block.querySelector('pre code');
+        if (!code || block.querySelector(':scope > .docs-copy')) return;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'docs-copy';
+        button.textContent = 'Copy';
+        button.setAttribute('aria-label', 'Copy code');
+        button.addEventListener('click', async () => {
+            await copyText(code.innerText.replace(/\n$/, ''));
+            button.textContent = 'Copied';
+            clearTimeout(button.timer);
+            button.timer = setTimeout(() => (button.textContent = 'Copy'), 2000);
+        });
+        block.append(button);
+    });
+});
+
+// <x-command>'s Copy button: the command exactly as shown.
 Alpine.data('copyCommand', (text) => ({
     copied: false,
     async copy() {
-        try {
-            await navigator.clipboard.writeText(text);
-        } catch {
-            const area = Object.assign(document.createElement('textarea'), { value: text });
-            area.setAttribute('readonly', '');
-            area.style.position = 'fixed';
-            area.style.opacity = '0';
-            document.body.append(area);
-            area.select();
-            document.execCommand('copy');
-            area.remove();
-        }
+        await copyText(text);
         this.copied = true;
         clearTimeout(this.timer);
         this.timer = setTimeout(() => (this.copied = false), 2000);

@@ -15,12 +15,16 @@ The website for the PHPstats family: a Laravel 13 + Livewire 4 app.
 - `robots.txt` is a route, not a file: it invites crawlers only on the hosts
   above and only when `PHPSTATS_INDEXABLE` is true, which it is by default
   just when `APP_ENV=production`, so staging and previews stay out of search.
-- Each package host has Overview, Docs, Vignettes, Benchmarks, and
+- Each package host has Overview, Docs, Examples, Benchmarks, and
   Verification sections, built from the package's synced content.
-- Vignettes are either Livewire components in this app, listed under
-  `vignettes` in `config/phpstats.php`, or scripts from a package's
-  `site/vignettes`, run by `App\Livewire\ScriptVignette`. Charts render with
-  phiz's `<x-phiz>` component.
+- Examples are pages in each package's docs, under its "Examples" nav
+  section, listed by site.json's `examples` with a one-sentence description.
+  `/examples` lists every package's, and each package's Examples tab lists its
+  own and those that name it under `also`. A few interactive pages stay in
+  this app as Livewire components, listed under `vignettes` in
+  `config/phpstats.php` and served at `/vignettes/{slug}`. Old example URLs
+  redirect through `example_redirects` there. Charts render with phiz's
+  `<x-phiz>` component.
 - Pages written for this site are Markdown in `resources/pages`, rendered by
   `App\Content\Markdown`: front matter, GitHub tables, highlighted fences
   (```` ```r label ````), and Blade components and `{{ }}` echoes outside code,

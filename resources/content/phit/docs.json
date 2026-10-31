@@ -70,6 +70,26 @@
             "section": "Guides"
         },
         {
+            "title": "Fit a linear model and predict",
+            "path": "examples/linear-model",
+            "section": "Examples"
+        },
+        {
+            "title": "Fit logistic and Poisson models",
+            "path": "examples/glm",
+            "section": "Examples"
+        },
+        {
+            "title": "Fit a mixed model",
+            "path": "examples/mixed-model",
+            "section": "Examples"
+        },
+        {
+            "title": "Densities, quantiles, and random draws",
+            "path": "examples/distributions",
+            "section": "Examples"
+        },
+        {
             "title": "API overview",
             "path": "contracts",
             "section": "Reference"
@@ -863,6 +883,110 @@
                 }
             ],
             "math": true
+        },
+        "examples/distributions": {
+            "title": "Densities, quantiles, and random draws",
+            "headings": [
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "code",
+                    "text": "Code",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "explanation",
+                    "text": "Explanation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "examples/glm": {
+            "title": "Fit logistic and Poisson models",
+            "headings": [
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "code",
+                    "text": "Code",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "explanation",
+                    "text": "Explanation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "examples/linear-model": {
+            "title": "Fit a linear model and predict",
+            "headings": [
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "code",
+                    "text": "Code",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "explanation",
+                    "text": "Explanation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "examples/mixed-model": {
+            "title": "Fit a mixed model",
+            "headings": [
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "code",
+                    "text": "Code",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "explanation",
+                    "text": "Explanation",
+                    "level": 2
+                }
+            ],
+            "math": false
         },
         "extension-or-polyfill": {
             "title": "Extension or polyfill",

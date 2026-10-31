@@ -425,6 +425,70 @@ class Package
         return $list;
     }
 
+    /**
+     * The examples this package owns, from site.json's examples list, in its
+     * order. Each is a page of the package's docs, under its Examples section,
+     * with the one-sentence description the indexes show. An entry whose page
+     * did not sync is left out.
+     *
+     * @return list<array{path: string, title: string, description: string, url: string, owner: string, also: list<string>}>
+     */
+    public function examples(): array
+    {
+        $list = [];
+        foreach ($this->site['examples'] ?? [] as $example) {
+            $path = is_array($example) ? ($example['path'] ?? null) : null;
+            if (! is_string($path) || ! isset($this->docs['pages'][$path])) {
+                continue;
+            }
+            $list[] = [
+                'path' => $path,
+                'title' => (string) ($example['title'] ?? $this->docs['pages'][$path]['title'] ?? $path),
+                'description' => (string) ($example['description'] ?? ''),
+                'url' => $this->url('docs', ['path' => $path]),
+                'owner' => $this->key,
+                'also' => array_values(array_filter((array) ($example['also'] ?? []), 'is_string')),
+            ];
+        }
+
+        return $list;
+    }
+
+    /**
+     * The examples this package's Examples tab lists: its own, then other
+     * packages' examples that name it under also.
+     *
+     * @return list<array{path: string, title: string, description: string, url: string, owner: string, also: list<string>}>
+     */
+    public function listedExamples(): array
+    {
+        $list = $this->examples();
+        foreach (self::all() as $key => $other) {
+            if ($key !== $this->key) {
+                array_push($list, ...array_filter($other->examples(), fn (array $example) => in_array($this->key, $example['also'], true)));
+            }
+        }
+
+        return $list;
+    }
+
+    /**
+     * Where an example that left the site's live pages now lives: its slug in
+     * config/phpstats.php's example_redirects, as the URL of the owning
+     * package's docs page, or of that package's Examples tab until the page
+     * has synced.
+     */
+    public static function exampleRedirect(string $slug): ?string
+    {
+        [$key, $path] = config("phpstats.example_redirects.{$slug}") ?? [null, null];
+        $package = $key === null ? null : self::find($key);
+        if ($package === null) {
+            return null;
+        }
+
+        return isset($package->docs['pages'][$path]) ? $package->url('docs', ['path' => $path]) : $package->url('examples');
+    }
+
     /** The vignette with this slug owned by this package. */
     public function vignette(string $slug): ?array
     {
