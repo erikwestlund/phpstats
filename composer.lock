@@ -2854,18 +2854,18 @@
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "git@github.com:phpstats/cmdstanphp.git",
-                "reference": "5eed17c0f43979231e581f248c80bf6306d95f7d"
+                "url": "https://github.com/phpstats/CmdStanPHP.git",
+                "reference": "7e997095e611361667cd9ba0412ffaf9a0b9be93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/cmdstanphp/zipball/5eed17c0f43979231e581f248c80bf6306d95f7d",
-                "reference": "5eed17c0f43979231e581f248c80bf6306d95f7d",
+                "url": "https://api.github.com/repos/phpstats/CmdStanPHP/zipball/7e997095e611361667cd9ba0412ffaf9a0b9be93",
+                "reference": "7e997095e611361667cd9ba0412ffaf9a0b9be93",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "^8.2"
+                "php": ">=8.2 <8.6"
             },
             "require-dev": {
                 "phpunit/phpunit": "^11.5",
@@ -2914,7 +2914,11 @@
                 "MIT"
             ],
             "description": "A PHP interface to CmdStan inspired by CmdStanR",
-            "time": "2026-10-31T14:52:05+00:00"
+            "support": {
+                "source": "https://github.com/phpstats/CmdStanPHP/tree/main",
+                "issues": "https://github.com/phpstats/CmdStanPHP/issues"
+            },
+            "time": "2026-10-31T15:26:29+00:00"
         },
         {
             "name": "phpstats/phibble",
