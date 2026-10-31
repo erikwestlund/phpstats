@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27bf887e8a0801861503d4779590138d",
+    "content-hash": "dfb7e771f0b3a599fe7c6c0ade6070fd",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -2980,32 +2980,35 @@
         },
         {
             "name": "phpstats/phiz",
-            "version": "v0.3.0",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstats/phiz.git",
-                "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e"
+                "reference": "61dc87b053ae16f1f6257812675fe27c7905c4a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phiz/zipball/5d2f7a65c243abadbb9ebba22f7987d34253412e",
-                "reference": "5d2f7a65c243abadbb9ebba22f7987d34253412e",
+                "url": "https://api.github.com/repos/phpstats/phiz/zipball/61dc87b053ae16f1f6257812675fe27c7905c4a0",
+                "reference": "61dc87b053ae16f1f6257812675fe27c7905c4a0",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "^8.5"
+                "php": "^8.3"
             },
             "require-dev": {
-                "erikwestlund/phibble": "dev-main",
-                "erikwestlund/phplyr": "dev-main",
                 "opis/json-schema": "^2.4",
                 "orchestra/testbench": "^10.0",
-                "pestphp/pest": "^4.0"
+                "pestphp/pest": "^4.0",
+                "phpstats/phibble": "^0.3",
+                "phpstats/phit-polyfill": "dev-main",
+                "phpstats/phplyr": "^0.3",
+                "squizlabs/php_codesniffer": "^3.13"
             },
             "suggest": {
-                "erikwestlund/phibble": "Data frames that phiz plots directly",
-                "illuminate/view": "For the <x-phiz> Blade component (auto-discovered in Laravel)"
+                "illuminate/view": "For the <x-phiz> Blade component (auto-discovered in Laravel)",
+                "phpstats/phibble": "Data frames that phiz plots directly",
+                "phpstats/phit-polyfill": "Formula predictions (effect_plot, marginal_means) without the phit extension"
             },
             "type": "library",
             "extra": {
@@ -3034,6 +3037,13 @@
                 ],
                 "gallery": [
                     "php examples/gallery.php"
+                ],
+                "lint": [
+                    "phpcs",
+                    "@test:sniffs"
+                ],
+                "test:sniffs": [
+                    "php tools/phpcs/selftest/run.php"
                 ]
             },
             "license": [
@@ -3054,10 +3064,10 @@
                 "visualization"
             ],
             "support": {
-                "source": "https://github.com/phpstats/phiz/tree/v0.3.0",
+                "source": "https://github.com/phpstats/phiz/tree/v0.5.0",
                 "issues": "https://github.com/phpstats/phiz/issues"
             },
-            "time": "2026-10-16T10:15:07+00:00"
+            "time": "2026-10-31T09:15:08+00:00"
         },
         {
             "name": "phpstats/phplyr",
