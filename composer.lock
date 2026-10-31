@@ -2898,21 +2898,22 @@
         },
         {
             "name": "phpstats/phibble",
-            "version": "v0.5.0",
+            "version": "v0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstats/phibble.git",
-                "reference": "856e73919edbdfec4c85aad089f70bf461be11a4"
+                "reference": "36d0f3fde2e115b68341bb972e99e5f47b817dd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phibble/zipball/856e73919edbdfec4c85aad089f70bf461be11a4",
-                "reference": "856e73919edbdfec4c85aad089f70bf461be11a4",
+                "url": "https://api.github.com/repos/phpstats/phibble/zipball/36d0f3fde2e115b68341bb972e99e5f47b817dd2",
+                "reference": "36d0f3fde2e115b68341bb972e99e5f47b817dd2",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "ext-pdo": "*",
-                "php": "^8.3",
+                "php": ">=8.3 <8.6",
                 "symfony/polyfill-php84": "^1.31"
             },
             "require-dev": {
@@ -2923,7 +2924,7 @@
             },
             "suggest": {
                 "ext-pdo_sqlite": "Used by the test suite for the PDO source",
-                "ext-phit": "Native CSV reading (Phit\\read_csv) and model fitting, from phpstats/phit",
+                "ext-phit": "Native CSV reading with Phit\\read_csv (phit 0.1.1 or later) and Phit\\CsvReader for chunks (phit 0.2.0 or later), from phpstats/phit",
                 "ext-php_polars": "The Polars backend (Phibble\\Polars\\PolarsTable), from phpstats/phpolars",
                 "illuminate/database": "Laravel integration: Collection::toDataFrame() and query builder ->phibble() / ->toDataFrame() macros (auto-discovered)"
             },
@@ -2951,9 +2952,9 @@
             "description": "A typed, immutable in-memory data frame for PHP.",
             "support": {
                 "issues": "https://github.com/phpstats/phibble/issues",
-                "source": "https://github.com/phpstats/phibble/tree/v0.5.0"
+                "source": "https://github.com/phpstats/phibble/tree/v0.5.1"
             },
-            "time": "2026-10-31T01:35:05+00:00"
+            "time": "2026-10-31T17:17:23+00:00"
         },
         {
             "name": "phpstats/phiz",

@@ -126,7 +126,7 @@
 </tr>
 <tr class="odd">
 <td><code>summarise($aggregates)</code></td>
-<td><code>DataFrame</code> and <code>SqlTable</code> also have the alias <code>summarize()</code>. Returns one row per group: the keys, then one column per entry. Each entry is a closure given the group’s table or an expression of size 1. The result drops the last grouping level, and a rowwise table keeps its id columns. The optional second argument is dplyr’s <code>.groups</code>: <code>'drop_last'</code> (the default), <code>'drop'</code>, <code>'keep'</code>, or <code>'rowwise'</code>.</td>
+<td><code>DataFrame</code>, <code>SqlTable</code>, and <code>PolarsTable</code> also have the alias <code>summarize()</code>, which the interface does not declare. Returns one row per group: the keys, then one column per entry. Each entry is a closure given the group’s table or an expression of size 1. The result drops the last grouping level, and a rowwise table keeps its id columns. The optional second argument is dplyr’s <code>.groups</code>: <code>'drop_last'</code> (the default), <code>'drop'</code>, <code>'keep'</code>, or <code>'rowwise'</code>.</td>
 </tr>
 <tr class="even">
 <td><code>distinct($names)</code></td>
