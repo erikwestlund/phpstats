@@ -2,15 +2,16 @@
 # The steps that put a fresh checkout of the site into service. Forge runs this
 # inside the new release directory, so its deploy script is one line:
 #
-#   scripts/deploy
+#   PHP=$FORGE_PHP scripts/deploy
 #
-# PHP is whatever `php` is on the PATH, or $PHP.
+# PHP is whatever `php` is on the PATH, or $PHP, and Composer runs under it too,
+# since a server's default PHP can be older than the site's.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 PHP="${PHP:-php}"
 
-composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+"$PHP" "$(command -v composer)" install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 npm ci
 npm run build
 
