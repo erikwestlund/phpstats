@@ -155,6 +155,11 @@
                     "level": 2
                 },
                 {
+                    "id": "optional-formats",
+                    "text": "Optional formats",
+                    "level": 3
+                },
+                {
                     "id": "threads-under-php-fpm",
                     "text": "Threads under PHP-FPM",
                     "level": 2
@@ -214,6 +219,11 @@
                 {
                     "id": "checking-the-installation",
                     "text": "Checking the installation",
+                    "level": 2
+                },
+                {
+                    "id": "a-starter-script",
+                    "text": "A starter script",
                     "level": 2
                 },
                 {
@@ -371,22 +381,22 @@
                     "level": 2
                 },
                 {
-                    "id": "phpolarsdataframe",
+                    "id": "dataframe",
                     "text": "Phpolars\\DataFrame",
                     "level": 3
                 },
                 {
-                    "id": "phpolarslazyframe",
+                    "id": "lazyframe",
                     "text": "Phpolars\\LazyFrame",
                     "level": 3
                 },
                 {
-                    "id": "phpolarsgroupby",
+                    "id": "groupby",
                     "text": "Phpolars\\GroupBy",
                     "level": 3
                 },
                 {
-                    "id": "phpolarslazygroupby",
+                    "id": "lazygroupby",
                     "text": "Phpolars\\LazyGroupBy",
                     "level": 3
                 }
@@ -396,6 +406,11 @@
         "reference/expressions": {
             "title": "Expressions",
             "headings": [
+                {
+                    "id": "method-index",
+                    "text": "Method index",
+                    "level": 2
+                },
                 {
                     "id": "missing-values",
                     "text": "Missing values",
@@ -437,57 +452,57 @@
                     "level": 2
                 },
                 {
-                    "id": "phpolarsexpr",
+                    "id": "expr",
                     "text": "Phpolars\\Expr",
                     "level": 3
                 },
                 {
-                    "id": "phpolarswhen",
+                    "id": "when",
                     "text": "Phpolars\\When",
                     "level": 3
                 },
                 {
-                    "id": "phpolarsthen",
+                    "id": "then",
                     "text": "Phpolars\\Then",
                     "level": 3
                 },
                 {
-                    "id": "phpolarsstrnamespace",
+                    "id": "str",
                     "text": "Phpolars\\StrNameSpace",
                     "level": 3
                 },
                 {
-                    "id": "phpolarsdtnamespace",
+                    "id": "dt",
                     "text": "Phpolars\\DtNameSpace",
                     "level": 3
                 },
                 {
-                    "id": "phpolarslistnamespace",
+                    "id": "list",
                     "text": "Phpolars\\ListNameSpace",
                     "level": 3
                 },
                 {
-                    "id": "phpolarsstructnamespace",
+                    "id": "struct",
                     "text": "Phpolars\\StructNameSpace",
                     "level": 3
                 },
                 {
-                    "id": "phpolarsnamenamespace",
+                    "id": "name",
                     "text": "Phpolars\\NameNameSpace",
                     "level": 3
                 },
                 {
-                    "id": "phpolarscatnamespace",
+                    "id": "cat",
                     "text": "Phpolars\\CatNameSpace",
                     "level": 3
                 },
                 {
-                    "id": "phpolarsarraynamespace",
+                    "id": "arr",
                     "text": "Phpolars\\ArrayNameSpace",
                     "level": 3
                 },
                 {
-                    "id": "phpolarsbinarynamespace",
+                    "id": "bin",
                     "text": "Phpolars\\BinaryNameSpace",
                     "level": 3
                 }
@@ -514,7 +529,7 @@
                     "level": 2
                 },
                 {
-                    "id": "phpolarsseries",
+                    "id": "series",
                     "text": "Phpolars\\Series",
                     "level": 3
                 }
