@@ -22,13 +22,12 @@
     ]);
 @endphp
 @if ($groups !== [] && $compact)
-    {{-- The label column is as wide as its longest label, so a value starts just after it and wraps under itself. --}}
-    <dl {{ $attributes->merge(['class' => 'grid gap-y-1 text-sm leading-6 sm:grid-cols-[max-content_minmax(0,1fr)] sm:gap-x-4']) }}>
+    {{-- Each row runs in after its label, so no column leaves a gap. --}}
+    <div {{ $attributes->merge(['class' => 'space-y-1 text-[0.9375rem] leading-7 text-zinc-700 dark:text-zinc-300']) }}>
         @foreach ($groups as $label => $items)
-            <dt @class(['font-medium text-zinc-900 dark:text-zinc-100', 'mt-1 sm:mt-0' => ! $loop->first])>{{ $label }}</dt>
-            <dd class="text-zinc-600 dark:text-zinc-400">{{ implode(', ', $items) }}</dd>
+            <p><span class="mr-1.5 text-sm font-medium text-zinc-500 dark:text-zinc-400">{{ $label }}</span> {{ implode(', ', $items) }}</p>
         @endforeach
-    </dl>
+    </div>
 @elseif ($groups !== [])
     <dl {{ $attributes->merge(['class' => 'text-sm']) }}>
         @foreach ($groups as $label => $items)

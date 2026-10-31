@@ -144,14 +144,15 @@ class RootPagesTest extends TestCase
         }
     }
 
-    public function test_installation_gives_a_version_check_as_an_example_and_leaves_optional_features_to_the_guides(): void
+    public function test_installation_describes_the_version_check_and_leaves_optional_features_to_the_guides(): void
     {
         $text = preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(
             $this->get('http://phpstats.test/installation')->assertOk()->content(),
         )));
 
-        $phit = Package::find('phit');
-        $this->assertStringContainsString('Prints the installed version, such as '.$phit->verify()['output'], $text);
+        // No promised version number: the check prints whichever is installed.
+        $this->assertStringContainsString('Prints the installed version.', $text);
+        $this->assertStringNotContainsString(Package::find('phit')->verify()['output'], $text);
         $this->assertStringContainsString('phit installation guide', $text);
 
         $this->assertStringNotContainsString('Optional', $text);
@@ -177,9 +178,8 @@ class RootPagesTest extends TestCase
             $this->assertStringContainsString('id="'.$package->key.'"', $html, $package->key);
             $this->assertStringContainsString('href="#'.$package->key.'"', $nav[0], $package->key);
         }
-        foreach (['PHP libraries', 'Extensions', 'Notebooks'] as $group) {
-            $this->assertStringContainsString(">{$group}</p>", $nav[0]);
-        }
+        // Requirements and the seven packages, with no category headings.
+        $this->assertStringNotContainsString('</p>', $nav[0]);
         $this->assertStringContainsString('On this page', $html);
     }
 

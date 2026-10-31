@@ -2,21 +2,14 @@
 title: Installation
 description: The commands that install each PHPstats package, what each one requires, and how to check the install.
 sidebar:
-  - title: Installation
-    items:
+  - items:
       - { id: requirements, label: Requirements }
-  - title: PHP libraries
-    items:
       - { id: phibble, label: phibble, mono: true }
       - { id: phplyr, label: phplyr, mono: true }
       - { id: phiz, label: phiz, mono: true }
       - { id: cmdstanphp, label: CmdStanPHP, mono: true }
-  - title: Extensions
-    items:
       - { id: phit, label: phit, mono: true }
       - { id: phpolars, label: phpolars, mono: true }
-  - title: Notebooks
-    items:
       - { id: juphyter, label: juphyter, mono: true }
 ---
 

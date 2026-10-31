@@ -129,6 +129,24 @@ pre,
 .docs-content code span.co, .docs-content code span.do, .docs-content code span.an, .docs-content code span.cv, .docs-content code span.in { color: #8582a8; font-style: italic; }
 .docs-content code span.er, .docs-content code span.al { color: #ff8a8a; font-weight: 600; }
 
+/* Shell commands in a pale panel, as on the Installation page: dark code on a
+   light ground, with highlighting kept quiet. */
+.code-panel {
+    color: var(--color-zinc-800);
+}
+.code-panel .hl-keyword { color: var(--color-php-700); }
+.code-panel .hl-value { color: #3f6b2a; }
+.code-panel .hl-variable, .code-panel .hl-property { color: var(--color-zinc-700); }
+.code-panel .hl-operator, .code-panel .hl-comment { color: var(--color-zinc-500); }
+.dark .code-panel {
+    color-scheme: dark;
+    color: var(--color-zinc-200);
+}
+.dark .code-panel .hl-keyword { color: var(--color-php-300); }
+.dark .code-panel .hl-value { color: #b7d59c; }
+.dark .code-panel .hl-variable, .dark .code-panel .hl-property { color: var(--color-zinc-300); }
+.dark .code-panel .hl-operator, .dark .code-panel .hl-comment { color: var(--color-zinc-400); }
+
 /* Docs synced from the packages' rendered Quarto pages. */
 .docs-content pre,
 .docs-content div.sourceCode {
