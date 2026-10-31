@@ -1032,6 +1032,11 @@
                     "level": 2
                 },
                 {
+                    "id": "building-from-source",
+                    "text": "Building from source",
+                    "level": 2
+                },
+                {
                     "id": "prebuilt-linux-binaries",
                     "text": "Prebuilt Linux binaries",
                     "level": 2

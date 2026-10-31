@@ -35,8 +35,9 @@ All packages are published on Packagist.
 phit and phpolars are PHP extensions written in Rust. They run on
 non-thread-safe (NTS) builds of PHP on Linux and macOS. PIE downloads or
 builds the extension for the PHP binary that runs it and enables it in that
-binary's `php.ini`. On Linux, PIE installs a prebuilt phpolars binary for
-x86_64 and arm64 with glibc. PIE builds phit, and phpolars on macOS, from
+binary's `php.ini`. On Linux with glibc, on x86_64 or arm64, PIE installs a
+prebuilt binary of either extension and needs `unzip` or PHP's zip extension
+to unpack it. On macOS and other platforms it builds the extension from
 source.
 
 PHP-FPM can read a different `php.ini` from the command line. After
