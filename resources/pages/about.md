@@ -5,9 +5,8 @@ description: PHPstats is a set of open-source PHP packages for data frames, data
 
 PHPstats is a set of open-source PHP packages for data analysis: data frames,
 data transformation, statistical models, Bayesian inference, charts, and
-notebooks. Each package can be installed and used on its own. The packages
-that work with tables accept phibble's data frame, so they can also be
-combined in one analysis.
+notebooks. Each package can be installed and used on its own. They are
+designed to work well together.
 
 ## Packages
 
@@ -15,17 +14,16 @@ combined in one analysis.
 
 ## Design
 
-The packages borrow conventions from R's data-analysis and statistics
-packages, from Polars, and from Stan, so that people who know those tools can
-read and write PHPstats code. phibble's data frame and its readers follow
-tibble and readr. phplyr keeps the function names and arguments of dplyr and
-tidyr. phiz builds charts with ggplot2's grammar of graphics. phit specifies
-models with R's formula syntax. phpolars follows the API of Polars' Python
-library and runs queries on the Polars engine. CmdStanPHP's API is patterned
-after CmdStanR, and it fits models with CmdStan.
+PHPstats is modeled primarily on the tidyverse, with additional influences
+from R's statistical packages, Polars, and Stan.
 
-These projects are influences. The packages are not drop-in replacements for
-them, and each package's documentation notes where its behavior differs.
+- <strong class="font-mono">phibble:</strong> tibble, readr, and forcats.
+- <strong class="font-mono">phplyr:</strong> dplyr, tidyr, and janitor.
+- <strong class="font-mono">phiz:</strong> ggplot2.
+- <strong class="font-mono">phit:</strong> R's stats and lme4.
+- <strong class="font-mono">phpolars:</strong> Polars and its Python API.
+- <strong class="font-mono">CmdStanPHP:</strong> a port of CmdStanR.
+- <strong class="font-mono">juphyter:</strong> IRkernel and Quarto's notebook workflows.
 
 ## Source and license
 

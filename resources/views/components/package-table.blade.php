@@ -6,7 +6,7 @@
         'phpolars' => 'Polars data frames and lazy queries, as a PHP extension.',
         'phit' => 'Regression, mixed models, probability distributions, and descriptive statistics.',
         'phiz' => 'Charts built with a grammar of graphics and rendered with Vega-Lite.',
-        'cmdstanphp' => 'Bayesian models written in Stan and fit with CmdStan.',
+        'cmdstanphp' => 'A port of CmdStanR, for Bayesian models written in Stan.',
         'juphyter' => 'A PHP kernel for Jupyter notebooks and Quarto documents.',
     ];
 @endphp
