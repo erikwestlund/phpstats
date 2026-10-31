@@ -126,7 +126,7 @@ class SeoTest extends TestCase
         $pages = [
             // The landing page and the Markdown pages: the site's own copy.
             'http://phpstats.test/' => 'A family of PHP libraries for data frames, pipelines, charts, and statistical models, run inside the application that holds the data.',
-            'http://phpstats.test/about' => 'PHPstats is a family of open-source PHP packages for data frames, pipelines, statistical models, and charts. Every package is on Packagist.',
+            'http://phpstats.test/about' => 'PHPstats is a set of open-source PHP packages for data frames, data transformation, statistical models, Bayesian inference, charts, and notebooks.',
             // A package overview: its tagline.
             'http://phit.phpstats.test/' => 'Regression, mixed models and probability distributions for PHP.',
             // Docs and the other sections: the page title, then the tagline.

@@ -17,7 +17,7 @@
             @if (! empty($meta['lead']))
                 <p class="mt-4 text-xl leading-8 text-zinc-600 dark:text-zinc-300">{{ $meta['lead'] }}</p>
             @endif
-            <div class="prose prose-zinc prose-php mt-10 max-w-none dark:prose-invert prose-headings:tracking-tight prose-h2:mt-12">
+            <div class="prose prose-zinc prose-php mt-10 max-w-none dark:prose-invert prose-headings:tracking-tight prose-h2:mt-10">
                 {!! $html !!}
             </div>
         </article>
