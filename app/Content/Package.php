@@ -161,12 +161,14 @@ class Package
         return $this->site['platforms'] ?? [];
     }
 
-    /** @return array{command: string, output: ?string}|null a command that checks the install */
+    /** @return array{command: string, output: ?string, note: ?string}|null a command that checks the install, and a note such as how PHP-FPM differs */
     public function verify(): ?array
     {
         $verify = $this->site['verify'] ?? null;
 
-        return isset($verify['command']) ? ['command' => (string) $verify['command'], 'output' => $verify['output'] ?? null] : null;
+        return isset($verify['command'])
+            ? ['command' => (string) $verify['command'], 'output' => $verify['output'] ?? null, 'note' => $verify['note'] ?? null]
+            : null;
     }
 
     /** The URL of the package's getting-started docs page, when it names one that was synced. */

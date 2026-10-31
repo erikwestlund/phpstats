@@ -19,6 +19,7 @@
         @if ($verify)
             <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
                 Check the install with <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['command'] }}</code>@if ($verify['output']), which prints <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['output'] }}</code>@endif.
+                {{ $verify['note'] }}
             </p>
         @endif
         @if ($quickstart)
