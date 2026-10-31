@@ -78,6 +78,7 @@ Route::domain($paths ? null : config('phpstats.root_host'))->group(function () u
         return redirect()->away(Package::find($owner)->url('vignette', ['slug' => $slug]), 301);
     });
     Route::get('/benchmarks', fn () => redirect()->away(Package::find('phit')->url('benchmarks'), 301));
+    Route::get('/get-started', fn () => redirect()->to(route('page', 'installation'), 301));
 
     // Markdown pages in resources/pages, such as /about from about.md.
     Route::get('/{page}', function (string $page) {

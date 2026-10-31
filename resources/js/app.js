@@ -73,10 +73,16 @@ Alpine.data('tocSpy', () => ({
             .map((link) => document.getElementById(link.dataset.toc))
             .filter(Boolean);
         const update = () => {
-            const passed = headings.filter((heading) => heading.getBoundingClientRect().top < 120);
+            // At the bottom of the page the last sections cannot scroll up to
+            // the line, so the last one counts as reached.
+            const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+            const passed = bottom ? headings : headings.filter((heading) => heading.getBoundingClientRect().top < 120);
             this.active = (passed.at(-1) ?? headings[0])?.id ?? null;
         };
         window.addEventListener('scroll', update, { passive: true });
+        // A jump to a #fragment can land after init, without a scroll event.
+        window.addEventListener('load', update);
+        window.addEventListener('hashchange', update);
         update();
     },
 }));

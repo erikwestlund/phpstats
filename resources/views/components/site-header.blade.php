@@ -3,7 +3,7 @@
     // The root host's own pages. A Markdown page is matched on its {page}
     // parameter, so About is not marked current on another Markdown page.
     $pages = [
-        ['label' => 'Get started', 'url' => route('page', 'get-started'), 'current' => request()->route('page') === 'get-started'],
+        ['label' => 'Installation', 'url' => route('page', 'installation'), 'current' => request()->route('page') === 'installation'],
         ['label' => 'Examples', 'url' => route('vignettes'), 'current' => request()->routeIs('vignettes')],
         ['label' => 'About PHPstats', 'url' => route('page', 'about'), 'current' => request()->route('page') === 'about'],
     ];

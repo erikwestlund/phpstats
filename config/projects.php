@@ -129,6 +129,8 @@ return [
     ],
     'cmdstanphp' => [
         'name' => 'CmdStanPHP',
+        // CmdStanPHP's build tools compile Stan models, not the package.
+        'build_label' => 'To compile models',
         'from_r' => 'cmdstanr',
         'summary' => 'Bayesian models in Stan, with an API patterned after CmdStanR.',
         'status' => 'working',

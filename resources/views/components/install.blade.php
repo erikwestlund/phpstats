@@ -1,43 +1,39 @@
 {{--
-    One package on Get started, all from its synced site.json: its name linked
-    to its pages, the commands that install it, its requirements, the command
-    that checks the install, and its installation guide and getting-started
-    page. An output that is a version number is shown as an example, because
-    the command prints whichever version is installed.
+    One package on the Installation page, all from its synced site.json: its
+    name, the commands that install it, its essential requirements, the command
+    that checks the install, and one link to its installation guide. An output
+    that is a version number is shown as an example, because the command
+    prints whichever version is installed.
 --}}
 @props(['package'])
 @php
     $package = \App\Content\Package::find($package);
     $verify = $package->verify();
-    $quickstart = $package->quickstart();
-    $installation = $package->installation();
+    $guide = $package->installation();
     $versioned = $verify && preg_match('/^\d+\.\d+(\.\d+)?$/', trim((string) $verify['output']));
+    $code = 'font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200';
 @endphp
-<section id="{{ $package->key }}" class="not-prose mt-10 scroll-mt-20 first-of-type:mt-6">
-    <h4 class="font-mono text-sm font-semibold">
-        <a href="{{ $package->url() }}" class="text-php-700 hover:text-php-800 dark:text-php-300 dark:hover:text-php-200">{{ $package->name() }}</a>
-    </h4>
+<section id="{{ $package->key }}" class="not-prose mt-12 border-t border-zinc-200 pt-12 dark:border-white/10">
+    <h2 class="font-mono text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $package->name() }}</h2>
     @if ($package->install() !== [])
-        <x-code class="mt-2" lang="sh" :code="implode(PHP_EOL, $package->install())" />
-        <x-requirements class="mt-3" :package="$package" compact />
+        <x-code class="mt-4" lang="sh" :code="implode(PHP_EOL, $package->install())" />
+        <x-requirements class="mt-4" :package="$package" compact />
         @if ($verify)
-            <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-                Check the install with <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['command'] }}</code>@if ($versioned), which prints the installed version, for example <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['output'] }}</code>@elseif ($verify['output']), which prints <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['output'] }}</code>@endif{{ preg_match('/[.!?]$/', trim((string) $verify['output'])) ? '' : '.' }}
+            <p class="mt-4 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                <code class="{{ $code }}">{{ $verify['command'] }}</code>
+                @if ($versioned)
+                    prints the installed version, such as <code class="{{ $code }}">{{ $verify['output'] }}</code>.
+                @elseif ($verify['output'])
+                    prints <code class="{{ $code }}">{{ $verify['output'] }}</code>@if (! preg_match('/[.!?]$/', trim((string) $verify['output']))).@endif
+                @endif
                 {{ $verify['note'] }}
             </p>
         @endif
-        @if ($installation || $quickstart)
-            <p class="mt-2 flex flex-wrap gap-x-4 text-sm">
-                @if ($installation && $installation !== $quickstart)
-                    <a href="{{ $installation }}" class="font-medium text-php-700 hover:text-php-800 dark:text-php-300 dark:hover:text-php-200">Installation guide</a>
-                @endif
-                @if ($quickstart)
-                    <a href="{{ $quickstart }}" class="font-medium text-php-700 hover:text-php-800 dark:text-php-300 dark:hover:text-php-200">Getting started with {{ $package->name() }}</a>
-                @endif
-            </p>
+        @if ($guide)
+            <p class="mt-4 text-sm"><a href="{{ $guide }}" class="font-medium text-php-700 underline decoration-php-300 underline-offset-4 hover:text-php-800 dark:text-php-300 dark:decoration-php-700 dark:hover:text-php-200"><span class="font-mono">{{ $package->name() }}</span> installation guide</a></p>
         @endif
     @elseif ($package->repository())
-        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+        <p class="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
             The install steps are in the <a href="{{ $package->repository() }}" class="font-medium text-php-700 hover:text-php-800 dark:text-php-300 dark:hover:text-php-200">repository</a>.
         </p>
     @endif

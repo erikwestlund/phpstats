@@ -27,18 +27,22 @@ class RootPagesTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_get_started_renders_on_the_root_host(): void
+    public function test_installation_renders_on_the_root_host(): void
     {
-        $html = $this->get('http://phpstats.test/get-started')->assertOk()->content();
+        $html = $this->get('http://phpstats.test/installation')->assertOk()->content();
 
         // Collapsed, because CommonMark keeps the source's line breaks inside
         // a paragraph and the copy is wrapped.
         $text = $this->collapse(html_entity_decode(strip_tags($html)));
 
-        $this->assertStringContainsString('Get started', $text);
+        $this->assertStringContainsString('Installation', $text);
         $this->assertStringContainsString('Every package supports PHP 8.3, 8.4, and 8.5.', $text);
         // Libraries install with Composer and the extensions with PIE.
-        $this->assertStringContainsString('All packages are published on Packagist.', $text);
+        $this->assertStringContainsString('Composer installs the PHP libraries from Packagist.', $text);
+        // Syntax guidance belongs to the usage docs. The menus' taglines can
+        // mention the pipe, so only the article is checked.
+        preg_match('#<article.*?</article>#s', $html, $article);
+        $this->assertStringNotContainsString('pipe operator', strip_tags($article[0]));
         $this->assertStringContainsString('composer require phpstats/phplyr', $text);
         $this->assertStringContainsString('pie install phpstats/phit', $text);
         $this->assertStringNotContainsString('dev-main', $text);
@@ -94,7 +98,7 @@ class RootPagesTest extends TestCase
     public function test_the_catch_all_still_serves_markdown_pages_and_not_the_vignette_index(): void
     {
         $this->get('http://phpstats.test/about')->assertOk()->assertSee('About PHPstats');
-        $this->get('http://phpstats.test/get-started')->assertOk()->assertSee('Get started');
+        $this->get('http://phpstats.test/installation')->assertOk()->assertSee('Installation');
 
         // /vignettes is a route of its own, not a Markdown page.
         $this->assertFileDoesNotExist(resource_path('pages/vignettes.md'));
@@ -105,7 +109,8 @@ class RootPagesTest extends TestCase
     {
         $this->enterPathMode();
 
-        $this->get('http://preview.test/get-started')->assertOk()->assertSee('Composer installs the PHP libraries');
+        $this->get('http://preview.test/installation')->assertOk()->assertSee('installs the PHP libraries from Packagist.');
+        $this->get('http://preview.test/get-started')->assertStatus(301)->assertRedirect('http://preview.test/installation');
         $response = $this->get('http://preview.test/vignettes')->assertOk()->assertSee('Every example on the site');
 
         // Vignette links point into /{package} on the host the request came in on.
@@ -113,10 +118,10 @@ class RootPagesTest extends TestCase
         $this->assertStringNotContainsString('phit.phpstats.test', $response->content());
     }
 
-    public function test_get_started_has_an_install_command_and_the_requirements_for_every_package(): void
+    public function test_installation_has_an_install_command_and_the_requirements_for_every_package(): void
     {
         $text = preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(
-            $this->get('http://phpstats.test/get-started')->assertOk()->content(),
+            $this->get('http://phpstats.test/installation')->assertOk()->content(),
         )));
 
         foreach (Package::all() as $package) {
@@ -133,32 +138,65 @@ class RootPagesTest extends TestCase
                 $package->key,
             );
 
-            foreach ([...$package->requires(), ...array_column($package->optional(), 'name')] as $requirement) {
+            foreach ([...$package->requires(), ...$package->build()] as $requirement) {
                 $this->assertStringContainsString(preg_replace('/\s+/', ' ', $requirement), $text, $package->key.' requirement');
             }
         }
     }
 
-    public function test_get_started_gives_a_version_check_as_an_example_and_names_optional_features_only(): void
+    public function test_installation_gives_a_version_check_as_an_example_and_leaves_optional_features_to_the_guides(): void
     {
         $text = preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(
-            $this->get('http://phpstats.test/get-started')->assertOk()->content(),
+            $this->get('http://phpstats.test/installation')->assertOk()->content(),
         )));
 
         $phit = Package::find('phit');
-        $this->assertStringContainsString('prints the installed version, for example '.$phit->verify()['output'], $text);
-        $this->assertStringContainsString('Supported platforms', $text);
+        $this->assertStringContainsString('prints the installed version, such as '.$phit->verify()['output'], $text);
+        $this->assertStringContainsString('phit installation guide', $text);
 
-        $detailed = array_filter(Package::find('phplyr')->optional(), fn (array $item) => $item['for'] !== null && $item['for'] !== '');
-        $this->assertNotSame([], $detailed);
-        foreach ($detailed as $item) {
-            $this->assertStringNotContainsString("({$item['for']})", $text);
+        $this->assertStringNotContainsString('Optional', $text);
+        $this->assertStringNotContainsString('Supported platforms', $text);
+        foreach (Package::find('phplyr')->optional() as $item) {
+            $this->assertStringNotContainsString($item['for'], $text);
         }
+    }
+
+    public function test_get_started_redirects_to_installation(): void
+    {
+        $this->get('http://phpstats.test/get-started')->assertStatus(301)->assertRedirect('http://phpstats.test/installation');
+    }
+
+    public function test_installation_has_a_section_and_a_sidebar_link_for_every_package(): void
+    {
+        $html = $this->get('http://phpstats.test/installation')->assertOk()->content();
+        $this->assertSame(1, preg_match('#<nav aria-label="Sections".*?</nav>#s', $html, $nav));
+
+        $this->assertStringContainsString('href="#requirements"', $nav[0]);
+        $this->assertStringContainsString('id="requirements"', $html);
+        foreach (Package::all() as $package) {
+            $this->assertStringContainsString('id="'.$package->key.'"', $html, $package->key);
+            $this->assertStringContainsString('href="#'.$package->key.'"', $nav[0], $package->key);
+        }
+        foreach (['PHP libraries', 'Extensions', 'Notebooks'] as $group) {
+            $this->assertStringContainsString(">{$group}</p>", $nav[0]);
+        }
+        $this->assertStringContainsString('On this page', $html);
+    }
+
+    public function test_cmdstanphp_lists_cmdstan_as_required_and_its_compilers_apart(): void
+    {
+        $text = $this->collapse(html_entity_decode(strip_tags(
+            $this->get('http://phpstats.test/installation')->assertOk()->content(),
+        )));
+
+        $this->assertStringContainsString('CmdStan 2.37 or later', $text);
+        $this->assertStringContainsString('To compile models', $text);
+        $this->assertStringContainsString('To build from source', $text);
     }
 
     public function test_package_names_are_monospace_on_both_root_pages(): void
     {
-        foreach (['http://phpstats.test/get-started', 'http://phpstats.test/vignettes'] as $url) {
+        foreach (['http://phpstats.test/installation', 'http://phpstats.test/vignettes'] as $url) {
             $html = $this->get($url)->assertOk()->content();
 
             foreach (Package::all() as $package) {
@@ -176,14 +214,14 @@ class RootPagesTest extends TestCase
     {
         // The bar carries all three links, in the bar itself and in the row
         // that replaces it on small screens.
-        foreach (['Get started', 'Examples', 'About PHPstats'] as $label) {
+        foreach (['Installation', 'Examples', 'About PHPstats'] as $label) {
             $this->assertSame(2, substr_count($this->bar($this->get('http://phpstats.test/about')->content()), ">{$label}</a>"), $label);
         }
 
         // Exactly the current page is marked, in both rows, and only there.
         $pages = [
             'http://phpstats.test/about' => 'About PHPstats',
-            'http://phpstats.test/get-started' => 'Get started',
+            'http://phpstats.test/installation' => 'Installation',
             'http://phpstats.test/vignettes' => 'Examples',
         ];
 
@@ -208,7 +246,7 @@ class RootPagesTest extends TestCase
 
     public function test_the_new_pages_carry_a_description_and_a_canonical_url_and_are_in_the_sitemap(): void
     {
-        foreach (['http://phpstats.test/get-started', 'http://phpstats.test/vignettes', 'http://phpstats.test/csv-options'] as $url) {
+        foreach (['http://phpstats.test/installation', 'http://phpstats.test/vignettes', 'http://phpstats.test/csv-options'] as $url) {
             $html = $this->get($url)->assertOk()->content();
 
             $this->assertStringContainsString('<link rel="canonical" href="'.$url.'">', $html);
@@ -216,7 +254,8 @@ class RootPagesTest extends TestCase
         }
 
         $sitemap = $this->get('http://phpstats.test/sitemap.xml')->assertOk()->content();
-        $this->assertStringContainsString('<loc>http://phpstats.test/get-started</loc>', $sitemap);
+        $this->assertStringContainsString('<loc>http://phpstats.test/installation</loc>', $sitemap);
+        $this->assertStringNotContainsString('<loc>http://phpstats.test/get-started</loc>', $sitemap);
         $this->assertStringContainsString('<loc>http://phpstats.test/vignettes</loc>', $sitemap);
         $this->assertStringContainsString('<loc>http://phpstats.test/csv-options</loc>', $sitemap);
     }

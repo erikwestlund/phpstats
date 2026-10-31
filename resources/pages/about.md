@@ -25,7 +25,7 @@ Each package can also be used on its own.
 
 Every package is published on Packagist. The PHP libraries install with
 Composer. phit and phpolars are PHP extensions written in Rust and install
-with [PIE](https://github.com/php/pie). [Get started](/get-started) lists the
+with [PIE](https://github.com/php/pie). [Installation](/installation) lists the
 install command and requirements for each package.
 
 ## Design

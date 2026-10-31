@@ -54,8 +54,7 @@ its own menu:
   destination: CommonMark percent-encodes the destination, so
   `[text]({{ route('page', 'about') }})` renders a broken href. Write the
   literal path, `/about`, which is the same on the landing host in host mode
-  and in path mode. A loop belongs in a component, as `<x-install-steps />`
-  holds the one over `Package::all()`.
+  and in path mode. A loop belongs in a component, not in the page.
 - Never write the bare noun "frame" or "frames" in site prose. Write "data
   frame", "data frames", or "table", and `DataFrame` where the class is
   meant. The rule is about prose only: `$frame` variables, the

@@ -155,6 +155,12 @@ class Package
         return $this->site['build'] ?? [];
     }
 
+    /** What build() is needed for: building from source, unless the package's config says otherwise. */
+    public function buildLabel(): string
+    {
+        return $this->project['build_label'] ?? 'To build from source';
+    }
+
     /** @return list<string> */
     public function platforms(): array
     {
