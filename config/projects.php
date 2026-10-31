@@ -31,8 +31,8 @@ return [
         'repo' => 'https://github.com/phpstats/phit-polyfill',
         'docs' => null,
         'overview' => [
-            'phit-polyfill implements the phit extension\'s functions in plain PHP, in the Phit namespace with the same names, parameters, and results. It is for hosts that cannot install extensions.',
-            'It defines its functions only when the extension is not loaded, so the same code runs with or without the extension. The CSV reader is in the extension only.',
+            'phit-polyfill implements the phit extension\'s functions in plain PHP, in the Phit namespace with the same names, parameters, and results, except the CSV reader, which needs the extension. It is for hosts that cannot install extensions.',
+            'It defines its functions only when the extension is not loaded, so the same code runs with or without the extension.',
             'In the recorded benchmarks, regression fits take 9 to 23 times as long as with the extension, and mixed models 13 to 78 times as long. The polyfill needs OPcache\'s JIT disabled.',
         ],
     ],
