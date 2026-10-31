@@ -129,3 +129,27 @@ links or anchors. Not run: `pie install` on macOS; apt line on a host;
 frozen notebooks. A recorded benchmark JSON keeps a /Users path as evidence.
 The first push (b6ba8b8) failed the site sync on the default `data/`
 exclusion; 10e856c declares an empty exclude list and lists every page.
+
+### juphyter (d92f6b8, reported by juphyter-4f; first content pin)
+
+Site URL `juphyter.phpstats.org/docs/<path>`. All pages released 0.1.0.
+
+| Path | Reader and purpose | Disposition | Problems found | Verified by |
+|---|---|---|---|---|
+| index | PHP developer new to Jupyter or Quarto | Rewritten | Stale `composer require --dev`; pipe-only example; self-verification line | Cells executed; both tabs on phplyr 0.4.2, phibble 0.5 |
+| install | Requirements, install, check | Rewritten | Wrong extensions; VCS and "not on Packagist"; stale doctor output; interpreter material mixed in; PHAR offered with none published | Full path on macOS (isolated HOME, PHP 8.5.10, Python 3.14) and Debian 13 (PHP 8.3.35, Python 3.13) from Packagist; real output quoted |
+| get-started | First cell, state, imports, errors, restart | Rewritten | Project install first; filler; odd sample data | Cells executed |
+| quarto | Front matter, cells, formats, daemon, freeze | Edited | Personal path; no tested version; contributor detail | Executed; Quarto 1.10.18 |
+| jupyter | Kernel selection, completion, tables, plots | Edited | `vendor/bin` line; undated Vega-Lite claim | Claim dated 2026-10-19, phiz 0.3, Vega-Lite 5.6.1; not rerun |
+| python (new) | Interpreter resolution, editors, venv | New | Personal paths | Source |
+| limitations | Limits and remedies | Edited | Wrong Windows reason; missing remedies | Source |
+| development (new) | Contributors | New | — | pest, lint, pytest |
+| README | GitHub | Rewritten | VCS family install; duplicated troubleshooting | Same commands as install |
+
+Required extensions per source: mbstring and tokenizer. pcntl is optional
+(stop button). posix and sockets are unused. Checks: pest 762 passed, 15
+skipped; pytest Protocol 23 and Quarto 25 passed; render executed then frozen
+with no diff; CI green on d92f6b8; DocsImporter dry run 8 pages. Not run:
+WSL; Python 3.10 and older; Vega-Lite claim on phiz 0.5. The site's tests now
+treat juphyter as synced, and ProseTest allows "stack frame" on its
+limitations page.

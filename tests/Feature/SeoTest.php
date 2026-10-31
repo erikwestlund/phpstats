@@ -69,12 +69,11 @@ class SeoTest extends TestCase
             );
         }
 
-        // Every library package's docs are synced since task 10, so each is
-        // listed. juphyter has none, and its /docs is not a page.
-        $this->assertTrue(Package::find('phibble')->hasDocs());
-        $this->assertContains('http://phibble.phpstats.test/docs', $urls);
-        $this->assertFalse(Package::find('juphyter')->hasDocs());
-        $this->assertNotContains('http://juphyter.phpstats.test/docs', $urls);
+        // Every package's docs are synced, so each docs index is listed.
+        foreach (Package::all() as $key => $package) {
+            $this->assertTrue($package->hasDocs(), $key);
+            $this->assertContains("http://{$key}.phpstats.test/docs", $urls);
+        }
 
         // The sections the package bar hides when a package has none of them.
         foreach (Package::all() as $key => $package) {

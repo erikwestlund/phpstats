@@ -1,0 +1,98 @@
+{
+    "package": "juphyter",
+    "title": "juphyter",
+    "tagline": "A Jupyter and Quarto kernel for PHP.",
+    "summary": [
+        "juphyter runs PHP cells in JupyterLab notebooks and in Quarto documents. It registers a Jupyter kernel, so JupyterLab lists PHP in its launcher and Quarto runs the {php} cells of a .qmd that names the kernel. It corresponds to IRkernel, which runs R in Jupyter.",
+        "One PHP session lasts across cells, including use imports and declared functions and classes. A cell's last value is its output: a phibble data frame appears as an HTML table and a phiz plot as a chart, and tracebacks name the cell and the line. A notebook inside a Composer project can use that project's classes and packages, because the kernel loads the nearest vendor/autoload.php above it."
+    ],
+    "install": [
+        "composer global require phpstats/juphyter",
+        "export PATH=\"$(composer global config bin-dir --absolute):$PATH\"",
+        "juphyter install --create-venv ~/.venvs/juphyter",
+        "export PATH=\"$HOME/.venvs/juphyter/bin:$PATH\"",
+        "juphyter doctor"
+    ],
+    "php": [
+        "8.3",
+        "8.4",
+        "8.5"
+    ],
+    "requires": [
+        "mbstring and tokenizer PHP extensions",
+        "Composer",
+        "Python 3 with the venv module"
+    ],
+    "optional": [
+        {
+            "name": "pcntl PHP extension",
+            "for": "interrupting a running cell with the stop button"
+        },
+        {
+            "name": "Quarto",
+            "for": "rendering .qmd documents"
+        },
+        {
+            "name": "vl-convert",
+            "for": "static phiz plot images in PDF and Word output"
+        },
+        {
+            "name": "phibble, phplyr, and phiz",
+            "for": "data frame tables and charts in notebooks"
+        }
+    ],
+    "build": [],
+    "platforms": [
+        "macOS",
+        "Linux"
+    ],
+    "verify": {
+        "command": "juphyter doctor",
+        "output": "JupyterLab: ready, with php.\nQuarto: ready."
+    },
+    "quickstart": "get-started",
+    "repository": "https://github.com/phpstats/juphyter",
+    "example": {
+        "chain": "$mpg = \\Phibble\\DataFrame::fromRows(\\Phiz\\Datasets::mpg());\n\nphplyr($mpg)\n    ->groupBy('class')\n    ->summarize(models: n(), hwy: mean('hwy'))\n    ->arrange(desc('hwy'))\n    ->get();",
+        "pipe": "$mpg = \\Phibble\\DataFrame::fromRows(\\Phiz\\Datasets::mpg());\n\n$mpg |>\n    group_by('class') |>\n    summarize(models: n(), hwy: mean('hwy')) |>\n    arrange(desc('hwy'));",
+        "output": "# A tibble: 7 × 3\n  class      models   hwy\n  <chr>       <int> <dbl>\n1 compact        47  28.3\n2 subcompact     35  28.1\n3 midsize        41  27.3\n4 2seater         5  24.8\n5 minivan        11  22.4\n6 suv            62  18.1\n7 pickup         33  16.9"
+    },
+    "docs": {
+        "root": "docs",
+        "format": "quarto",
+        "nav": [
+            {
+                "title": "Overview",
+                "path": "index.qmd"
+            },
+            {
+                "title": "Installation",
+                "path": "install.qmd"
+            },
+            {
+                "title": "Getting started",
+                "path": "get-started.qmd"
+            },
+            {
+                "title": "Quarto",
+                "path": "quarto.qmd"
+            },
+            {
+                "title": "JupyterLab",
+                "path": "jupyter.qmd"
+            },
+            {
+                "title": "Python and editors",
+                "path": "python.qmd"
+            },
+            {
+                "title": "Limitations",
+                "path": "limitations.qmd"
+            },
+            {
+                "title": "Contributing",
+                "path": "development.qmd"
+            }
+        ]
+    }
+}

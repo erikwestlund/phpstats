@@ -63,10 +63,10 @@ class PackagePagesTest extends TestCase
     {
         $sections = ['docs', 'vignettes', 'benchmarks', 'verification'];
 
-        // juphyter has no docs, vignettes, benchmarks, or verification yet.
+        // juphyter has docs, but no examples, benchmarks, or verification.
         $juphyter = Package::find('juphyter');
-        $bar = $this->get($juphyter->url())->assertOk();
-        foreach ($sections as $section) {
+        $bar = $this->get($juphyter->url())->assertOk()->assertSee($juphyter->url('docs'), false);
+        foreach (['vignettes', 'benchmarks', 'verification'] as $section) {
             $bar->assertDontSee($juphyter->url($section), false);
         }
 
@@ -135,8 +135,7 @@ class PackagePagesTest extends TestCase
             }
         }
 
-        // juphyter is the only package with no content to install from.
-        $this->assertEqualsCanonicalizing(['phibble', 'phplyr', 'phpolars', 'phit', 'phiz', 'cmdstanphp'], $cards);
+        $this->assertEqualsCanonicalizing(['phibble', 'phplyr', 'phpolars', 'phit', 'phiz', 'cmdstanphp', 'juphyter'], $cards);
     }
 
     public function test_juphyter_is_not_described_as_unfinished(): void
@@ -156,9 +155,11 @@ class PackagePagesTest extends TestCase
         // config is pinned here instead.
         $this->assertSame('Working', $package->status());
 
-        // How it is actually installed, which the overview now carries.
-        $this->assertStringContainsString('vendor/bin/juphyter install', $text);
-        $this->assertStringContainsString('writes the kernelspec', $text);
+        // How it is actually installed, from its own site.json: the global
+        // install, the kernel registration, and the check.
+        $this->assertStringContainsString('composer global require phpstats/juphyter', $text);
+        $this->assertStringContainsString('juphyter install', $text);
+        $this->assertStringContainsString('juphyter doctor', $text);
     }
 
     // Overview content (task 11a): summary lists, pipe-only examples, the
@@ -251,8 +252,11 @@ class PackagePagesTest extends TestCase
 
     public function test_a_package_with_an_empty_aside_has_no_second_column(): void
     {
-        // juphyter has no docs, vignettes, benchmarks, verification, relations,
-        // or synced content, so there is nothing to put beside the overview.
+        // With no synced content, juphyter has no docs, examples, benchmarks,
+        // verification, or relations, so there is nothing to put beside the
+        // overview.
+        config(['phpstats.content_path' => storage_path('framework/testing/no-content')]);
+        Package::flush();
         $package = Package::find('juphyter');
         $this->assertSame([], $package->vignettes());
         $this->assertSame([], $package->relations());

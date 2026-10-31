@@ -117,13 +117,12 @@ class LandingPageTest extends TestCase
             array_keys(config('phpstats.explorer')),
         );
 
-        // Its own page still stands on the overview from config/projects.php,
-        // with no Docs tab, because it syncs no site content yet.
+        // Its own page carries its synced overview and links its docs.
         $this->get($juphyter->url())->assertOk()
             ->assertSee($juphyter->tagline())
             ->assertSee('IRkernel')
-            ->assertSee('has not published its site content yet')
+            ->assertDontSee('has not published its site content yet')
             ->assertSee($juphyter->repository(), false)
-            ->assertDontSee($juphyter->url('docs'), false);
+            ->assertSee($juphyter->url('docs'), false);
     }
 }

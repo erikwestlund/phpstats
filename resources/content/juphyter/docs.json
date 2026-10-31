@@ -1,0 +1,351 @@
+{
+    "nav": [
+        {
+            "title": "Overview",
+            "path": "index"
+        },
+        {
+            "title": "Installation",
+            "path": "install"
+        },
+        {
+            "title": "Getting started",
+            "path": "get-started"
+        },
+        {
+            "title": "Quarto",
+            "path": "quarto"
+        },
+        {
+            "title": "JupyterLab",
+            "path": "jupyter"
+        },
+        {
+            "title": "Python and editors",
+            "path": "python"
+        },
+        {
+            "title": "Limitations",
+            "path": "limitations"
+        },
+        {
+            "title": "Contributing",
+            "path": "development"
+        }
+    ],
+    "pages": {
+        "development": {
+            "title": "Contributing",
+            "headings": [
+                {
+                    "id": "setup",
+                    "text": "Setup",
+                    "level": 2
+                },
+                {
+                    "id": "tests",
+                    "text": "Tests",
+                    "level": 2
+                },
+                {
+                    "id": "documentation",
+                    "text": "Documentation",
+                    "level": 2
+                },
+                {
+                    "id": "the-phar",
+                    "text": "The PHAR",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "get-started": {
+            "title": "Getting started",
+            "headings": [
+                {
+                    "id": "a-first-cell",
+                    "text": "A first cell",
+                    "level": 2
+                },
+                {
+                    "id": "state-between-cells",
+                    "text": "State between cells",
+                    "level": 2
+                },
+                {
+                    "id": "imports",
+                    "text": "Imports",
+                    "level": 2
+                },
+                {
+                    "id": "errors",
+                    "text": "Errors",
+                    "level": 2
+                },
+                {
+                    "id": "rich-output",
+                    "text": "Rich output",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "index": {
+            "title": "juphyter",
+            "headings": [
+                {
+                    "id": "what-a-cell-shows",
+                    "text": "What a cell shows",
+                    "level": 2
+                },
+                {
+                    "id": "what-the-kernel-provides",
+                    "text": "What the kernel provides",
+                    "level": 2
+                },
+                {
+                    "id": "how-it-works",
+                    "text": "How it works",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "install": {
+            "title": "Installation",
+            "headings": [
+                {
+                    "id": "requirements",
+                    "text": "Requirements",
+                    "level": 2
+                },
+                {
+                    "id": "install",
+                    "text": "Install",
+                    "level": 2
+                },
+                {
+                    "id": "keeping-the-path-entries",
+                    "text": "Keeping the PATH entries",
+                    "level": 3
+                },
+                {
+                    "id": "check-the-installation",
+                    "text": "Check the installation",
+                    "level": 2
+                },
+                {
+                    "id": "the-phpstats-packages",
+                    "text": "The phpstats packages",
+                    "level": 2
+                },
+                {
+                    "id": "which-classes-a-notebook-sees",
+                    "text": "Which classes a notebook sees",
+                    "level": 2
+                },
+                {
+                    "id": "installing-into-one-project",
+                    "text": "Installing into one project",
+                    "level": 2
+                },
+                {
+                    "id": "several-php-versions",
+                    "text": "Several PHP versions",
+                    "level": 2
+                },
+                {
+                    "id": "where-the-kernel-is-registered",
+                    "text": "Where the kernel is registered",
+                    "level": 2
+                },
+                {
+                    "id": "options",
+                    "text": "Options",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "jupyter": {
+            "title": "JupyterLab",
+            "headings": [
+                {
+                    "id": "starting-a-notebook",
+                    "text": "Starting a notebook",
+                    "level": 2
+                },
+                {
+                    "id": "running-cells",
+                    "text": "Running cells",
+                    "level": 2
+                },
+                {
+                    "id": "project-classes",
+                    "text": "Project classes",
+                    "level": 2
+                },
+                {
+                    "id": "tables",
+                    "text": "Tables",
+                    "level": 2
+                },
+                {
+                    "id": "plots",
+                    "text": "Plots",
+                    "level": 2
+                },
+                {
+                    "id": "converting-a-notebook",
+                    "text": "Converting a notebook",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "limitations": {
+            "title": "Limitations",
+            "headings": [
+                {
+                    "id": "a-cell-cannot-redeclare-a-class-or-a-function",
+                    "text": "A cell cannot redeclare a class or a function",
+                    "level": 2
+                },
+                {
+                    "id": "a-cell-cannot-declare-a-namespace",
+                    "text": "A cell cannot declare a namespace",
+                    "level": 2
+                },
+                {
+                    "id": "every-cell-runs-under-strict-types",
+                    "text": "Every cell runs under strict types",
+                    "level": 2
+                },
+                {
+                    "id": "references-and-this-do-not-survive-between-cells",
+                    "text": "References and $this do not survive between cells",
+                    "level": 2
+                },
+                {
+                    "id": "a-closure-called-from-another-cell-has-no-line-in-its-traceback",
+                    "text": "A closure called from another cell has no line in its traceback",
+                    "level": 2
+                },
+                {
+                    "id": "a-cell-whose-value-is-null-shows-no-output",
+                    "text": "A cell whose value is null shows no output",
+                    "level": 2
+                },
+                {
+                    "id": "a-cell-that-calls-exit-or-die-ends-the-kernel",
+                    "text": "A cell that calls exit or die ends the kernel",
+                    "level": 2
+                },
+                {
+                    "id": "interrupting-needs-pcntl-and-a-cell-can-still-swallow-it",
+                    "text": "Interrupting needs pcntl, and a cell can still swallow it",
+                    "level": 2
+                },
+                {
+                    "id": "a-data-frames-numbers-in-an-html-table-are-not-pillars",
+                    "text": "A data frame’s numbers in an HTML table are not pillar’s",
+                    "level": 2
+                },
+                {
+                    "id": "macos-and-linux-only",
+                    "text": "macOS and Linux only",
+                    "level": 2
+                },
+                {
+                    "id": "not-yet-implemented",
+                    "text": "Not yet implemented",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "python": {
+            "title": "Python interpreters and editors",
+            "headings": [
+                {
+                    "id": "when-quarto-cannot-find-the-kernel",
+                    "text": "When Quarto cannot find the kernel",
+                    "level": 2
+                },
+                {
+                    "id": "how-quarto-chooses-an-interpreter",
+                    "text": "How Quarto chooses an interpreter",
+                    "level": 2
+                },
+                {
+                    "id": "at-a-terminal",
+                    "text": "At a terminal",
+                    "level": 2
+                },
+                {
+                    "id": "vs-code-and-cursor",
+                    "text": "VS Code and Cursor",
+                    "level": 2
+                },
+                {
+                    "id": "positron",
+                    "text": "Positron",
+                    "level": 2
+                },
+                {
+                    "id": "other-editors",
+                    "text": "Other editors",
+                    "level": 2
+                },
+                {
+                    "id": "when-no-python-can-host-the-kernel",
+                    "text": "When no Python can host the kernel",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "quarto": {
+            "title": "Quarto",
+            "headings": [
+                {
+                    "id": "naming-the-kernel",
+                    "text": "Naming the kernel",
+                    "level": 2
+                },
+                {
+                    "id": "cell-options",
+                    "text": "Cell options",
+                    "level": 2
+                },
+                {
+                    "id": "what-each-format-carries",
+                    "text": "What each format carries",
+                    "level": 2
+                },
+                {
+                    "id": "pdf-output",
+                    "text": "PDF output",
+                    "level": 2
+                },
+                {
+                    "id": "the-kernel-daemon",
+                    "text": "The kernel daemon",
+                    "level": 2
+                },
+                {
+                    "id": "freeze",
+                    "text": "Freeze",
+                    "level": 2
+                },
+                {
+                    "id": "projects",
+                    "text": "Projects",
+                    "level": 2
+                }
+            ],
+            "math": false
+        }
+    }
+}

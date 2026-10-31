@@ -117,8 +117,7 @@ return [
         'status' => 'working',
         'status_label' => 'Working',
         'repo' => 'https://github.com/phpstats/juphyter',
-        // juphyter publishes no documentation site yet, so there is nothing to
-        // point at: https://phpstats.github.io/juphyter/ is a 404.
+        // juphyter's docs are synced to this site and have no GitHub Pages copy.
         'docs' => null,
         'overview' => [
             'juphyter is a Jupyter kernel for PHP. It runs PHP cells in a notebook, so analysis with the PHPstats packages can be written and read as a notebook rather than a script.',

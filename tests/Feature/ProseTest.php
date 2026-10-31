@@ -34,7 +34,8 @@ class ProseTest extends TestCase
      *
      * R's model frame is R's own name for what model.frame() builds, and
      * phit's formulas page says where its factor levels come from by naming
-     * it. "data frame" there would name something else.
+     * it. "data frame" there would name something else. juphyter's limitations
+     * page means a frame of the PHP call stack.
      *
      * A stale entry fails the test rather than lingering, so the list can
      * only shrink by being noticed.
@@ -43,6 +44,7 @@ class ProseTest extends TestCase
      */
     private const ALLOWED = [
         'phit/docs/formulas.html' => ["as in R\u{2019}s model frame."],
+        'juphyter/docs/limitations.html' => ['The kernel reports the stack frame without a location'],
     ];
 
     public function test_no_prose_writes_the_bare_noun_frame(): void

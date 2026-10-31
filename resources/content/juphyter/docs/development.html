@@ -1,0 +1,39 @@
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/phpstats/juphyter</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> juphyter</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">composer</span> install</span></code></pre></div></div>
+<p><code>bin/juphyter</code> runs the checkout. <code>bin/juphyter install --name juphyter-dev</code> registers a kernel that runs it, without replacing the <code>php</code> kernel.</p>
+</section>
+<section id="tests" class="level2">
+<h2 class="anchored" data-anchor-id="tests">Tests</h2>
+<p>The PHP tests and the coding standard:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">vendor/bin/pest</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">composer</span> lint</span></code></pre></div></div>
+<p>A few tests send the engine an interrupt and are skipped when PHP lacks the <code>pcntl</code> or <code>posix</code> extension. CI runs the PHP tests on PHP 8.3, 8.4, and 8.5, on Ubuntu and macOS.</p>
+<p>The protocol tests start the kernel and drive it over the Jupyter protocol. They need a Python with Jupyter:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> tests/Protocol/requirements.txt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pytest tests/Protocol</span></code></pre></div></div>
+<p>The render tests run Quarto on the documents in <code>tests/Quarto/fixture</code>. They need Quarto, PHP 8.5, and a Python with the packages in <code>tests/Quarto/requirements.txt</code>, and they install phibble, phplyr, and phiz from <code>tests/Quarto/fixture/composer.json</code> into <code>build/</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip install <span class="at">-r</span> tests/Quarto/requirements.txt</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pytest tests/Quarto</span></code></pre></div></div>
+<p><code>.github/workflows/family.yml</code> runs the display formatter tests with phibble, phplyr, and phiz installed. None of the three is a dependency of juphyter.</p>
+</section>
+<section id="documentation" class="level2">
+<h2 class="anchored" data-anchor-id="documentation">Documentation</h2>
+<p>The documentation is a Quarto site in <code>docs/</code>, and most pages run their PHP cells through the kernel. phpstats.org imports the rendered HTML from this repository and does not run Quarto, so the rendered pages and the frozen output under <code>docs/_freeze/</code> are committed with their sources.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scripts/render-docs</span></span></code></pre></div></div>
+<p>The script installs phibble, phplyr, and phiz into <code>build/docs/sandbox</code> from the render tests’ manifest, registers a <code>php</code> kernel in a private Jupyter data directory under <code>build/docs</code>, renders every page through it, and copies the result into <code>docs/</code>. It needs PHP 8.5, because the overview uses the pipe operator. <code>--refresh</code> reinstalls the sandbox and the kernel. <code>scripts/render-docs --help</code> lists the environment variables that choose the PHP and the Python.</p>
+<p>An executing render changes the committed HTML and frozen output even when no source changed, because Quarto gives each executed cell a new random id.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scripts/render-docs</span> <span class="at">--frozen</span></span></code></pre></div></div>
+<p>renders from the frozen output with no PHP. Quarto looks up each page’s kernel by name before it reads frozen output, so the script registers a <code>php</code> kernel whose command exits immediately, and a page that needs executing fails the render. CI uses this to check that the committed HTML matches the sources.</p>
+<p>A page joins the site through the <code>sidebar</code> in <code>docs/_quarto.yml</code>. phpstats.org takes its navigation from that sidebar and fails to sync a page that is listed without rendered HTML. <code>site/site.json</code> holds the install commands, requirements, and summary that phpstats.org shows on the package’s overview.</p>
+<p>Plans and design notes are kept in <code>docs/work/</code>, outside the site.</p>
+</section>
+<section id="the-phar" class="level2">
+<h2 class="anchored" data-anchor-id="the-phar">The PHAR</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> scripts/build-phar.php</span></code></pre></div></div>
+<p>writes <code>build/juphyter.phar</code> from the files listed in <code>phar.json</code>. <code>php juphyter.phar install</code> registers a kernel whose engine is the PHAR, and copies the Python transport beside the kernelspec, because Python cannot import from inside a PHAR. No PHAR is published with a release.</p>
+
+
+</section>

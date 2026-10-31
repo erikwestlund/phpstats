@@ -57,6 +57,7 @@ class PinLockTest extends TestCase
         // instead of letting the check above pass over nothing.
         $this->assertSame([
             'cmdstanphp' => 'dev-main',
+            'juphyter' => 'no Composer dependency',
             'phibble' => 'tagged',
             'phit' => 'no Composer dependency',
             'phiz' => 'tagged',

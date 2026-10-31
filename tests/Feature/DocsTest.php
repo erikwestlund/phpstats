@@ -34,10 +34,10 @@ class DocsTest extends TestCase
 
     public function test_synced_docs_render_with_resolved_links(): void
     {
-        // Every library package serves its docs here since task 10 pinned
-        // phibble, phiz, and cmdstanphp. juphyter ships none yet.
+        // Every package serves its docs here, juphyter's since the 2026-10-31
+        // docs cleanup.
         $this->assertEqualsCanonicalizing(
-            ['phibble', 'phplyr', 'phpolars', 'phit', 'phiz', 'cmdstanphp'],
+            ['phibble', 'phplyr', 'phpolars', 'phit', 'phiz', 'cmdstanphp', 'juphyter'],
             array_keys(array_filter(Package::all(), fn (Package $package) => $package->hasDocs())),
         );
 
