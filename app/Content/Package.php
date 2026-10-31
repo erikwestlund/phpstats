@@ -127,10 +127,54 @@ class Package
         return $this->site['requires'] ?? [];
     }
 
-    /** @return list<string> */
+    /**
+     * Optional dependencies, each with the feature it enables when the
+     * package says. A plain string in site.json is a name with no feature.
+     *
+     * @return list<array{name: string, for: ?string}>
+     */
     public function optional(): array
     {
-        return $this->site['optional'] ?? [];
+        return array_map(
+            fn (string|array $item) => is_string($item)
+                ? ['name' => $item, 'for' => null]
+                : ['name' => (string) ($item['name'] ?? ''), 'for' => $item['for'] ?? null],
+            $this->site['optional'] ?? [],
+        );
+    }
+
+    /** @return list<string> the PHP minor versions the package's composer.json allows */
+    public function php(): array
+    {
+        return $this->site['php'] ?? [];
+    }
+
+    /** @return list<string> what a source build needs, for packages that build */
+    public function build(): array
+    {
+        return $this->site['build'] ?? [];
+    }
+
+    /** @return list<string> */
+    public function platforms(): array
+    {
+        return $this->site['platforms'] ?? [];
+    }
+
+    /** @return array{command: string, output: ?string}|null a command that checks the install */
+    public function verify(): ?array
+    {
+        $verify = $this->site['verify'] ?? null;
+
+        return isset($verify['command']) ? ['command' => (string) $verify['command'], 'output' => $verify['output'] ?? null] : null;
+    }
+
+    /** The URL of the package's getting-started docs page, when it names one that was synced. */
+    public function quickstart(): ?string
+    {
+        $path = $this->site['quickstart'] ?? null;
+
+        return is_string($path) && $this->docsPage($path) !== null ? $this->url('docs', ['path' => $path]) : null;
     }
 
     public function repository(): ?string

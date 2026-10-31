@@ -36,7 +36,7 @@ class RootPagesTest extends TestCase
         $text = $this->collapse(html_entity_decode(strip_tags($html)));
 
         $this->assertStringContainsString('Get started', $text);
-        $this->assertStringContainsString('All packages support PHP 8.3 and later.', $text);
+        $this->assertStringContainsString('Every package supports PHP 8.3, 8.4, and 8.5.', $text);
         // Libraries install with Composer and the extensions with PIE.
         $this->assertStringContainsString('All packages are published on Packagist.', $text);
         $this->assertStringContainsString('composer require phpstats/phplyr', $text);
@@ -105,7 +105,7 @@ class RootPagesTest extends TestCase
     {
         $this->enterPathMode();
 
-        $this->get('http://preview.test/get-started')->assertOk()->assertSee('Composer installs the PHP libraries.');
+        $this->get('http://preview.test/get-started')->assertOk()->assertSee('Composer installs the PHP libraries');
         $response = $this->get('http://preview.test/vignettes')->assertOk()->assertSee('Every example on the site');
 
         // Vignette links point into /{package} on the host the request came in on.
@@ -120,13 +120,20 @@ class RootPagesTest extends TestCase
         )));
 
         foreach (Package::all() as $package) {
+            // A package with no synced content points at its repository.
+            if ($package->install() === []) {
+                $this->assertStringContainsString('The install steps are in the repository.', $text, $package->key);
+
+                continue;
+            }
+
             $this->assertMatchesRegularExpression(
                 '/(composer (global )?require|pie install) phpstats\/'.preg_quote($package->key, '/').'\b/',
                 $text,
                 $package->key,
             );
 
-            foreach ([...$package->requires(), ...$package->optional()] as $requirement) {
+            foreach ([...$package->requires(), ...array_column($package->optional(), 'name')] as $requirement) {
                 $this->assertStringContainsString(preg_replace('/\s+/', ' ', $requirement), $text, $package->key.' requirement');
             }
         }

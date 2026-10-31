@@ -130,7 +130,7 @@ class PackagePagesTest extends TestCase
             foreach ($package->install() as $line) {
                 $this->assertStringContainsString($line, $text, "{$key}: {$line}");
             }
-            foreach ([...$package->requires(), ...$package->optional()] as $requirement) {
+            foreach ([...$package->requires(), ...array_column($package->optional(), 'name')] as $requirement) {
                 $this->assertStringContainsString($requirement, $text, "{$key}: {$requirement}");
             }
         }
