@@ -12,9 +12,9 @@
         "laravel/tinker": "^3.0",
         "livewire/livewire": "^4.4",
         "phpstats/cmdstanphp": "dev-main",
-        "phpstats/phibble": "^0.3",
+        "phpstats/phibble": "^0.5",
         "phpstats/phiz": "^0.5",
-        "phpstats/phplyr": "dev-main",
+        "phpstats/phplyr": "^0.4.3",
         "symfony/yaml": "^8.1",
         "tempest/highlight": "^2.28"
     },
@@ -101,17 +101,5 @@
         "name": "cmdstanphp",
         "type": "vcs",
         "url": "https://github.com/phpstats/cmdstanphp"
-    },{
-        "name": "phiz",
-        "type": "vcs",
-        "url": "https://github.com/phpstats/phiz"
-    },{
-        "name": "phplyr",
-        "type": "vcs",
-        "url": "https://github.com/phpstats/phplyr"
-    },{
-        "name": "phibble",
-        "type": "vcs",
-        "url": "https://github.com/phpstats/phibble"
     }]
 }

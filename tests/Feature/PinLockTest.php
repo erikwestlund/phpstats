@@ -61,7 +61,7 @@ class PinLockTest extends TestCase
             'phibble' => 'tagged',
             'phit' => 'no Composer dependency',
             'phiz' => 'tagged',
-            'phplyr' => 'dev-main',
+            'phplyr' => 'tagged',
             'phpolars' => 'no Composer dependency',
         ], $kinds);
     }

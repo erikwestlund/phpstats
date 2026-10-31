@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dfb7e771f0b3a599fe7c6c0ade6070fd",
+    "content-hash": "b8078f843213cd45edb64ae1356fa545",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -2918,16 +2918,16 @@
         },
         {
             "name": "phpstats/phibble",
-            "version": "v0.3.0",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:phpstats/phibble.git",
-                "reference": "b12503e32f462e7f1f8d19d31f2332055daa2407"
+                "url": "https://github.com/phpstats/phibble.git",
+                "reference": "856e73919edbdfec4c85aad089f70bf461be11a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phibble/zipball/b12503e32f462e7f1f8d19d31f2332055daa2407",
-                "reference": "b12503e32f462e7f1f8d19d31f2332055daa2407",
+                "url": "https://api.github.com/repos/phpstats/phibble/zipball/856e73919edbdfec4c85aad089f70bf461be11a4",
+                "reference": "856e73919edbdfec4c85aad089f70bf461be11a4",
                 "shasum": ""
             },
             "require": {
@@ -2936,13 +2936,15 @@
                 "symfony/polyfill-php84": "^1.31"
             },
             "require-dev": {
-                "erikwestlund/phiz": "dev-main",
                 "illuminate/database": "^12.0",
-                "pestphp/pest": "^4.0"
+                "pestphp/pest": "^4.0",
+                "phpstats/phiz": "dev-main",
+                "squizlabs/php_codesniffer": "^3.13"
             },
             "suggest": {
                 "ext-pdo_sqlite": "Used by the test suite for the PDO source",
-                "ext-php_polars": "The Polars backend (Phibble\\Polars\\PolarsTable), from erikwestlund/phpolars",
+                "ext-phit": "Native CSV reading (Phit\\read_csv) and model fitting, from phpstats/phit",
+                "ext-php_polars": "The Polars backend (Phibble\\Polars\\PolarsTable), from phpstats/phpolars",
                 "illuminate/database": "Laravel integration: Collection::toDataFrame() and query builder ->phibble() / ->toDataFrame() macros (auto-discovered)"
             },
             "type": "library",
@@ -2954,51 +2956,50 @@
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Phibble\\": "src/"
-                },
                 "files": [
                     "src/functions.php",
                     "src/Expr/helpers.php"
-                ]
-            },
-            "autoload-dev": {
+                ],
                 "psr-4": {
-                    "Tests\\": "tests/",
-                    "Phibble\\Bench\\": "bench/src/"
+                    "Phibble\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "A typed, immutable in-memory data frame for PHP.",
-            "time": "2026-10-17T19:17:14+00:00"
+            "support": {
+                "issues": "https://github.com/phpstats/phibble/issues",
+                "source": "https://github.com/phpstats/phibble/tree/v0.5.0"
+            },
+            "time": "2026-10-31T01:35:05+00:00"
         },
         {
             "name": "phpstats/phiz",
-            "version": "v0.5.0",
+            "version": "v0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstats/phiz.git",
-                "reference": "61dc87b053ae16f1f6257812675fe27c7905c4a0"
+                "reference": "bc7ed3e9bb15da58925554a6b34578762c0e31df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phiz/zipball/61dc87b053ae16f1f6257812675fe27c7905c4a0",
-                "reference": "61dc87b053ae16f1f6257812675fe27c7905c4a0",
+                "url": "https://api.github.com/repos/phpstats/phiz/zipball/bc7ed3e9bb15da58925554a6b34578762c0e31df",
+                "reference": "bc7ed3e9bb15da58925554a6b34578762c0e31df",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "^8.3"
+                "php": ">=8.3 <8.6"
             },
             "require-dev": {
                 "opis/json-schema": "^2.4",
                 "orchestra/testbench": "^10.0",
                 "pestphp/pest": "^4.0",
-                "phpstats/phibble": "^0.3",
-                "phpstats/phit-polyfill": "dev-main",
-                "phpstats/phplyr": "^0.3",
+                "phpstats/phibble": "^0.5",
+                "phpstats/phit-polyfill": "^0.3",
+                "phpstats/phplyr": "^0.4",
                 "squizlabs/php_codesniffer": "^3.13"
             },
             "suggest": {
@@ -3060,23 +3061,23 @@
                 "visualization"
             ],
             "support": {
-                "source": "https://github.com/phpstats/phiz/tree/v0.5.0",
+                "source": "https://github.com/phpstats/phiz/tree/v0.5.1",
                 "issues": "https://github.com/phpstats/phiz/issues"
             },
-            "time": "2026-10-31T09:15:08+00:00"
+            "time": "2026-10-31T15:30:39+00:00"
         },
         {
             "name": "phpstats/phplyr",
-            "version": "dev-main",
+            "version": "v0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstats/phplyr.git",
-                "reference": "55048c7ce7830f9440981d08a158c3bb50dfa29e"
+                "reference": "d319dc56718d286b6ecaf6997c815972092f6b12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/55048c7ce7830f9440981d08a158c3bb50dfa29e",
-                "reference": "55048c7ce7830f9440981d08a158c3bb50dfa29e",
+                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/d319dc56718d286b6ecaf6997c815972092f6b12",
+                "reference": "d319dc56718d286b6ecaf6997c815972092f6b12",
                 "shasum": ""
             },
             "require": {
@@ -3093,12 +3094,8 @@
                 "ext-intl": "Transliteration in make_clean_names() and clean_names() that matches janitor; without it, iconv is used",
                 "ext-phit": "Native descriptives (Phit\\stat_*) and model fitting (Phit\\fit_*), needed for lm(), glm(), lmer(), and glmer()"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "Phplyr\\": "src/"
-                },
                 "files": [
                     "src/functions/verbs.php",
                     "src/functions/chain.php",
@@ -3113,31 +3110,21 @@
                     "src/functions/strings.php",
                     "src/functions/dates.php",
                     "src/functions/janitor.php"
-                ]
-            },
-            "autoload-dev": {
+                ],
                 "psr-4": {
-                    "Phplyr\\Tests\\": "tests/"
+                    "Phplyr\\": "src/"
                 }
             },
-            "scripts": {
-                "lint": [
-                    "phpcs",
-                    "@test:sniffs"
-                ],
-                "test:sniffs": [
-                    "php tools/phpcs/selftest/run.php"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "A dplyr-style grammar of data manipulation for PHP 8.3+, with method chains or PHP 8.5 pipes",
             "support": {
-                "source": "https://github.com/phpstats/phplyr/tree/main",
-                "issues": "https://github.com/phpstats/phplyr/issues"
+                "issues": "https://github.com/phpstats/phplyr/issues",
+                "source": "https://github.com/phpstats/phplyr/tree/v0.4.3"
             },
-            "time": "2026-10-31T15:29:48+00:00"
+            "time": "2026-10-31T16:42:55+00:00"
         },
         {
             "name": "psr/clock",
@@ -9101,8 +9088,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpstats/cmdstanphp": 20,
-        "phpstats/phplyr": 20
+        "phpstats/cmdstanphp": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
