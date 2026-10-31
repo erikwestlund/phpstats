@@ -47,7 +47,7 @@
 <section id="install" class="level2">
 <h2 class="anchored" data-anchor-id="install">Install</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">composer</span> require phpstats/phplyr</span></code></pre></div></div>
-<p>composer.json allows PHP 8.3 and later 8.x versions. CI tests PHP 8.3, 8.4, and 8.5. Pipelines written with the pipe operator <code>|&gt;</code> need PHP 8.5. On 8.3 and 8.4, the same pipelines are method chains, as the “PHP 8.3–8.4” tabs show.</p>
+<p>phplyr supports PHP 8.3, 8.4, and 8.5, and CI tests all three. It requires the mbstring extension. Pipelines written with the pipe operator <code>|&gt;</code> need PHP 8.5. On 8.3 and 8.4, the same pipelines are method chains, as the “PHP 8.3–8.4” tabs show.</p>
 <p>The following extensions are optional:</p>
 <ul>
 <li><a href="https://github.com/phpstats/phit">phit</a> provides <code>lm()</code>, <code>glm()</code>, <code>lmer()</code>, and <code>glmer()</code>, and computes <code>mean()</code>, <code>sd()</code>, <code>var_()</code>, <code>median()</code>, and <code>quantile()</code> natively.</li>

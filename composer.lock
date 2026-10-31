@@ -3071,16 +3071,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstats/phplyr.git",
-                "reference": "814d0f78c6922fb1ce70d732cf25188d485fec8a"
+                "reference": "55048c7ce7830f9440981d08a158c3bb50dfa29e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/814d0f78c6922fb1ce70d732cf25188d485fec8a",
-                "reference": "814d0f78c6922fb1ce70d732cf25188d485fec8a",
+                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/55048c7ce7830f9440981d08a158c3bb50dfa29e",
+                "reference": "55048c7ce7830f9440981d08a158c3bb50dfa29e",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.3",
+                "ext-mbstring": "*",
+                "php": ">=8.3 <8.6",
                 "phpstats/phibble": "^0.3 || ^0.4 || ^0.5",
                 "symfony/polyfill-php84": "^1.31"
             },
@@ -3136,7 +3137,7 @@
                 "source": "https://github.com/phpstats/phplyr/tree/main",
                 "issues": "https://github.com/phpstats/phplyr/issues"
             },
-            "time": "2026-10-31T14:48:48+00:00"
+            "time": "2026-10-31T15:29:48+00:00"
         },
         {
             "name": "psr/clock",
