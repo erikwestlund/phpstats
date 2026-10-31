@@ -25,8 +25,10 @@ class SeoTest extends TestCase
 
     protected function tearDown(): void
     {
-        putenv('PHPSTATS_PATHS');
-        unset($_ENV['PHPSTATS_PATHS'], $_SERVER['PHPSTATS_PATHS']);
+        // Back to phpunit.xml's value. Unsetting it would let a local .env
+        // in path mode decide the next test's routes.
+        putenv('PHPSTATS_PATHS=false');
+        $_ENV['PHPSTATS_PATHS'] = $_SERVER['PHPSTATS_PATHS'] = 'false';
 
         parent::tearDown();
     }
@@ -125,12 +127,12 @@ class SeoTest extends TestCase
         $pages = [
             // The landing page and the Markdown pages: the site's own copy.
             'http://phpstats.test/' => 'A family of PHP libraries for data frames, pipelines, charts, and statistical models, run inside the application that holds the data.',
-            'http://phpstats.test/about' => 'PHPstats is a family of PHP libraries that reads tables from the application database, transforms them, fits statistical models, and draws charts, all in PHP.',
+            'http://phpstats.test/about' => 'PHPstats is a family of open-source PHP packages for data frames, pipelines, statistical models, and charts. Every package is on Packagist.',
             // A package overview: its tagline.
             'http://phit.phpstats.test/' => 'Fast, verified statistical models for PHP.',
             // Docs and the other sections: the page title, then the tagline.
             'http://phit.phpstats.test/docs/contracts' => 'Public contracts in phit. Fast, verified statistical models for PHP.',
-            'http://phit.phpstats.test/vignettes' => 'Vignettes in phit. Fast, verified statistical models for PHP.',
+            'http://phit.phpstats.test/vignettes' => 'Examples in phit. Fast, verified statistical models for PHP.',
             'http://phit.phpstats.test/vignettes/school-scores' => 'School scores in phit. Fast, verified statistical models for PHP.',
             'http://phit.phpstats.test/benchmarks' => 'Benchmarks in phit. Fast, verified statistical models for PHP.',
             'http://phit.phpstats.test/verification' => 'Verification in phit. Fast, verified statistical models for PHP.',
@@ -268,6 +270,7 @@ class SeoTest extends TestCase
     private function enterPathMode(): void
     {
         putenv('PHPSTATS_PATHS=true');
+        $_ENV['PHPSTATS_PATHS'] = $_SERVER['PHPSTATS_PATHS'] = 'true';
         $this->refreshApplication();
         $this->artisan('migrate:fresh', ['--seed' => true]);
 

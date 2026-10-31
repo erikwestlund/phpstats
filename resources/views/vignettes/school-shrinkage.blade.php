@@ -2,7 +2,7 @@
     <article class="max-w-3xl">
         <h1 class="text-3xl font-semibold tracking-tight">School effects</h1>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            This vignette fits a linear mixed model to the 250 students from 12 schools in the school scores data.
+            This example fits a linear mixed model to the 250 students from 12 schools in the school scores data.
             Test score depends on study hours, and each school has its own random intercept.
             The model estimates how much schools differ and how much of each school's apparent effect is noise.
         </p>

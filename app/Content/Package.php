@@ -127,6 +127,12 @@ class Package
         return $this->site['requires'] ?? [];
     }
 
+    /** @return list<string> */
+    public function optional(): array
+    {
+        return $this->site['optional'] ?? [];
+    }
+
     public function repository(): ?string
     {
         return $this->site['repository'] ?? $this->project['repo'];

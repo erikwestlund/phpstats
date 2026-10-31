@@ -112,7 +112,9 @@ class Markdown
                 {
                     $words = $node->getInfoWords();
 
-                    return Blade::render('<x-code :code="$code" :lang="$lang" :label="$label" />', [
+                    // not-prose, or the page's prose styles draw a second box
+                    // around the <pre> inside the ink background.
+                    return Blade::render('<x-code class="not-prose my-6" :code="$code" :lang="$lang" :label="$label" />', [
                         'code' => $node->getLiteral(),
                         'lang' => $words[0] ?? 'txt',
                         'label' => trim(implode(' ', array_slice($words, 1))) ?: null,

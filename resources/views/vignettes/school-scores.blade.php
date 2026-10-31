@@ -2,7 +2,7 @@
     <article class="max-w-3xl">
         <h1 class="text-3xl font-semibold tracking-tight">School scores</h1>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            This vignette fits a linear regression of test score on study hours and prior score.
+            This example fits a linear regression of test score on study hours and prior score.
             The data has 250 students from 12 schools and is stored in this app's database.
             Each change to the predictors refits the model on the server with phit.
         </p>

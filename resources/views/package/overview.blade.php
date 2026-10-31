@@ -3,7 +3,7 @@
     $verified = collect($package->verifications())->flatMap(fn ($v) => $v['cases']);
     $sections = array_filter([
         'docs' => $package->hasDocs() ? ['Docs', 'book-open', count($package->docsNav()).' pages of guides and reference'] : null,
-        'vignettes' => $package->vignettes() ? ['Vignettes', 'play-circle', count($package->vignettes()).' live examples on this server'] : null,
+        'vignettes' => $package->vignettes() ? ['Examples', 'play-circle', count($package->vignettes()).' live examples on this server'] : null,
         'benchmarks' => $package->benchmarks() ? ['Benchmarks', 'clock', count($package->benchmarks()).' timing reports'] : null,
         'verification' => $package->verifications() ? ['Verification', 'check-badge', $verified->where('passed', true)->count().' of '.$verified->count().' results agree with the reference'] : null,
     ]);
@@ -29,7 +29,7 @@
                     @endif
                     @if ($package->vignettes())
                         <a href="{{ $package->url('vignettes') }}" class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-zinc-900 ring-1 ring-zinc-200 transition hover:ring-(--l300) dark:bg-white/5 dark:text-white dark:ring-white/10">
-                            <x-heroicon-m-play-circle class="size-4 text-(--l500)" /> Try a vignette
+                            <x-heroicon-m-play-circle class="size-4 text-(--l500)" /> Try an example
                         </a>
                     @endif
                     @if ($package->repository())
@@ -43,13 +43,7 @@
             <div class="self-center">
                 @if ($package->install())
                     <x-code :code="implode(PHP_EOL, $package->install())" lang="bash" label="Install" />
-                    @if ($package->requires())
-                        <ul class="mt-4 space-y-1.5 text-sm text-zinc-600 dark:text-zinc-400">
-                            @foreach ($package->requires() as $requirement)
-                                <li class="flex gap-2"><x-heroicon-m-check class="mt-0.5 size-4 shrink-0 text-(--l500)" />{{ $requirement }}</li>
-                            @endforeach
-                        </ul>
-                    @endif
+                    <x-requirements class="mt-4" :package="$package" />
                     @foreach ($package->companions() as $companion)
                         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
                             Can't install extensions? <a href="{{ $companion->repository() }}" class="font-medium text-(--l700) underline decoration-(--l300) underline-offset-2 dark:text-(--l300)">{{ $companion->name() }}</a> defines the same functions in plain PHP.

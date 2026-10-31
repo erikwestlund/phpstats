@@ -1,11 +1,11 @@
-<x-layout title="Vignettes" :wide="true">
-    <x-page-header :eyebrow="$package->name()" title="Vignettes">
-        Each vignette runs on this server when the page loads and again when an input changes.
+<x-layout title="Examples" :wide="true">
+    <x-page-header :eyebrow="$package->name()" title="Examples">
+        Each example runs on this server when the page loads and again when an input changes.
     </x-page-header>
 
     @php $vignettes = $package->vignettes(); @endphp
     @if ($vignettes === [])
-        <p class="mt-8 text-zinc-600 dark:text-zinc-400">{{ $package->name() }} has no vignettes yet.</p>
+        <p class="mt-8 text-zinc-600 dark:text-zinc-400">{{ $package->name() }} has no examples yet.</p>
     @else
         <ul class="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             @foreach ($vignettes as $vignette)

@@ -4,8 +4,7 @@
     // parameter, so About is not marked current on another Markdown page.
     $pages = [
         ['label' => 'Get started', 'url' => route('page', 'get-started'), 'current' => request()->route('page') === 'get-started'],
-        ['label' => 'Vignettes', 'url' => route('vignettes'), 'current' => request()->routeIs('vignettes')],
-        ['label' => 'CSV options', 'url' => route('page', 'csv-options'), 'current' => request()->route('page') === 'csv-options'],
+        ['label' => 'Examples', 'url' => route('vignettes'), 'current' => request()->routeIs('vignettes')],
         ['label' => 'About PHPstats', 'url' => route('page', 'about'), 'current' => request()->route('page') === 'about'],
     ];
 @endphp

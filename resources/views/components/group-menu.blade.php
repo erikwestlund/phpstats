@@ -5,7 +5,7 @@
     ($current set), the full label waits for 2xl screens to leave room for
     the section links.
 --}}
-@props(['menu', 'current' => null, 'dark' => false])
+@props(['menu', 'current' => null, 'dark' => false, 'align' => 'left'])
 
 @php
     $layers = array_intersect_key(config('phpstats.layers'), array_flip($menu['layers']));
@@ -24,8 +24,8 @@
         <x-heroicon-m-chevron-down class="size-4 opacity-50 transition" x-bind:class="open && 'rotate-180'" />
     </button>
 
-    <div x-show="open" x-cloak x-transition.origin.top.left
-         class="fixed inset-x-4 top-16 z-50 overflow-hidden rounded-2xl bg-white p-1.5 shadow-2xl shadow-php-950/20 ring-1 ring-zinc-900/10 sm:absolute sm:inset-x-auto sm:left-0 sm:top-full sm:mt-2 sm:w-80 dark:bg-zinc-900 dark:ring-white/10">
+    <div x-show="open" x-cloak x-transition.origin.top.{{ $align }}
+         class="fixed inset-x-4 top-16 z-50 overflow-hidden rounded-2xl bg-white p-1.5 shadow-2xl shadow-php-950/20 ring-1 ring-zinc-900/10 sm:absolute sm:inset-x-auto {{ $align === 'right' ? 'sm:right-0' : 'sm:left-0' }} sm:top-full sm:mt-2 sm:w-80 dark:bg-zinc-900 dark:ring-white/10">
         @foreach ($layers as $layer)
             <div class="layer-{{ $layer['color'] }}">
                 @if (count($layers) > 1)

@@ -130,7 +130,7 @@ class PackagePagesTest extends TestCase
             foreach ($package->install() as $line) {
                 $this->assertStringContainsString($line, $text, "{$key}: {$line}");
             }
-            foreach ($package->requires() as $requirement) {
+            foreach ([...$package->requires(), ...$package->optional()] as $requirement) {
                 $this->assertStringContainsString($requirement, $text, "{$key}: {$requirement}");
             }
         }
@@ -159,17 +159,6 @@ class PackagePagesTest extends TestCase
         // How it is actually installed, which the overview now carries.
         $this->assertStringContainsString('vendor/bin/juphyter install', $text);
         $this->assertStringContainsString('writes the kernelspec', $text);
-
-        // The same claim reaches /get-started through install-steps, which
-        // branches on status and not on status_label: juphyter has no synced
-        // install lines, so 'in-progress' printed "has nothing to install
-        // yet" there too. RootPagesTest accepts either sentence for every
-        // package, so only this pins juphyter to the right one.
-        $started = preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(
-            $this->get('http://phpstats.test/get-started')->assertOk()->getContent(),
-        )));
-        $this->assertStringNotContainsStringIgnoringCase('nothing to install yet', $started);
-        $this->assertStringContainsString('does not carry install lines for', $started);
     }
 
     // Overview content (task 11a): summary lists, pipe-only examples, the

@@ -5,16 +5,16 @@
     the page uses the PHP purples.
 --}}
 <x-layout
-    title="Vignettes"
+    title="Examples"
     description="Worked examples that run on this server: regression and mixed models, pipelines, charts, Polars, and Bayesian models in Stan."
     :wide="true"
 >
-    <x-page-header title="Vignettes">
-        Every vignette on the site. Each one runs on the server when its page loads, and again when an
+    <x-page-header title="Examples">
+        Every example on the site. Each one runs on the server when its page loads, and again when an
         input changes.
     </x-page-header>
 
-    <p class="mt-6 text-sm text-zinc-500 dark:text-zinc-400">{{ $total }} vignettes across {{ count($groups) }} packages.</p>
+    <p class="mt-6 text-sm text-zinc-500 dark:text-zinc-400">{{ $total }} examples across {{ count($groups) }} packages.</p>
 
     <div class="mt-12 space-y-14">
         @foreach ($groups as $group)

@@ -5,7 +5,7 @@
             This page uses the simulated rentals data. It does not describe real rentals.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            This vignette runs one phplyr pipeline in two ways.
+            This example runs one phplyr pipeline in two ways.
             On a lazy phibble table, created with ->phibble() on an Eloquent query, the pipeline builds a single SQL query that the database runs.
             On an in-memory DataFrame, created with ->toDataFrame(), the same pipeline runs in PHP.
             The page shows the generated SQL and both results.

@@ -19,8 +19,10 @@ class RootPagesTest extends TestCase
 
     protected function tearDown(): void
     {
-        putenv('PHPSTATS_PATHS');
-        unset($_ENV['PHPSTATS_PATHS'], $_SERVER['PHPSTATS_PATHS']);
+        // Back to phpunit.xml's value. Unsetting it would let a local .env
+        // in path mode decide the next test's routes.
+        putenv('PHPSTATS_PATHS=false');
+        $_ENV['PHPSTATS_PATHS'] = $_SERVER['PHPSTATS_PATHS'] = 'false';
 
         parent::tearDown();
     }
@@ -34,24 +36,20 @@ class RootPagesTest extends TestCase
         $text = $this->collapse(html_entity_decode(strip_tags($html)));
 
         $this->assertStringContainsString('Get started', $text);
-        $this->assertStringContainsString('Use PHP 8.5.', $text);
-        // The one home for the Composer notes the brief asks for.
-        $this->assertStringContainsString('published on Packagist yet', $text);
-        $this->assertStringContainsString('run composer init first', $text);
-        $this->assertStringContainsString('anonymous requests reach their rate limit', $text);
-        // The extensions are built, not installed from a package.
-        $this->assertStringContainsString('the php.ini that php --ini reports', $text);
-        // The example runs here, because phplyr needs no extension.
-        $this->assertStringContainsString('summarize(', $text);
-        $this->assertStringContainsString('revenue', $text);
+        $this->assertStringContainsString('All packages support PHP 8.3 and later.', $text);
+        // Libraries install with Composer and the extensions with PIE.
+        $this->assertStringContainsString('All packages are published on Packagist.', $text);
+        $this->assertStringContainsString('composer require phpstats/phplyr', $text);
+        $this->assertStringContainsString('pie install phpstats/phit', $text);
+        $this->assertStringNotContainsString('dev-main', $text);
     }
 
     public function test_the_vignette_index_renders_on_the_root_host(): void
     {
         $this->get('http://phpstats.test/vignettes')
             ->assertOk()
-            ->assertSee('Vignettes')
-            ->assertSee('Every vignette on the site');
+            ->assertSee('Examples')
+            ->assertSee('Every example on the site');
     }
 
     public function test_the_vignette_index_lists_every_vignette_once_with_a_link_to_its_owner(): void
@@ -75,7 +73,7 @@ class RootPagesTest extends TestCase
         $this->assertSame(10, $livewire, 'the Livewire vignettes in config changed');
         $this->assertGreaterThan(0, $scripts, 'no synced script vignette was found');
         $owners = count(array_unique(array_column($expected, 0)));
-        $this->assertStringContainsString(count($expected).' vignettes across '.$owners.' packages.', $html);
+        $this->assertStringContainsString(count($expected).' examples across '.$owners.' packages.', $html);
 
         foreach ($expected as [$key, $slug, $title]) {
             $url = Package::find($key)->url('vignette', ['slug' => $slug]);
@@ -107,101 +105,31 @@ class RootPagesTest extends TestCase
     {
         $this->enterPathMode();
 
-        $this->get('http://preview.test/get-started')->assertOk()->assertSee('Use PHP 8.5.');
-        $response = $this->get('http://preview.test/vignettes')->assertOk()->assertSee('Every vignette on the site');
+        $this->get('http://preview.test/get-started')->assertOk()->assertSee('Composer installs the PHP libraries.');
+        $response = $this->get('http://preview.test/vignettes')->assertOk()->assertSee('Every example on the site');
 
         // Vignette links point into /{package} on the host the request came in on.
         $response->assertSee('http://preview.test/phit/vignettes/school-scores', false);
         $this->assertStringNotContainsString('phit.phpstats.test', $response->content());
     }
 
-    public function test_install_steps_show_the_lines_each_package_publishes_and_invent_none(): void
+    public function test_get_started_has_an_install_command_and_the_requirements_for_every_package(): void
     {
-        $html = $this->get('http://phpstats.test/get-started')->assertOk()->content();
-        $text = html_entity_decode(strip_tags($html));
-
-        $withLines = 0;
-        foreach (Package::all() as $package) {
-            $this->assertStringContainsString($package->name(), $text, $package->key);
-
-            foreach ($package->install() as $line) {
-                $this->assertStringContainsString($line, $text, $package->key.' install line');
-                $withLines++;
-            }
-
-            if ($package->install() === []) {
-                // Either "does not carry install lines" or "nothing to install",
-                // and the repository in place of lines nobody published.
-                $this->assertMatchesRegularExpression(
-                    '/(does not carry install lines for\s+'.preg_quote($package->name(), '/').'|'.preg_quote($package->name(), '/').'\s+has nothing to install yet)/',
-                    preg_replace('/\s+/', ' ', $text),
-                    $package->key,
-                );
-                $this->assertStringContainsString($package->repository(), $html, $package->key.' repository');
-            }
-        }
-
-        $this->assertGreaterThan(0, $withLines, 'no package published any install line');
-
-        // No install command for a package that published none.
-        $invented = array_values(array_filter(
-            Package::all(),
-            fn (Package $package) => $package->install() === []
-                && preg_match('/(composer require|pie install)\s+\S*'.preg_quote($package->key, '/').'/', $text) === 1,
-        ));
-        $this->assertSame([], $invented, 'an install line was invented');
-    }
-
-    public function test_install_steps_cover_a_synced_package_an_unsynced_one_and_one_not_built_yet(): void
-    {
-        // A content directory holding one synced fixture, so the three cases
-        // hold whatever the real packages have synced by now.
-        $content = $this->fixtureContent('synced-fixture', [
-            'title' => 'synced-fixture',
-            'tagline' => 'A synced fixture.',
-            'install' => ['composer config repositories.synced-fixture vcs https://example.test/synced-fixture', 'composer require phpstats/synced-fixture:dev-main'],
-            'requires' => ['PHP 8.5'],
-        ]);
-
-        $keys = ['synced-fixture', 'unsynced-fixture', 'unbuilt-fixture'];
-
-        config([
-            'phpstats.content_path' => $content,
-            'phpstats.companions' => [],
-            'projects' => [
-                'synced-fixture' => $this->fixtureProject('synced-fixture', 'working'),
-                'unsynced-fixture' => $this->fixtureProject('unsynced-fixture', 'working'),
-                'unbuilt-fixture' => $this->fixtureProject('unbuilt-fixture', 'in-progress'),
-            ],
-            // The bar and the footer walk the layers, so they have to name the
-            // fixtures too, or they look for packages that are no longer there.
-            'phpstats.layers' => ['fixtures' => [
-                'title' => 'Fixtures',
-                'role' => 'Fixtures',
-                'color' => 'violet',
-                'icon' => 'table-cells',
-                'packages' => array_combine($keys, array_map(fn (string $key) => "The {$key} package.", $keys)),
-            ]],
-            'phpstats.menus' => ['fixtures' => ['title' => 'Fixtures', 'short' => 'Fixtures', 'layers' => ['fixtures']]],
-        ]);
-        Package::flush();
-
         $text = preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(
             $this->get('http://phpstats.test/get-started')->assertOk()->content(),
         )));
 
-        // Synced: its own lines and its own requirements, nothing added.
-        $this->assertStringContainsString('composer config repositories.synced-fixture vcs https://example.test/synced-fixture', $text);
-        $this->assertStringContainsString('composer require phpstats/synced-fixture:dev-main', $text);
-        $this->assertStringContainsString('PHP 8.5', $text);
+        foreach (Package::all() as $package) {
+            $this->assertMatchesRegularExpression(
+                '/(composer (global )?require|pie install) phpstats\/'.preg_quote($package->key, '/').'\b/',
+                $text,
+                $package->key,
+            );
 
-        // Unsynced but usable: no lines, and a pointer to the repository.
-        $this->assertStringContainsString('does not carry install lines for unsynced-fixture', $text);
-        $this->assertStringNotContainsString('composer require phpstats/unsynced-fixture', $text);
-
-        // Not built yet: nothing to install.
-        $this->assertStringContainsString('unbuilt-fixture has nothing to install yet', $text);
-        $this->assertStringNotContainsString('composer require phpstats/unbuilt-fixture', $text);
+            foreach ([...$package->requires(), ...$package->optional()] as $requirement) {
+                $this->assertStringContainsString(preg_replace('/\s+/', ' ', $requirement), $text, $package->key.' requirement');
+            }
+        }
     }
 
     public function test_package_names_are_monospace_on_both_root_pages(): void
@@ -222,9 +150,9 @@ class RootPagesTest extends TestCase
 
     public function test_the_site_bar_links_both_pages_and_marks_the_current_one(): void
     {
-        // The bar carries all four links, in the bar itself and in the row
+        // The bar carries all three links, in the bar itself and in the row
         // that replaces it on small screens.
-        foreach (['Get started', 'Vignettes', 'CSV options', 'About PHPstats'] as $label) {
+        foreach (['Get started', 'Examples', 'About PHPstats'] as $label) {
             $this->assertSame(2, substr_count($this->bar($this->get('http://phpstats.test/about')->content()), ">{$label}</a>"), $label);
         }
 
@@ -232,8 +160,7 @@ class RootPagesTest extends TestCase
         $pages = [
             'http://phpstats.test/about' => 'About PHPstats',
             'http://phpstats.test/get-started' => 'Get started',
-            'http://phpstats.test/vignettes' => 'Vignettes',
-            'http://phpstats.test/csv-options' => 'CSV options',
+            'http://phpstats.test/vignettes' => 'Examples',
         ];
 
         foreach ($pages as $url => $label) {
@@ -249,7 +176,9 @@ class RootPagesTest extends TestCase
             }
         }
 
-        // The landing page marks none of them.
+        // The CSV options page is not in the bar, and the landing page marks
+        // none of the pages that are.
+        $this->assertStringNotContainsString('CSV options', $this->bar($this->get('http://phpstats.test/csv-options')->assertOk()->content()));
         $this->assertStringNotContainsString('aria-current="page"', $this->bar($this->get('http://phpstats.test/')->assertOk()->content()));
     }
 
@@ -353,41 +282,12 @@ class RootPagesTest extends TestCase
     private function enterPathMode(): void
     {
         putenv('PHPSTATS_PATHS=true');
+        $_ENV['PHPSTATS_PATHS'] = $_SERVER['PHPSTATS_PATHS'] = 'true';
         $this->refreshApplication();
         $this->artisan('migrate:fresh', ['--seed' => true]);
         Package::flush();
 
         $this->assertTrue(config('phpstats.paths'), 'path mode did not take effect');
-    }
-
-    /** A content directory holding one package's site.json. */
-    private function fixtureContent(string $key, array $site): string
-    {
-        $path = sys_get_temp_dir().'/phpstats-fixture-content-'.getmypid();
-        @mkdir($path.'/'.$key, 0777, true);
-        file_put_contents($path.'/'.$key.'/site.json', json_encode($site));
-
-        $this->beforeApplicationDestroyed(function () use ($path) {
-            array_map('unlink', glob($path.'/*/*') ?: []);
-            array_map('rmdir', glob($path.'/*') ?: []);
-            @rmdir($path);
-        });
-
-        return $path;
-    }
-
-    private function fixtureProject(string $key, string $status): array
-    {
-        return [
-            'name' => $key,
-            'from_r' => null,
-            'summary' => "The {$key} package.",
-            'status' => $status,
-            'status_label' => ucfirst($status),
-            'repo' => "https://example.test/{$key}",
-            'docs' => null,
-            'overview' => ["The {$key} package."],
-        ];
     }
 
     /** The markup with runs of whitespace collapsed, for matching attributes. */

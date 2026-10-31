@@ -1,29 +1,57 @@
 ---
 title: About PHPstats
-lead: PHPstats is a family of PHP libraries for data processing, analysis, visualization, and modeling.
-description: PHPstats is a family of PHP libraries that reads tables from the application database, transforms them, fits statistical models, and draws charts, all in PHP.
+lead: PHPstats is a family of PHP packages for data frames, data pipelines, statistical models, and charts.
+description: PHPstats is a family of open-source PHP packages for data frames, pipelines, statistical models, and charts. Every package is on Packagist.
 ---
 
 ## What PHPstats is
 
-Many teams keep their data in a PHP application. To analyze it, they often export it to R or Python, or they run a separate service next to the app. PHPstats does that work in the application. It reads tables from the application database through Eloquent, Doctrine, or PDO. It transforms them, fits statistical models, and draws charts, all in the code the team already deploys.
+PHPstats is a set of packages for statistical work in PHP. A table can come
+from a CSV file or from an application database through PDO, Eloquent, or
+Doctrine. The packages transform it, fit models to it, and chart it, so an
+analysis can run inside a PHP application instead of in a separate R or Python
+process.
 
 ## The packages
 
-The packages fall into two groups: data and workflow, and statistics, modeling and visualization. They share one data frame type, so a table read by phibble can be transformed by phplyr, modeled by phit, and charted by phiz. Each package can also be used on its own.
+The packages fall into two groups: data and workflow, and statistics,
+modeling and visualization. They share phibble's data frame, so a table read
+by phibble can be transformed by phplyr, modeled by phit, and charted by phiz.
+Each package can also be used on its own.
 
 <x-family-table />
 
+## Installing
+
+Every package is published on Packagist. The PHP libraries install with
+Composer. phit and phpolars are PHP extensions written in Rust and install
+with [PIE](https://github.com/php/pie). [Get started](/get-started) lists the
+install command and requirements for each package.
+
 ## Design
 
-The packages follow R's Tidyverse where it has a convention. phplyr keeps the function names and arguments of dplyr and tidyr, phiz follows the grammar of ggplot2, and phit and CmdStanPHP read R model formulas. On PHP 8.5, pipelines use the pipe operator `|>`. PHP 8.3 and 8.4 use a method chain with the same functions.
+The packages follow R's conventions where R has one. phplyr keeps the
+function names and arguments of dplyr and tidyr, and phiz follows the grammar
+of graphics in ggplot2. phit fits models from R formulas such as
+`log(rent) ~ log(area) + district`, and CmdStanPHP builds Stan data from the
+same formulas.
 
-The compute-heavy parts run in Rust extensions: phit for the models and phpolars for the Polars engine.
+Pipelines on this site use the pipe operator `|>`. It requires PHP 8.5. On PHP
+8.3 and 8.4, the same functions are called as a method chain.
+
+phibble, phplyr, phiz, and juphyter are plain PHP. phit fits its models in
+Rust, phpolars runs tables on the Polars engine, and CmdStanPHP runs Stan
+programs through CmdStan.
 
 ## Dashboards with Livewire
 
-With Laravel and Livewire, the same code drives interactive dashboards and reports. Inputs are component properties. When one changes, the server reruns the pipeline, refits the model, and redraws the charts. The page needs no separate R or Python server and no hand-written JavaScript. Every vignette on this site is built this way.
+In a Laravel application, a Livewire component can run a PHPstats pipeline.
+The component's properties are the inputs. When one changes, the server reruns
+the pipeline, refits the model, and redraws the charts. The page needs no R or
+Python server and no hand-written JavaScript. Every example on this site is
+built this way.
 
-## This site
+## License
 
-The pages written for this site, including this one, are Markdown files in `resources/pages`. They can call PHP through Blade components and echoes, so a page can show live numbers and charts. Package documentation comes from each repository's Quarto site at a pinned commit.
+The packages and this site are released under the MIT license. Their source is
+on GitHub at [github.com/phpstats](https://github.com/phpstats).

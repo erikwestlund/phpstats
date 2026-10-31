@@ -2,7 +2,7 @@
     <article class="max-w-3xl">
         <h1 class="text-3xl font-semibold tracking-tight">Bayesian school effects</h1>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            This vignette fits the school effects model, score ~ study_hours + (1 | school), as a Bayesian model in Stan and compares the posterior with the Phit\fit_lmer() estimates.
+            This example fits the school effects model, score ~ study_hours + (1 | school), as a Bayesian model in Stan and compares the posterior with the Phit\fit_lmer() estimates.
             CmdStanPHP builds the Stan data from the same formula through phit, then runs CmdStan.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">

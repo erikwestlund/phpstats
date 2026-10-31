@@ -2,7 +2,7 @@
     <article class="max-w-3xl">
         <h1 class="text-3xl font-semibold tracking-tight">Binary and count outcomes</h1>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            This vignette fits generalized linear models from R formulas.
+            This example fits generalized linear models from R formulas.
             phplyr's glm() passes the formula and the phibble DataFrame to Phit\fit_glm(), which builds R's model matrix and fits the model.
             The coefficient names, deviances, and AIC follow R's glm().
         </p>

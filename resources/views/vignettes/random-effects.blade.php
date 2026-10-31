@@ -7,7 +7,7 @@
             Those variances give each school an interval.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            This vignette fits the school scores data with random intercepts, then with random study-hours slopes.
+            This example fits the school scores data with random intercepts, then with random study-hours slopes.
             phiz's random_effects_plot() draws the caterpillar plot from the fit alone, using the reported variances.
             The intervals treat the fixed effects and variance components as known, as lme4's do.
         </p>
