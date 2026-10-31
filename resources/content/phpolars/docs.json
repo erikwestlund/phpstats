@@ -117,11 +117,6 @@
                     "id": "not-available",
                     "text": "Not available",
                     "level": 2
-                },
-                {
-                    "id": "changes-on-main-since-v0.2.0",
-                    "text": "Changes on main since v0.2.0",
-                    "level": 2
                 }
             ],
             "math": false
