@@ -26,6 +26,14 @@ Stan.
 - <span class="font-mono font-semibold">CmdStanPHP</span> is a port of CmdStanR.
 - <span class="font-mono font-semibold">juphyter</span> is a PHP kernel for Jupyter, modeled on IRkernel, that also runs PHP in Quarto documents.
 
+## Validation
+
+All mathematical and statistical functions are verified against trusted
+statistics and modeling libraries in R and Python. Each package documents its
+checks:
+
+<x-verification-links />
+
 ## Source and license
 
 The source of every package and of this site is in the
