@@ -5,7 +5,7 @@
     $pages = [
         ['label' => 'Installation', 'url' => route('page', 'installation'), 'current' => request()->route('page') === 'installation'],
         ['label' => 'Examples', 'url' => route('vignettes'), 'current' => request()->routeIs('vignettes')],
-        ['label' => 'About PHPstats', 'url' => route('page', 'about'), 'current' => request()->route('page') === 'about'],
+        ['label' => 'About', 'url' => route('page', 'about'), 'current' => request()->route('page') === 'about'],
     ];
 @endphp
 <header class="sticky top-0 z-40 border-b border-white/5 bg-zinc-950/95 backdrop-blur-lg">

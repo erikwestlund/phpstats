@@ -153,7 +153,8 @@ class RootPagesTest extends TestCase
         // No promised version number: the check prints whichever is installed.
         $this->assertStringContainsString('Prints the installed version.', $text);
         $this->assertStringNotContainsString(Package::find('phit')->verify()['output'], $text);
-        $this->assertStringContainsString('phit installation guide', $text);
+        $this->assertStringContainsString('Full installation guide →', $text);
+        $this->assertStringContainsString('aria-label="Full installation guide for phit"', $this->get('http://phpstats.test/installation')->content());
 
         $this->assertStringNotContainsString('Optional', $text);
         $this->assertStringNotContainsString('Supported platforms', $text);
@@ -234,13 +235,13 @@ class RootPagesTest extends TestCase
     {
         // The bar carries all three links, in the bar itself and in the row
         // that replaces it on small screens.
-        foreach (['Installation', 'Examples', 'About PHPstats'] as $label) {
+        foreach (['Installation', 'Examples', 'About'] as $label) {
             $this->assertSame(2, substr_count($this->bar($this->get('http://phpstats.test/about')->content()), ">{$label}</a>"), $label);
         }
 
         // Exactly the current page is marked, in both rows, and only there.
         $pages = [
-            'http://phpstats.test/about' => 'About PHPstats',
+            'http://phpstats.test/about' => 'About',
             'http://phpstats.test/installation' => 'Installation',
             'http://phpstats.test/vignettes' => 'Examples',
         ];

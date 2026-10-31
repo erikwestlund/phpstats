@@ -27,7 +27,7 @@
             @endif
         @endif
         @if ($guide)
-            <p class="mt-3 text-sm"><a href="{{ $guide }}" class="font-medium text-php-700 underline decoration-php-300 underline-offset-4 hover:text-php-800 dark:text-php-300 dark:decoration-php-700 dark:hover:text-php-200"><span class="font-mono">{{ $package->name() }}</span> installation guide</a></p>
+            <p class="mt-3 text-sm"><a href="{{ $guide }}" aria-label="Full installation guide for {{ $package->name() }}" class="font-medium text-php-700 underline decoration-php-300 underline-offset-4 hover:text-php-800 dark:text-php-300 dark:decoration-php-700 dark:hover:text-php-200">Full installation guide →</a></p>
         @endif
     @elseif ($package->repository())
         <p class="mt-3 text-[0.9375rem] text-zinc-600 dark:text-zinc-400">

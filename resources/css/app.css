@@ -134,18 +134,18 @@ pre,
 .code-panel {
     color: var(--color-zinc-800);
 }
-.code-panel .hl-keyword { color: var(--color-php-700); }
-.code-panel .hl-value { color: #3f6b2a; }
-.code-panel .hl-variable, .code-panel .hl-property { color: var(--color-zinc-700); }
-.code-panel .hl-operator, .code-panel .hl-comment { color: var(--color-zinc-500); }
+.code-panel .hl-keyword { color: var(--color-php-800); }
+.code-panel .hl-value { color: #1f5214; }
+.code-panel .hl-variable, .code-panel .hl-property { color: var(--color-zinc-800); }
+.code-panel .hl-operator, .code-panel .hl-comment { color: var(--color-zinc-600); }
 .dark .code-panel {
     color-scheme: dark;
     color: var(--color-zinc-200);
 }
-.dark .code-panel .hl-keyword { color: var(--color-php-300); }
-.dark .code-panel .hl-value { color: #b7d59c; }
-.dark .code-panel .hl-variable, .dark .code-panel .hl-property { color: var(--color-zinc-300); }
-.dark .code-panel .hl-operator, .dark .code-panel .hl-comment { color: var(--color-zinc-400); }
+.dark .code-panel .hl-keyword { color: var(--color-php-200); }
+.dark .code-panel .hl-value { color: #cbe8b0; }
+.dark .code-panel .hl-variable, .dark .code-panel .hl-property { color: var(--color-zinc-200); }
+.dark .code-panel .hl-operator, .dark .code-panel .hl-comment { color: var(--color-zinc-300); }
 
 /* Docs synced from the packages' rendered Quarto pages. */
 .docs-content pre,

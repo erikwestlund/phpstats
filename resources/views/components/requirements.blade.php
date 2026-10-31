@@ -23,9 +23,9 @@
 @endphp
 @if ($groups !== [] && $compact)
     {{-- Each row runs in after its label, so no column leaves a gap. --}}
-    <div {{ $attributes->merge(['class' => 'space-y-1 text-[0.9375rem] leading-7 text-zinc-700 dark:text-zinc-300']) }}>
+    <div {{ $attributes->merge(['class' => 'space-y-1 text-[0.9375rem] leading-7 text-zinc-600 dark:text-zinc-400']) }}>
         @foreach ($groups as $label => $items)
-            <p><span class="mr-1.5 text-sm font-medium text-zinc-500 dark:text-zinc-400">{{ $label }}</span> {{ implode(', ', $items) }}</p>
+            <p><span class="mr-1 font-semibold text-zinc-900 dark:text-zinc-100">{{ $label }}:</span> {{ implode(', ', $items) }}</p>
         @endforeach
     </div>
 @elseif ($groups !== [])
