@@ -48,6 +48,11 @@
             "section": "Reference"
         },
         {
+            "title": "janitor",
+            "path": "reference/janitor",
+            "section": "Reference"
+        },
+        {
             "title": "Models",
             "path": "reference/models",
             "section": "Reference"
@@ -299,6 +304,32 @@
                 {
                     "id": "row-wise-operations",
                     "text": "Row-wise operations",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/janitor": {
+            "title": "janitor",
+            "headings": [
+                {
+                    "id": "clean-names",
+                    "text": "Clean names",
+                    "level": 2
+                },
+                {
+                    "id": "remove-empty-rows-and-columns",
+                    "text": "Remove empty rows and columns",
+                    "level": 2
+                },
+                {
+                    "id": "duplicates",
+                    "text": "Duplicates",
+                    "level": 2
+                },
+                {
+                    "id": "frequency-tables",
+                    "text": "Frequency tables",
                     "level": 2
                 }
             ],

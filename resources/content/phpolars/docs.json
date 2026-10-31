@@ -100,6 +100,16 @@
                     "level": 2
                 },
                 {
+                    "id": "ubuntu-and-laravel-forge",
+                    "text": "Ubuntu and Laravel Forge",
+                    "level": 3
+                },
+                {
+                    "id": "laravel-herd",
+                    "text": "Laravel Herd",
+                    "level": 3
+                },
+                {
                     "id": "prebuilt-binaries",
                     "text": "Prebuilt binaries",
                     "level": 2
@@ -219,6 +229,11 @@
                     "level": 2
                 },
                 {
+                    "id": "memory-on-large-files",
+                    "text": "Memory on large files",
+                    "level": 2
+                },
+                {
                     "id": "binary-size",
                     "text": "Binary size",
                     "level": 2
@@ -232,6 +247,11 @@
                 {
                     "id": "what-runs-in-polars",
                     "text": "What runs in Polars",
+                    "level": 2
+                },
+                {
+                    "id": "missing-values",
+                    "text": "Missing values",
                     "level": 2
                 },
                 {

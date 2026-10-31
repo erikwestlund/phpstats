@@ -314,6 +314,16 @@
                     "level": 2
                 },
                 {
+                    "id": "quotes",
+                    "text": "Quotes",
+                    "level": 2
+                },
+                {
+                    "id": "reading-in-chunks",
+                    "text": "Reading in chunks",
+                    "level": 2
+                },
+                {
                     "id": "writing-csv",
                     "text": "Writing CSV",
                     "level": 2

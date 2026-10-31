@@ -123,6 +123,11 @@
                     "level": 3
                 },
                 {
+                    "id": "cmdstanr-1-0",
+                    "text": "CmdStanR 1.0",
+                    "level": 2
+                },
+                {
                     "id": "php-adaptations",
                     "text": "PHP adaptations",
                     "level": 2

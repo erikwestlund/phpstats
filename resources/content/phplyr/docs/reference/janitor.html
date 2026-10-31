@@ -1,0 +1,37 @@
+<p>phplyr has the single-table functions from R’s janitor package. The test suite compares each one with janitor 2.2 output from <code>tests/r/janitor.R</code>.</p>
+<section id="clean-names" class="level2">
+<h2 class="anchored" data-anchor-id="clean-names">Clean names</h2>
+<p><code>clean_names()</code> renames every column of a table, and <code>make_clean_names()</code> applies the same rules to a list of strings. The rules follow janitor’s defaults:</p>
+<ul>
+<li><code>%</code> becomes <code>percent</code>, <code>#</code> becomes <code>number</code>, and quotes are dropped.</li>
+<li>Accented and non-Latin characters are transliterated to ASCII: <code>Café</code> becomes <code>cafe</code>, <code>straße</code> becomes <code>strasse</code>, and <code>αβγ</code> becomes <code>abg</code>.</li>
+<li>Spaces and punctuation become single underscores, and leading and trailing ones are dropped.</li>
+<li>Case changes split words: <code>camelCaseVar</code> becomes <code>camel_case_var</code>, and <code>HTMLParser</code> becomes <code>html_parser</code>. Digits stay attached to their word.</li>
+<li>A name that would start with a digit gets an <code>x</code> prefix, and an empty name becomes <code>x</code>.</li>
+<li>A repeated name gets <code>_2</code>, <code>_3</code>, and so on, in order of appearance.</li>
+</ul>
+<p>Transliteration uses ext-intl, which gives the same results as janitor’s stringi. Without ext-intl, phplyr falls back to iconv, and some names can differ from janitor’s.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>make_clean_names([<span class="st">'First Name'</span><span class="ot">,</span> <span class="st">'first_name'</span><span class="ot">,</span> <span class="st">'% Done'</span><span class="ot">,</span> <span class="st">'1st Place'</span>])<span class="ot">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">// ['first_name', 'first_name_2', 'percent_done', 'x1st_place']</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>pipe(<span class="va">$survey</span><span class="ot">,</span> clean_names())<span class="ot">;</span></span></code></pre></div></div>
+</section>
+<section id="remove-empty-rows-and-columns" class="level2">
+<h2 class="anchored" data-anchor-id="remove-empty-rows-and-columns">Remove empty rows and columns</h2>
+<p><code>remove_empty()</code> drops rows and columns that are entirely NA. Pass <code>'rows'</code> or <code>'cols'</code> to drop only one kind. With <code>cutoff</code> below 1, a row or column is kept when its share of non-NA values is above the cutoff. A cutoff works with only one of <code>'rows'</code> and <code>'cols'</code>. An empty string is a value, as in R.</p>
+</section>
+<section id="duplicates" class="level2">
+<h2 class="anchored" data-anchor-id="duplicates">Duplicates</h2>
+<p><code>get_dupes('email')</code> returns the rows whose values in the given columns appear more than once. The result has the given columns first, then <code>dupe_count</code>, then the other columns. Rows are sorted by <code>dupe_count</code> (descending) and then by the given columns. With no columns, every column is used. A grouped table keeps its groups, but duplicates are found across the whole table.</p>
+</section>
+<section id="frequency-tables" class="level2">
+<h2 class="anchored" data-anchor-id="frequency-tables">Frequency tables</h2>
+<p><code>tabyl('g')</code> counts the values of one column. The result has the values, <code>n</code>, and <code>percent</code>. When the column has NAs, <code>valid_percent</code> gives each share with NA left out. <code>showNa: false</code> drops the NA row instead.</p>
+<p><code>tabyl('g', 'h')</code> counts pairs of values. It has one row per value of <code>g</code> and one column of counts per value of <code>h</code>. An NA in <code>h</code> is counted in the <code>NA_</code> column, and an empty string in the <code>emptystring_</code> column.</p>
+<p>Values are sorted as in dplyr’s <code>count()</code>, with NA last. Factors keep their level order, and <code>showMissingLevels: false</code> leaves out unused levels.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pipe(<span class="va">$people</span><span class="ot">,</span> tabyl(<span class="st">'region'</span>))<span class="ot">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pipe(<span class="va">$people</span><span class="ot">,</span> tabyl(<span class="st">'region'</span><span class="ot">,</span> <span class="st">'smoker'</span><span class="ot">,</span> showNa<span class="ot">:</span> <span class="kw">false</span>))<span class="ot">;</span></span></code></pre></div></div>
+<p>janitor’s <code>adorn_*()</code> functions and three-way tables are not included.</p>
+
+
+</section>
