@@ -136,6 +136,16 @@
                     "level": 2
                 },
                 {
+                    "id": "the-kernel",
+                    "text": "The kernel",
+                    "level": 3
+                },
+                {
+                    "id": "quarto",
+                    "text": "Quarto",
+                    "level": 3
+                },
+                {
                     "id": "the-phpstats-packages",
                     "text": "The phpstats packages",
                     "level": 2

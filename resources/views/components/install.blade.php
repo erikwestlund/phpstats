@@ -22,7 +22,7 @@
         <x-requirements class="mt-3" :package="$package" compact />
         @if ($verify)
             <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-                Check the install with <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['command'] }}</code>@if ($versioned), which prints the installed version, for example <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['output'] }}</code>@elseif ($verify['output']), which prints <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['output'] }}</code>@endif.
+                Check the install with <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['command'] }}</code>@if ($versioned), which prints the installed version, for example <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['output'] }}</code>@elseif ($verify['output']), which prints <code class="font-mono text-[0.8125rem] text-zinc-800 dark:text-zinc-200">{{ $verify['output'] }}</code>@endif{{ preg_match('/[.!?]$/', trim((string) $verify['output'])) ? '' : '.' }}
                 {{ $verify['note'] }}
             </p>
         @endif
