@@ -33,7 +33,7 @@ final class SchoolPosterior
     /** The summary shown by the landing page's package explorer, for resources/examples/packages/cmdstanphp.php. */
     public static function explorerSummary(): \Phibble\DataFrame
     {
-        return self::summary(['beta[1]', 'beta[2]', 'sigma', 'tau'], ['mean', 'sd', 'quantile2', 'rhat', 'ess_bulk', 'ess_tail']);
+        return self::summary(['beta[1]', 'beta[2]', 'sigma', 'tau'], ['mean', 'sd', 'quantile2', 'rhat', 'ess_bulk']);
     }
 
     /**

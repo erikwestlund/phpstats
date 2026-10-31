@@ -1,11 +1,3 @@
-@php
-    $packages = \App\Content\Package::all();
-    // The example tabs are Markdown files in resources/pages/home, in file name order.
-    $tabs = collect(glob(resource_path('pages/home/*.md')))->sort()->map(fn (string $file) => [
-        'id' => \Illuminate\Support\Str::slug(pathinfo($file, PATHINFO_FILENAME)),
-        ...\App\Content\Markdown::page($file),
-    ])->values();
-@endphp
 <x-layout :bare="true">
     {{-- Hero --}}
     <section class="relative isolate overflow-hidden bg-zinc-950 text-white">
@@ -31,8 +23,8 @@
                 <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-php-500/20 via-violet-500/10 to-transparent blur-2xl" aria-hidden="true"></div>
                 <x-code-tabs label="OrderReport.php" class="shadow-2xl shadow-black/40 ring-white/10!">
                     <x-slot:pipe>use App\Models\Order;
-use function Phplyr\{col, filter, floor_date, group_by};
-use function Phplyr\{lm, mutate, sum, summarize};
+use function Phplyr\{col, filter, floor_date};
+use function Phplyr\{group_by, mutate, sum, summarize};
 
 $orders = \Phibble\DataFrame::fromQuery(Order::query());
 
@@ -41,8 +33,6 @@ $monthly = $orders |>
     mutate(month: floor_date(col('placed_on'), 'month')) |>
     group_by('month', 'channel') |>
     summarize(revenue: sum('total'));
-
-$fit = $orders |> lm('total ~ items + coupon + channel');
 
 $chart = \Phiz\Plot::of($monthly)
     ->aes(x: 'month', y: 'revenue', color: 'channel')
@@ -59,8 +49,6 @@ $monthly = phplyr($orders)
     ->summarize(revenue: sum('total'))
     ->get();
 
-$fit = phplyr($orders)->lm('total ~ items + coupon + channel');
-
 $chart = \Phiz\Plot::of($monthly)
     ->aes(x: 'month', y: 'revenue', color: 'channel')
     ->line();</x-slot:chain>
@@ -72,38 +60,9 @@ $chart = \Phiz\Plot::of($monthly)
     {{-- The packages: what each one does, its code, and its output --}}
     <section id="packages" class="scroll-mt-16 py-16 sm:py-20">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 class="mb-10 text-center text-3xl font-semibold tracking-tight sm:mb-12 sm:text-4xl">About PHPstats Packages</h2>
+            <h2 class="mb-10 text-center text-3xl font-semibold tracking-tight sm:mb-12 sm:text-4xl">Packages</h2>
             <x-package-explorer />
         </div>
     </section>
 
-    {{-- Examples --}}
-    <section class="bg-zinc-50 py-20 sm:py-24 dark:bg-zinc-900/40">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">Simplify Statistical Workflows in PHP Applications with Native PHP</h2>
-            </div>
-
-            <div x-data="{ tab: '{{ $tabs->first()['id'] ?? '' }}', ids: @js($tabs->pluck('id')) }" x-init="if (ids.includes(location.hash.slice(1))) tab = location.hash.slice(1)" class="mt-14 overflow-hidden rounded-2xl bg-white shadow-xl shadow-php-900/5 ring-1 ring-zinc-200 lg:grid lg:min-h-[36rem] lg:grid-cols-[18rem_1fr] dark:bg-zinc-900 dark:ring-white/10">
-                <div role="tablist" aria-label="Examples" class="flex overflow-x-auto border-b border-zinc-200 lg:block lg:border-b-0 lg:border-r dark:border-white/10">
-                    @foreach ($tabs as $tab)
-                        <button type="button" role="tab" x-on:click="tab = '{{ $tab['id'] }}'; history.replaceState(null, '', '#{{ $tab['id'] }}')"
-                                x-bind:aria-selected="(tab === '{{ $tab['id'] }}').toString()" aria-selected="{{ $loop->first ? 'true' : 'false' }}"
-                                class="group flex w-full shrink-0 items-center gap-3 border-zinc-100 px-5 py-4 text-left text-sm font-medium text-zinc-600 transition hover:bg-zinc-50 hover:text-zinc-900 aria-selected:bg-php-50/70 aria-selected:text-zinc-950 max-lg:w-auto max-lg:border-b-2 max-lg:border-transparent max-lg:aria-selected:border-php-500 lg:border-b lg:border-l-2 lg:border-l-transparent lg:aria-selected:border-l-php-500 dark:border-white/5 dark:text-zinc-400 dark:hover:bg-white/[0.03] dark:hover:text-white dark:aria-selected:bg-php-500/10 dark:aria-selected:text-white">
-                            <x-dynamic-component :component="'heroicon-o-'.($tab['meta']['icon'] ?? 'squares-2x2')" class="size-5 shrink-0 text-zinc-400 group-aria-selected:text-php-500 dark:group-aria-selected:text-php-300" />
-                            <span class="whitespace-nowrap lg:whitespace-normal">{{ $tab['meta']['title'] }}</span>
-                        </button>
-                    @endforeach
-                </div>
-                @foreach ($tabs as $tab)
-                    <div role="tabpanel" x-show="tab === '{{ $tab['id'] }}'" @unless ($loop->first) x-cloak @endunless class="min-w-0 p-6 sm:p-10">
-                        <h3 class="text-xl font-semibold tracking-tight">{{ $tab['meta']['title'] }}</h3>
-                        <div class="prose prose-zinc prose-php mt-5 max-w-none dark:prose-invert prose-p:leading-7">
-                            {!! $tab['html'] !!}
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
 </x-layout>

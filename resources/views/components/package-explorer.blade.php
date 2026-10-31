@@ -1,8 +1,8 @@
 {{--
     The landing page's package explorer: the packages by category on the
-    left, and for the selected one, a few points about it, its example code, and the
-    example's output on the right. The points are inline Markdown, for links to
-    upstream projects and `code`. Code is resources/examples/packages/{key}.php,
+    left, each with its one-line summary, and for the selected one, its
+    example code, the example's output, and a link to the full example in its
+    docs on the right. Code is resources/examples/packages/{key}.php,
     run when the page renders, and its result is the output. An entry in
     config/phpstats.php explorer may instead name a source file and the
     language to highlight it as, for an example that is not a PHP script, such
@@ -80,14 +80,6 @@
                 }
             @endphp
             <div role="tabpanel" id="package-code-{{ $key }}" aria-labelledby="package-tab-{{ $key }}" x-show="open === '{{ $key }}'" @unless ($key === 'phibble') x-cloak @endunless class="flex h-full flex-col">
-                <section class="border-b border-zinc-200 dark:border-white/10">
-                    <h4 class="flex min-h-14 items-center gap-[0.3em] border-b border-zinc-200 px-5 py-3 text-lg font-semibold tracking-tight text-zinc-950 sm:px-7 dark:border-white/10 dark:text-white">About <span class="font-mono">{{ $package->name() }}</span></h4>
-                    <ul class="list-disc space-y-1.5 py-5 pl-10 pr-5 text-[0.9375rem] leading-normal text-zinc-700 marker:text-zinc-400 sm:pl-12 sm:pr-7 dark:text-zinc-300 [&_a]:font-medium [&_a]:text-php-600 [&_a]:underline [&_a]:decoration-php-300 [&_a]:underline-offset-2 [&_a]:hover:text-php-500 [&_a.package-link]:font-mono [&_a.package-link]:text-[0.9375em] [&_a.package-link]:font-bold [&_a.package-link]:text-php-700 [&_a.package-link]:no-underline [&_a.package-link]:hover:underline [&_code]:rounded [&_code]:bg-zinc-100 [&_code]:px-1 [&_code]:py-px [&_code]:font-mono [&_code]:text-[0.875em] [&_code]:text-zinc-800 dark:[&_a]:text-php-300 dark:[&_a]:decoration-php-300/40 dark:[&_a]:hover:text-php-200 dark:[&_a.package-link]:text-php-200 dark:[&_code]:bg-white/[0.06] dark:[&_code]:text-zinc-200">
-                        @foreach ($explorer[$key]['does'] as $point)
-                            <li>{!! \App\Content\Markdown::inline($point) !!}</li>
-                        @endforeach
-                    </ul>
-                </section>
                 <x-code-tabs :pipe="$code['pipe']" :chain="$code['chain']" :language="$source['language'] ?? 'php'" :label="$explorer[$key]['example']" :spacious="true" class="rounded-none! shadow-none! ring-0!" />
                 <section class="flex flex-1 flex-col bg-zinc-50/70 dark:bg-white/[0.02]">
                     <h4 class="flex min-h-14 items-center border-b border-zinc-200 px-5 py-3 text-base font-semibold sm:px-7 text-zinc-950 dark:border-white/10 dark:text-white">Example output</h4>
@@ -96,8 +88,12 @@
                     @else
                         {!! $output !!}
                     @endif
-                    <a href="{{ $package->url() }}" class="mt-auto inline-flex items-center gap-1.5 border-t border-zinc-200 px-5 py-4 text-[0.9375rem] sm:px-7 font-medium text-php-600 hover:text-php-500 dark:border-white/10 dark:text-php-300 dark:hover:text-php-200">
-                        More about <span class="font-mono">{{ $package->name() }}</span>
+                    @php
+                        $link = $explorer[$key]['link'] ?? null;
+                        $full = $link !== null && in_array($link, $package->docsPaths(), true);
+                    @endphp
+                    <a href="{{ $full ? $package->url('docs', ['path' => $link]) : $package->url('docs') }}" aria-label="{{ $full ? 'Full example' : 'Documentation' }} for {{ $package->name() }}" class="mt-auto inline-flex items-center gap-1.5 border-t border-zinc-200 px-5 py-4 text-[0.9375rem] sm:px-7 font-medium text-php-600 hover:text-php-500 dark:border-white/10 dark:text-php-300 dark:hover:text-php-200">
+                        {{ $full ? 'Full example' : 'Documentation' }}
                         <x-heroicon-m-arrow-right class="size-4" />
                     </a>
                 </section>

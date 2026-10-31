@@ -1,21 +1,20 @@
 <?php
 
+// ---
 use App\Models\Order;
 
-use function Phplyr\{col, phplyr, quarter, round, sum};
+use function Phplyr\{col, mean, n, phplyr, round, sum};
 
 $orders = \Phibble\DataFrame::fromQuery(Order::query());
-// ---
-$shares = phplyr($orders)
-    ->mutate(quarter: quarter(col('placed_on')))
-    ->groupBy('quarter', 'channel')
-    ->summarize(revenue: sum('total'))
-    ->mutate(share: round(col('revenue')->div(sum('revenue')), 3))
-    ->pivotWider(
-        idCols: 'quarter',
-        namesFrom: 'channel',
-        valuesFrom: 'share',
+
+$byChannel = phplyr($orders)
+    ->filter(col('returned')->eq(0))
+    ->groupBy('channel')
+    ->summarize(
+        orders: n(),
+        revenue: sum('total'),
+        average: round(mean('total'), 2),
     )
     ->get();
 
-return $shares;
+return $byChannel;

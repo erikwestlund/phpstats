@@ -40,7 +40,7 @@ return [
         'phit' => ['repo' => 'phpstats/phit', 'ref' => '5690153bc6fa8bb0058aad21b267d0a850eec8a3'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => 'af37e1b45f4dbf2009f80a47de83cc1d996b786e'],
         'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '4b89c39283f78133431f1d4981f9e97229c08d68'],
-        'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '36f0b5c08a006e86f3356065e898175aa555f4b7'],
+        'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '82e8fbee5f0b4680491d169596697f1ed0b74af7'],
     ],
 
     /*
@@ -64,10 +64,10 @@ return [
 
     /*
      * The landing page's package explorer: a one-line summary for the list,
-     * the title of its example, points about each package for its "About"
-     * panel (inline Markdown, for links to upstream projects and `code`;
-     * package names become links to their pages), the label for its output,
-     * and, for examples pages can't run, a stored result: the callable that
+     * the title of its example, the label for its output, the docs path of
+     * the full example its "Full example" link opens (the docs index when
+     * that page has not synced), and, for examples pages can't run, a stored
+     * result: the callable that
      * gives it under result, and under files the paths it is computed from,
      * whose modification times go in the output's cache key, so re-capturing
      * one is enough. Each package's code is resources/examples/packages/{key}.php,
@@ -77,47 +77,27 @@ return [
     'explorer' => [
         'phibble' => [
             'summary' => 'Immutable, typed data frames for PHP.',
-            'example' => 'Example: Load typed columns from the database',
-            'does' => [
-                "Inspired by the design and API of the tidyverse's [tibble](https://tibble.tidyverse.org/), phibble provides typed, immutable data frames for PHP. Operations return a new data frame and leave the original unchanged.",
-                'Columns are typed as `float`, `int`, `bool`, `string`, `factor`, `date`, or `datetime`. Types are inferred on load or set explicitly, and missing values are `null`.',
-                'Data frames load from CSV files, PDO statements, and Eloquent or Doctrine queries, so analysis can start from the application database.',
-                'It is the common table type of the PHPstats packages, accepted by phplyr, phpolars, phiz, phit, and CmdStanPHP.',
-            ],
+            'example' => 'Example: Load an Eloquent query with typed columns',
             'output' => 'Data frame glimpse',
+            'link' => 'examples/read-a-csv',
         ],
         'phpolars' => [
             'summary' => 'Polars data frames for PHP, in a Rust extension.',
-            'example' => 'Example: Aggregate database rows in Polars',
-            'does' => [
-                'Brings [Polars](https://pola.rs/) to PHP as a native extension written in Rust. It follows the Python Polars API and its expression-based approach to data manipulation.',
-                'Provides `DataFrame`, `LazyFrame`, `Series`, and expressions, with lazy execution, joins, aggregations, and window functions.',
-                'Reads query results from any PDO connection with `read_database()`, runs SQL queries, and reads and writes Parquet and Arrow IPC files.',
-                "phibble's `PolarsTable` runs on this extension, so phplyr pipelines can use the Polars engine.",
-            ],
+            'example' => 'Example: Aggregate database rows with expressions',
             'output' => 'Polars table',
+            'link' => 'examples/expressions',
         ],
         'phplyr' => [
             'summary' => 'dplyr and tidyr pipelines for PHP.',
-            'example' => 'Example: Revenue share by channel and quarter',
-            'does' => [
-                "Ports the API and design of the tidyverse's [dplyr](https://dplyr.tidyverse.org/) and [tidyr](https://tidyr.tidyverse.org/) to PHP, keeping their function names, arguments, and conventions.",
-                'Provides verbs for filtering, selecting, mutating, grouping, summarizing, arranging, joining, and reshaping, with grouped window functions, `across()`, `pivot_wider()`, `pivot_longer()`, and nesting.',
-                "Pipelines use PHP 8.5's `|>` operator, with a method chain on PHP 8.3 and 8.4.",
-                'The same pipeline runs on a phibble data frame, in the database as SQL, or in Polars.',
-            ],
+            'example' => 'Example: Filter, group, and summarize orders',
             'output' => 'Data frame preview',
+            'link' => 'examples/group-and-summarize',
         ],
         'juphyter' => [
             'summary' => 'A Jupyter and Quarto kernel for PHP.',
-            'example' => 'Example: Work out an analysis before it reaches the application',
-            'does' => [
-                'Registers a PHP kernel with [Jupyter](https://jupyter.org/), so JupyterLab runs PHP cells and [Quarto](https://quarto.org/) executes a `{php}` block in a `.qmd`. A Quarto document selects the kernel with `jupyter: php` in its front matter.',
-                'A notebook shows each result under the code that produced it, so data loading, pipelines, and model fits can be tried before they move into an application.',
-                "A notebook sees the project it sits in. The engine looks upward from the notebook for `vendor/autoload.php`, so a notebook inside a Composer project has that project's own classes and packages in scope with no configuration.",
-                'Each value gets the richest form the front end can draw: a phibble data frame becomes an HTML table and a phiz plot becomes a chart, with state kept across cells, so a variable bound in one cell is in scope in the next.',
-            ],
+            'example' => 'Example: A PHP cell in a Quarto document',
             'output' => 'Rendered notebook cell',
+            'link' => 'examples/notebook',
             'source' => ['file' => 'packages/juphyter.qmd', 'language' => 'quarto'],
             'stored' => [
                 'result' => [\App\Data\JuphyterCell::class, 'explorerOutput'],
@@ -126,36 +106,21 @@ return [
         ],
         'phiz' => [
             'summary' => 'ggplot2-style charts rendered with Vega-Lite.',
-            'example' => 'Example: Compare fitted trends across genres',
-            'does' => [
-                'Inspired by [ggplot2](https://ggplot2.tidyverse.org/) and the [grammar of graphics](https://link.springer.com/book/9780387245447), phiz brings declarative, layered statistical graphics to PHP.',
-                'Charts are composed from aesthetic mappings, geometric layers, statistical layers such as `smooth()`, scales, labels, and facets with a ggplot2-style API.',
-                'Produces [Vega-Lite](https://vega.github.io/vega-lite/) specifications, which the browser renders, including interactive selections.',
-                'Plots take phibble data frames, arrays of rows, or Laravel collections. Its `<x-phiz>` Blade component redraws a chart when a Livewire component updates.',
-            ],
+            'example' => 'Example: Points with a fitted line per group',
             'output' => 'Chart',
+            'link' => 'examples/layers',
         ],
         'phit' => [
             'summary' => 'Regression, mixed models, and descriptive statistics.',
-            'example' => 'Example: Fit a model and quantify uncertainty',
-            'does' => [
-                'phit fits statistical models directly in PHP. It provides linear models with `fit_lm()`, logistic, probit, and Poisson regression with `fit_glm()`, and mixed-effects models with `fit_lmer()` and `fit_glmer()`.',
-                'It is a native extension written in Rust. It takes phibble data frames and R-style formulas and returns plain PHP arrays.',
-                '[phit-polyfill](https://github.com/phpstats/phit-polyfill) implements the same functions in plain PHP, so the same code runs where the extension cannot be installed. It is slower, and the CSV reader needs the extension.',
-                'Includes probability distributions and descriptive statistics, such as `dist_t_quantile()` and `stat_quantile()`, alongside model fitting.',
-            ],
-            'output' => 'Model summary and slope intervals',
+            'example' => 'Example: Fit a linear model',
+            'output' => 'Model summary',
+            'link' => 'examples/linear-model',
         ],
         'cmdstanphp' => [
             'summary' => 'Bayesian modeling in Stan from PHP.',
-            'example' => 'Example: Fit a hierarchical Bayesian model',
-            'does' => [
-                'Inspired by [CmdStanR](https://mc-stan.org/cmdstanr/), CmdStanPHP is a PHP interface to [Stan](https://mc-stan.org/) for Bayesian modeling. It compiles and runs Stan programs with an installed CmdStan.',
-                'Supports MCMC sampling, optimization, variational inference, Pathfinder, and Laplace approximation.',
-                'Builds Stan data from R-style model formulas and phibble data frames.',
-                'Summarizes posteriors with convergence diagnostics and compares models with PSIS-LOO and WAIC.',
-            ],
+            'example' => 'Example: Sample a hierarchical model and summarize it',
             'output' => 'Posterior summary',
+            'link' => 'examples/sample',
             'stored' => [
                 'result' => [\App\Data\SchoolPosterior::class, 'explorerSummary'],
                 'files' => [\App\Data\SchoolPosterior::path()],

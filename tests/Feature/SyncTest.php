@@ -487,15 +487,15 @@ class SyncTest extends TestCase
             return 'value';
         };
 
-        Example::output('orders/read', 'sync-test', $render, $read);
+        Example::output('packages/phplyr', 'sync-test', $render, $read);
         Example::reset();
-        Example::output('orders/read', 'sync-test', $render, $read);
+        Example::output('packages/phplyr', 'sync-test', $render, $read);
         $this->assertSame(1, $calls, 'the fragment should be cached before the sync');
 
         $this->assertSame(0, $this->syncFromPath());
 
         Example::reset();
-        Example::output('orders/read', 'sync-test', $render, $read);
+        Example::output('packages/phplyr', 'sync-test', $render, $read);
         $this->assertSame(2, $calls, 'the sync should have flushed the fragment');
     }
 

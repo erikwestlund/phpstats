@@ -31,6 +31,11 @@
         {
             "title": "Contributing",
             "path": "development"
+        },
+        {
+            "title": "Show a table and a chart in a notebook",
+            "path": "examples/notebook",
+            "section": "Examples"
         }
     ],
     "pages": {
@@ -55,6 +60,37 @@
                 {
                     "id": "the-phar",
                     "text": "The PHAR",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "examples/notebook": {
+            "title": "Show a table and a chart in a notebook",
+            "headings": [
+                {
+                    "id": "setup",
+                    "text": "Setup",
+                    "level": 2
+                },
+                {
+                    "id": "the-data",
+                    "text": "The data",
+                    "level": 2
+                },
+                {
+                    "id": "a-table",
+                    "text": "A table",
+                    "level": 2
+                },
+                {
+                    "id": "a-chart",
+                    "text": "A chart",
+                    "level": 2
+                },
+                {
+                    "id": "how-it-works",
+                    "text": "How it works",
                     "level": 2
                 }
             ],

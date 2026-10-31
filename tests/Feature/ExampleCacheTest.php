@@ -140,11 +140,11 @@ class ExampleCacheTest extends TestCase
 
     public function test_the_cached_fragment_matches_the_computed_one(): void
     {
-        $cold = Example::output('orders/read', 'example-result', $this->render());
-        $this->assertSame([Example::path('orders/read') => 1], Example::runs());
+        $cold = Example::output('packages/phplyr', 'example-result', $this->render());
+        $this->assertSame([Example::path('packages/phplyr') => 1], Example::runs());
 
         Example::reset();
-        $warm = Example::output('orders/read', 'example-result', $this->render());
+        $warm = Example::output('packages/phplyr', 'example-result', $this->render());
 
         $this->assertSame($cold, $warm);
         $this->assertSame([], Example::runs(), 'the second call should come from the cache');
@@ -172,7 +172,7 @@ class ExampleCacheTest extends TestCase
         $this->landing();
         $this->assertOnlyUncacheableRan();
 
-        $path = Example::path('orders/read');
+        $path = Example::path('packages/phplyr');
         $mtime = filemtime($path);
         try {
             touch($path, $mtime + 10);
@@ -194,14 +194,14 @@ class ExampleCacheTest extends TestCase
 
         foreach ([1, 2] as $attempt) {
             try {
-                Example::output('orders/read', 'failing', $this->render(), $boom);
+                Example::output('packages/phplyr', 'failing', $this->render(), $boom);
                 $this->fail("attempt {$attempt} should have thrown");
             } catch (\RuntimeException) {
                 // Nothing is stored, so the next request tries again.
             }
         }
 
-        $this->assertSame('ok', Example::output('orders/read', 'failing', fn (mixed $v) => $v, fn () => 'ok'));
+        $this->assertSame('ok', Example::output('packages/phplyr', 'failing', fn (mixed $v) => $v, fn () => 'ok'));
     }
 
     public function test_a_missing_extension_still_says_so_on_a_warm_page(): void

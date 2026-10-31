@@ -25,20 +25,22 @@ class LandingPageTest extends TestCase
         }
     }
 
-    public function test_landing_tabs_come_from_markdown_pages_that_call_php(): void
+    public function test_the_landing_page_is_the_hero_and_the_package_explorer(): void
     {
-        $response = $this->get('http://phpstats.test/')->assertOk()
-            ->assertSee('Simplify Statistical Workflows in PHP Applications with Native PHP')
-            ->assertSee('Read data from your app')
-            ->assertSee('&lt;date&gt;', false)            // phibble's inferred column types
-            ->assertSee('2,400 rows')
-            ->assertDontSee('failed to run')
+        $html = $this->get('http://phpstats.test/')->assertOk()
+            ->assertSee('>Packages</h2>', false)
+            ->assertDontSee('Simplify Statistical Workflows')
+            ->assertDontSee('About PHPstats Packages')
             ->assertDontSee('checked against R')
-            ->assertDontSee('<!--blade:', false);
+            ->assertDontSee('<!--blade:', false)
+            ->content();
 
-        if (function_exists('Phit\\fit_lm')) {
-            $response->assertSee('customerReturning');      // the lm() coefficients
-        }
+        // The hero is one workflow: load, summarize, chart. No model fit.
+        preg_match('#OrderReport\.php.*?</section>#s', $html, $hero);
+        $this->assertStringNotContainsString('lm(', strip_tags($hero[0]));
+
+        // No "About {package}" panels: each package shows code, output, and a link.
+        $this->assertDoesNotMatchRegularExpression('#>About <span class="font-mono">#', $html);
     }
 
     public function test_every_package_has_code_on_the_landing_page_and_it_runs(): void
@@ -63,7 +65,14 @@ class LandingPageTest extends TestCase
             }
         }
         $this->assertSame(['beta[1]', 'beta[2]', 'sigma', 'tau'], SchoolPosterior::explorerSummary()->column('variable'));
-        $response->assertSee('PHP 8.3–8.4')->assertDontSee('· Pipe')->assertSee('More about')->assertDontSee("can't run the example");
+        $response->assertSee('PHP 8.3–8.4')->assertDontSee('· Pipe')->assertDontSee("can't run the example");
+
+        // Each panel links its full example in the docs, or the docs until that page syncs.
+        foreach (config('phpstats.explorer') as $key => $entry) {
+            $package = Package::find($key);
+            $url = in_array($entry['link'], $package->docsPaths(), true) ? $package->url('docs', ['path' => $entry['link']]) : $package->url('docs');
+            $response->assertSee('href="'.e($url).'"', false);
+        }
     }
 
     public function test_juphyter_has_an_explorer_panel_with_the_cell_its_kernel_rendered(): void
@@ -79,7 +88,8 @@ class LandingPageTest extends TestCase
 
         // The example is a Quarto document, so the panel shows the front
         // matter line that makes the kernel run the cell below it.
-        $response->assertSee('jupyter: php')->assertSee('group_by');
+        $this->assertMatchesRegularExpression('/jupyter\s*:\s*php/', strip_tags($response->content()));
+        $response->assertSee('group_by');
 
         // Its output is the cell the kernel drew, with phibble's size in the
         // label rather than in the markup, and the word tibble nowhere.
