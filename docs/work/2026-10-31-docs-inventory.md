@@ -183,3 +183,30 @@ hand from the committed copy (host, entries, lastmod only for changed pages).
 Not run: browser row-count guidance; Livewire behavior; Windows. Site check:
 Quarto tabsets switch on phpstats.org (app.js and app.css handle
 `.panel-tabset`); the gallery imports at 3.7 MB.
+
+### CmdStanPHP (5eed17c, reported by cmdstanphp-f5)
+
+All `docs/*.qmd`, released v0.1.1 unless noted.
+
+| Page | Reader and purpose | Disposition | Problems found | Verified by |
+|---|---|---|---|---|
+| index | PHP developer new to Stan | Rewritten | No Stan explanation; no program or where to run it | Script and program run on v0.1.1 |
+| installation | Install, requirements, platforms, CmdStan, toolchain, optional features | Rewritten | "Not on Packagist", path repository with @dev; one-paragraph requirements; internals mixed in | Fresh `composer require` (v0.1.1); `check_cmdstan_toolchain()`; CI matrix |
+| getting-started (new) | First fit and diagnostics | New | — | Run on macOS, CmdStan 2.40.0 |
+| compiling (new) | Builds, stale executables, lock, .gitignore | Moved | — | Source; build-lock tests |
+| mcmc, optimization, variational, generated-quantities, draws, log-density, loo, figures (new) | Guides | Split from inference | Diagnostics after internals | Source; MCMC thresholds from CmdStanFit; others carried over, not rerun |
+| inference.html, testing.html | — | Redirects to mcmc and verification | — | Quarto aliases; importer skips them |
+| api | Reference | Keep, fixed | Links to old guide; "family targets PHP 8.5"; commit hashes as requirements | `git tag --contains`; Packagist constraints |
+| examples (new) | Examples | New; selection unchanged | — | schools, schools_ncp, bernoulli run |
+| compatibility | CmdStanR mapping | Keep, retitled | Rename history told as releases; names and behavior not separated | `git tag --contains` |
+| verification (new) | Evidence | Split from testing | — | tests.yml; local integration 2026-10-31 |
+| contributing (new) | Contributors | Split from testing | "No site has been published" | Pages API |
+| README | GitHub | Rewritten | Clone install; "CI runs 8.2–8.4"; stale Pages and family claims | As installation |
+| notes (next-steps, phiz-readiness) | Historical | Keep, unrendered | Stale items; old repo links | — |
+
+Checks: fresh `composer require`; first compile and sample; `composer test`
+(204, 15 skipped); integration on macOS (49, 5 skipped); lint; `validate
+--strict`; render; link check; CI green (PHP 8.2–8.5, CmdStan 2.37 and
+2.40). Not run: native Windows; build-essential line; optimization,
+variational, LOO, figures, and draws examples (carried over). Site lock
+moved to dev-main 5eed17c.

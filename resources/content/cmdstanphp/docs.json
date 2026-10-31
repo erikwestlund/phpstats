@@ -6,11 +6,58 @@
         },
         {
             "title": "Installation",
-            "path": "installation"
+            "path": "installation",
+            "section": "Getting started"
         },
         {
-            "title": "Inference guide",
-            "path": "inference"
+            "title": "Getting started",
+            "path": "getting-started",
+            "section": "Getting started"
+        },
+        {
+            "title": "Compiling models",
+            "path": "compiling",
+            "section": "Guides"
+        },
+        {
+            "title": "MCMC sampling",
+            "path": "mcmc",
+            "section": "Guides"
+        },
+        {
+            "title": "Optimization and Laplace",
+            "path": "optimization",
+            "section": "Guides"
+        },
+        {
+            "title": "ADVI and Pathfinder",
+            "path": "variational",
+            "section": "Guides"
+        },
+        {
+            "title": "Generated quantities",
+            "path": "generated-quantities",
+            "section": "Guides"
+        },
+        {
+            "title": "Draws, summaries, and saving fits",
+            "path": "draws",
+            "section": "Guides"
+        },
+        {
+            "title": "Log density and model methods",
+            "path": "log-density",
+            "section": "Guides"
+        },
+        {
+            "title": "LOO and WAIC",
+            "path": "loo",
+            "section": "Guides"
+        },
+        {
+            "title": "Figures",
+            "path": "figures",
+            "section": "Guides"
         },
         {
             "title": "API reference",
@@ -18,13 +65,24 @@
             "section": "Reference"
         },
         {
-            "title": "Compatibility contract",
-            "path": "compatibility",
-            "section": "Reference"
+            "title": "Examples",
+            "path": "examples",
+            "section": "Examples"
         },
         {
-            "title": "Testing and GitHub Pages",
-            "path": "testing"
+            "title": "Compatibility with CmdStanR",
+            "path": "compatibility",
+            "section": "Compatibility and limitations"
+        },
+        {
+            "title": "Verification",
+            "path": "verification",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Contributing",
+            "path": "contributing",
+            "section": "Contributing"
         }
     ],
     "pages": {
@@ -110,7 +168,7 @@
             "math": false
         },
         "compatibility": {
-            "title": "Compatibility contract",
+            "title": "Compatibility with CmdStanR",
             "headings": [
                 {
                     "id": "supported-workflows",
@@ -140,67 +198,152 @@
             ],
             "math": false
         },
-        "index": {
-            "title": "CmdStanPHP",
+        "compiling": {
+            "title": "Compiling models",
+            "headings": [
+                {
+                    "id": "create-a-model",
+                    "text": "Create a model",
+                    "level": 2
+                },
+                {
+                    "id": "build-options",
+                    "text": "Build options",
+                    "level": 2
+                },
+                {
+                    "id": "when-a-model-is-rebuilt",
+                    "text": "When a model is rebuilt",
+                    "level": 2
+                },
+                {
+                    "id": "stale-executables",
+                    "text": "Stale executables",
+                    "level": 2
+                },
+                {
+                    "id": "several-processes",
+                    "text": "Several processes",
+                    "level": 2
+                },
+                {
+                    "id": "version-control",
+                    "text": "Version control",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "contributing": {
+            "title": "Contributing",
+            "headings": [
+                {
+                    "id": "set-up",
+                    "text": "Set up",
+                    "level": 2
+                },
+                {
+                    "id": "run-the-tests",
+                    "text": "Run the tests",
+                    "level": 2
+                },
+                {
+                    "id": "continuous-integration",
+                    "text": "Continuous integration",
+                    "level": 2
+                },
+                {
+                    "id": "documentation",
+                    "text": "Documentation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "draws": {
+            "title": "Draws, summaries, and saving fits",
             "headings": [],
             "math": false
         },
-        "inference": {
-            "title": "Inference guide",
+        "examples": {
+            "title": "Examples",
             "headings": [
                 {
-                    "id": "mcmc",
-                    "text": "MCMC",
+                    "id": "bundled-models",
+                    "text": "Bundled models",
                     "level": 2
                 },
                 {
-                    "id": "initialization-from-fits",
-                    "text": "Initialization from fits",
+                    "id": "programs-in-the-repository",
+                    "text": "Programs in the repository",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "figures": {
+            "title": "Figures",
+            "headings": [],
+            "math": false
+        },
+        "generated-quantities": {
+            "title": "Generated quantities",
+            "headings": [
+                {
+                    "id": "standalone-generated-quantities",
+                    "text": "Standalone generated quantities",
                     "level": 2
                 },
                 {
-                    "id": "optimization-and-laplace",
-                    "text": "Optimization and Laplace",
+                    "id": "fixed-parameters",
+                    "text": "Fixed parameters",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "getting-started": {
+            "title": "Getting started",
+            "headings": [
+                {
+                    "id": "the-model",
+                    "text": "The model",
                     "level": 2
                 },
                 {
-                    "id": "advi-and-pathfinder",
-                    "text": "ADVI and Pathfinder",
+                    "id": "compile-and-sample",
+                    "text": "Compile and sample",
                     "level": 2
                 },
                 {
-                    "id": "generated-quantities-and-fixed-parameters",
-                    "text": "Generated quantities and fixed parameters",
+                    "id": "read-the-results",
+                    "text": "Read the results",
                     "level": 2
                 },
                 {
-                    "id": "diagnostics-and-log-density",
-                    "text": "Diagnostics and log density",
+                    "id": "get-the-draws",
+                    "text": "Get the draws",
                     "level": 2
                 },
                 {
-                    "id": "model-methods-and-stan-functions",
-                    "text": "Model methods and Stan functions",
+                    "id": "where-the-files-are",
+                    "text": "Where the files are",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "index": {
+            "title": "CmdStanPHP",
+            "headings": [
+                {
+                    "id": "an-example",
+                    "text": "An example",
                     "level": 2
                 },
                 {
-                    "id": "loo-and-waic",
-                    "text": "LOO and WAIC",
-                    "level": 2
-                },
-                {
-                    "id": "moment-matching",
-                    "text": "Moment matching",
-                    "level": 3
-                },
-                {
-                    "id": "figures",
-                    "text": "Figures",
-                    "level": 2
-                },
-                {
-                    "id": "results-and-persistence",
-                    "text": "Results and persistence",
+                    "id": "what-it-does",
+                    "text": "What it does",
                     "level": 2
                 }
             ],
@@ -210,39 +353,209 @@
             "title": "Installation",
             "headings": [
                 {
-                    "id": "package-setup",
-                    "text": "Package setup",
+                    "id": "requirements",
+                    "text": "Requirements",
                     "level": 2
                 },
                 {
-                    "id": "cmdstan-selection",
-                    "text": "CmdStan selection",
+                    "id": "supported-platforms",
+                    "text": "Supported platforms",
                     "level": 2
                 },
                 {
-                    "id": "compile-a-model",
-                    "text": "Compile a model",
+                    "id": "install-the-package",
+                    "text": "Install the package",
+                    "level": 2
+                },
+                {
+                    "id": "install-a-c-toolchain",
+                    "text": "Install a C++ toolchain",
+                    "level": 2
+                },
+                {
+                    "id": "install-cmdstan",
+                    "text": "Install CmdStan",
+                    "level": 2
+                },
+                {
+                    "id": "select-cmdstan",
+                    "text": "Select CmdStan",
+                    "level": 2
+                },
+                {
+                    "id": "check-the-installation",
+                    "text": "Check the installation",
+                    "level": 2
+                },
+                {
+                    "id": "compile-a-first-model",
+                    "text": "Compile a first model",
+                    "level": 2
+                },
+                {
+                    "id": "optional-extensions",
+                    "text": "Optional extensions",
+                    "level": 2
+                },
+                {
+                    "id": "ffi",
+                    "text": "FFI",
+                    "level": 3
+                },
+                {
+                    "id": "phit",
+                    "text": "phit",
+                    "level": 3
+                },
+                {
+                    "id": "phibble",
+                    "text": "phibble",
+                    "level": 3
+                },
+                {
+                    "id": "vl-convert",
+                    "text": "vl-convert",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "log-density": {
+            "title": "Log density and model methods",
+            "headings": [
+                {
+                    "id": "gradient-checks-and-batch-log-density",
+                    "text": "Gradient checks and batch log density",
+                    "level": 2
+                },
+                {
+                    "id": "in-process-model-methods",
+                    "text": "In-process model methods",
+                    "level": 2
+                },
+                {
+                    "id": "stan-functions",
+                    "text": "Stan functions",
                     "level": 2
                 }
             ],
             "math": false
         },
-        "testing": {
-            "title": "Testing and GitHub Pages",
+        "loo": {
+            "title": "LOO and WAIC",
             "headings": [
                 {
-                    "id": "local-verification",
-                    "text": "Local verification",
+                    "id": "psis-loo",
+                    "text": "PSIS-LOO",
                     "level": 2
                 },
                 {
-                    "id": "continuous-integration",
-                    "text": "Continuous integration",
+                    "id": "moment-matching",
+                    "text": "Moment matching",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "mcmc": {
+            "title": "MCMC sampling",
+            "headings": [
+                {
+                    "id": "run-the-sampler",
+                    "text": "Run the sampler",
                     "level": 2
                 },
                 {
-                    "id": "documentation-site",
-                    "text": "Documentation site",
+                    "id": "check-convergence",
+                    "text": "Check convergence",
+                    "level": 2
+                },
+                {
+                    "id": "threads-and-processes",
+                    "text": "Threads and processes",
+                    "level": 2
+                },
+                {
+                    "id": "initial-values",
+                    "text": "Initial values",
+                    "level": 2
+                },
+                {
+                    "id": "metric",
+                    "text": "Metric",
+                    "level": 2
+                },
+                {
+                    "id": "fixed-parameters",
+                    "text": "Fixed parameters",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "optimization": {
+            "title": "Optimization and Laplace",
+            "headings": [
+                {
+                    "id": "optimize",
+                    "text": "Optimize",
+                    "level": 2
+                },
+                {
+                    "id": "laplace-approximation",
+                    "text": "Laplace approximation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "variational": {
+            "title": "ADVI and Pathfinder",
+            "headings": [
+                {
+                    "id": "advi",
+                    "text": "ADVI",
+                    "level": 2
+                },
+                {
+                    "id": "pathfinder",
+                    "text": "Pathfinder",
+                    "level": 2
+                },
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "verification": {
+            "title": "Verification",
+            "headings": [
+                {
+                    "id": "what-ci-tests",
+                    "text": "What CI tests",
+                    "level": 2
+                },
+                {
+                    "id": "unit-tests",
+                    "text": "Unit tests",
+                    "level": 2
+                },
+                {
+                    "id": "integration-tests",
+                    "text": "Integration tests",
+                    "level": 2
+                },
+                {
+                    "id": "comparisons-with-r",
+                    "text": "Comparisons with R",
+                    "level": 2
+                },
+                {
+                    "id": "limits",
+                    "text": "Limits",
                     "level": 2
                 }
             ],

@@ -1,0 +1,135 @@
+<p>This page fits a first Stan model from PHP. It assumes the package, a C++ toolchain, and CmdStan are installed as described in <a href="phpstats://cmdstanphp/docs/installation">Installation</a>.</p>
+<section id="the-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-model">The model</h2>
+<p>A Stan program declares its data, its parameters, and a model that relates them. This one estimates <code>theta</code>, the probability of a success, from <code>N</code> binary outcomes <code>y</code>. The prior on <code>theta</code> is uniform, so the posterior is a beta distribution.</p>
+<p>Save it as <code>bernoulli.stan</code> in your project directory:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>, <span class="kw">upper</span>=<span class="dv">1</span>&gt; y;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>, <span class="kw">upper</span>=<span class="dv">1</span>&gt; theta;</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  theta ~ beta(<span class="dv">1</span>, <span class="dv">1</span>);</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  y ~ bernoulli(theta);</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></div>
+</section>
+<section id="compile-and-sample" class="level2">
+<h2 class="anchored" data-anchor-id="compile-and-sample">Compile and sample</h2>
+<p>Save this script as <code>bernoulli.php</code> in the same directory:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;?php</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">require</span> <span class="cn">__DIR__</span><span class="op">.</span><span class="st">'/vendor/autoload.php'</span><span class="ot">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="kw">function</span> CmdStan\cmdstan_model<span class="ot">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="va">$model</span> <span class="op">=</span> cmdstan_model(<span class="cn">__DIR__</span><span class="op">.</span><span class="st">'/bernoulli.stan'</span>)<span class="ot">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span> <span class="op">=</span> <span class="va">$model</span>-&gt;sample(</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    data<span class="ot">:</span> [<span class="st">'N'</span> =&gt; <span class="dv">10</span><span class="ot">,</span> <span class="st">'y'</span> =&gt; [<span class="dv">0</span><span class="ot">,</span> <span class="dv">1</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">1</span>]]<span class="ot">,</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    seed<span class="ot">:</span> <span class="dv">123</span><span class="ot">,</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    chains<span class="ot">:</span> <span class="dv">4</span><span class="ot">,</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    parallel_chains<span class="ot">:</span> <span class="dv">4</span><span class="ot">,</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    show_messages<span class="ot">:</span> <span class="kw">false</span><span class="ot">,</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print_r</span>(<span class="va">$fit</span>-&gt;summary(<span class="st">'theta'</span>))<span class="ot">;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print_r</span>(<span class="va">$fit</span>-&gt;diagnosticSummary())<span class="ot">;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print_r</span>(<span class="va">$fit</span>-&gt;diagnosticWarnings())<span class="ot">;</span></span></code></pre></div></div>
+<p>Run it from the project directory:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> bernoulli.php</span></code></pre></div></div>
+<p><code>cmdstan_model()</code> compiles <code>bernoulli.stan</code> to an executable named <code>bernoulli</code> beside it, unless an up-to-date executable is already there. <code>sample()</code> writes the data to a JSON file, runs four Markov chains as four CmdStan processes, and reads their CSV output into a <code>CmdStanMCMC</code> fit. Each chain runs 1,000 warmup iterations, which are discarded, and 1,000 sampling iterations. The fit therefore holds 4,000 draws of <code>theta</code>.</p>
+</section>
+<section id="read-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-results">Read the results</h2>
+<p>The script prints:</p>
+<pre class="text"><code>Array
+(
+    [0] =&gt; Array
+        (
+            [variable] =&gt; theta
+            [mean] =&gt; 0.25688224553065
+            [median] =&gt; 0.241080625
+            [sd] =&gt; 0.12428477287867
+            [mad] =&gt; 0.12715007403
+            [q5] =&gt; 0.08003641255
+            [q95] =&gt; 0.4852966975
+            [rhat] =&gt; 1.0009548425564
+            [ess_bulk] =&gt; 1231.5526335488
+            [ess_tail] =&gt; 1476.7359726913
+            [mcse_mean] =&gt; 0.0034120356567473
+        )
+
+)
+Array
+(
+    [num_divergent] =&gt; Array
+        (
+            [0] =&gt; 0
+            [1] =&gt; 0
+            [2] =&gt; 0
+            [3] =&gt; 0
+        )
+
+    [num_max_treedepth] =&gt; Array
+        (
+            [0] =&gt; 0
+            [1] =&gt; 0
+            [2] =&gt; 0
+            [3] =&gt; 0
+        )
+
+    [ebfmi] =&gt; Array
+        (
+            [0] =&gt; 1.1147963277411
+            [1] =&gt; 0.92340805277899
+            [2] =&gt; 1.2710912715229
+            [3] =&gt; 0.94446252116701
+        )
+
+)
+Array
+(
+)</code></pre>
+<p><code>summary()</code> returns one row per variable. The posterior mean of <code>theta</code> is about 0.26, and 90% of the draws lie between <code>q5</code> and <code>q95</code>, 0.08 and 0.49. The exact posterior is Beta(3, 9), whose mean is 0.25.</p>
+<p>The other columns check whether the chains can be trusted:</p>
+<ul>
+<li><code>rhat</code> compares the chains with each other. Values near 1 indicate that they sampled the same distribution. <a href="https://doi.org/10.1214/20-BA1221">Vehtari et al.&nbsp;(2021)</a> recommend R-hat below 1.01.</li>
+<li><code>ess_bulk</code> and <code>ess_tail</code> are effective sample sizes for the center and the tails of the distribution. The draws are autocorrelated, so they carry less information than 4,000 independent draws. The same paper recommends at least 100 effective draws per chain, 400 here, for both.</li>
+<li><code>mcse_mean</code> is the Monte Carlo standard error of the mean.</li>
+</ul>
+<p><code>diagnosticSummary()</code> reports, for each chain, the transitions that diverged, the transitions that reached the maximum tree depth, and the E-BFMI. Divergences mean the sampler could not follow the posterior’s geometry, and estimates may be biased. <code>diagnosticWarnings()</code> lists messages for any of these problems and is empty here. The <a href="phpstats://cmdstanphp/docs/mcmc">MCMC guide</a> explains these diagnostics and what to change when they fail.</p>
+</section>
+<section id="get-the-draws" class="level2">
+<h2 class="anchored" data-anchor-id="get-the-draws">Get the draws</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">$draws</span> <span class="op">=</span> <span class="va">$fit</span>-&gt;draws(<span class="st">'theta'</span><span class="ot">,</span> <span class="st">'draws_matrix'</span>)<span class="ot">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">count</span>(<span class="va">$draws</span>)<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print_r</span>(<span class="fu">array_slice</span>(<span class="va">$draws</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">3</span>))<span class="ot">;</span></span></code></pre></div></div>
+<pre class="text"><code>4000
+Array
+(
+    [0] =&gt; Array
+        (
+            [theta] =&gt; 0.16902558
+        )
+
+    [1] =&gt; Array
+        (
+            [theta] =&gt; 0.46237896
+        )
+
+    [2] =&gt; Array
+        (
+            [theta] =&gt; 0.40915558
+        )
+
+)</code></pre>
+<p><code>draws_matrix</code> is one row per draw, chain after chain. <a href="phpstats://cmdstanphp/docs/draws">Draws, summaries, and saving fits</a> describes the other formats.</p>
+</section>
+<section id="where-the-files-are" class="level2">
+<h2 class="anchored" data-anchor-id="where-the-files-are">Where the files are</h2>
+<p>The executable and two hidden files, <code>.bernoulli.cmdstanphp.json</code> and <code>.bernoulli.cmdstanphp.lock</code>, stay beside <code>bernoulli.stan</code>. The next run reuses the executable. Editing the Stan file makes the next <code>cmdstan_model()</code> call compile again. <a href="phpstats://cmdstanphp/docs/compiling">Compiling models</a> explains when a model is rebuilt.</p>
+<p>The CSV files go into a new directory under the system temporary directory. <code>$fit-&gt;outputFiles()</code> lists them. They are not deleted when the fit is, so pass <code>output_dir</code> to keep them somewhere known, and remove them when they are no longer needed.</p>
+
+
+</section>
