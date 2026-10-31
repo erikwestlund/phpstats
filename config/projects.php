@@ -105,9 +105,9 @@ return [
             'Performance' => 'https://phpstats.github.io/phpolars/performance.html',
         ],
         'overview' => [
-            'phpolars is a native PHP extension, written in Rust, that brings the Polars columnar engine to PHP. It installs with PIE as php_polars and targets PHP 8.5 on Linux and macOS.',
-            'Its PolarsTable implements phibble\'s table contract, so phplyr pipelines run in Polars. phibble and phplyr work without it.',
-            'phplyr pipelines run 10 to 100 times faster in Polars than on an in-memory phibble data frame. Converting results back to PHP values takes most of a PolarsTable pipeline\'s time, so pipelines that reduce the data before collecting gain the most.',
+            'phpolars is a native PHP extension, written in Rust, that brings the Polars columnar engine to PHP. PIE installs it as the php_polars extension for PHP 8.3, 8.4, and 8.5 on Linux and macOS.',
+            'phibble\'s PolarsTable holds a table in Polars through this extension, so phplyr pipelines can run in Polars. phibble and phplyr work without phpolars.',
+            'In phplyr\'s backend benchmark (Apple M5 Ultra, PHP 8.5.10, October 2026), pipelines on a PolarsTable ran 1.3 to 15 times faster than on an in-memory phibble data frame. The pipeline that filters with a PHP closure gained the least.',
         ],
     ],
     'juphyter' => [
@@ -124,8 +124,8 @@ return [
             'juphyter is a Jupyter kernel for PHP. It runs PHP cells in a notebook, so analysis with the PHPstats packages can be written and read as a notebook rather than a script.',
             'Quarto names a kernel in a document\'s front matter, so the same kernel executes PHP in a .qmd file and renders it to HTML or PDF.',
             'It corresponds to IRkernel, which runs R in Jupyter, and to knitr, which executes R in Quarto and R Markdown.',
-            'Nothing in the family is on Packagist, so a project registers the repository with composer config, requires phpstats/juphyter as a dev dependency, then runs vendor/bin/juphyter install. That writes the kernelspec JupyterLab and Quarto read.',
-            'The kernel needs PHP 8.3 or later and a Python installation that has Jupyter, because its wrapper runs inside ipykernel.',
+            'Composer installs it globally with composer global require phpstats/juphyter, or into a project as a dev dependency. Then juphyter install, or vendor/bin/juphyter install in a project, writes the kernelspec that JupyterLab and Quarto read.',
+            'The kernel needs PHP 8.3, 8.4, or 8.5 and a Python installation with Jupyter and ipykernel. Its wrapper runs inside ipykernel.',
         ],
     ],
     'cmdstanphp' => [
