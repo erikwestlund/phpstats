@@ -1,0 +1,76 @@
+<section id="php-versions" class="level2">
+<h2 class="anchored" data-anchor-id="php-versions">PHP versions</h2>
+<p>composer.json allows PHP 8.3 and later 8.x versions. CI tests PHP 8.3, 8.4, and 8.5 on Linux.</p>
+<p>The pipe operator <code>|&gt;</code> is PHP 8.5 syntax. On PHP 8.3 and 8.4, the same pipelines are method chains, or calls to <code>pipe()</code>. Every function works on all three versions.</p>
+</section>
+<section id="requirements" class="level2">
+<h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
+<p>Composer installs these with phplyr:</p>
+<ul>
+<li>phibble (<code>phpstats/phibble</code> 0.3, 0.4, or 0.5), which provides the tables. phibble requires PHP’s PDO extension.</li>
+<li><code>symfony/polyfill-php84</code>, which provides PHP 8.4 functions on PHP 8.3.</li>
+</ul>
+<p>The mbstring extension is used by the position-based tidyr functions (<code>separate()</code> with numeric positions, <code>separate_wider_position()</code>, and <code>separate_longer_position()</code>), by <code>make_clean_names()</code> and <code>clean_names()</code>, and by phibble when it prints a table.</p>
+</section>
+<section id="optional-extensions" class="level2">
+<h2 class="anchored" data-anchor-id="optional-extensions">Optional extensions</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Extension</th>
+<th>Enables</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://github.com/phpstats/phit">phit</a></td>
+<td><code>lm()</code>, <code>glm()</code>, <code>lmer()</code>, and <code>glmer()</code>, and native <code>mean()</code>, <code>sd()</code>, <code>var_()</code>, <code>median()</code>, and <code>quantile()</code></td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/phpstats/phpolars">phpolars</a></td>
+<td>phibble’s <code>PolarsTable</code> backend</td>
+</tr>
+<tr class="odd">
+<td>intl</td>
+<td>Transliteration in <code>make_clean_names()</code> and <code>clean_names()</code> that matches R’s janitor</td>
+</tr>
+<tr class="even">
+<td>A PDO driver (SQLite, PostgreSQL, or MySQL)</td>
+<td>Database tables through <code>Phibble\tbl()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Without phit, the descriptive helpers run in PHP, and the model functions throw a <code>RuntimeException</code> that names the missing function. <a href="phpstats://phplyr/docs/reference/models">Models</a> describes phit-polyfill, which defines the model functions in PHP. Without intl, <code>make_clean_names()</code> transliterates with iconv, and some names can differ from janitor’s.</p>
+</section>
+<section id="backends" class="level2">
+<h2 class="anchored" data-anchor-id="backends">Backends</h2>
+<p>A phplyr function calls the methods of phibble’s <code>Table</code> contract, so a pipeline runs on any table that implements it:</p>
+<ul>
+<li><code>Phibble\DataFrame</code> holds the data in PHP memory.</li>
+<li><code>Phibble\tbl($pdo, 'table')</code> builds SQL for SQLite, PostgreSQL, or MySQL. A function given a PHP closure, and an expression without a SQL translation, runs the query so far, loads the rows, and continues in memory. <a href="phpstats://phplyr/docs/reference/databases">Databases and expressions</a> lists those expressions.</li>
+<li><code>Phibble\Polars\PolarsTable</code> belongs to phibble and runs pipelines in Polars through the phpolars extension. A closure step converts the data to a <code>DataFrame</code> and back.</li>
+</ul>
+<p>The test suite runs about 120 pipelines on both <code>DataFrame</code> and <code>PolarsTable</code> and requires the same columns, types, groups, and rows from each.</p>
+</section>
+<section id="not-supported" class="level2">
+<h2 class="anchored" data-anchor-id="not-supported">Not supported</h2>
+<ul>
+<li><strong>Bare column names and tidy evaluation.</strong> Columns are strings, and expressions are closures, helpers, or <code>col()</code> expressions.</li>
+<li><strong><code>mutate(_keep: 'used')</code> and <code>_keep: 'unused'</code> with closures.</strong> These work with expression arguments such as <code>col('x')-&gt;mul(2)</code>, whose columns phplyr can read. A PHP closure does not expose the columns it reads, so phplyr throws an <code>InvalidArgumentException</code>.</li>
+<li><strong><code>cur_data()</code> and <code>cur_data_all()</code></strong>, which dplyr has deprecated. Use <code>pick()</code>.</li>
+<li><strong>Data frame columns and <code>across(.unpack)</code>.</strong> <code>pack()</code> makes a column of named arrays.</li>
+<li><strong>The scoped <code>_at</code>, <code>_if</code>, and <code>_all</code> variants</strong>, such as <code>mutate_at()</code>. Use <code>across()</code>.</li>
+<li><strong>janitor’s <code>adorn_*()</code> functions and three-way <code>tabyl()</code>.</strong></li>
+</ul>
+</section>
+<section id="differences-in-behavior" class="level2">
+<h2 class="anchored" data-anchor-id="differences-in-behavior">Differences in behavior</h2>
+<ul>
+<li><strong><code>_by</code> sorts groups.</strong> dplyr keeps the order of first appearance for <code>.by</code>. phplyr sorts by key, as it does for <code>group_by()</code>.</li>
+<li><strong>Strings are UTF-8.</strong> String functions count UTF-8 characters.</li>
+<li><strong>Date-times parse to UTC</strong> unless a function is given <code>tz:</code>, whatever PHP’s default time zone is, as in lubridate.</li>
+<li><strong>Models return arrays.</strong> <code>lm()</code> and the other model functions return phit’s result array, with R’s coefficient names in <code>columns</code>, in place of a model object.</li>
+</ul>
+
+
+</section>

@@ -280,9 +280,10 @@ class DocsTest extends TestCase
 
         $file = "{$root}/{$key}/docs.json";
         $docs = json_decode(File::get($file), true, flags: JSON_THROW_ON_ERROR);
-        $docs['nav'] = array_values(array_filter(
-            $docs['nav'],
-            fn (array $item) => in_array($item['path'], $paths, true),
+        // A flat nav names no sections, so every item falls in the default group.
+        $docs['nav'] = array_values(array_map(
+            fn (array $item) => array_diff_key($item, ['section' => true]),
+            array_filter($docs['nav'], fn (array $item) => in_array($item['path'], $paths, true)),
         ));
         File::put($file, json_encode($docs, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 

@@ -71,3 +71,28 @@ Not imported by phpstats.org (a companion of phit). Its facts feed phit's
 Checks: fresh install of v0.3.0; Pest on 8.5: 590 passed, 129 skipped; lint
 clean; `composer validate`. Not run: benchmarks (kept with original dates),
 Windows, an older-extension runtime check; CI on 004c60a was pending.
+
+### phplyr (814d0f7, reported by phplyr-f4)
+
+All pages are released content at `docs/<path>.qmd`.
+
+| Page | Reader and purpose | Disposition | Problems found | Verified by |
+|---|---|---|---|---|
+| index | PHP developer | Rewritten | VCS and dev-main install; "not on Packagist yet"; open-ended PHP; filler; no phibble-versus-phplyr explanation | Packagist; composer.json; phibble source |
+| getting-started | First use | Rewritten | Built-in collisions listed 3 of 19; old tab labels; no chain return types | `get_defined_functions()`; `bin/chain-docblock`; runs on 8.5 |
+| coming-from-dplyr | dplyr users | Rewritten | Pipe-only `_by` example; listed six existing functions as unsupported; miscount | src grep; scripted checks |
+| port-r-script | dplyr users | Keep, prerequisites and data link added | — | File checks |
+| reference/single-table, two-table, grouping, vectors, tidyselect, tidyr, databases | Reference | Keep, fixed | `where()` types; join row multiplication and order; unqualified fallback claim | Scripted join and order checks; src |
+| reference/strings-dates | Reference | Keep, added | No encoding or time-zone notes | Scripted UTF-8 and UTC checks |
+| reference/janitor | Reference | Keep | — | janitor tests |
+| reference/models | Reference | Rewritten | No result shape or polyfill guidance | phit result keys; polyfill run (lm, glm within 1e-12 of R) |
+| gallery | Examples | Keep, notes the phit need | — | Data identical to phit's |
+| compatibility | Limits | New | — | composer.json; CI; scripted checks |
+| performance | Benchmarks | Keep unchanged | — | Versions and dates preserved |
+| development | Contributors | Keep, updated | R script list; tab labels | File checks |
+| README | GitHub | Rewritten short | "phpolars' PolarsTable"; VCS install | Examples run on 8.5 and 8.4 |
+
+Checks: `bin/test` on 8.3, 8.4, 8.5; lint; `chain-docblock --check`;
+`bin/render-docs` with chain/pipe parity; CI run 41211872172 green.
+Verification files regenerated at f7edd6e on 2026-10-31 except polars.json.
+Not run: Windows; PolarsTable parity; the polyfill in CI.

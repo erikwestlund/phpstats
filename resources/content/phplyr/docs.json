@@ -10,7 +10,13 @@
         },
         {
             "title": "Coming from dplyr",
-            "path": "coming-from-dplyr"
+            "path": "coming-from-dplyr",
+            "section": "Guides"
+        },
+        {
+            "title": "Porting an R script",
+            "path": "port-r-script",
+            "section": "Guides"
         },
         {
             "title": "Single-table functions",
@@ -48,7 +54,7 @@
             "section": "Reference"
         },
         {
-            "title": "janitor",
+            "title": "Cleaning with janitor",
             "path": "reference/janitor",
             "section": "Reference"
         },
@@ -58,17 +64,18 @@
             "section": "Reference"
         },
         {
-            "title": "Databases",
+            "title": "Databases and expressions",
             "path": "reference/databases",
             "section": "Reference"
         },
         {
             "title": "Gallery",
-            "path": "gallery"
+            "path": "gallery",
+            "section": "Examples"
         },
         {
-            "title": "Porting an R script",
-            "path": "port-r-script"
+            "title": "Compatibility and limitations",
+            "path": "compatibility"
         },
         {
             "title": "Performance",
@@ -76,7 +83,8 @@
         },
         {
             "title": "Development",
-            "path": "development"
+            "path": "development",
+            "section": "Contributing"
         }
     ],
     "pages": {
@@ -99,13 +107,49 @@
                     "level": 2
                 },
                 {
+                    "id": "phplyr-options-and-phibble-methods",
+                    "text": "phplyr options and phibble methods",
+                    "level": 2
+                },
+                {
                     "id": "across-functions",
                     "text": "across() functions",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "compatibility": {
+            "title": "Compatibility and limitations",
+            "headings": [
+                {
+                    "id": "php-versions",
+                    "text": "PHP versions",
+                    "level": 2
+                },
+                {
+                    "id": "requirements",
+                    "text": "Requirements",
+                    "level": 2
+                },
+                {
+                    "id": "optional-extensions",
+                    "text": "Optional extensions",
+                    "level": 2
+                },
+                {
+                    "id": "backends",
+                    "text": "Backends",
                     "level": 2
                 },
                 {
                     "id": "not-supported",
                     "text": "Not supported",
+                    "level": 2
+                },
+                {
+                    "id": "differences-in-behavior",
+                    "text": "Differences in behavior",
                     "level": 2
                 }
             ],
@@ -172,6 +216,11 @@
             "title": "Getting started",
             "headings": [
                 {
+                    "id": "installation",
+                    "text": "Installation",
+                    "level": 2
+                },
+                {
                     "id": "imports",
                     "text": "Imports",
                     "level": 2
@@ -182,13 +231,13 @@
                     "level": 2
                 },
                 {
-                    "id": "chaining-functions",
-                    "text": "Chaining functions",
+                    "id": "pipelines",
+                    "text": "Pipelines",
                     "level": 2
                 },
                 {
-                    "id": "row-closures-and-vector-helpers",
-                    "text": "Row closures and vector helpers",
+                    "id": "columns-row-closures-and-vector-helpers",
+                    "text": "Columns, row closures, and vector helpers",
                     "level": 2
                 },
                 {
@@ -208,18 +257,13 @@
             "title": "phplyr",
             "headings": [
                 {
+                    "id": "phplyr-and-phibble",
+                    "text": "phplyr and phibble",
+                    "level": 2
+                },
+                {
                     "id": "install",
                     "text": "Install",
-                    "level": 2
-                },
-                {
-                    "id": "where-to-go-next",
-                    "text": "Where to go next",
-                    "level": 2
-                },
-                {
-                    "id": "the-family",
-                    "text": "The family",
                     "level": 2
                 }
             ],
@@ -337,7 +381,18 @@
         },
         "reference/models": {
             "title": "Models",
-            "headings": [],
+            "headings": [
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                },
+                {
+                    "id": "without-the-extension",
+                    "text": "Without the extension",
+                    "level": 2
+                }
+            ],
             "math": false
         },
         "reference/single-table": {
