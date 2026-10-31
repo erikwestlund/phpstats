@@ -1,35 +1,10 @@
-<p>Each implemented estimator should have an executable notebook walking through its objective, solution, residuals, uncertainty, likelihood (where relevant), and numerical edge cases. Start with OLS; do not create placeholder notebooks for methods the project does not implement.</p>
+<p>Each walkthrough derives one estimator step by step on a small data set: the objective, the matrices, the solution, the uncertainty and, where it applies, the likelihood. Each shows the intermediate quantities, and the comparison notebooks fit the same models in R, statsmodels and phit. The pages show saved outputs, so reading them needs no Python or R.</p>
+<section id="ols" class="level2">
+<h2 class="anchored" data-anchor-id="ols">OLS</h2>
 <ul>
 <li><a href="phpstats://phit/docs/notebooks/ols-math">OLS mathematics</a>: derives the estimator and evaluates each intermediate quantity on the PHP example data.</li>
 <li><a href="phpstats://phit/docs/notebooks/ols-verification">OLS verification</a>: estimates identical models in R, Python statsmodels and the PHP extension, displays results and checks agreement.</li>
 </ul>
-<p>The walkthroughs are authored as Quarto .qmd files. The rendered website includes saved outputs from docs/_freeze/ so readers can follow the calculations without running them. Executable Python chunks show intermediate matrices and invoke R/PHP through subprocesses for comparisons. The production library still requires neither Python nor R.</p>
-<section id="render-and-recompute" class="level2">
-<h2 class="anchored" data-anchor-id="render-and-recompute">Render and recompute</h2>
-<p>See <a href="phpstats://phit/docs/documentation">documentation setup</a> for Quarto installation and the complete environment setup. Render or preview the saved website from the repository root with <code>quarto render docs</code> or <code>quarto preview docs</code>.</p>
-<p>To refresh calculations, select the virtual environment with QUARTO_PYTHON, build the matching PHP extension, then run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">QUARTO_PYTHON</span><span class="op">=</span><span class="st">"</span><span class="va">$PWD</span><span class="st">/.context/notebooks-venv/bin/python"</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/notebooks-venv/bin/python</span> docs/verifications/compare_ols.py</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/ols-math.qmd</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/ols-verification.qmd</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/notebooks-venv/bin/python</span> docs/verifications/compare_logistic.py</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/logistic-math.qmd</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/logistic-verification.qmd</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/notebooks-venv/bin/python</span> docs/verifications/compare_probit.py</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/notebooks-venv/bin/python</span> docs/verifications/compare_poisson.py</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/probit-math.qmd</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/probit-verification.qmd</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/poisson-math.qmd</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/poisson-verification.qmd</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/notebooks-venv/bin/python</span> docs/verifications/compare_lmm.py</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/lmm-math.qmd</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/notebooks/lmm-verification.qmd</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs</span></code></pre></div></div>
-<p>The individual page renders execute all chunks in order and update _freeze/. Review source, output and comparison-report diffs when regenerating. Outputs record evidence from the environment used, not a guarantee for every platform. The verification scripts capture PHP warnings to keep JSON output valid, then show and check those warnings explicitly. Use a Quarto-compatible editor for interactive .qmd authoring; generated .ipynb files are not the maintained source.</p>
-</section>
-<section id="writing-future-walkthroughs" class="level2">
-<h2 class="anchored" data-anchor-id="writing-future-walkthroughs">Writing future walkthroughs</h2>
-<p>Use a small reproducible simulated dataset with named variables, units, noise, and meaningful relationships. State its generating equation, seed, population parameters, and observed sample correlations. Save and share the actual observations; label them synthetic and explain that correlation alone is not causation. See the <a href="phpstats://phit/docs/design-philosophy#learning-examples-use-meaningful-simulated-data">learning-data convention</a>. State the model assumptions and input ordering, derive the calculations before displaying them, connect fields to production code, and explain edge cases. Supply equivalent R, statsmodels and PHP calls when those references support the estimator. State any differences in statistical conventions rather than silently adapting one library’s results. Keep assertions near the results and preserve executed outputs. Share inputs with reference tests where possible; avoid three separate datasets that only look similar.</p>
 </section>
 <section id="binary-logistic-regression" class="level2">
 <h2 class="anchored" data-anchor-id="binary-logistic-regression">Binary logistic regression</h2>

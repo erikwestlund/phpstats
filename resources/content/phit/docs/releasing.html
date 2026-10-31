@@ -1,0 +1,74 @@
+<p>This page is for maintainers. It describes how release artifacts are built and checked.</p>
+<section id="binary-artifacts" class="level2">
+<h2 class="anchored" data-anchor-id="binary-artifacts">Binary artifacts</h2>
+<p>Create the tested Linux binary bundle locally:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">--target</span> binaries <span class="at">--output</span> type=local,dest=.context/binaries <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-f</span> docker/Dockerfile .</span></code></pre></div></div>
+<p>The archive name includes the library version, PHP major/minor, architecture, NTS mode and Bookworm target. It contains <code>phit.so</code>, installation instructions, a manifest, the project MIT license and dependency notices. A separate SHA-256 file checks archive integrity. Dependency notices include the Cargo dependency closure and build dependencies; exact upstream MIT notices missing from published crate archives are preserved under <code>third-party/</code> with provenance hashes.</p>
+<p>Treat a binary as matching the manifest’s build environment. It is not a universal Linux file. Verify its checksum, use the matching PHP extension directory, enable it for the required SAPIs, restart workers and execute a real fit.</p>
+</section>
+<section id="versioned-release-process" class="level2">
+<h2 class="anchored" data-anchor-id="versioned-release-process">Versioned release process</h2>
+<p>The installer and FPM workflow (<code>packaging.yml</code>) builds and tests the extension on Linux x86_64 and aarch64 at PHP 8.3, 8.4 and 8.5, and prepares the binary archives. Pushing a <code>vX.Y.Z</code> tag starts the release workflow (<code>release.yml</code>):</p>
+<ol type="1">
+<li>It runs the packaging matrix.</li>
+<li>It checks that the tag matches both crate versions and the MIT license, creates the source archive and its checksum, and tests installation from the extracted archive.</li>
+<li>It creates the GitHub release with the source archive, the six binary archives, their checksums and <code>SHA256SUMS</code>.</li>
+<li>It downloads the published assets and installs each binary in the matching PHP image.</li>
+</ol>
+<p>Export rules remove generated website caches and figures from the source archive, and keep the source, locked dependencies, model fixtures, test data and their notices. Packagist reads the tag through the repository’s GitHub webhook.</p>
+<p>Before tagging:</p>
+<ol type="1">
+<li>Run <code>./scripts/check</code> on the exact commit, and wait for CI on main.</li>
+<li>Set the same version in <code>crates/stats-core/Cargo.toml</code> and <code>crates/php-extension/Cargo.toml</code>, and update <code>Cargo.lock</code>.</li>
+<li>Tag the version commit with an annotated tag and push the tag.</li>
+</ol>
+</section>
+<section id="deployment-verification" class="level2">
+<h2 class="anchored" data-anchor-id="deployment-verification">Deployment verification</h2>
+<p><code>tests/deployment.php</code> verifies extension identity/version, automatic-intercept OLS, and a closed-form Poisson log-exposure model. <code>scripts/check-fpm</code> sends an isolated FastCGI request; <code>scripts/check-container</code> checks the final runtime image using its normal FPM pool. The scripts compare CLI/FPM version, coefficients and fitted rate. They fail on a loader error or wrong output instead of trusting <code>php -m</code>.</p>
+<section id="packaging-record-of-2026-10-12" class="level3">
+<h3 class="anchored" data-anchor-id="packaging-record-of-2026-10-12">Packaging record of 2026-10-12</h3>
+<p>This record predates the first tagged release. The <a href="/content/phit/docs/verifications/packaging-results.json">packaging verification</a> states which local image, PHP version and architecture passed on 2026-10-12.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Environment</th>
+<th>PHP</th>
+<th>Verified paths</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linux aarch64, Debian Bookworm/glibc</td>
+<td>8.3.35</td>
+<td>PIE install; complete gate; CLI/FPM in production image; extracted binary; extracted source archive</td>
+</tr>
+<tr class="even">
+<td>Linux aarch64, Debian Bookworm/glibc</td>
+<td>8.4.26</td>
+<td>PIE install; complete gate; CLI/FPM in production image; extracted binary</td>
+</tr>
+<tr class="odd">
+<td>Linux aarch64, Debian Bookworm/glibc</td>
+<td>8.5.11</td>
+<td>PIE install; complete gate; CLI/FPM in production image; extracted binary</td>
+</tr>
+<tr class="even">
+<td>macOS arm64</td>
+<td>8.5.10</td>
+<td>phpize/make/staged installation; native load; complete gate</td>
+</tr>
+</tbody>
+</table>
+<p>Each complete gate passed <strong>56 Rust tests, 11 PHP suites and 8 examples</strong>. The binary bundles preserve 107 dependency notices and their ABI/library hashes. Linux amd64 was configured in CI but had no remote result at the time. macOS FPM, ZTS, Windows, musl, and other PHP versions are not covered by this evidence.</p>
+<p>The distribution gate added in that pass checked 8,618 points. It preserves the original tolerances, using the stored high-precision reference for 25 cases where R and that reference disagree. It retains 43 documented boundary-convention exceptions with separate semantic assertions. The gate exposed normal/log-normal PDF underflow before scale adjustment, which that pass fixed with regression cases. Four independent reference endpoints for degenerate count distributions were also corrected in their generator. Numerical changes and evidence are recorded in the <a href="/content/phit/docs/verifications/packaging-results.json">packaging record</a> and <a href="/content/phit/docs/verifications/distributions-results.json">refreshed distribution comparison</a>.</p>
+
+
+</section>
+</section>

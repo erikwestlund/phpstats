@@ -5,253 +5,299 @@
             "path": "index"
         },
         {
-            "title": "Figure conventions and reproducibility",
-            "path": "visualization",
-            "section": "Project"
+            "title": "Installation",
+            "path": "installation",
+            "section": "Getting started"
         },
         {
-            "title": "Licensing",
-            "path": "licensing",
-            "section": "Project"
+            "title": "Extension or polyfill",
+            "path": "extension-or-polyfill",
+            "section": "Getting started"
         },
         {
-            "title": "v0.1 stabilization and release assessment",
-            "path": "v0.1",
-            "section": "Project"
+            "title": "A first model",
+            "path": "getting-started",
+            "section": "Getting started"
         },
         {
-            "title": "v0.2 numerical API readiness",
-            "path": "v0.2",
-            "section": "Project"
-        },
-        {
-            "title": "Design philosophy",
-            "path": "design-philosophy",
-            "section": "Project"
-        },
-        {
-            "title": "Function reference and contracts",
-            "path": "contracts",
-            "section": "Project"
-        },
-        {
-            "title": "Formulas: fit_lm, fit_glm, fit_lmer, predict",
+            "title": "Model formulas",
             "path": "formulas",
-            "section": "Project"
+            "section": "Guides"
         },
         {
-            "title": "R compatibility",
-            "path": "r-compatibility",
-            "section": "Project"
+            "title": "Linear and generalized linear models",
+            "path": "models",
+            "section": "Guides"
         },
         {
-            "title": "Missing data",
+            "title": "Mixed models",
+            "path": "mixed-models",
+            "section": "Guides"
+        },
+        {
+            "title": "Missing values and sample accounting",
             "path": "missing-data",
-            "section": "Project"
-        },
-        {
-            "title": "Building from source",
-            "path": "development",
-            "section": "Project"
-        },
-        {
-            "title": "Installation and deployment",
-            "path": "deployment",
-            "section": "Project"
-        },
-        {
-            "title": "Verification approach",
-            "path": "verification",
-            "section": "Project"
-        },
-        {
-            "title": "Posterior draws",
-            "path": "draw-numerics",
-            "section": "Project"
-        },
-        {
-            "title": "Posterior-draw scale validation and performance",
-            "path": "benchmarks/draws",
-            "section": "Project"
-        },
-        {
-            "title": "Reading CSV files",
-            "path": "io",
-            "section": "Project"
-        },
-        {
-            "title": "Building and maintaining the documentation",
-            "path": "documentation",
-            "section": "Project"
-        },
-        {
-            "title": "Walkthrough index",
-            "path": "notebooks/index"
+            "section": "Guides"
         },
         {
             "title": "Probability distributions",
             "path": "distributions",
-            "section": "Probability distributions & statistical utilities"
+            "section": "Guides"
         },
         {
             "title": "Descriptive statistics",
             "path": "descriptive",
-            "section": "Probability distributions & statistical utilities"
+            "section": "Guides"
         },
         {
-            "title": "Random numbers",
+            "title": "Seeded sampling",
             "path": "rng",
-            "section": "Probability distributions & statistical utilities"
+            "section": "Guides"
         },
         {
-            "title": "Seeded sampling verification and performance",
-            "path": "benchmarks/rng",
-            "section": "Probability distributions & statistical utilities"
+            "title": "Posterior draws",
+            "path": "draw-numerics",
+            "section": "Guides"
         },
         {
-            "title": "Distribution and utility verification",
+            "title": "Reading CSV files",
+            "path": "io",
+            "section": "Guides"
+        },
+        {
+            "title": "Deploying to servers",
+            "path": "deployment",
+            "section": "Guides"
+        },
+        {
+            "title": "API overview",
+            "path": "contracts",
+            "section": "Reference"
+        },
+        {
+            "title": "Matrix model functions",
+            "path": "reference-models",
+            "section": "Reference"
+        },
+        {
+            "title": "Distributions, statistics, draws, optimization and CSV",
+            "path": "reference-utilities",
+            "section": "Reference"
+        },
+        {
+            "title": "Licensing",
+            "path": "licensing",
+            "section": "Reference"
+        },
+        {
+            "title": "R compatibility",
+            "path": "r-compatibility",
+            "section": "Compatibility and limitations"
+        },
+        {
+            "title": "Verification",
+            "path": "verification",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Distributions: verification",
             "path": "verifications/distributions",
-            "section": "Probability distributions & statistical utilities"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Distribution performance and regression preservation",
+            "title": "Distributions: performance",
             "path": "benchmarks/distributions",
-            "section": "Probability distributions & statistical utilities"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Estimation walkthrough",
-            "path": "notebooks/ols-math",
-            "section": "OLS"
+            "title": "Seeded sampling: performance",
+            "path": "benchmarks/rng",
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "R and statsmodels comparison",
-            "path": "notebooks/ols-verification",
-            "section": "OLS"
+            "title": "Posterior draws: performance",
+            "path": "benchmarks/draws",
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Verification record",
+            "title": "OLS: verification",
             "path": "verifications/ols",
-            "section": "OLS"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Scale and performance",
+            "title": "OLS: R and statsmodels comparison",
+            "path": "notebooks/ols-verification",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "OLS: performance",
             "path": "benchmarks/ols",
-            "section": "OLS"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Math and Rust implementation notes",
-            "path": "ols-math",
-            "section": "OLS"
-        },
-        {
-            "title": "Estimation walkthrough",
-            "path": "notebooks/logistic-math",
-            "section": "Binary logistic regression"
-        },
-        {
-            "title": "R and statsmodels comparison",
-            "path": "notebooks/logistic-verification",
-            "section": "Binary logistic regression"
-        },
-        {
-            "title": "Verification record",
+            "title": "Logistic: verification",
             "path": "verifications/logistic",
-            "section": "Binary logistic regression"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Scale and performance",
+            "title": "Logistic: R and statsmodels comparison",
+            "path": "notebooks/logistic-verification",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Logistic: performance",
             "path": "benchmarks/logistic",
-            "section": "Binary logistic regression"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Estimation walkthrough",
-            "path": "notebooks/probit-math",
-            "section": "Probit regression"
-        },
-        {
-            "title": "R and statsmodels comparison",
-            "path": "notebooks/probit-verification",
-            "section": "Probit regression"
-        },
-        {
-            "title": "Verification record",
+            "title": "Probit: verification",
             "path": "verifications/probit",
-            "section": "Probit regression"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Scale and performance",
+            "title": "Probit: R and statsmodels comparison",
+            "path": "notebooks/probit-verification",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Probit: performance",
             "path": "benchmarks/probit",
-            "section": "Probit regression"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Estimation walkthrough",
-            "path": "notebooks/poisson-math",
-            "section": "Poisson regression"
-        },
-        {
-            "title": "R and statsmodels comparison",
-            "path": "notebooks/poisson-verification",
-            "section": "Poisson regression"
-        },
-        {
-            "title": "Verification record",
+            "title": "Poisson: verification",
             "path": "verifications/poisson",
-            "section": "Poisson regression"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Scale and performance",
+            "title": "Poisson: R and statsmodels comparison",
+            "path": "notebooks/poisson-verification",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Poisson: performance",
             "path": "benchmarks/poisson",
-            "section": "Poisson regression"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Random slopes and REML walkthrough",
-            "path": "notebooks/lmm-general-math",
-            "section": "Gaussian mixed model"
-        },
-        {
-            "title": "Expanded R and optimizer audit",
-            "path": "notebooks/r-compatibility",
-            "section": "Gaussian mixed model"
-        },
-        {
-            "title": "Estimation walkthrough",
-            "path": "notebooks/lmm-math",
-            "section": "Gaussian mixed model"
-        },
-        {
-            "title": "Synthetic reference comparison",
-            "path": "notebooks/lmm-verification",
-            "section": "Gaussian mixed model"
-        },
-        {
-            "title": "Published dataset comparison",
-            "path": "notebooks/lmm-public-verification",
-            "section": "Gaussian mixed model"
-        },
-        {
-            "title": "Verification record",
+            "title": "Gaussian mixed: verification",
             "path": "verifications/lmm",
-            "section": "Gaussian mixed model"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Scale and performance",
+            "title": "Gaussian mixed: synthetic comparison",
+            "path": "notebooks/lmm-verification",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Gaussian mixed: published data",
+            "path": "notebooks/lmm-public-verification",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Gaussian mixed: lme4 optimizer audit",
+            "path": "notebooks/r-compatibility",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Gaussian mixed: performance",
             "path": "benchmarks/lmm",
-            "section": "Gaussian mixed model"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Likelihood and integration walkthrough",
-            "path": "notebooks/logistic-mixed-math",
-            "section": "Binomial mixed models"
-        },
-        {
-            "title": "R and independent Python verification",
+            "title": "Binomial mixed: verification",
             "path": "notebooks/logistic-mixed-verification",
-            "section": "Binomial mixed models"
+            "section": "Benchmarks and verification"
         },
         {
-            "title": "Scale and performance",
+            "title": "Binomial mixed: performance",
             "path": "benchmarks/logistic-mixed",
-            "section": "Binomial mixed models"
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Published data sets",
+            "path": "data/lmm/index",
+            "section": "Benchmarks and verification"
+        },
+        {
+            "title": "Walkthroughs",
+            "path": "notebooks/index",
+            "section": "Mathematics"
+        },
+        {
+            "title": "OLS",
+            "path": "notebooks/ols-math",
+            "section": "Mathematics"
+        },
+        {
+            "title": "OLS: Rust implementation",
+            "path": "ols-math",
+            "section": "Mathematics"
+        },
+        {
+            "title": "Logistic regression",
+            "path": "notebooks/logistic-math",
+            "section": "Mathematics"
+        },
+        {
+            "title": "Probit regression",
+            "path": "notebooks/probit-math",
+            "section": "Mathematics"
+        },
+        {
+            "title": "Poisson regression",
+            "path": "notebooks/poisson-math",
+            "section": "Mathematics"
+        },
+        {
+            "title": "Gaussian random intercept",
+            "path": "notebooks/lmm-math",
+            "section": "Mathematics"
+        },
+        {
+            "title": "Random slopes and REML",
+            "path": "notebooks/lmm-general-math",
+            "section": "Mathematics"
+        },
+        {
+            "title": "Binomial random intercept",
+            "path": "notebooks/logistic-mixed-math",
+            "section": "Mathematics"
+        },
+        {
+            "title": "v0.1 stabilization and release assessment",
+            "path": "v0.1",
+            "section": "History"
+        },
+        {
+            "title": "v0.2 numerical API assessment (historical)",
+            "path": "v0.2",
+            "section": "History"
+        },
+        {
+            "title": "Development",
+            "path": "development",
+            "section": "Contributing"
+        },
+        {
+            "title": "Releasing",
+            "path": "releasing",
+            "section": "Contributing"
+        },
+        {
+            "title": "Building and maintaining the documentation",
+            "path": "documentation",
+            "section": "Contributing"
+        },
+        {
+            "title": "Figure conventions and reproducibility",
+            "path": "visualization",
+            "section": "Contributing"
+        },
+        {
+            "title": "Design philosophy",
+            "path": "design-philosophy",
+            "section": "Contributing"
         }
     ],
     "pages": {
@@ -510,7 +556,7 @@
             "math": false
         },
         "contracts": {
-            "title": "Public contracts",
+            "title": "API overview",
             "headings": [
                 {
                     "id": "php-entry-points",
@@ -523,28 +569,13 @@
                     "level": 2
                 },
                 {
-                    "id": "probability-distributions-and-descriptive-statistics",
-                    "text": "Probability distributions and descriptive statistics",
-                    "level": 2
-                },
-                {
-                    "id": "posterior-draw-numerical-kernels",
-                    "text": "Posterior-draw numerical kernels",
-                    "level": 2
-                },
-                {
-                    "id": "csv-input",
-                    "text": "CSV input",
+                    "id": "matrix-model-contracts",
+                    "text": "Matrix model contracts",
                     "level": 2
                 },
                 {
                     "id": "fixed-intercept-convention-and-migration",
-                    "text": "Fixed-intercept convention and migration",
-                    "level": 2
-                },
-                {
-                    "id": "ols-input-and-output",
-                    "text": "OLS input and output",
+                    "text": "Fixed intercept",
                     "level": 2
                 },
                 {
@@ -558,52 +589,12 @@
                     "level": 2
                 },
                 {
-                    "id": "binary-logistic-regression",
-                    "text": "Binary logistic regression",
-                    "level": 2
-                },
-                {
-                    "id": "probit-regression",
-                    "text": "Probit regression",
-                    "level": 2
-                },
-                {
-                    "id": "poisson-regression",
-                    "text": "Poisson regression",
-                    "level": 2
-                },
-                {
-                    "id": "gaussian-random-intercept-mixed-model",
-                    "text": "Gaussian random-intercept mixed model",
-                    "level": 2
-                },
-                {
-                    "id": "weights-offsets-and-grouped-binomial-responses",
-                    "text": "Weights, offsets and grouped binomial responses",
-                    "level": 2
-                },
-                {
-                    "id": "poisson-exposure-example",
-                    "text": "Poisson exposure example",
-                    "level": 3
-                },
-                {
-                    "id": "general-gaussian-mixed-model-call",
-                    "text": "General Gaussian mixed-model call",
-                    "level": 2
-                },
-                {
-                    "id": "binomial-random-intercept-ml",
-                    "text": "Binomial random-intercept ML",
-                    "level": 2
-                },
-                {
                     "id": "v01-diagnostics-and-errors",
-                    "text": "v0.1 diagnostics and errors",
+                    "text": "Diagnostics and error codes",
                     "level": 2
                 }
             ],
-            "math": true
+            "math": false
         },
         "data/lmm/index": {
             "title": "Published mixed-model verification data: provenance",
@@ -637,16 +628,26 @@
             "math": false
         },
         "deployment": {
-            "title": "Installation, containers and releases",
+            "title": "Deploying to servers",
             "headings": [
                 {
-                    "id": "names-and-supported-packaging-targets",
-                    "text": "Names and supported packaging targets",
+                    "id": "names",
+                    "text": "Names",
                     "level": 2
                 },
                 {
-                    "id": "build-a-ready-to-use-php-fpm-image",
-                    "text": "Build a ready-to-use PHP-FPM image",
+                    "id": "supported-targets",
+                    "text": "Supported targets",
+                    "level": 2
+                },
+                {
+                    "id": "php-fpm",
+                    "text": "PHP-FPM",
+                    "level": 2
+                },
+                {
+                    "id": "a-php-fpm-container-image",
+                    "text": "A PHP-FPM container image",
                     "level": 2
                 },
                 {
@@ -655,34 +656,9 @@
                     "level": 3
                 },
                 {
-                    "id": "install-through-pie",
-                    "text": "Install through PIE",
+                    "id": "manual-build-without-pie",
+                    "text": "Manual build without PIE",
                     "level": 2
-                },
-                {
-                    "id": "manual-source-installation-and-staging",
-                    "text": "Manual source installation and staging",
-                    "level": 2
-                },
-                {
-                    "id": "binary-artifacts",
-                    "text": "Binary artifacts",
-                    "level": 2
-                },
-                {
-                    "id": "versioned-release-process",
-                    "text": "Versioned release process",
-                    "level": 2
-                },
-                {
-                    "id": "deployment-verification",
-                    "text": "Deployment verification",
-                    "level": 2
-                },
-                {
-                    "id": "results-from-this-packaging-pass",
-                    "text": "Results from this packaging pass",
-                    "level": 3
                 }
             ],
             "math": false
@@ -708,6 +684,11 @@
                 {
                     "id": "example-and-verification",
                     "text": "Example and verification",
+                    "level": 2
+                },
+                {
+                    "id": "density-estimation-interpolation-and-the-ecdf",
+                    "text": "Density estimation, interpolation, and the ECDF",
                     "level": 2
                 }
             ],
@@ -750,7 +731,7 @@
             "math": false
         },
         "development": {
-            "title": "Development and installation",
+            "title": "Development",
             "headings": [
                 {
                     "id": "environment",
@@ -760,11 +741,6 @@
                 {
                     "id": "build-and-run",
                     "text": "Build and run",
-                    "level": 2
-                },
-                {
-                    "id": "running-in-an-application",
-                    "text": "Running in an application",
                     "level": 2
                 },
                 {
@@ -825,13 +801,18 @@
                     "level": 2
                 },
                 {
-                    "id": "polyscope-workspace-preview",
-                    "text": "Polyscope workspace preview",
+                    "id": "recompute-the-walkthroughs",
+                    "text": "Recompute the walkthroughs",
                     "level": 2
                 },
                 {
-                    "id": "recompute-the-walkthroughs",
-                    "text": "Recompute the walkthroughs",
+                    "id": "recompute-each-models-notebooks",
+                    "text": "Recompute each model’s notebooks",
+                    "level": 2
+                },
+                {
+                    "id": "writing-a-walkthrough",
+                    "text": "Writing a walkthrough",
                     "level": 2
                 },
                 {
@@ -845,8 +826,8 @@
                     "level": 2
                 },
                 {
-                    "id": "publish-github-pages",
-                    "text": "Publish GitHub Pages",
+                    "id": "publish",
+                    "text": "Publish",
                     "level": 2
                 }
             ],
@@ -882,6 +863,37 @@
                 }
             ],
             "math": true
+        },
+        "extension-or-polyfill": {
+            "title": "Extension or polyfill",
+            "headings": [
+                {
+                    "id": "how-they-coexist",
+                    "text": "How they coexist",
+                    "level": 2
+                },
+                {
+                    "id": "what-the-polyfill-covers",
+                    "text": "What the polyfill covers",
+                    "level": 2
+                },
+                {
+                    "id": "differences",
+                    "text": "Differences",
+                    "level": 2
+                },
+                {
+                    "id": "speed",
+                    "text": "Speed",
+                    "level": 2
+                },
+                {
+                    "id": "versions-and-platforms",
+                    "text": "Versions and platforms",
+                    "level": 2
+                }
+            ],
+            "math": false
         },
         "formulas": {
             "title": "Model formulas",
@@ -949,32 +961,94 @@
             ],
             "math": false
         },
-        "index": {
-            "title": "Project documentation",
+        "getting-started": {
+            "title": "A first model",
             "headings": [
                 {
-                    "id": "probability-distributions-and-statistical-utilities",
-                    "text": "Probability distributions and statistical utilities",
+                    "id": "data",
+                    "text": "Data",
                     "level": 2
                 },
                 {
-                    "id": "binary-logistic-regression",
-                    "text": "Binary logistic regression",
+                    "id": "fit",
+                    "text": "Fit",
                     "level": 2
                 },
                 {
-                    "id": "probit-regression",
-                    "text": "Probit regression",
+                    "id": "read-the-result",
+                    "text": "Read the result",
                     "level": 2
                 },
                 {
-                    "id": "poisson-regression",
-                    "text": "Poisson regression",
+                    "id": "predict",
+                    "text": "Predict",
                     "level": 2
                 },
                 {
-                    "id": "gaussian-random-intercept-mixed-model",
-                    "text": "Gaussian random-intercept mixed model",
+                    "id": "missing-values",
+                    "text": "Missing values",
+                    "level": 2
+                },
+                {
+                    "id": "errors",
+                    "text": "Errors",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "index": {
+            "title": "phit",
+            "headings": [
+                {
+                    "id": "what-phit-provides",
+                    "text": "What phit provides",
+                    "level": 2
+                },
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                },
+                {
+                    "id": "requirements",
+                    "text": "Requirements",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "installation": {
+            "title": "Installation",
+            "headings": [
+                {
+                    "id": "requirements",
+                    "text": "Requirements",
+                    "level": 2
+                },
+                {
+                    "id": "install-with-pie",
+                    "text": "Install with PIE",
+                    "level": 2
+                },
+                {
+                    "id": "prebuilt-linux-binaries",
+                    "text": "Prebuilt Linux binaries",
+                    "level": 2
+                },
+                {
+                    "id": "verify",
+                    "text": "Verify",
+                    "level": 2
+                },
+                {
+                    "id": "declare-the-dependency",
+                    "text": "Declare the dependency",
+                    "level": 2
+                },
+                {
+                    "id": "upgrade",
+                    "text": "Upgrade",
                     "level": 2
                 }
             ],
@@ -991,6 +1065,11 @@
                 {
                     "id": "result",
                     "text": "Result",
+                    "level": 2
+                },
+                {
+                    "id": "reading-in-chunks",
+                    "text": "Reading in chunks",
                     "level": 2
                 },
                 {
@@ -1037,7 +1116,7 @@
             "math": false
         },
         "missing-data": {
-            "title": "Missing data and listwise deletion",
+            "title": "Missing values and sample accounting",
             "headings": [
                 {
                     "id": "what-counts-as-missing",
@@ -1077,17 +1156,94 @@
             ],
             "math": false
         },
-        "notebooks/index": {
-            "title": "Estimation walkthrough notebooks",
+        "mixed-models": {
+            "title": "Mixed models",
             "headings": [
                 {
-                    "id": "render-and-recompute",
-                    "text": "Render and recompute",
+                    "id": "supported-structures",
+                    "text": "Supported structures",
                     "level": 2
                 },
                 {
-                    "id": "writing-future-walkthroughs",
-                    "text": "Writing future walkthroughs",
+                    "id": "a-random-intercept-model",
+                    "text": "A random-intercept model",
+                    "level": 2
+                },
+                {
+                    "id": "reading-a-fit_lmer-result",
+                    "text": "Reading a fit_lmer result",
+                    "level": 2
+                },
+                {
+                    "id": "singular-fits",
+                    "text": "Singular fits",
+                    "level": 2
+                },
+                {
+                    "id": "a-binomial-random-intercept-model",
+                    "text": "A binomial random-intercept model",
+                    "level": 2
+                },
+                {
+                    "id": "prediction",
+                    "text": "Prediction",
+                    "level": 2
+                },
+                {
+                    "id": "matrix-functions",
+                    "text": "Matrix functions",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "models": {
+            "title": "Linear and generalized linear models",
+            "headings": [
+                {
+                    "id": "families-and-links",
+                    "text": "Families and links",
+                    "level": 2
+                },
+                {
+                    "id": "linear-models",
+                    "text": "Linear models",
+                    "level": 2
+                },
+                {
+                    "id": "logistic-and-probit-regression",
+                    "text": "Logistic and probit regression",
+                    "level": 2
+                },
+                {
+                    "id": "poisson-regression",
+                    "text": "Poisson regression",
+                    "level": 2
+                },
+                {
+                    "id": "result-keys",
+                    "text": "Result keys",
+                    "level": 2
+                },
+                {
+                    "id": "weights-and-offsets",
+                    "text": "Weights and offsets",
+                    "level": 2
+                },
+                {
+                    "id": "differences-from-r",
+                    "text": "Differences from R",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "notebooks/index": {
+            "title": "Estimation walkthroughs",
+            "headings": [
+                {
+                    "id": "ols",
+                    "text": "OLS",
                     "level": 2
                 },
                 {
@@ -1730,12 +1886,120 @@
             ],
             "math": false
         },
+        "reference-models": {
+            "title": "Matrix model functions",
+            "headings": [
+                {
+                    "id": "ols-input-and-output",
+                    "text": "OLS input and output",
+                    "level": 2
+                },
+                {
+                    "id": "binary-logistic-regression",
+                    "text": "Binary logistic regression",
+                    "level": 2
+                },
+                {
+                    "id": "probit-regression",
+                    "text": "Probit regression",
+                    "level": 2
+                },
+                {
+                    "id": "poisson-regression",
+                    "text": "Poisson regression",
+                    "level": 2
+                },
+                {
+                    "id": "gaussian-random-intercept-mixed-model",
+                    "text": "Gaussian random-intercept mixed model",
+                    "level": 2
+                },
+                {
+                    "id": "weights-offsets-and-grouped-binomial-responses",
+                    "text": "Weights, offsets and grouped binomial responses",
+                    "level": 2
+                },
+                {
+                    "id": "poisson-exposure-example",
+                    "text": "Poisson exposure example",
+                    "level": 3
+                },
+                {
+                    "id": "general-gaussian-mixed-model-call",
+                    "text": "General Gaussian mixed-model call",
+                    "level": 2
+                },
+                {
+                    "id": "binomial-random-intercept-ml",
+                    "text": "Binomial random-intercept ML",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference-utilities": {
+            "title": "Distributions, statistics, draws, optimization and CSV",
+            "headings": [
+                {
+                    "id": "probability-distributions-and-descriptive-statistics",
+                    "text": "Probability distributions and descriptive statistics",
+                    "level": 2
+                },
+                {
+                    "id": "posterior-draw-numerical-kernels",
+                    "text": "Posterior-draw numerical kernels",
+                    "level": 2
+                },
+                {
+                    "id": "one-dimensional-optimization-and-root-finding",
+                    "text": "One-dimensional optimization and root finding",
+                    "level": 2
+                },
+                {
+                    "id": "csv-input",
+                    "text": "CSV input",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "releasing": {
+            "title": "Releasing",
+            "headings": [
+                {
+                    "id": "binary-artifacts",
+                    "text": "Binary artifacts",
+                    "level": 2
+                },
+                {
+                    "id": "versioned-release-process",
+                    "text": "Versioned release process",
+                    "level": 2
+                },
+                {
+                    "id": "deployment-verification",
+                    "text": "Deployment verification",
+                    "level": 2
+                },
+                {
+                    "id": "packaging-record-of-2026-10-12",
+                    "text": "Packaging record of 2026-10-12",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
         "rng": {
             "title": "Seeded batch sampling",
             "headings": [
                 {
                     "id": "api-and-state-ownership",
                     "text": "API and state ownership",
+                    "level": 2
+                },
+                {
+                    "id": "uniform-categorical-and-permutation-sampling",
+                    "text": "Uniform, categorical and permutation sampling",
                     "level": 2
                 },
                 {
@@ -1798,7 +2062,7 @@
             "math": false
         },
         "v0.2": {
-            "title": "v0.2 numerical API readiness",
+            "title": "v0.2 numerical API assessment (historical)",
             "headings": [
                 {
                     "id": "delivered-scope",

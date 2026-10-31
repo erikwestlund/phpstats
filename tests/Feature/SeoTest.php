@@ -51,9 +51,9 @@ class SeoTest extends TestCase
             $this->assertContains("http://{$key}.phpstats.test", $urls);
         }
 
-        // The docs pages outside the nav, such as phit's notebooks, are listed too.
+        // Every rendered docs page is listed, the ones outside the nav included.
         $docs = array_filter($urls, fn (string $url) => str_starts_with($url, 'http://phit.phpstats.test/docs'));
-        $this->assertGreaterThan(count(Package::find('phit')->docsNav()), count($docs));
+        $this->assertCount(count(Package::find('phit')->docsPaths()), $docs);
 
         $this->assertSame($urls, array_values(array_unique($urls)), 'the sitemap lists a URL twice');
     }
@@ -129,13 +129,13 @@ class SeoTest extends TestCase
             'http://phpstats.test/' => 'A family of PHP libraries for data frames, pipelines, charts, and statistical models, run inside the application that holds the data.',
             'http://phpstats.test/about' => 'PHPstats is a family of open-source PHP packages for data frames, pipelines, statistical models, and charts. Every package is on Packagist.',
             // A package overview: its tagline.
-            'http://phit.phpstats.test/' => 'Fast, verified statistical models for PHP.',
+            'http://phit.phpstats.test/' => 'Regression, mixed models and probability distributions for PHP.',
             // Docs and the other sections: the page title, then the tagline.
-            'http://phit.phpstats.test/docs/contracts' => 'Public contracts in phit. Fast, verified statistical models for PHP.',
-            'http://phit.phpstats.test/vignettes' => 'Examples in phit. Fast, verified statistical models for PHP.',
-            'http://phit.phpstats.test/vignettes/school-scores' => 'School scores in phit. Fast, verified statistical models for PHP.',
-            'http://phit.phpstats.test/benchmarks' => 'Benchmarks in phit. Fast, verified statistical models for PHP.',
-            'http://phit.phpstats.test/verification' => 'Verification in phit. Fast, verified statistical models for PHP.',
+            'http://phit.phpstats.test/docs/contracts' => 'API overview in phit. Regression, mixed models and probability distributions for PHP.',
+            'http://phit.phpstats.test/vignettes' => 'Examples in phit. Regression, mixed models and probability distributions for PHP.',
+            'http://phit.phpstats.test/vignettes/school-scores' => 'School scores in phit. Regression, mixed models and probability distributions for PHP.',
+            'http://phit.phpstats.test/benchmarks' => 'Benchmarks in phit. Regression, mixed models and probability distributions for PHP.',
+            'http://phit.phpstats.test/verification' => 'Verification in phit. Regression, mixed models and probability distributions for PHP.',
             // A tagline that does not end in a period still reads as a sentence.
             'http://phpolars.phpstats.test/benchmarks' => 'Benchmarks in phpolars. Polars data frames for PHP.',
             // A Livewire vignette renders its own view through the same layout.

@@ -49,7 +49,7 @@ L_s^T A^T=L_t^T,\qquad A C_s A^T=C_t.
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="va">$transformed</span> <span class="op">=</span> Phit\draws_affine(<span class="va">$draws</span><span class="ot">,</span> matrix<span class="ot">:</span> <span class="va">$a</span><span class="ot">,</span> shift<span class="ot">:</span> <span class="va">$shift</span>)<span class="ot">;</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">// The unweighted moments of transformed draws equal the target moments.</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">// transformed['log_abs_det'] is the change-of-variables log Jacobian.</span></span></code></pre></div></div>
-<p>The transformation acts in the caller’s chosen parameter coordinates. Handling constrained Stan parameters and any model-specific Jacobians belongs to the caller. The <a href="phpstats://phit/docs/contracts#posterior-draw-numerical-kernels">contracts</a> list result keys and exception codes.</p>
+<p>The transformation acts in the caller’s chosen parameter coordinates. Handling constrained Stan parameters and any model-specific Jacobians belongs to the caller. The <a href="phpstats://phit/docs/reference-utilities#posterior-draw-numerical-kernels">contracts</a> list result keys and exception codes.</p>
 </section>
 <section id="independent-verification" class="level2">
 <h2 class="anchored" data-anchor-id="independent-verification">Independent verification</h2>

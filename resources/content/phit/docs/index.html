@@ -1,76 +1,35 @@
-<p>Fit statistical models directly in PHP using ordinary numeric arrays. The native Rust engine returns coefficients, uncertainty, fitted values, and model statistics. A fixed intercept is added automatically; <code>intercept: false</code> accepts a literal design or fits a model through the origin.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$result</span> <span class="op">=</span> Phit\fit_ols(</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    x<span class="ot">:</span> [[<span class="fl">74.4</span>]<span class="ot">,</span> [<span class="fl">57.4</span>]<span class="ot">,</span> [<span class="fl">66.4</span>]<span class="ot">,</span> [<span class="fl">49.1</span>]<span class="ot">,</span> [<span class="fl">45.7</span>]<span class="ot">,</span> [<span class="fl">92.4</span>]<span class="ot">,</span> [<span class="fl">37.0</span>]<span class="ot">,</span> [<span class="fl">93.9</span>]]<span class="ot">,</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    y<span class="ot">:</span> [<span class="fl">1879.25</span><span class="ot">,</span> <span class="fl">1805.03</span><span class="ot">,</span> <span class="fl">2022.29</span><span class="ot">,</span> <span class="fl">1267.85</span><span class="ot">,</span> <span class="fl">1509.24</span><span class="ot">,</span> <span class="fl">2240.10</span><span class="ot">,</span> <span class="fl">959.51</span><span class="ot">,</span> <span class="fl">2386.54</span>]<span class="ot">,</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">// coefficients: approximately [372.478545, 21.479724] — intercept, floor area.</span></span></code></pre></div></div>
-<p>Start with <a href="phpstats://phit/docs/development">installation</a> and the <a href="phpstats://phit/docs/contracts">PHP contracts</a>. For unequal exposure in a Poisson model, pass <code>offset: log(exposure)</code> as an aligned array on the log scale; see the <a href="phpstats://phit/docs/contracts#poisson-exposure-example">exposure example</a>. Existing callers that supply a ones column should remove it or use <code>intercept: false</code>; random-effect design matrices remain explicit.</p>
-<p>The <a href="phpstats://phit/docs/notebooks/index">math walkthroughs</a> build the matrices and likelihoods step by step. The verification pages compare the same models with R, Python, and independent numerical references.</p>
+<p>phit is a PHP extension, written in Rust, for statistical models. It fits linear, logistic, probit, Poisson and mixed-effects regression models, and evaluates probability distributions and descriptive statistics. Data go in as ordinary PHP arrays and results come back as associative arrays, with no model objects or services.</p>
+<p>Models are written as R formulas: <code>rent ~ area + district</code> models rent from floor area and district. Factors, interactions and transformations such as <code>log(area)</code> are written in the formula, and phit builds the numeric design from named columns.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="kw">function</span> Phit\{fit_lm<span class="ot">,</span> predict}<span class="ot">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span> <span class="op">=</span> fit_lm(<span class="st">'rent ~ area + district'</span><span class="ot">,</span> <span class="va">$flats</span>)<span class="ot">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span>[<span class="st">'named'</span>]<span class="ot">;</span>     <span class="co">// ['(Intercept)' =&gt; 352.64, 'area' =&gt; 19.18, 'districtnorth' =&gt; 203.64, ...]</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span>[<span class="st">'p_values'</span>]<span class="ot">;</span>  <span class="co">// One per coefficient, in the same order</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span>[<span class="st">'r_squared'</span>]<span class="ot">;</span> <span class="co">// 0.927</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="va">$p</span> <span class="op">=</span> predict(<span class="va">$fit</span><span class="ot">,</span> [<span class="st">'area'</span> =&gt; [<span class="fl">55.0</span>]<span class="ot">,</span> <span class="st">'district'</span> =&gt; [<span class="st">'east'</span>]]<span class="ot">,</span> interval<span class="ot">:</span> <span class="st">'prediction'</span>)<span class="ot">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="va">$p</span>[<span class="st">'fit'</span>]<span class="ot">;</span>         <span class="co">// [1407.55], with $p['lower'] and $p['upper']</span></span></code></pre></div></div>
+<p><a href="phpstats://phit/docs/getting-started">A first model</a> runs this example with its data and explains each part of the result.</p>
+<section id="what-phit-provides" class="level2">
+<h2 class="anchored" data-anchor-id="what-phit-provides">What phit provides</h2>
 <ul>
-<li><a href="phpstats://phit/docs/documentation">Building the documentation</a>: Quarto rendering and refreshing computations.</li>
-<li><a href="phpstats://phit/docs/design-philosophy">Design philosophy</a>: priorities, raw interface, helper responsibilities and scope.</li>
-<li><a href="phpstats://phit/docs/contracts">Contracts</a>: current PHP and Rust APIs, shapes, ordering, errors and statistical edge cases.</li>
-<li><a href="phpstats://phit/docs/deployment">Server deployment and releases</a>: PIE, Docker, PHP-FPM and tested artifacts.</li>
-<li><a href="phpstats://phit/docs/development">Development and installation</a>: local setup, separate checkouts, builds and application deployment.</li>
-<li><a href="phpstats://phit/docs/verification">Verification</a>: checks, reference fixtures, tolerances and evidence limits.</li>
-<li><a href="phpstats://phit/docs/missing-data">Missing data</a>: omission policy, warnings and sample metadata.</li>
-<li><a href="phpstats://phit/docs/notebooks/index">Walkthrough notebooks</a>: executable mathematics and comparisons.</li>
-<li><a href="phpstats://phit/docs/verifications/ols">OLS verification</a>: the same fits in R, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/ols-math">OLS mathematics and Rust notes</a>: derivations and implementation.</li>
+<li><strong>Regression models</strong>: <code>fit_lm()</code> and <code>fit_glm()</code> for linear, logistic, probit and Poisson regression, with weights and offsets. See <a href="phpstats://phit/docs/models">Linear and generalized linear models</a>.</li>
+<li><strong>Mixed models</strong>: <code>fit_lmer()</code> for Gaussian models with random intercepts and slopes, and <code>fit_glmer()</code> for a binomial model with a random intercept. See <a href="phpstats://phit/docs/mixed-models">Mixed models</a>.</li>
+<li><strong>Prediction</strong> on new data with confidence and prediction intervals.</li>
+<li><strong>Probability distributions</strong>: densities, CDFs, survival functions and quantiles for 12 families (13 parameterizations), and seeded random samples, including uniform, categorical and permutation sampling. See <a href="phpstats://phit/docs/distributions">Probability distributions</a> and <a href="phpstats://phit/docs/rng">Seeded sampling</a>.</li>
+<li><strong>Descriptive statistics</strong>: means, variances, quantiles, weighted statistics, kernel density estimates and the ECDF. See <a href="phpstats://phit/docs/descriptive">Descriptive statistics</a>.</li>
+<li><strong>Posterior draws</strong>: weighted moments and transforms for MCMC output. See <a href="phpstats://phit/docs/draw-numerics">Posterior draws</a>.</li>
+<li><strong>CSV input</strong>: a native reader used by phibble. See <a href="phpstats://phit/docs/io">Reading CSV files</a>.</li>
 </ul>
-<p>Keep the root README as a quick entry point. Put detailed guidance here and update the relevant document alongside code changes. Distinguish implemented behavior, verified behavior and proposed direction; do not present plans as existing features. Add new documents only when a topic needs its own explanation.</p>
-<section id="probability-distributions-and-statistical-utilities" class="level2">
-<h2 class="anchored" data-anchor-id="probability-distributions-and-statistical-utilities">Probability distributions and statistical utilities</h2>
-<ul>
-<li><a href="phpstats://phit/docs/distributions">Probability distributions</a>: scalar/batch APIs, parameterizations, tails and numerical implementation.</li>
-<li><a href="phpstats://phit/docs/descriptive">Descriptive statistics</a>: type-7 quantiles, weighted definitions and missing policies.</li>
-<li><a href="phpstats://phit/docs/verifications/distributions">R/SciPy/mpmath verification</a>: independent references, error tables and boundary differences.</li>
-<li><a href="phpstats://phit/docs/benchmarks/distributions">Performance</a>: PHP scalar/batch, internal Rust, R and SciPy, plus preserved regression behavior.</li>
-<li><a href="phpstats://phit/docs/rng">Seeded sampling</a>: local ChaCha20 streams, family APIs and reproducibility.</li>
-<li><a href="phpstats://phit/docs/v0.2">v0.2 readiness</a>: completed scope and release limits.</li>
-<li><a href="phpstats://phit/docs/draw-numerics">Posterior-draw kernels</a>: weighted moments, covariance maps and affine transformations.</li>
-<li><a href="phpstats://phit/docs/io">Reading CSV files</a>: <code>read_csv()</code>, the native reader behind phibble’s <code>DataFrame::fromCsv()</code>.</li>
-</ul>
+<p>Each model also has a function over numeric matrices, such as <code>fit_ols()</code> and <code>fit_logistic()</code>, for code that builds its own design matrix. See <a href="phpstats://phit/docs/reference-models">Matrix model functions</a>.</p>
 </section>
-<section id="binary-logistic-regression" class="level2">
-<h2 class="anchored" data-anchor-id="binary-logistic-regression">Binary logistic regression</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/logistic-math">Math walkthrough</a>: likelihood, matrix calculations, Newton/IRLS and Wald inference.</li>
-<li><a href="phpstats://phit/docs/notebooks/logistic-verification">Executed comparison</a>: identical models in R, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/verifications/logistic">Verification record</a>: fixtures, edge cases and tolerances.</li>
-<li><a href="phpstats://phit/docs/benchmarks/logistic">Scale and performance</a>: standard release benchmarks.</li>
-</ul>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Results follow R’s conventions: coefficient names, treatment contrasts, the order of terms, deviance and AIC as <code>glm()</code> reports them, and lme4’s REML estimates. Rows with missing values are dropped with a warning, and every result reports which rows it used. Errors are PHP exceptions with stable numeric codes. The <a href="phpstats://phit/docs/verification">verification</a> pages compare each model with R, lme4 and statsmodels, and record the tolerances.</p>
 </section>
-<section id="probit-regression" class="level2">
-<h2 class="anchored" data-anchor-id="probit-regression">Probit regression</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/probit-math">Math walkthrough</a>: likelihood, scoring, matrices and inference.</li>
-<li><a href="phpstats://phit/docs/notebooks/probit-verification">Executed comparison</a>: identical fits in R, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/verifications/probit">Verification record</a>: conventions and failure cases.</li>
-<li><a href="phpstats://phit/docs/benchmarks/probit">Scale and performance</a>: standard release benchmarks.</li>
-</ul>
-</section>
-<section id="poisson-regression" class="level2">
-<h2 class="anchored" data-anchor-id="poisson-regression">Poisson regression</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/poisson-math">Math walkthrough</a>: likelihood, scoring, matrices and inference.</li>
-<li><a href="phpstats://phit/docs/notebooks/poisson-verification">Executed comparison</a>: identical fits in R, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/verifications/poisson">Verification record</a>: conventions and failure cases.</li>
-<li><a href="phpstats://phit/docs/benchmarks/poisson">Scale and performance</a>: standard release benchmarks.</li>
-</ul>
-</section>
-<section id="gaussian-random-intercept-mixed-model" class="level2">
-<h2 class="anchored" data-anchor-id="gaussian-random-intercept-mixed-model">Gaussian random-intercept mixed model</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/lmm-math">Math walkthrough</a>: covariance, marginal likelihood and shrinkage.</li>
-<li><a href="phpstats://phit/docs/notebooks/lmm-verification">Synthetic reference comparison</a>: lme4 ML, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/notebooks/lmm-public-verification">Published dataset comparison</a>: four studies, lme4, nlme, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/verifications/lmm">Verification record</a>: conventions, boundary fits and limits.</li>
-<li><a href="phpstats://phit/docs/benchmarks/lmm">Scale and performance</a>: release API benchmarks and charts.</li>
-</ul>
-<p>The <a href="phpstats://phit/docs/r-compatibility">R compatibility ledger</a> records the expanded weighted, offset and general Gaussian mixed-model capabilities and remaining work toward full parity. See the <a href="phpstats://phit/docs/notebooks/r-compatibility">executed optimizer audit</a> and <a href="phpstats://phit/docs/notebooks/lmm-general-math">random-slopes/REML walkthrough</a>.</p>
-<p><a href="phpstats://phit/docs/notebooks/logistic-mixed-math">Binomial random-intercept models</a> now add non-Gaussian multilevel likelihoods, with <a href="phpstats://phit/docs/notebooks/logistic-mixed-verification">R/SciPy verification and approximation-error checks</a>.</p>
-<p>See the <a href="phpstats://phit/docs/v0.1">v0.1 stabilization assessment</a> for the offline <code>scripts/check</code> gate, IDE stubs, structured diagnostics, stress fixtures, provenance manifest, performance preservation and remaining release/deployment gates.</p>
+<section id="requirements" class="level2">
+<h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
+<p>phit runs on PHP 8.3, 8.4 and 8.5 (non-thread-safe builds) on Linux and macOS. It installs with PIE, or from prebuilt Linux binaries. See <a href="phpstats://phit/docs/installation">Installation</a>. The pure-PHP <a href="phpstats://phit/docs/extension-or-polyfill">polyfill</a> provides the same functions where the extension cannot be installed, at lower speed.</p>
 
 
 </section>

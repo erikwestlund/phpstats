@@ -1,4 +1,4 @@
-<p>Correctness is part of the implementation. Passing compilation alone does not establish a working PHP extension or correct inference. Use the environment and matching PHP executable described in <a href="phpstats://phit/docs/development">development.qmd</a>.</p>
+<p>This page lists the checks that run on every change, the reference results they compare against, and their tolerances. Running them needs the build environment described in <a href="phpstats://phit/docs/development">Development</a>.</p>
 <section id="routine-checks" class="level2">
 <h2 class="anchored" data-anchor-id="routine-checks">Routine checks</h2>
 <p>From the repository root:</p>
@@ -8,7 +8,7 @@
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS; use libphit.so on Linux</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">STATS_EXTENSION</span><span class="op">=</span><span class="st">"</span><span class="va">$PWD</span><span class="st">/target/debug/libphit.dylib"</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$STATS_EXTENSION</span><span class="st">"</span> <span class="at">-m</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$STATS_EXTENSION</span><span class="st">"</span> <span class="at">-r</span> <span class="st">'echo Phit\hello(), PHP_EOL;'</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$STATS_EXTENSION</span><span class="st">"</span> <span class="at">-r</span> <span class="st">'echo phpversion("phit"), PHP_EOL;'</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$STATS_EXTENSION</span><span class="st">"</span> tests/ols.php</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$STATS_EXTENSION</span><span class="st">"</span> tests/logistic.php</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$STATS_EXTENSION</span><span class="st">"</span> examples/ols.php</span>
@@ -17,7 +17,7 @@
 </section>
 <section id="probability-and-descriptive-apis" class="level2">
 <h2 class="anchored" data-anchor-id="probability-and-descriptive-apis">Probability and descriptive APIs</h2>
-<p>The offline release gate runs <code>tests/distributions.php</code>, <code>tests/descriptive.php</code> and <code>examples/distributions.php</code>, along with the Rust distribution/descriptive suites. Distribution checks include 8,618 reference comparisons, 25 independent mpmath adjudications and 43 documented boundary differences. Descriptive tests add 145 R quantities, type-7 scalar/batch identities, strict/explicit-drop missing policies, pairwise alignment, weight definitions and arithmetic overflow errors. The <a href="phpstats://phit/docs/verifications/distributions">distribution record</a> describes provenance, reference limitations and operation-specific tolerances. The <a href="phpstats://phit/docs/descriptive">utility contract</a> documents undefined correlation separately from numerical failure.</p>
+<p>The offline release gate runs <code>tests/distributions.php</code>, <code>tests/descriptive.php</code> and <code>examples/distributions.php</code>, along with the Rust distribution/descriptive suites. Distribution checks include 8,618 reference comparisons, 25 independent mpmath adjudications and 43 documented boundary differences. Descriptive tests add 145 R quantities, type-7 scalar/batch identities, strict/explicit-drop missing policies, pairwise alignment, weight definitions and arithmetic overflow errors. The <a href="phpstats://phit/docs/verifications/distributions">distribution record</a> describes provenance, reference limitations and operation-specific tolerances. The <a href="phpstats://phit/docs/descriptive">utility contract</a> documents undefined correlation separately from numerical failure. <code>tests/smoothing.php</code> compares 15,639 density, bandwidth, interpolation, and ECDF quantities with R at relative <code>1e-12</code>.</p>
 <p>Refresh PHP error evidence without changing independent expected values:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="ex">.context/v02/python/bin/python</span> docs/verifications/compare_distributions.py <span class="at">--stored-references</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/reference-manifest.py</span>
@@ -105,11 +105,11 @@
 </tr>
 <tr class="even">
 <td>PHP numeric types and loading</td>
-<td>PHP rejects strings, booleans and malformed rows; checks missing policies and warnings; checks hello</td>
+<td>PHP rejects strings, booleans and malformed rows; checks missing policies and warnings; checks the extension loads</td>
 </tr>
 </tbody>
 </table>
-<p>For ordinary fixtures, comparisons include coefficients, covariance, fitted values, residuals, standard errors, t-statistics, p-values, confidence intervals, RSS, residual variance, sigma, R-squared, adjusted R-squared and likelihood. Residual degrees of freedom is also checked. This is a small deterministic suite, not proof of correctness for every floating-point input. It does not currently exercise Linux, PHP-FPM, every PHP 8.3+ version, extreme scales, or every array-key pattern. Do not report those environments or behaviors as verified.</p>
+<p>For ordinary fixtures, comparisons include coefficients, covariance, fitted values, residuals, standard errors, t-statistics, p-values, confidence intervals, RSS, residual variance, sigma, R-squared, adjusted R-squared and likelihood. Residual degrees of freedom is also checked. This is a small deterministic suite, not proof of correctness for every floating-point input. CI runs it on Linux and macOS, and the packaging workflow runs it on Linux x86_64 and aarch64 at PHP 8.3, 8.4 and 8.5, including a PHP-FPM request. It does not exercise extreme scales or every array-key pattern.</p>
 </section>
 <section id="maintaining-evidence" class="level2">
 <h2 class="anchored" data-anchor-id="maintaining-evidence">Maintaining evidence</h2>

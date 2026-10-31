@@ -72,6 +72,62 @@
 <p>The same seed and parameters reproduce exactly the same result within the same build. Asking for fewer samples returns the prefix of a longer call. Calls for other families or seeds do not advance a shared stream. PHP’s <code>mt_srand()</code> and application RNG state are not read or changed.</p>
 <p>Because a seed selects the same underlying uniform sequence across families, reusing it deliberately couples results through their quantiles. Use distinct seeds for separate batches when independent streams are intended. There is no implicit time-based seed, OS entropy lookup, retained RNG object or hidden global state. The runnable <code>examples/rng.php</code> verifies repeatability and prefix behavior.</p>
 </section>
+<section id="uniform-categorical-and-permutation-sampling" class="level2">
+<h2 class="anchored" data-anchor-id="uniform-categorical-and-permutation-sampling">Uniform, categorical and permutation sampling</h2>
+<p>Four samplers have no probability API. They take the same <code>n</code> and <code>seed</code> arguments, have the same limits, and consume one uniform from the same stream per draw.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>R equivalent</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dist_uniform_rng(n, seed, min = 0, max = 1)</code></td>
+<td><code>runif(n, min, max)</code></td>
+<td><code>list&lt;float&gt;</code></td>
+</tr>
+<tr class="even">
+<td><code>dist_categorical_rng(n, seed, prob)</code></td>
+<td><code>sample(length(prob), n, replace = TRUE, prob = prob) - 1</code></td>
+<td><code>list&lt;int&gt;</code></td>
+</tr>
+<tr class="odd">
+<td><code>dist_categorical_rows_rng(seed, prob)</code></td>
+<td>one <code>sample(K, 1, prob = prob[i, ]) - 1</code> per row</td>
+<td><code>list&lt;int&gt;</code></td>
+</tr>
+<tr class="even">
+<td><code>permutation_rng(n, seed, size = null)</code></td>
+<td><code>sample(n, size) - 1</code></td>
+<td><code>list&lt;int&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$x</span> <span class="op">=</span> Phit\dist_uniform_rng(n<span class="ot">:</span> <span class="dv">5</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">1</span><span class="ot">,</span> <span class="fu">min</span><span class="ot">:</span> <span class="op">-</span><span class="dv">1</span><span class="ot">,</span> <span class="fu">max</span><span class="ot">:</span> <span class="dv">1</span>)<span class="ot">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">$categories</span> <span class="op">=</span> [<span class="st">'returns'</span><span class="ot">,</span> <span class="st">'sizing'</span><span class="ot">,</span> <span class="st">'quality'</span>]<span class="ot">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">$picked</span> <span class="op">=</span> <span class="fu">array_map</span>(<span class="kw">fn</span> (<span class="va">$k</span>) =&gt; <span class="va">$categories</span>[<span class="va">$k</span>]<span class="ot">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    Phit\dist_categorical_rng(n<span class="ot">:</span> <span class="dv">5</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">2</span><span class="ot">,</span> prob<span class="ot">:</span> [<span class="op">.</span><span class="dv">2</span><span class="ot">,</span> <span class="op">.</span><span class="dv">5</span><span class="ot">,</span> <span class="op">.</span><span class="dv">3</span>]))<span class="ot">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">// One rating per review, each from its own probabilities.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="va">$ratings</span> <span class="op">=</span> Phit\dist_categorical_rows_rng(seed<span class="ot">:</span> <span class="dv">3</span><span class="ot">,</span> prob<span class="ot">:</span> [[<span class="op">.</span><span class="dv">1</span><span class="ot">,</span> <span class="op">.</span><span class="dv">6</span><span class="ot">,</span> <span class="op">.</span><span class="dv">3</span>]<span class="ot">,</span> [<span class="op">.</span><span class="dv">7</span><span class="ot">,</span> <span class="op">.</span><span class="dv">2</span><span class="ot">,</span> <span class="op">.</span><span class="dv">1</span>]])<span class="ot">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="va">$shuffled</span> <span class="op">=</span> Phit\permutation_rng(n<span class="ot">:</span> <span class="dv">10</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">4</span>)<span class="ot">;</span> <span class="co">// All of 0..9.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="va">$subset</span> <span class="op">=</span> Phit\permutation_rng(n<span class="ot">:</span> <span class="dv">10</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">4</span><span class="ot">,</span> size<span class="ot">:</span> <span class="dv">3</span>)<span class="ot">;</span> <span class="co">// Its first three.</span></span></code></pre></div></div>
+<p>Indices are 0-based positions, so they index PHP lists directly. Add one for R’s 1-based categories.</p>
+<ul>
+<li><strong>Uniform.</strong> Each draw is <code>min + (max - min) * u</code>, as in R’s <code>runif()</code>. <code>min</code> must not exceed <code>max</code>, and <code>min == max</code> gives <code>min</code>.</li>
+<li><strong>Categorical.</strong> <code>prob</code> is a list of finite, nonnegative weights with a positive sum. As in R’s <code>sample()</code>, the weights are divided by their sum. The draw for <code>u</code> is the first index <code>k</code> with <code>u * sum(prob) &lt; prob[0] + ... + prob[k]</code>. A zero weight is never drawn. If rounding puts <code>u * sum(prob)</code> at or above the sum, the last positive weight is drawn.</li>
+<li><strong>Rows.</strong> <code>dist_categorical_rows_rng()</code> takes a list of up to one million such vectors and returns one draw per row. Rows may have different lengths. Draw <code>i</code> uses the <code>i</code>th uniform, so a list of equal rows gives <code>dist_categorical_rng()</code>’s result for the same seed.</li>
+<li><strong>Permutation.</strong> <code>permutation_rng()</code> runs a partial Fisher–Yates shuffle of <code>0..n-1</code>. Step <code>i</code> swaps position <code>i</code> with <code>i + floor(u * (n - i))</code>, capped at <code>n - 1</code>. <code>size</code> is in <code>[0, n]</code> and defaults to <code>n</code>. A smaller <code>size</code> returns the prefix of the full permutation.</li>
+</ul>
+<p>These samplers use the same ChaCha20 uniforms as the other families. Their results therefore differ from R’s for the same seed, as the other families’ results do. A non-list <code>prob</code>, a negative weight, a zero sum, <code>min &gt; max</code>, or <code>size &gt; n</code> raises 1001. A nonfinite weight, weight sum, bound, or uniform draw raises 1003. More than one million draws or rows, or <code>n</code> above one million for a permutation, raises 1007.</p>
+</section>
 <section id="numerical-method-and-reproducibility" class="level2">
 <h2 class="anchored" data-anchor-id="numerical-method-and-reproducibility">Numerical method and reproducibility</h2>
 <p>For every output, ChaCha20 provides a 64-bit word; rand’s <code>Open01&lt;f64&gt;</code> maps its upper 52 bits to a midpoint strictly inside <code>(0,1)</code>. The value is transformed by the existing validated inverse CDF. The algorithm consumes one uniform per sample, including point masses. This uses the established numerical quantile kernels for all 13 parameterizations, without introducing a separate distribution backend.</p>
@@ -86,12 +142,12 @@
 <section id="independent-verification" class="level2">
 <h2 class="anchored" data-anchor-id="independent-verification">Independent verification</h2>
 <p><code>tests/generate-rng-fixtures.py</code> independently implements the ChaCha20 block equations, PCG seed expansion and Open01 mapping. It never calls the extension or rand. <code>tests/generate-rng-fixtures.R</code> maps those saved uniforms through base-R quantiles. Python preserves full integer seeds and exact uniform bits while R supplies the independent transformed reference values.</p>
-<p>The saved <code>tests/fixtures/rng-python-r.json</code> contains <strong>25 cases, 2,000 values</strong>: 384 exact uniform values at four seeds (including zero and PHP_INT_MAX), all 13 families, three additional normal seed cases, and five point masses. Rust checks all values; PHP checks the 1,616 transformed references. Uniform/discrete values match exactly; continuous reference tolerance is <code>1e-15 + 1e-12*abs(reference)</code>. Both suites check repeatability, prefixes, state isolation, domains/limits and nonfinite samples. Deterministic normal/Poisson moment checks complement the reference vectors. PHP additionally verifies parameter names/defaults and strict seed/count types.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> tests/generate-rng-fixtures.py <span class="co"># Intentional Python/R reference refresh</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/reference-manifest.py</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> test <span class="at">-p</span> stats-core <span class="at">--locked</span> <span class="at">--test</span> rng</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$STATS_EXTENSION</span><span class="st">"</span> tests/rng.php</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="va">PHP_CONFIG</span><span class="op">=</span>/path/to/php-config <span class="ex">./scripts/check</span></span></code></pre></div></div>
+<p>The saved <code>tests/fixtures/rng-python-r.json</code> contains <strong>25 cases, 2,000 values</strong>: 384 exact uniform values at four seeds (including zero and PHP_INT_MAX), all 13 families, three additional normal seed cases, and five point masses. Rust checks all values; PHP checks the 1,616 transformed references. Uniform/discrete values match exactly; continuous reference tolerance is <code>1e-15 + 1e-12*abs(reference)</code>. Both suites check repeatability, prefixes, state isolation, domains/limits and nonfinite samples. The uniform, categorical and permutation samplers are checked against the documented maps applied to the fixture’s Python uniforms. Deterministic normal/Poisson moment checks complement the reference vectors. PHP additionally verifies parameter names/defaults and strict seed/count types.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> tests/generate-rng-fixtures.py <span class="co"># Intentional Python/R reference refresh</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/reference-manifest.py</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> test <span class="at">-p</span> stats-core <span class="at">--locked</span> <span class="at">--test</span> rng</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-n</span> <span class="at">-d</span> <span class="st">"extension=</span><span class="va">$STATS_EXTENSION</span><span class="st">"</span> tests/rng.php</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="va">PHP_CONFIG</span><span class="op">=</span>/path/to/php-config <span class="ex">./scripts/check</span></span></code></pre></div></div>
 <p>The offline release gate needs neither Python RNG packages nor R for sampling tests. Fixture provenance includes the Python and R generators, versions, seeds, uniform inputs, expected quantities and hashes. The MIT license notices for the new direct dependencies are retained under <code>third-party/</code>.</p>
 
 

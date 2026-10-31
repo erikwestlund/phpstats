@@ -96,3 +96,36 @@ Checks: `bin/test` on 8.3, 8.4, 8.5; lint; `chain-docblock --check`;
 `bin/render-docs` with chain/pipe parity; CI run 41211872172 green.
 Verification files regenerated at f7edd6e on 2026-10-31 except polars.json.
 Not run: Windows; PolarsTable parity; the polyfill in CI.
+
+### phit (10e856c, reported by phit-5b)
+
+Paths under `docs/`; site URL `phit.phpstats.org/docs/<path>`. Released
+v0.3.0 unless marked.
+
+| Path | Reader and purpose | Disposition | Problems found | Verified by |
+|---|---|---|---|---|
+| index | Overview | Rewritten | "Project documentation"; README-maintenance and add-a-document instructions; release history | Example run on v0.3.0 |
+| installation (new) | Install and verify | New | Old path said "not on Packagist" | `pie install` in php:8.4-cli-bookworm (aarch64); `pie build` on macOS arm64, PHP 8.5.10; release tarball sha256 |
+| extension-or-polyfill (new) | Choosing | New | — | Facts from phit-polyfill 004c60a |
+| getting-started (new) | First model, results, prediction, missing values | New | — | Outputs run on v0.3.0 |
+| formulas | Guide | Keep, fixed | Example used nonexistent columns | Calls run |
+| models, mixed-models (new) | Guides | New | — | Outputs and errors run; schools and cbpp data |
+| missing-data | Guide | Intro rewritten | "now defaults"; ignored formula fits | Contract text |
+| distributions, descriptive, rng, draw-numerics, io | Guides | Small fixes | 0.3.0 samplers missing | Function count |
+| deployment | FPM, Docker, manual build | Rewritten | "Not submitted to Packagist"; future-tense PIE | Workflows, composer.json |
+| contracts → contracts, reference-models, reference-utilities | Reference | Split | 7,300 words on one page; maintainer notes | Old anchors kept; link checker |
+| licensing, r-compatibility | Reference, compatibility | Keep | — | Not rechecked |
+| verification | Evidence | Keep, fixed | Understated CI coverage | packaging.yml, Dockerfile |
+| verifications/*, benchmarks/*, notebooks/*-verification, data/lmm | Evidence | Keep, relabeled | — | Not rerun |
+| notebooks/*-math | Advanced | Keep under Mathematics | Authoring notes in the index | Moved to documentation |
+| v0.1, v0.2 | History | Archived with dated callout | Read as current | git log dates |
+| development, releasing (new), documentation | Contributors | Rewritten, moved | Polyscope text; user material in contributor page; stale release statement | release.yml; Polyscope notes moved to unrendered docs/notes |
+| visualization, design-philosophy | Contributors | Moved | — | — |
+| README | Repo entry | Rewritten | "8.3+"; "Packagist pending"; github.io links | Example run |
+
+Checks: `scripts/check` (Rust tests, clippy, PHP suites, stubs, manifests,
+`site-export --check`); full render; internal link check with zero broken
+links or anchors. Not run: `pie install` on macOS; apt line on a host;
+frozen notebooks. A recorded benchmark JSON keeps a /Users path as evidence.
+The first push (b6ba8b8) failed the site sync on the default `data/`
+exclusion; 10e856c declares an empty exclude list and lists every page.

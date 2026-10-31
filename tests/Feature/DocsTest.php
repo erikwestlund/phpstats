@@ -27,12 +27,9 @@ class DocsTest extends TestCase
         // docs/_quarto.yml, so a page sits in the section phit files it under
         // rather than under the folder it happens to live in.
         $phit = Package::find('phit');
-        $this->assertSame('Gaussian mixed model', $phit->docsGroupOf('notebooks/lmm-math'));
-        $this->assertSame('OLS', $phit->docsGroupOf('benchmarks/ols'));
-
-        // The folder is still the fallback for a page no nav lists.
-        $this->assertNotContains('data/lmm/index', array_column($phit->docsNav(), 'path'));
-        $this->assertSame('Data', $phit->docsGroupOf('data/lmm/index'));
+        $this->assertSame('Mathematics', $phit->docsGroupOf('notebooks/lmm-math'));
+        $this->assertSame('Benchmarks and verification', $phit->docsGroupOf('benchmarks/ols'));
+        $this->assertSame('Benchmarks and verification', $phit->docsGroupOf('data/lmm/index'));
     }
 
     public function test_synced_docs_render_with_resolved_links(): void
@@ -122,8 +119,8 @@ class DocsTest extends TestCase
             }
         }
 
-        $this->assertSame(['phit/data/lmm/index'], $outside);
-        $this->assertCount(51, Package::find('phit')->docsNav());
+        $this->assertSame([], $outside);
+        $this->assertCount(60, Package::find('phit')->docsNav());
     }
 
     public function test_phiz_ships_every_docs_page_but_its_gallery(): void

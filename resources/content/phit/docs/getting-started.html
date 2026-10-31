@@ -1,0 +1,107 @@
+<p>This page fits a linear model to a small table of flats, reads the estimates, and predicts rents for flats that are not in the table. It assumes the extension is <a href="phpstats://phit/docs/installation">installed</a>.</p>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>The formula functions take a data set as named columns: an associative array of <code>column =&gt; list of values</code>, with every column the same length. phibble’s <code>DataFrame</code> is also accepted, through its <code>toModelData()</code> method.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="kw">function</span> Phit\{fit_lm<span class="ot">,</span> predict}<span class="ot">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="va">$flats</span> <span class="op">=</span> [</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'rent'</span> =&gt; [<span class="fl">1879.25</span><span class="ot">,</span> <span class="fl">1805.03</span><span class="ot">,</span> <span class="fl">2022.29</span><span class="ot">,</span> <span class="fl">1267.85</span><span class="ot">,</span> <span class="fl">1509.24</span><span class="ot">,</span> <span class="fl">2240.10</span><span class="ot">,</span> <span class="fl">959.51</span><span class="ot">,</span> <span class="fl">2386.54</span><span class="ot">,</span> <span class="fl">1655.80</span><span class="ot">,</span> <span class="fl">1420.00</span>]<span class="ot">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'area'</span> =&gt; [<span class="fl">74.4</span><span class="ot">,</span> <span class="fl">57.4</span><span class="ot">,</span> <span class="fl">66.4</span><span class="ot">,</span> <span class="fl">49.1</span><span class="ot">,</span> <span class="fl">45.7</span><span class="ot">,</span> <span class="fl">92.4</span><span class="ot">,</span> <span class="fl">37.0</span><span class="ot">,</span> <span class="fl">93.9</span><span class="ot">,</span> <span class="fl">61.2</span><span class="ot">,</span> <span class="fl">52.3</span>]<span class="ot">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'district'</span> =&gt; [<span class="st">'north'</span><span class="ot">,</span> <span class="st">'south'</span><span class="ot">,</span> <span class="st">'north'</span><span class="ot">,</span> <span class="st">'east'</span><span class="ot">,</span> <span class="st">'south'</span><span class="ot">,</span> <span class="st">'north'</span><span class="ot">,</span> <span class="st">'east'</span><span class="ot">,</span> <span class="st">'south'</span><span class="ot">,</span> <span class="st">'east'</span><span class="ot">,</span> <span class="st">'south'</span>]<span class="ot">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>]<span class="ot">;</span></span></code></pre></div></div>
+<p>Numbers are numeric columns. Strings become a factor whose levels are sorted in byte order, so <code>east</code> is the reference level here. <a href="phpstats://phit/docs/formulas#data">Model formulas</a> lists every accepted column type.</p>
+</section>
+<section id="fit" class="level2">
+<h2 class="anchored" data-anchor-id="fit">Fit</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span> <span class="op">=</span> fit_lm(<span class="st">'rent ~ area + district'</span><span class="ot">,</span> <span class="va">$flats</span>)<span class="ot">;</span></span></code></pre></div></div>
+<p>The formula follows R: <code>rent</code> is the response, and <code>area + district</code> adds a slope for floor area and treatment-coded indicators for the districts. An intercept is included unless the formula removes it with <code>- 1</code> or <code>+ 0</code>.</p>
+</section>
+<section id="read-the-result" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-result">Read the result</h2>
+<p>The result is a plain PHP array. Every coefficient list follows the order of <code>columns</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">foreach</span> (<span class="va">$fit</span>[<span class="st">'columns'</span>] <span class="kw">as</span> <span class="va">$i</span> =&gt; <span class="va">$name</span>) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">printf</span>(<span class="st">"%-14s %9.2f %8.2f %7.4f  [%8.2f, %8.2f]</span><span class="sc">\n</span><span class="st">"</span><span class="ot">,</span> <span class="va">$name</span><span class="ot">,</span> <span class="va">$fit</span>[<span class="st">'coefficients'</span>][<span class="va">$i</span>]<span class="ot">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">$fit</span>[<span class="st">'std_errors'</span>][<span class="va">$i</span>]<span class="ot">,</span> <span class="va">$fit</span>[<span class="st">'p_values'</span>][<span class="va">$i</span>]<span class="ot">,</span> ...<span class="va">$fit</span>[<span class="st">'conf_int'</span>][<span class="va">$i</span>])<span class="ot">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></div>
+<pre><code>(Intercept)       352.64   179.87  0.0976  [  -87.49,   792.77]
+area               19.18     3.23  0.0010  [   11.27,    27.09]
+districtnorth     203.64   151.14  0.2265  [ -166.19,   573.47]
+districtsouth     232.16   119.64  0.1004  [  -60.58,   524.90]</code></pre>
+<p>Each additional square meter adds about 19 to the expected rent. The district coefficients are differences from <code>east</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>columns</code>, <code>named</code></td>
+<td>Coefficient names, and a <code>name =&gt; coefficient</code> map</td>
+</tr>
+<tr class="even">
+<td><code>coefficients</code>, <code>std_errors</code>, <code>t_statistics</code>, <code>p_values</code></td>
+<td>One value per column</td>
+</tr>
+<tr class="odd">
+<td><code>conf_int</code></td>
+<td>95% intervals, <code>[lower, upper]</code> per column</td>
+</tr>
+<tr class="even">
+<td><code>covariance</code></td>
+<td>The coefficient covariance matrix</td>
+</tr>
+<tr class="odd">
+<td><code>fitted</code>, <code>residuals</code></td>
+<td>One value per retained row</td>
+</tr>
+<tr class="even">
+<td><code>r_squared</code>, <code>adj_r_squared</code>, <code>sigma</code>, <code>rss</code>, <code>log_likelihood</code>, <code>df_residual</code></td>
+<td>Fit statistics</td>
+</tr>
+<tr class="odd">
+<td><code>n_input</code>, <code>n_observations</code>, <code>n_dropped</code>, <code>retained_rows</code>, <code>dropped_rows</code></td>
+<td>Sample accounting</td>
+</tr>
+<tr class="even">
+<td><code>diagnostics</code></td>
+<td>Solver, convergence and warnings</td>
+</tr>
+</tbody>
+</table>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">printf</span>(<span class="st">"R-squared %.4f, sigma %.2f, %d residual df, %d of %d rows</span><span class="sc">\n</span><span class="st">"</span><span class="ot">,</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="va">$fit</span>[<span class="st">'r_squared'</span>]<span class="ot">,</span> <span class="va">$fit</span>[<span class="st">'sigma'</span>]<span class="ot">,</span> <span class="va">$fit</span>[<span class="st">'df_residual'</span>]<span class="ot">,</span> <span class="va">$fit</span>[<span class="st">'n_observations'</span>]<span class="ot">,</span> <span class="va">$fit</span>[<span class="st">'n_input'</span>])<span class="ot">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="fu">json_encode</span>(<span class="va">$fit</span>[<span class="st">'diagnostics'</span>])<span class="ot">,</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="ot">;</span></span></code></pre></div></div>
+<pre><code>R-squared 0.9270, sigma 146.29, 6 residual df, 10 of 10 rows
+{"converged":true,"solver":"scaled_svd","warnings":[]}</code></pre>
+<p><code>fit_glm</code>, <code>fit_lmer</code> and <code>fit_glmer</code> return the same naming and accounting keys, with the statistics of their model. <a href="phpstats://phit/docs/models">Linear and generalized linear models</a> and <a href="phpstats://phit/docs/mixed-models">mixed models</a> list them.</p>
+</section>
+<section id="predict" class="level2">
+<h2 class="anchored" data-anchor-id="predict">Predict</h2>
+<p><code>predict()</code> rebuilds the formula over new data. The response column is not needed, and the factor levels are the ones the fit saw.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$new</span> <span class="op">=</span> [<span class="st">'area'</span> =&gt; [<span class="fl">55.0</span><span class="ot">,</span> <span class="fl">80.0</span>]<span class="ot">,</span> <span class="st">'district'</span> =&gt; [<span class="st">'east'</span><span class="ot">,</span> <span class="st">'north'</span>]]<span class="ot">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="va">$p</span> <span class="op">=</span> predict(<span class="va">$fit</span><span class="ot">,</span> <span class="va">$new</span><span class="ot">,</span> interval<span class="ot">:</span> <span class="st">'prediction'</span>)<span class="ot">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">foreach</span> (<span class="va">$p</span>[<span class="st">'fit'</span>] <span class="kw">as</span> <span class="va">$i</span> =&gt; <span class="va">$value</span>) {</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">printf</span>(<span class="st">"%.2f [%.2f, %.2f]</span><span class="sc">\n</span><span class="st">"</span><span class="ot">,</span> <span class="va">$value</span><span class="ot">,</span> <span class="va">$p</span>[<span class="st">'lower'</span>][<span class="va">$i</span>]<span class="ot">,</span> <span class="va">$p</span>[<span class="st">'upper'</span>][<span class="va">$i</span>])<span class="ot">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></div>
+<pre><code>1407.55 [991.59, 1823.51]
+2090.69 [1676.97, 2504.41]</code></pre>
+<p><code>interval: 'confidence'</code> gives intervals for the mean instead. A district the fit never saw raises an exception with code 1001. <a href="phpstats://phit/docs/formulas#prediction-predict">Prediction</a> covers GLM and mixed-model predictions.</p>
+</section>
+<section id="missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="missing-values">Missing values</h2>
+<p><code>null</code> and <code>NAN</code> are missing. By default, a row with a missing value in any column the formula uses is dropped, and the fit emits one <code>E_WARNING</code>. With <code>rent</code> set to <code>null</code> in the third row:</p>
+<pre><code>Warning: Phit\fit_lm(): Phit\fit_lm dropped 1 of 10 observations with missing values (listwise deletion)</code></pre>
+<p>The result then reports <code>n_observations</code> 9, <code>n_input</code> 10 and <code>dropped_rows</code> <code>[2]</code>, and <code>diagnostics.warnings</code> holds the same notice. Pass <code>missing: 'raise'</code> to reject missing values instead. The call then throws an <code>Exception</code> with code 1001 and the message <code>missing values found with missing='raise'</code>. <a href="phpstats://phit/docs/missing-data">Missing data</a> defines which values count as missing and how rows are counted.</p>
+</section>
+<section id="errors" class="level2">
+<h2 class="anchored" data-anchor-id="errors">Errors</h2>
+<p>Invalid input and failed fits throw a PHP <code>Exception</code>. Its <code>getCode()</code> gives the category: 1001 for invalid input, 1002 for mismatched lengths, 1004 for a rank-deficient design, 1006 for nonconvergence, and so on. The full table is in the <a href="phpstats://phit/docs/contracts#v01-diagnostics-and-errors">API overview</a>.</p>
+
+
+</section>
