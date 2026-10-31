@@ -10,7 +10,18 @@
         },
         {
             "title": "Coming from py-polars",
-            "path": "coming-from-python"
+            "path": "coming-from-python",
+            "section": "Guides"
+        },
+        {
+            "title": "phibble and phplyr",
+            "path": "phibble",
+            "section": "Guides"
+        },
+        {
+            "title": "Deployment",
+            "path": "deployment",
+            "section": "Guides"
         },
         {
             "title": "DataFrame and LazyFrame",
@@ -38,20 +49,18 @@
             "section": "Reference"
         },
         {
-            "title": "phibble and phplyr",
-            "path": "phibble"
-        },
-        {
-            "title": "Deployment",
-            "path": "deployment"
+            "title": "Compatibility and limitations",
+            "path": "compatibility"
         },
         {
             "title": "Performance",
-            "path": "performance"
+            "path": "performance",
+            "section": "Benchmarks and verification"
         },
         {
             "title": "Development",
-            "path": "development"
+            "path": "development",
+            "section": "Contributing"
         }
     ],
     "pages": {
@@ -91,27 +100,63 @@
             ],
             "math": false
         },
+        "compatibility": {
+            "title": "Compatibility and limitations",
+            "headings": [
+                {
+                    "id": "php-versions-and-platforms",
+                    "text": "PHP versions and platforms",
+                    "level": 2
+                },
+                {
+                    "id": "agreement-with-py-polars",
+                    "text": "Agreement with py-polars",
+                    "level": 2
+                },
+                {
+                    "id": "not-available",
+                    "text": "Not available",
+                    "level": 2
+                },
+                {
+                    "id": "changes-on-main-since-v0.2.0",
+                    "text": "Changes on main since v0.2.0",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
         "deployment": {
             "title": "Deployment",
             "headings": [
                 {
-                    "id": "installing",
-                    "text": "Installing",
+                    "id": "installing-with-pie",
+                    "text": "Installing with PIE",
                     "level": 2
+                },
+                {
+                    "id": "prebuilt-binaries-and-source-builds",
+                    "text": "Prebuilt binaries and source builds",
+                    "level": 2
+                },
+                {
+                    "id": "what-a-release-archive-contains",
+                    "text": "What a release archive contains",
+                    "level": 3
                 },
                 {
                     "id": "ubuntu-and-laravel-forge",
                     "text": "Ubuntu and Laravel Forge",
-                    "level": 3
+                    "level": 2
                 },
                 {
                     "id": "laravel-herd",
                     "text": "Laravel Herd",
-                    "level": 3
+                    "level": 2
                 },
                 {
-                    "id": "prebuilt-binaries",
-                    "text": "Prebuilt binaries",
+                    "id": "building-from-source-by-hand",
+                    "text": "Building from source by hand",
                     "level": 2
                 },
                 {
@@ -136,8 +181,13 @@
             "title": "Development",
             "headings": [
                 {
-                    "id": "building-and-testing",
-                    "text": "Building and testing",
+                    "id": "building",
+                    "text": "Building",
+                    "level": 2
+                },
+                {
+                    "id": "testing",
+                    "text": "Testing",
                     "level": 2
                 },
                 {
@@ -167,6 +217,11 @@
                     "level": 2
                 },
                 {
+                    "id": "checking-the-installation",
+                    "text": "Checking the installation",
+                    "level": 2
+                },
+                {
                     "id": "imports",
                     "text": "Imports",
                     "level": 2
@@ -190,6 +245,11 @@
                     "id": "lazy-queries",
                     "text": "Lazy queries",
                     "level": 2
+                },
+                {
+                    "id": "missing-values",
+                    "text": "Missing values",
+                    "level": 2
                 }
             ],
             "math": false
@@ -203,8 +263,8 @@
                     "level": 2
                 },
                 {
-                    "id": "the-family",
-                    "text": "The family",
+                    "id": "the-phpolars-api-or-phibble-and-phplyr",
+                    "text": "The phpolars API or phibble and phplyr",
                     "level": 2
                 }
             ],
@@ -213,6 +273,11 @@
         "performance": {
             "title": "Performance",
             "headings": [
+                {
+                    "id": "how-the-benchmarks-run",
+                    "text": "How the benchmarks run",
+                    "level": 2
+                },
                 {
                     "id": "a-csv-pipeline",
                     "text": "A CSV pipeline",
@@ -245,6 +310,21 @@
             "title": "phibble and phplyr",
             "headings": [
                 {
+                    "id": "choosing-an-api",
+                    "text": "Choosing an API",
+                    "level": 2
+                },
+                {
+                    "id": "a-pipeline-on-a-polarstable",
+                    "text": "A pipeline on a PolarsTable",
+                    "level": 2
+                },
+                {
+                    "id": "moving-data-in-and-out",
+                    "text": "Moving data in and out",
+                    "level": 2
+                },
+                {
                     "id": "what-runs-in-polars",
                     "text": "What runs in Polars",
                     "level": 2
@@ -252,11 +332,6 @@
                 {
                     "id": "missing-values",
                     "text": "Missing values",
-                    "level": 2
-                },
-                {
-                    "id": "moving-data-directly",
-                    "text": "Moving data directly",
                     "level": 2
                 }
             ],
@@ -326,6 +401,11 @@
         "reference/expressions": {
             "title": "Expressions",
             "headings": [
+                {
+                    "id": "missing-values",
+                    "text": "Missing values",
+                    "level": 2
+                },
                 {
                     "id": "windows-and-order",
                     "text": "Windows and order",

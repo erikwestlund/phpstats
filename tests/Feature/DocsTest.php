@@ -20,7 +20,7 @@ class DocsTest extends TestCase
     {
         $groups = Package::find('phpolars')->docsGroups();
 
-        $this->assertSame(['Guide', 'Reference'], array_keys($groups));
+        $this->assertSame(['Guide', 'Guides', 'Reference', 'Benchmarks and verification', 'Contributing'], array_keys($groups));
         $this->assertContains('reference/series', array_column($groups['Reference'], 'path'));
 
         // Since task 21 the nav is derived from the package's own

@@ -210,3 +210,24 @@ Checks: fresh `composer require`; first compile and sample; `composer test`
 2.40). Not run: native Windows; build-essential line; optimization,
 variational, LOO, figures, and draws examples (carried over). Site lock
 moved to dev-main 5eed17c.
+
+### phpolars (2994f0c, reported by phpolars-cf)
+
+Pages describe main and match released v0.2.0 except where marked.
+
+| Path | Reader and purpose | Disposition | Problems found | Verified by |
+|---|---|---|---|---|
+| index | New reader; choosing an API | Rewritten | PolarsTable listed as a phpolars feature; "PHP 8.3+"; unqualified "same semantics" | phibble src/Polars; composer.json; fixture count |
+| getting-started | First install and query | Rewritten | "Not on Packagist yet" with a source build | `pie install` in php:8.5-cli-bookworm and Ubuntu 24.04 (ondrej 8.5, arm64): prebuilt binary, 0.2.0, enabled for CLI and FPM |
+| coming-from-python | py-polars users | Keep, qualified | Unqualified compatibility | Fixture JSON |
+| phibble | phibble and phplyr users | Rewritten | Broken chain example (`->group_by`, `na_rm`); tab order; wrong `naMatches`; fallback list incomplete | Both tabs run on phibble 0.5.0: same output, no fallbacks |
+| deployment | Operators | Rewritten | "Not submitted to Packagist" | PIE runs; release workflows |
+| reference/* | API lookup | Keep, extended | No nulls section; scalar versus Series unstated; type details missing | Conversions and aggregates run on HEAD; src/convert.rs |
+| compatibility (new) | Support and tests | New | — | composer.json; CI matrices; stubs |
+| performance | Benchmarks and memory | Keep, with provenance | No hardware or timing boundaries; streaming engine not marked main-only | git log per number; nothing rerun |
+| development | Contributors | Extended | — | Scripts |
+| README | GitHub and Packagist | Slimmed | "Not on Packagist"; duplication | Links checked |
+
+Checks: render-docs; phplyr-on-Polars example; read-only DocsImporter (13
+pages). Not run: full scripts/check (docs-only change); x86_64 PIE (covered
+by the v0.2.0 release workflow); PIE source build on macOS.

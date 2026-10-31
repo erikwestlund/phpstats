@@ -1,5 +1,9 @@
 <p>An <code>Expr</code> describes a computation on columns. Expressions are built with <code>col()</code>, <code>lit()</code>, <code>when()</code>, and the other functions below, and are evaluated by verbs such as <code>select()</code>, <code>withColumns()</code>, <code>filter()</code>, and <code>agg()</code>. They never hold PHP closures, so Polars runs them on its own threads.</p>
 <p>Operands of comparison and arithmetic methods may be an <code>Expr</code> or a PHP value. PHP strings there are string literals.</p>
+<section id="missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="missing-values">Missing values</h2>
+<p>Expressions follow Polars’ null semantics. Arithmetic and comparisons with <code>null</code> give <code>null</code>. Aggregations such as <code>sum()</code>, <code>mean()</code>, <code>min()</code>, and <code>max()</code> skip nulls, <code>count()</code> counts non-null values, and <code>len()</code> counts rows. <code>filter()</code> drops rows whose condition is <code>null</code>. <code>isNull()</code>, <code>fillNull()</code>, <code>dropNulls()</code>, <code>eqMissing()</code>, and <code>neMissing()</code> handle nulls explicitly. <code>NaN</code> is a float value, so <code>isNull()</code> is false for it and <code>isNan()</code> is true. <a href="phpstats://phpolars/docs/phibble#missing-values">phibble and phplyr</a> compares these rules with dplyr’s.</p>
+</section>
 <section id="windows-and-order" class="level2">
 <h2 class="anchored" data-anchor-id="windows-and-order">Windows and order</h2>
 <p><code>over()</code> evaluates an expression within groups and maps the result back to every row. <code>orderBy</code> sets the order for order-dependent expressions such as <code>cumSum()</code> and <code>shift()</code>.</p>
