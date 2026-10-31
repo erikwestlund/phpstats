@@ -144,7 +144,7 @@ class DocsTest extends TestCase
         // reference is an overview and eight topic pages.
         $paths = Package::find('phiz')->docsPaths();
 
-        $this->assertCount(26, $paths);
+        $this->assertCount(29, $paths);
         $this->assertCount(9, array_filter($paths, fn (string $path) => str_starts_with($path, 'reference')));
         $this->assertContains('gallery', $paths);
         $this->assertNotContains('cmdstanphp', $paths);

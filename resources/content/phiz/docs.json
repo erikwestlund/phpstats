@@ -115,6 +115,21 @@
             "section": "Reference"
         },
         {
+            "title": "Layer points and a fitted line",
+            "path": "examples/layers",
+            "section": "Examples"
+        },
+        {
+            "title": "Compare groups with facets",
+            "path": "examples/facets",
+            "section": "Examples"
+        },
+        {
+            "title": "Save a chart to a file",
+            "path": "examples/save",
+            "section": "Examples"
+        },
+        {
             "title": "Gallery",
             "path": "gallery",
             "section": "Examples"
@@ -140,6 +155,11 @@
                     "level": 2
                 },
                 {
+                    "id": "a-small-component",
+                    "text": "A small component",
+                    "level": 2
+                },
+                {
                     "id": "the-charts",
                     "text": "The charts",
                     "level": 2
@@ -157,6 +177,11 @@
                 {
                     "id": "choosing-where-to-compute",
                     "text": "Choosing where to compute",
+                    "level": 2
+                },
+                {
+                    "id": "a-complete-dashboard",
+                    "text": "A complete dashboard",
                     "level": 2
                 }
             ],
@@ -240,6 +265,84 @@
                 {
                     "id": "documentation",
                     "text": "Documentation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "examples/facets": {
+            "title": "Compare groups with facets",
+            "headings": [
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "code",
+                    "text": "Code",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "how-it-works",
+                    "text": "How it works",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "examples/layers": {
+            "title": "Layer points and a fitted line",
+            "headings": [
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "code",
+                    "text": "Code",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "how-it-works",
+                    "text": "How it works",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "examples/save": {
+            "title": "Save a chart to a file",
+            "headings": [
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "code",
+                    "text": "Code",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "how-it-works",
+                    "text": "How it works",
                     "level": 2
                 }
             ],

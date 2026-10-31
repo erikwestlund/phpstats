@@ -233,9 +233,11 @@ class SyncTest extends TestCase
         $html = File::get("{$this->content}/".self::PACKAGE.'/docs/index.html');
         $this->assertStringContainsString('href="phpstats://phibble/"', $html);
         $this->assertStringContainsString('href="phpstats://phiz/docs/geoms#points"', $html);
-        $this->assertStringContainsString('href="https://phiz.phpstats.org/vignettes"', $html);
+        $this->assertStringContainsString('href="phpstats://phiz/vignettes"', $html);
 
-        $this->assertStringContainsString('href="http://phibble.phpstats.test"', \App\Content\Package::resolveLinks($html));
+        $resolved = \App\Content\Package::resolveLinks($html);
+        $this->assertStringContainsString('href="http://phibble.phpstats.test"', $resolved);
+        $this->assertStringContainsString('href="http://phiz.phpstats.test/vignettes"', $resolved);
     }
 
     public function test_the_nav_keeps_each_item_section(): void

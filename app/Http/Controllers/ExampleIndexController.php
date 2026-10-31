@@ -14,8 +14,10 @@ class ExampleIndexController extends Controller
     public function __invoke(): View
     {
         $groups = [];
-        foreach (Package::all() as $package) {
-            if ($examples = $package->examples()) {
+        // In the menus' order: the layers in config/phpstats.php, then their packages.
+        foreach (array_merge(...array_map('array_keys', array_column(config('phpstats.layers'), 'packages'))) as $key) {
+            $package = Package::find($key);
+            if ($package && $examples = $package->examples()) {
                 $groups[] = ['package' => $package, 'examples' => $examples];
             }
         }

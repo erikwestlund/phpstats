@@ -90,7 +90,7 @@ Array
 <p><code>write_stan_file()</code> saves the Stan program as <code>schools.stan</code> beside the script, and <code>cmdstan_model()</code> compiles it. The first run compiles the model. Later runs reuse the executable until the program changes. <code>sample()</code> runs four chains of 1,000 warmup and 1,000 sampling iterations, so each variable has 4,000 draws.</p>
 <p>The model estimates each school’s effect <code>theta</code> together with the mean <code>mu</code> and the standard deviation <code>tau</code> of the effects across schools. Each school’s estimate moves toward <code>mu</code>. School 1 reported 28, and its posterior mean is 8.87. The program samples <code>theta_raw</code> and computes <code>theta</code> from it (the non-centered parameterization), which avoids the divergent transitions that the direct form produces when <code>tau</code> is near zero. <code>adapt_delta: 0.95</code> makes the sampler take smaller steps.</p>
 <p>R-hat is below 1.01 and every bulk effective sample size is above 400, and <code>diagnosticWarnings()</code> returns an empty list. <a href="phpstats://cmdstanphp/docs/mcmc">MCMC sampling</a> explains these checks. <code>draws('tau', 'draws_matrix')</code> returns one row per draw, chain after chain. <a href="phpstats://cmdstanphp/docs/draws">Draws, summaries, and saving fits</a> describes the other formats, and the <a href="phpstats://cmdstanphp/docs/api">API reference</a> lists every option of <code>sample()</code> and <code>summary()</code>.</p>
-<p><a href="https://cmdstanphp.phpstats.org/vignettes/bayesian-schools">Interactive version</a></p>
+<p><a href="phpstats://cmdstanphp/vignettes/bayesian-schools">Interactive version</a></p>
 
 
 </section>

@@ -328,7 +328,7 @@ class DocsImporter
                 return $this->placeholder($m[1], $page, $fragment);
             }
 
-            return $href;
+            return "phpstats://{$m[1]}/{$path}{$fragment}";
         }
 
         if (preg_match('#^[a-z][a-z0-9+.-]*:#i', $href) || str_starts_with($href, '/')) {

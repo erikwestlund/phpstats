@@ -343,7 +343,7 @@ class Package
         return [...$meta, 'html' => self::resolveLinks(file_get_contents($this->path("docs/{$path}.html")))];
     }
 
-    /** Replace phpstats://{package}/ and phpstats://{package}/docs/{path} placeholders with links for the current hosts. */
+    /** Replace phpstats://{package}/docs/{path} and phpstats://{package}/{path} placeholders with links for the current hosts. */
     public static function resolveLinks(string $html): string
     {
         return preg_replace_callback('#phpstats://([a-z0-9-]+)/docs/([^"\'\#\s]*)(\#[^"\'\s]*)?#', function (array $m) {
@@ -356,8 +356,11 @@ class Package
             $external = rtrim($target?->externalDocs() ?? 'https://github.com/phpstats', '/');
 
             return e("{$external}/{$page}.html").$fragment;
-        }, preg_replace_callback('#phpstats://([a-z0-9-]+)/(?=[\#"\'])#', function (array $m) {
-            return e(self::find($m[1])?->url() ?? "https://{$m[1]}.phpstats.org");
+        }, preg_replace_callback('#phpstats://([a-z0-9-]+)/((?!docs/)[^"\'\#\s]*)#', function (array $m) {
+            // Any other page of a package host, such as a live example.
+            $base = self::find($m[1])?->url() ?? "https://{$m[1]}.phpstats.org";
+
+            return e(rtrim($base, '/').($m[2] === '' ? '' : '/'.$m[2]));
         }, $html));
     }
 
