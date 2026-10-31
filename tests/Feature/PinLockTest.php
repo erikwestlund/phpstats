@@ -56,7 +56,7 @@ class PinLockTest extends TestCase
         // comparison -- a dev-main require cut back to a tag, say -- fails here
         // instead of letting the check above pass over nothing.
         $this->assertSame([
-            'cmdstanphp' => 'dev-main',
+            'cmdstanphp' => 'tagged',
             'juphyter' => 'no Composer dependency',
             'phibble' => 'tagged',
             'phit' => 'no Composer dependency',

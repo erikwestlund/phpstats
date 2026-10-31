@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8078f843213cd45edb64ae1356fa545",
+    "content-hash": "eed3fae418c2b7ef759e5c323d85b99a",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -2851,7 +2851,7 @@
         },
         {
             "name": "phpstats/cmdstanphp",
-            "version": "dev-main",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstats/CmdStanPHP.git",
@@ -2876,47 +2876,23 @@
                 "ext-phit": "Required for loo(moment_match: true): provides the Phit\\draws_moments, Phit\\draws_covariance_map, and Phit\\draws_affine kernels; StanData::fromFormula() also needs its Phit\\model_matrix()",
                 "phpstats/phibble": "Data frames: pass a Phibble\\DataFrame as model data, and get draws and summaries back with drawsTable() and summaryTable() (phibble requires PHP 8.3 or later)"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
-                "psr-4": {
-                    "CmdStan\\": "src/"
-                },
                 "files": [
                     "src/functions.php"
-                ]
-            },
-            "autoload-dev": {
+                ],
                 "psr-4": {
-                    "CmdStan\\Tests\\": "tests/"
+                    "CmdStan\\": "src/"
                 }
             },
-            "scripts": {
-                "test": [
-                    "phpunit --exclude-group integration --exclude-group compatibility"
-                ],
-                "test:integration": [
-                    "phpunit --group integration"
-                ],
-                "lint": [
-                    "php scripts/lint.php",
-                    "phpcs",
-                    "@test:sniffs"
-                ],
-                "test:sniffs": [
-                    "php tools/phpcs/selftest/run.php"
-                ],
-                "test:compatibility": [
-                    "phpunit --group compatibility"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "A PHP interface to CmdStan inspired by CmdStanR",
             "support": {
-                "source": "https://github.com/phpstats/CmdStanPHP/tree/main",
-                "issues": "https://github.com/phpstats/CmdStanPHP/issues"
+                "issues": "https://github.com/phpstats/CmdStanPHP/issues",
+                "source": "https://github.com/phpstats/CmdStanPHP/tree/v0.1.2"
             },
             "time": "2026-10-31T15:26:29+00:00"
         },
@@ -9091,9 +9067,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "phpstats/cmdstanphp": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
