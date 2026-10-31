@@ -139,6 +139,23 @@ class RootPagesTest extends TestCase
         }
     }
 
+    public function test_get_started_gives_a_version_check_as_an_example_and_names_optional_features_only(): void
+    {
+        $text = preg_replace('/\s+/', ' ', html_entity_decode(strip_tags(
+            $this->get('http://phpstats.test/get-started')->assertOk()->content(),
+        )));
+
+        $phit = Package::find('phit');
+        $this->assertStringContainsString('prints the installed version, for example '.$phit->verify()['output'], $text);
+        $this->assertStringContainsString('Supported platforms', $text);
+
+        $detailed = array_filter(Package::find('phplyr')->optional(), fn (array $item) => $item['for'] !== null && $item['for'] !== '');
+        $this->assertNotSame([], $detailed);
+        foreach ($detailed as $item) {
+            $this->assertStringNotContainsString("({$item['for']})", $text);
+        }
+    }
+
     public function test_package_names_are_monospace_on_both_root_pages(): void
     {
         foreach (['http://phpstats.test/get-started', 'http://phpstats.test/vignettes'] as $url) {

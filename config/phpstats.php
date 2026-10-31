@@ -34,12 +34,12 @@ return [
      * without an entry show the overview from config/projects.php only.
      */
     'content' => [
-        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '36d0f3fde2e115b68341bb972e99e5f47b817dd2'],
+        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => 'a753030b1aba8560ff42d7a5713b71579bf6b8d9'],
         'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => '8487062dad2fc2dfac4a034927c2dbeadf6e7afa'],
-        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'd319dc56718d286b6ecaf6997c815972092f6b12'],
-        'phit' => ['repo' => 'phpstats/phit', 'ref' => '76b22f0e191c0caa6f8c23e5ddfa2f459d33c9fb'],
+        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => '4b856da01e26c851ed71ec1ff371d20804ded597'],
+        'phit' => ['repo' => 'phpstats/phit', 'ref' => 'c53aad2f88cdf40c761e3c91d5856e39e11279ac'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => 'bc7ed3e9bb15da58925554a6b34578762c0e31df'],
-        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '7e997095e611361667cd9ba0412ffaf9a0b9be93'],
+        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => 'c9baa2354366484e6e791511d5e730976e9490e1'],
         'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '57dda5a99598b3ed828e7f4afb193d3a8646ea0b'],
     ],
 
@@ -198,6 +198,12 @@ return [
     ],
 
     'content_path' => resource_path('content'),
+
+    /*
+     * Docs sidebar groups that start collapsed, so the learning path stays
+     * short. A group opens when it holds the current page.
+     */
+    'collapsed_docs_groups' => ['Benchmarks and verification', 'Mathematics', 'History', 'Contributing'],
 
     /*
      * Vignettes written as Livewire components in this app. Synced packages

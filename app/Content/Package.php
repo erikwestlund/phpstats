@@ -179,6 +179,24 @@ class Package
         return is_string($path) && $this->docsPage($path) !== null ? $this->url('docs', ['path' => $path]) : null;
     }
 
+    /**
+     * The URL of the package's installation guide, which holds each optional
+     * feature's detail: site.json's installation path, with an optional
+     * fragment, when it names a synced page, else the getting-started page.
+     */
+    public function installation(): ?string
+    {
+        $target = $this->site['installation'] ?? null;
+        if (is_string($target)) {
+            [$path, $fragment] = array_pad(explode('#', $target, 2), 2, null);
+            if ($this->docsPage($path) !== null) {
+                return $this->url('docs', ['path' => $path === 'index' ? null : $path]).($fragment ? "#{$fragment}" : '');
+            }
+        }
+
+        return $this->quickstart();
+    }
+
     public function repository(): ?string
     {
         return $this->site['repository'] ?? $this->project['repo'];
@@ -319,7 +337,7 @@ class Package
         return [...$meta, 'html' => self::resolveLinks(file_get_contents($this->path("docs/{$path}.html")))];
     }
 
-    /** Replace phpstats://{package}/docs/{path} placeholders with links for the current hosts. */
+    /** Replace phpstats://{package}/ and phpstats://{package}/docs/{path} placeholders with links for the current hosts. */
     public static function resolveLinks(string $html): string
     {
         return preg_replace_callback('#phpstats://([a-z0-9-]+)/docs/([^"\'\#\s]*)(\#[^"\'\s]*)?#', function (array $m) {
@@ -332,7 +350,9 @@ class Package
             $external = rtrim($target?->externalDocs() ?? 'https://github.com/phpstats', '/');
 
             return e("{$external}/{$page}.html").$fragment;
-        }, $html);
+        }, preg_replace_callback('#phpstats://([a-z0-9-]+)/(?=[\#"\'])#', function (array $m) {
+            return e(self::find($m[1])?->url() ?? "https://{$m[1]}.phpstats.org");
+        }, $html));
     }
 
     // Results

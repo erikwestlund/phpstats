@@ -221,6 +221,23 @@ class SyncTest extends TestCase
         $this->assertStringContainsString('A figure', File::get("{$target}/docs/index.html"));
     }
 
+    public function test_links_to_the_production_package_hosts_resolve_on_the_current_host(): void
+    {
+        File::put("{$this->source}/docs/index.html", $this->page('Overview', implode('', [
+            '<a href="https://phibble.phpstats.org">phibble</a>',
+            '<a href="https://phiz.phpstats.org/docs/geoms.html#points">geoms</a>',
+            '<a href="https://phiz.phpstats.org/vignettes">examples</a>',
+        ])));
+        $this->assertSame(0, $this->syncFromPath());
+
+        $html = File::get("{$this->content}/".self::PACKAGE.'/docs/index.html');
+        $this->assertStringContainsString('href="phpstats://phibble/"', $html);
+        $this->assertStringContainsString('href="phpstats://phiz/docs/geoms#points"', $html);
+        $this->assertStringContainsString('href="https://phiz.phpstats.org/vignettes"', $html);
+
+        $this->assertStringContainsString('href="http://phibble.phpstats.test"', \App\Content\Package::resolveLinks($html));
+    }
+
     public function test_the_nav_keeps_each_item_section(): void
     {
         // The fixture holds no docs/_quarto.yml, so this is the site.json nav.

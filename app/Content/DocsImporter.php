@@ -314,6 +314,23 @@ class DocsImporter
             return $href;
         }
 
+        // Links to the production package hosts resolve per host too, so a
+        // preview or staging page links within itself.
+        if (preg_match('#^https?://([a-z0-9-]+)\.phpstats\.org(/[^?\#]*)?(\#.*)?$#', $href, $m) && isset(config('projects')[$m[1]])) {
+            $path = trim($m[2] ?? '', '/');
+            $fragment = $m[3] ?? '';
+            if ($path === '') {
+                return "phpstats://{$m[1]}/{$fragment}";
+            }
+            if ($path === 'docs' || str_starts_with($path, 'docs/')) {
+                $page = preg_replace('#\.html$#', '', substr($path, 5) ?: 'index');
+
+                return $this->placeholder($m[1], $page, $fragment);
+            }
+
+            return $href;
+        }
+
         if (preg_match('#^[a-z][a-z0-9+.-]*:#i', $href) || str_starts_with($href, '/')) {
             return $href;
         }

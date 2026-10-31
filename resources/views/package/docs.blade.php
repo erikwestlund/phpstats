@@ -24,20 +24,30 @@
                 {{ $page['title'] }} <x-heroicon-m-chevron-up-down class="size-4 text-zinc-400" />
             </button>
             <div x-bind:class="open ? 'block' : 'hidden lg:block'" class="hidden pt-4 lg:block lg:pt-0">
-                @php $groups = $package->docsGroups(); @endphp
+                @php
+                    $groups = $package->docsGroups();
+                    $collapsed = config('phpstats.collapsed_docs_groups', []);
+                @endphp
                 @foreach ($groups as $group => $items)
-                    {{-- One group is the whole nav, so its heading says nothing, as with a menu of one layer. --}}
-                    @if (count($groups) > 1)
-                        <p @class(['mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white', 'mt-7' => ! $loop->first])>{{ $group }}</p>
+                    @php
+                        $collapsible = count($groups) > 1 && in_array($group, $collapsed, true);
+                        $current = in_array($path, array_column($items, 'path'), true);
+                    @endphp
+                    @if ($collapsible)
+                        <details @if ($current) open @endif @class(['group/docs', 'mt-7' => ! $loop->first])>
+                            <summary class="mb-2 flex cursor-pointer list-none items-center justify-between text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white [&::-webkit-details-marker]:hidden">
+                                {{ $group }}
+                                <span class="flex items-center gap-1 font-normal normal-case tracking-normal text-zinc-500 dark:text-zinc-400">{{ count($items) }} <x-heroicon-m-chevron-right class="size-4 transition group-open/docs:rotate-90" /></span>
+                            </summary>
+                            @include('package.partials.docs-links', ['items' => $items])
+                        </details>
+                    @else
+                        {{-- One group is the whole nav, so its heading says nothing, as with a menu of one layer. --}}
+                        @if (count($groups) > 1)
+                            <p @class(['mb-2 text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white', 'mt-7' => ! $loop->first])>{{ $group }}</p>
+                        @endif
+                        @include('package.partials.docs-links', ['items' => $items])
                     @endif
-                    <ul class="space-y-0.5 border-l border-zinc-200 dark:border-white/10">
-                        @foreach ($items as $item)
-                            <li>
-                                <a href="{{ $docsUrl($item['path']) }}" @if ($item['path'] === $path) aria-current="page" @endif
-                                   class="-ml-px block border-l border-transparent py-1 pl-4 text-zinc-600 transition hover:border-zinc-400 hover:text-zinc-900 aria-[current]:border-(--l500) aria-[current]:font-medium aria-[current]:text-(--l700) dark:text-zinc-400 dark:hover:text-white dark:aria-[current]:text-(--l300)">{{ $item['title'] }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
                 @endforeach
 
                 @if ($relations = $package->relations())

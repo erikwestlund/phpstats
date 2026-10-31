@@ -229,8 +229,18 @@
             "title": "Getting started",
             "headings": [
                 {
-                    "id": "loading-phibble",
-                    "text": "Loading phibble",
+                    "id": "installation",
+                    "text": "Installation",
+                    "level": 2
+                },
+                {
+                    "id": "a-first-script",
+                    "text": "A first script",
+                    "level": 2
+                },
+                {
+                    "id": "imports",
+                    "text": "Imports",
                     "level": 2
                 },
                 {

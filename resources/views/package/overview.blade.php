@@ -112,7 +112,7 @@
             @if ($vignettes = array_slice($package->vignettes(), 0, 4))
                 <div class="mt-12 flex items-baseline justify-between gap-4">
                     <h2 class="text-lg font-semibold tracking-tight">Run it live</h2>
-                    <a href="{{ $package->url('vignettes') }}" class="text-sm font-medium text-(--l700) hover:text-(--l600) dark:text-(--l300)">All vignettes →</a>
+                    <a href="{{ $package->url('vignettes') }}" class="text-sm font-medium text-(--l700) hover:text-(--l600) dark:text-(--l300)">All examples →</a>
                 </div>
                 <x-explore.vignettes class="mt-4" :items="array_map(fn ($v) => $v['owner'].'/'.$v['slug'], $vignettes)" />
             @endif

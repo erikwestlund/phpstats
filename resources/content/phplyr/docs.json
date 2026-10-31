@@ -221,6 +221,21 @@
                     "level": 2
                 },
                 {
+                    "id": "requirements",
+                    "text": "Requirements",
+                    "level": 3
+                },
+                {
+                    "id": "optional-features",
+                    "text": "Optional features",
+                    "level": 3
+                },
+                {
+                    "id": "a-first-script",
+                    "text": "A first script",
+                    "level": 2
+                },
+                {
                     "id": "imports",
                     "text": "Imports",
                     "level": 2
@@ -256,6 +271,11 @@
         "index": {
             "title": "phplyr",
             "headings": [
+                {
+                    "id": "a-first-pipeline",
+                    "text": "A first pipeline",
+                    "level": 2
+                },
                 {
                     "id": "phplyr-and-phibble",
                     "text": "phplyr and phibble",
@@ -385,11 +405,6 @@
                 {
                     "id": "results",
                     "text": "Results",
-                    "level": 2
-                },
-                {
-                    "id": "without-the-extension",
-                    "text": "Without the extension",
                     "level": 2
                 }
             ],

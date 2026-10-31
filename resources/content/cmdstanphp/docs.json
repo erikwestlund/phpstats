@@ -306,6 +306,11 @@
             "title": "Getting started",
             "headings": [
                 {
+                    "id": "set-up-a-project",
+                    "text": "Set up a project",
+                    "level": 2
+                },
+                {
                     "id": "the-model",
                     "text": "The model",
                     "level": 2

@@ -252,7 +252,8 @@ class DocsTest extends TestCase
         $sidebar = $this->docsSidebar($package);
 
         foreach (array_keys($package->docsGroups()) as $group) {
-            $this->assertStringContainsString(">{$group}</p>", $sidebar);
+            // A collapsed group heads its <details> with a <summary>.
+            $this->assertMatchesRegularExpression('#(>'.preg_quote($group, '#').'</p>|<summary[^>]*>\s*'.preg_quote($group, '#').'\s)#', $sidebar);
         }
     }
 
@@ -267,6 +268,19 @@ class DocsTest extends TestCase
         $this->assertStringNotContainsString('>Guide</p>', $sidebar);
         $this->assertStringContainsString('Getting started</a>', $sidebar);
         $this->assertStringContainsString('Coming from dplyr</a>', $sidebar);
+    }
+
+    public function test_the_evidence_groups_start_collapsed_and_open_on_their_own_pages(): void
+    {
+        $phit = Package::find('phit');
+
+        $sidebar = $this->docsSidebar($phit);
+        $this->assertMatchesRegularExpression('#<details\s+class="[^"]*">\s*<summary[^>]*>\s*Benchmarks and verification#', $sidebar);
+        $this->assertDoesNotMatchRegularExpression('#<details\s+open#', $sidebar);
+        $this->assertStringContainsString('>Guides</p>', $sidebar);
+
+        $html = $this->get($phit->url('docs', ['path' => 'benchmarks/ols']))->assertOk()->getContent();
+        $this->assertMatchesRegularExpression('#<details\s+open[^>]*>\s*<summary[^>]*>\s*Benchmarks and verification#', $html);
     }
 
     /** Just the sidebar, so a group name in the page's own prose cannot count. */
