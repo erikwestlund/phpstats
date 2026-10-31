@@ -14,8 +14,9 @@ designed to work well together.
 
 ## Design
 
-PHPstats is influenced by the tidyverse, and also by R's statistical
-packages, Polars, and Stan.
+PHPstats is influenced heavily by the tidyverse and the tidy approach to
+statistical computing in R, and also by R's statistical packages, Polars, and
+Stan.
 
 - <span class="font-mono font-semibold">phibble</span> implements data frames modeled on tibble, file reading modeled on readr, and the factor functions of forcats.
 - <span class="font-mono font-semibold">phplyr</span> implements the data manipulation features of dplyr, tidyr, and janitor.
