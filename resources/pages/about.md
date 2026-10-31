@@ -14,8 +14,8 @@ designed to work well together.
 
 ## Design
 
-PHPstats is modeled primarily on the tidyverse, with additional influences
-from R's statistical packages, Polars, and Stan.
+PHPstats is influenced by the tidyverse, and also by R's statistical
+packages, Polars, and Stan.
 
 - <strong class="font-mono">phibble:</strong> tibble, readr, and forcats.
 - <strong class="font-mono">phplyr:</strong> dplyr, tidyr, and janitor.
