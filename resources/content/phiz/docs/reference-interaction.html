@@ -1,0 +1,83 @@
+<p>Interaction is expressed as Vega-Lite parameters, so it works wherever the specification is rendered in a browser. <a href="phpstats://phiz/docs/interaction">Interaction</a> shows each method with an example.</p>
+<p><strong>Methods:</strong> <a href="#tooltip"><code>tooltip()</code></a> · <a href="#interactive"><code>interactive()</code></a> · <a href="#brush"><code>brush()</code></a> · <a href="#highlight"><code>highlight()</code></a> · <a href="#slider"><code>slider()</code></a> · <a href="#dropdown"><code>dropdown()</code></a> · <a href="#param"><code>param()</code></a> · <a href="#select"><code>select()</code></a></p>
+<p><strong>Functions:</strong> <a href="#tooltip-function"><code>tooltip()</code></a> · <a href="#interactive-function"><code>interactive()</code></a> · <a href="#brush-function"><code>brush()</code></a> · <a href="#highlight-function"><code>highlight()</code></a></p>
+<section id="tooltip" class="level3">
+<h3 class="anchored" data-anchor-id="tooltip"><code>tooltip()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>-&gt;tooltip(<span class="dt">array</span><span class="op">|</span><span class="dt">string</span><span class="op">|</span><span class="dt">bool</span> <span class="va">$fields</span> <span class="op">=</span> <span class="kw">true</span>)<span class="ot">:</span> Plot</span></code></pre></div></div>
+<p>Tooltips on every layer: true shows the encoded fields, a list shows those fields.</p>
+<p>Function: <a href="#tooltip-function"><code>tooltip()</code></a>.</p>
+</section>
+<section id="interactive" class="level3">
+<h3 class="anchored" data-anchor-id="interactive"><code>interactive()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>-&gt;interactive(<span class="dt">array</span> <span class="va">$encodings</span> <span class="op">=</span> [<span class="dv">0</span> =&gt; <span class="st">'x'</span><span class="ot">,</span><span class="dv">1</span> =&gt; <span class="st">'y'</span>]<span class="ot">,</span> <span class="dt">string</span> <span class="va">$name</span> <span class="op">=</span> <span class="st">'zoom'</span>)<span class="ot">:</span> Plot</span></code></pre></div></div>
+<p>Pan and zoom by dragging and scrolling (scales bound to an interval selection).</p>
+<p>Function: <span id="interactive-function"><code>interactive()</code></span>.</p>
+</section>
+<section id="brush" class="level3">
+<h3 class="anchored" data-anchor-id="brush"><code>brush()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>-&gt;brush(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$name</span> <span class="op">=</span> <span class="st">'brush'</span><span class="ot">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$encodings</span> <span class="op">=</span> [<span class="dv">0</span> =&gt; <span class="st">'x'</span>]<span class="ot">,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">string</span> <span class="va">$unselected</span> <span class="op">=</span> <span class="st">'#cccccc'</span><span class="ot">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$channel</span> <span class="op">=</span> <span class="st">'color'</span><span class="ot">,</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> Plot</span></code></pre></div></div>
+<p>A drag-to-select interval named $name. Unselected marks of the first layer turn $unselected; other layers can react with filter: [‘param’ =&gt; $name], and linked plots in a composition share it.</p>
+<p>Function: <span id="brush-function"><code>brush()</code></span>.</p>
+</section>
+<section id="highlight" class="level3">
+<h3 class="anchored" data-anchor-id="highlight"><code>highlight()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>-&gt;highlight(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$aesthetic</span> <span class="op">=</span> <span class="st">'color'</span><span class="ot">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$name</span> <span class="op">=</span> <span class="st">'highlight'</span><span class="ot">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">string</span> <span class="va">$bind</span> <span class="op">=</span> <span class="st">'legend'</span><span class="ot">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">float</span> <span class="va">$opacity</span> <span class="op">=</span> <span class="fl">0.15</span><span class="ot">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> Plot</span></code></pre></div></div>
+<p>Click legend entries (or marks, with bind: null) to highlight their group; others fade to $opacity.</p>
+<p>Function: <span id="highlight-function"><code>highlight()</code></span>.</p>
+</section>
+<section id="slider" class="level3">
+<h3 class="anchored" data-anchor-id="slider"><code>slider()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>-&gt;slider(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span><span class="op">|</span><span class="dt">float</span> <span class="va">$min</span><span class="ot">,</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span><span class="op">|</span><span class="dt">float</span> <span class="va">$max</span><span class="ot">,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span><span class="op">|</span><span class="dt">float</span><span class="op">|</span><span class="kw">null</span> <span class="va">$step</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span><span class="op">|</span><span class="dt">float</span><span class="op">|</span><span class="kw">null</span> <span class="va">$value</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">string</span> <span class="va">$label</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> Plot</span></code></pre></div></div>
+<p>A slider bound to a parameter; use expr($name) in geoms or a filter to react to it.</p>
+</section>
+<section id="dropdown" class="level3">
+<h3 class="anchored" data-anchor-id="dropdown"><code>dropdown()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>-&gt;dropdown(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$options</span><span class="ot">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">mixed</span> <span class="va">$value</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">string</span> <span class="va">$label</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> Plot</span></code></pre></div></div>
+<p>A dropdown bound to a parameter.</p>
+</section>
+<section id="param" class="level3">
+<h3 class="anchored" data-anchor-id="param"><code>param()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>-&gt;param(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">mixed</span> <span class="va">$value</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">array</span> <span class="va">$bind</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">string</span> <span class="va">$expr</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> Plot</span></code></pre></div></div>
+<p>A Vega-Lite parameter: a value, optionally bound to an input, or an expr.</p>
+</section>
+<section id="select" class="level3">
+<h3 class="anchored" data-anchor-id="select"><code>select()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>-&gt;select(<span class="dt">array</span> <span class="va">$param</span>)<span class="ot">:</span> Plot</span></code></pre></div></div>
+<p>A raw selection parameter, attached to the first layer.</p>
+</section>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
+<section id="tooltip-function" class="level3">
+<h3 class="anchored" data-anchor-id="tooltip-function"><code>tooltip()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tooltip(<span class="dt">array</span><span class="op">|</span><span class="dt">string</span><span class="op">|</span><span class="dt">bool</span> <span class="va">$fields</span> <span class="op">=</span> <span class="kw">true</span>)<span class="ot">:</span> <span class="bu">Closure</span></span></code></pre></div></div>
+
+
+</section>
+</section>

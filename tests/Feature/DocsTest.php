@@ -140,10 +140,12 @@ class DocsTest extends TestCase
     {
         // phiz's gallery has had a .qmd source since its 2026-10-31 docs
         // cleanup, so it imports like any other page, and the CmdStanPHP
-        // figures plan left the public docs.
+        // figures plan left the public docs. Since the second docs review the
+        // reference is an overview and eight topic pages.
         $paths = Package::find('phiz')->docsPaths();
 
-        $this->assertCount(18, $paths);
+        $this->assertCount(26, $paths);
+        $this->assertCount(9, array_filter($paths, fn (string $path) => str_starts_with($path, 'reference')));
         $this->assertContains('gallery', $paths);
         $this->assertNotContains('cmdstanphp', $paths);
         $this->get('http://phiz.phpstats.test/docs/gallery')->assertOk();

@@ -75,6 +75,46 @@
             "section": "Reference"
         },
         {
+            "title": "Plots and data API",
+            "path": "reference-plots",
+            "section": "Reference"
+        },
+        {
+            "title": "Geoms API",
+            "path": "reference-geoms",
+            "section": "Reference"
+        },
+        {
+            "title": "Scales and guides API",
+            "path": "reference-scales",
+            "section": "Reference"
+        },
+        {
+            "title": "Coordinates, facets, and composition API",
+            "path": "reference-facets",
+            "section": "Reference"
+        },
+        {
+            "title": "Labels and themes API",
+            "path": "reference-themes",
+            "section": "Reference"
+        },
+        {
+            "title": "Interaction API",
+            "path": "reference-interaction",
+            "section": "Reference"
+        },
+        {
+            "title": "Output API",
+            "path": "reference-output",
+            "section": "Reference"
+        },
+        {
+            "title": "Statistics API",
+            "path": "reference-statistics",
+            "section": "Reference"
+        },
+        {
             "title": "Gallery",
             "path": "gallery",
             "section": "Examples"
@@ -557,6 +597,11 @@
             "title": "Get started",
             "headings": [
                 {
+                    "id": "installation",
+                    "text": "Installation",
+                    "level": 2
+                },
+                {
                     "id": "a-complete-first-chart",
                     "text": "A complete first chart",
                     "level": 2
@@ -723,54 +768,9 @@
             "title": "API reference",
             "headings": [
                 {
-                    "id": "exceptions",
-                    "text": "Exceptions",
+                    "id": "conventions",
+                    "text": "Conventions",
                     "level": 2
-                },
-                {
-                    "id": "plot",
-                    "text": "Plot",
-                    "level": 2
-                },
-                {
-                    "id": "construction",
-                    "text": "Construction",
-                    "level": 3
-                },
-                {
-                    "id": "mappings-and-data",
-                    "text": "Mappings and data",
-                    "level": 3
-                },
-                {
-                    "id": "geoms",
-                    "text": "Geoms",
-                    "level": 3
-                },
-                {
-                    "id": "scales",
-                    "text": "Scales",
-                    "level": 3
-                },
-                {
-                    "id": "coordinates-and-facets",
-                    "text": "Coordinates and facets",
-                    "level": 3
-                },
-                {
-                    "id": "labels-theme-size",
-                    "text": "Labels, theme, size",
-                    "level": 3
-                },
-                {
-                    "id": "interaction",
-                    "text": "Interaction",
-                    "level": 3
-                },
-                {
-                    "id": "escape-hatches",
-                    "text": "Escape hatches",
-                    "level": 3
                 },
                 {
                     "id": "aesthetics",
@@ -778,38 +778,1326 @@
                     "level": 2
                 },
                 {
-                    "id": "functions",
-                    "text": "Functions",
+                    "id": "exceptions",
+                    "text": "Exceptions",
                     "level": 2
                 },
                 {
                     "id": "other-classes",
                     "text": "Other classes",
                     "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference-facets": {
+            "title": "Coordinates, facets, and composition API",
+            "headings": [
+                {
+                    "id": "coordinates-and-facets",
+                    "text": "Coordinates and facets",
+                    "level": 2
                 },
                 {
-                    "id": "compose",
+                    "id": "coord-flip",
+                    "text": "coordFlip()",
+                    "level": 3
+                },
+                {
+                    "id": "coord-polar",
+                    "text": "coordPolar()",
+                    "level": 3
+                },
+                {
+                    "id": "coord-fixed",
+                    "text": "coordFixed()",
+                    "level": 3
+                },
+                {
+                    "id": "coord-cartesian",
+                    "text": "coordCartesian()",
+                    "level": 3
+                },
+                {
+                    "id": "facet-wrap",
+                    "text": "facetWrap()",
+                    "level": 3
+                },
+                {
+                    "id": "facet-grid",
+                    "text": "facetGrid()",
+                    "level": 3
+                },
+                {
+                    "id": "class-compose",
                     "text": "Compose",
+                    "level": 2
+                },
+                {
+                    "id": "compose-beside",
+                    "text": "Compose::beside()",
                     "level": 3
                 },
                 {
-                    "id": "data",
-                    "text": "Data",
+                    "id": "compose-stack",
+                    "text": "Compose::stack()",
                     "level": 3
                 },
                 {
-                    "id": "export",
-                    "text": "Export",
+                    "id": "compose-grid",
+                    "text": "Compose::grid()",
+                    "level": 3
+                },
+                {
+                    "id": "compose-title",
+                    "text": "$compose->title()",
+                    "level": 3
+                },
+                {
+                    "id": "compose-theme",
+                    "text": "$compose->theme()",
+                    "level": 3
+                },
+                {
+                    "id": "compose-resolve",
+                    "text": "$compose->resolve()",
+                    "level": 3
+                },
+                {
+                    "id": "compose-raw",
+                    "text": "$compose->raw()",
+                    "level": 3
+                },
+                {
+                    "id": "compose-to-array",
+                    "text": "$compose->toArray()",
+                    "level": 3
+                },
+                {
+                    "id": "compose-to-spec",
+                    "text": "$compose->toSpec()",
+                    "level": 3
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "coord_flip",
+                    "text": "coord_flip()",
+                    "level": 3
+                },
+                {
+                    "id": "coord_fixed",
+                    "text": "coord_fixed()",
+                    "level": 3
+                },
+                {
+                    "id": "coord_equal",
+                    "text": "coord_equal()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference-geoms": {
+            "title": "Geoms API",
+            "headings": [
+                {
+                    "id": "point",
+                    "text": "point()",
+                    "level": 3
+                },
+                {
+                    "id": "jitter",
+                    "text": "jitter()",
+                    "level": 3
+                },
+                {
+                    "id": "line",
+                    "text": "line()",
+                    "level": 3
+                },
+                {
+                    "id": "path",
+                    "text": "path()",
+                    "level": 3
+                },
+                {
+                    "id": "step",
+                    "text": "step()",
+                    "level": 3
+                },
+                {
+                    "id": "area",
+                    "text": "area()",
+                    "level": 3
+                },
+                {
+                    "id": "ribbon",
+                    "text": "ribbon()",
+                    "level": 3
+                },
+                {
+                    "id": "bar",
+                    "text": "bar()",
+                    "level": 3
+                },
+                {
+                    "id": "col",
+                    "text": "col()",
+                    "level": 3
+                },
+                {
+                    "id": "histogram",
+                    "text": "histogram()",
+                    "level": 3
+                },
+                {
+                    "id": "freqpoly",
+                    "text": "freqpoly()",
+                    "level": 3
+                },
+                {
+                    "id": "density",
+                    "text": "density()",
+                    "level": 3
+                },
+                {
+                    "id": "boxplot",
+                    "text": "boxplot()",
+                    "level": 3
+                },
+                {
+                    "id": "violin",
+                    "text": "violin()",
+                    "level": 3
+                },
+                {
+                    "id": "errorbar",
+                    "text": "errorbar()",
+                    "level": 3
+                },
+                {
+                    "id": "linerange",
+                    "text": "linerange()",
+                    "level": 3
+                },
+                {
+                    "id": "pointrange",
+                    "text": "pointrange()",
+                    "level": 3
+                },
+                {
+                    "id": "hline",
+                    "text": "hline()",
+                    "level": 3
+                },
+                {
+                    "id": "vline",
+                    "text": "vline()",
+                    "level": 3
+                },
+                {
+                    "id": "abline",
+                    "text": "abline()",
+                    "level": 3
+                },
+                {
+                    "id": "rule",
+                    "text": "rule()",
+                    "level": 3
+                },
+                {
+                    "id": "segment",
+                    "text": "segment()",
+                    "level": 3
+                },
+                {
+                    "id": "text",
+                    "text": "text()",
+                    "level": 3
+                },
+                {
+                    "id": "label",
+                    "text": "label()",
+                    "level": 3
+                },
+                {
+                    "id": "tile",
+                    "text": "tile()",
+                    "level": 3
+                },
+                {
+                    "id": "raster",
+                    "text": "raster()",
+                    "level": 3
+                },
+                {
+                    "id": "rect",
+                    "text": "rect()",
+                    "level": 3
+                },
+                {
+                    "id": "bin2d",
+                    "text": "bin2d()",
+                    "level": 3
+                },
+                {
+                    "id": "hex",
+                    "text": "hex()",
+                    "level": 3
+                },
+                {
+                    "id": "smooth",
+                    "text": "smooth()",
+                    "level": 3
+                },
+                {
+                    "id": "density2d",
+                    "text": "density2d()",
+                    "level": 3
+                },
+                {
+                    "id": "density2d-filled",
+                    "text": "density2dFilled()",
+                    "level": 3
+                },
+                {
+                    "id": "contour",
+                    "text": "contour()",
+                    "level": 3
+                },
+                {
+                    "id": "contour-filled",
+                    "text": "contourFilled()",
+                    "level": 3
+                },
+                {
+                    "id": "polygon",
+                    "text": "polygon()",
+                    "level": 3
+                },
+                {
+                    "id": "summary",
+                    "text": "summary()",
+                    "level": 3
+                },
+                {
+                    "id": "crossbar",
+                    "text": "crossbar()",
+                    "level": 3
+                },
+                {
+                    "id": "ellipse",
+                    "text": "ellipse()",
+                    "level": 3
+                },
+                {
+                    "id": "count",
+                    "text": "count()",
+                    "level": 3
+                },
+                {
+                    "id": "annotate",
+                    "text": "annotate()",
+                    "level": 3
+                },
+                {
+                    "id": "curve",
+                    "text": "curve()",
+                    "level": 3
+                },
+                {
+                    "id": "rug",
+                    "text": "rug()",
+                    "level": 3
+                },
+                {
+                    "id": "ecdf",
+                    "text": "ecdf()",
+                    "level": 3
+                },
+                {
+                    "id": "qq",
+                    "text": "qq()",
+                    "level": 3
+                },
+                {
+                    "id": "qq-line",
+                    "text": "qqLine()",
+                    "level": 3
+                },
+                {
+                    "id": "arc",
+                    "text": "arc()",
+                    "level": 3
+                },
+                {
+                    "id": "pie",
+                    "text": "pie()",
+                    "level": 3
+                },
+                {
+                    "id": "layer",
+                    "text": "layer()",
+                    "level": 3
+                },
+                {
+                    "id": "geom",
+                    "text": "geom()",
+                    "level": 3
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "annotate-function",
+                    "text": "annotate()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference-interaction": {
+            "title": "Interaction API",
+            "headings": [
+                {
+                    "id": "tooltip",
+                    "text": "tooltip()",
+                    "level": 3
+                },
+                {
+                    "id": "interactive",
+                    "text": "interactive()",
+                    "level": 3
+                },
+                {
+                    "id": "brush",
+                    "text": "brush()",
+                    "level": 3
+                },
+                {
+                    "id": "highlight",
+                    "text": "highlight()",
+                    "level": 3
+                },
+                {
+                    "id": "slider",
+                    "text": "slider()",
+                    "level": 3
+                },
+                {
+                    "id": "dropdown",
+                    "text": "dropdown()",
+                    "level": 3
+                },
+                {
+                    "id": "param",
+                    "text": "param()",
+                    "level": 3
+                },
+                {
+                    "id": "select",
+                    "text": "select()",
+                    "level": 3
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "tooltip-function",
+                    "text": "tooltip()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference-output": {
+            "title": "Output API",
+            "headings": [
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "to-array",
+                    "text": "toArray()",
+                    "level": 3
+                },
+                {
+                    "id": "to-spec",
+                    "text": "toSpec()",
+                    "level": 3
+                },
+                {
+                    "id": "to-json",
+                    "text": "toJson()",
+                    "level": 3
+                },
+                {
+                    "id": "embed",
+                    "text": "embed()",
                     "level": 3
                 },
                 {
                     "id": "html",
-                    "text": "Html",
+                    "text": "html()",
                     "level": 3
                 },
                 {
-                    "id": "bin",
+                    "id": "svg",
+                    "text": "svg()",
+                    "level": 3
+                },
+                {
+                    "id": "png",
+                    "text": "png()",
+                    "level": 3
+                },
+                {
+                    "id": "pdf",
+                    "text": "pdf()",
+                    "level": 3
+                },
+                {
+                    "id": "save",
+                    "text": "save()",
+                    "level": 3
+                },
+                {
+                    "id": "escape-hatches",
+                    "text": "Escape hatches",
+                    "level": 2
+                },
+                {
+                    "id": "transform",
+                    "text": "transform()",
+                    "level": 3
+                },
+                {
+                    "id": "raw",
+                    "text": "raw()",
+                    "level": 3
+                },
+                {
+                    "id": "apply",
+                    "text": "apply()",
+                    "level": 3
+                },
+                {
+                    "id": "class-html",
+                    "text": "Html",
+                    "level": 2
+                },
+                {
+                    "id": "html-container",
+                    "text": "Html::container()",
+                    "level": 3
+                },
+                {
+                    "id": "html-deferred",
+                    "text": "Html::deferred()",
+                    "level": 3
+                },
+                {
+                    "id": "html-embed",
+                    "text": "Html::embed()",
+                    "level": 3
+                },
+                {
+                    "id": "html-page",
+                    "text": "Html::page()",
+                    "level": 3
+                },
+                {
+                    "id": "html-attributes",
+                    "text": "Html::attributes()",
+                    "level": 3
+                },
+                {
+                    "id": "class-assets",
+                    "text": "Assets",
+                    "level": 2
+                },
+                {
+                    "id": "assets-cdn",
+                    "text": "Assets::cdn()",
+                    "level": 3
+                },
+                {
+                    "id": "assets-local",
+                    "text": "Assets::local()",
+                    "level": 3
+                },
+                {
+                    "id": "assets-urls",
+                    "text": "Assets::urls()",
+                    "level": 3
+                },
+                {
+                    "id": "assets-inline",
+                    "text": "Assets::inline()",
+                    "level": 3
+                },
+                {
+                    "id": "assets-none",
+                    "text": "Assets::none()",
+                    "level": 3
+                },
+                {
+                    "id": "assets-scripts",
+                    "text": "$assets->scripts()",
+                    "level": 3
+                },
+                {
+                    "id": "assets-loader",
+                    "text": "Assets::loader()",
+                    "level": 3
+                },
+                {
+                    "id": "class-export",
+                    "text": "Export",
+                    "level": 2
+                },
+                {
+                    "id": "export-find",
+                    "text": "Export::find()",
+                    "level": 3
+                },
+                {
+                    "id": "export-available",
+                    "text": "Export::available()",
+                    "level": 3
+                },
+                {
+                    "id": "export-svg",
+                    "text": "$export->svg()",
+                    "level": 3
+                },
+                {
+                    "id": "export-png",
+                    "text": "$export->png()",
+                    "level": 3
+                },
+                {
+                    "id": "export-jpeg",
+                    "text": "$export->jpeg()",
+                    "level": 3
+                },
+                {
+                    "id": "export-pdf",
+                    "text": "$export->pdf()",
+                    "level": 3
+                },
+                {
+                    "id": "export-vega",
+                    "text": "$export->vega()",
+                    "level": 3
+                },
+                {
+                    "id": "export-save",
+                    "text": "$export->save()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference-plots": {
+            "title": "Plots and data API",
+            "headings": [
+                {
+                    "id": "construction",
+                    "text": "Construction",
+                    "level": 2
+                },
+                {
+                    "id": "of",
+                    "text": "Plot::of()",
+                    "level": 3
+                },
+                {
+                    "id": "mappings-and-data",
+                    "text": "Mappings and data",
+                    "level": 2
+                },
+                {
+                    "id": "aes",
+                    "text": "aes()",
+                    "level": 3
+                },
+                {
+                    "id": "data",
+                    "text": "data()",
+                    "level": 3
+                },
+                {
+                    "id": "class-data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "data-from",
+                    "text": "Data::from()",
+                    "level": 3
+                },
+                {
+                    "id": "data-url",
+                    "text": "Data::url()",
+                    "level": 3
+                },
+                {
+                    "id": "data-named",
+                    "text": "Data::named()",
+                    "level": 3
+                },
+                {
+                    "id": "data-is-inline",
+                    "text": "$data->isInline()",
+                    "level": 3
+                },
+                {
+                    "id": "data-is-empty",
+                    "text": "$data->isEmpty()",
+                    "level": 3
+                },
+                {
+                    "id": "data-count",
+                    "text": "$data->count()",
+                    "level": 3
+                },
+                {
+                    "id": "data-source",
+                    "text": "$data->source()",
+                    "level": 3
+                },
+                {
+                    "id": "data-to-spec",
+                    "text": "$data->toSpec()",
+                    "level": 3
+                },
+                {
+                    "id": "data-fields",
+                    "text": "$data->fields()",
+                    "level": 3
+                },
+                {
+                    "id": "data-has",
+                    "text": "$data->has()",
+                    "level": 3
+                },
+                {
+                    "id": "data-column",
+                    "text": "$data->column()",
+                    "level": 3
+                },
+                {
+                    "id": "data-type",
+                    "text": "$data->type()",
+                    "level": 3
+                },
+                {
+                    "id": "data-levels",
+                    "text": "$data->levels()",
+                    "level": 3
+                },
+                {
+                    "id": "data-with-rows",
+                    "text": "$data->withRows()",
+                    "level": 3
+                },
+                {
+                    "id": "data-value",
+                    "text": "Data::value()",
+                    "level": 3
+                },
+                {
+                    "id": "class-datasets",
+                    "text": "Datasets",
+                    "level": 2
+                },
+                {
+                    "id": "datasets-mpg",
+                    "text": "Datasets::mpg()",
+                    "level": 3
+                },
+                {
+                    "id": "datasets-mtcars",
+                    "text": "Datasets::mtcars()",
+                    "level": 3
+                },
+                {
+                    "id": "datasets-economics",
+                    "text": "Datasets::economics()",
+                    "level": 3
+                },
+                {
+                    "id": "datasets-faithful",
+                    "text": "Datasets::faithful()",
+                    "level": 3
+                },
+                {
+                    "id": "datasets-load",
+                    "text": "Datasets::load()",
+                    "level": 3
+                },
+                {
+                    "id": "class-bin",
                     "text": "Bin",
+                    "level": 2
+                },
+                {
+                    "id": "bin-histogram",
+                    "text": "Bin::histogram()",
+                    "level": 3
+                },
+                {
+                    "id": "bin-grid",
+                    "text": "Bin::grid()",
+                    "level": 3
+                },
+                {
+                    "id": "bin-hex",
+                    "text": "Bin::hex()",
+                    "level": 3
+                },
+                {
+                    "id": "bin-lttb",
+                    "text": "Bin::lttb()",
+                    "level": 3
+                },
+                {
+                    "id": "bin-sample",
+                    "text": "Bin::sample()",
+                    "level": 3
+                },
+                {
+                    "id": "bin-range",
+                    "text": "Bin::range()",
+                    "level": 3
+                },
+                {
+                    "id": "bin-values",
+                    "text": "Bin::values()",
+                    "level": 3
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "aes-function",
+                    "text": "aes()",
+                    "level": 3
+                },
+                {
+                    "id": "ggplot-function",
+                    "text": "ggplot()",
+                    "level": 3
+                },
+                {
+                    "id": "field-function",
+                    "text": "field()",
+                    "level": 3
+                },
+                {
+                    "id": "factor-function",
+                    "text": "factor()",
+                    "level": 3
+                },
+                {
+                    "id": "calc-function",
+                    "text": "calc()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-function",
+                    "text": "expr()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference-scales": {
+            "title": "Scales and guides API",
+            "headings": [
+                {
+                    "id": "scale",
+                    "text": "scale()",
+                    "level": 3
+                },
+                {
+                    "id": "scale-x",
+                    "text": "scaleX()",
+                    "level": 3
+                },
+                {
+                    "id": "scale-y",
+                    "text": "scaleY()",
+                    "level": 3
+                },
+                {
+                    "id": "scale-color",
+                    "text": "scaleColor()",
+                    "level": 3
+                },
+                {
+                    "id": "scale-fill",
+                    "text": "scaleFill()",
+                    "level": 3
+                },
+                {
+                    "id": "scale-size",
+                    "text": "scaleSize()",
+                    "level": 3
+                },
+                {
+                    "id": "scale-shape",
+                    "text": "scaleShape()",
+                    "level": 3
+                },
+                {
+                    "id": "scale-opacity",
+                    "text": "scaleOpacity()",
+                    "level": 3
+                },
+                {
+                    "id": "scale-linetype",
+                    "text": "scaleLinetype()",
+                    "level": 3
+                },
+                {
+                    "id": "guides",
+                    "text": "guides()",
+                    "level": 3
+                },
+                {
+                    "id": "xlim",
+                    "text": "xlim()",
+                    "level": 3
+                },
+                {
+                    "id": "ylim",
+                    "text": "ylim()",
+                    "level": 3
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "scale_color_manual",
+                    "text": "scale_color_manual()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_manual",
+                    "text": "scale_fill_manual()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_scheme",
+                    "text": "scale_color_scheme()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_scheme",
+                    "text": "scale_fill_scheme()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_viridis",
+                    "text": "scale_color_viridis()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_viridis",
+                    "text": "scale_fill_viridis()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_brewer",
+                    "text": "scale_color_brewer()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_brewer",
+                    "text": "scale_fill_brewer()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_gradient",
+                    "text": "scale_color_gradient()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_gradient",
+                    "text": "scale_fill_gradient()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_gradient2",
+                    "text": "scale_color_gradient2()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_gradient2",
+                    "text": "scale_fill_gradient2()",
+                    "level": 3
+                },
+                {
+                    "id": "viridis_scheme",
+                    "text": "viridis_scheme()",
+                    "level": 3
+                },
+                {
+                    "id": "brewer_scheme",
+                    "text": "brewer_scheme()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_viridis_d",
+                    "text": "scale_color_viridis_d()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_viridis_d",
+                    "text": "scale_fill_viridis_d()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_viridis_c",
+                    "text": "scale_color_viridis_c()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_viridis_c",
+                    "text": "scale_fill_viridis_c()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_viridis_b",
+                    "text": "scale_color_viridis_b()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_viridis_b",
+                    "text": "scale_fill_viridis_b()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_distiller",
+                    "text": "scale_color_distiller()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_distiller",
+                    "text": "scale_fill_distiller()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_fermenter",
+                    "text": "scale_color_fermenter()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_fermenter",
+                    "text": "scale_fill_fermenter()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_gradientn",
+                    "text": "scale_color_gradientn()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_gradientn",
+                    "text": "scale_fill_gradientn()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_grey",
+                    "text": "scale_color_grey()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_grey",
+                    "text": "scale_fill_grey()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_hue",
+                    "text": "scale_color_hue()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_fill_hue",
+                    "text": "scale_fill_hue()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_color_identity",
+                    "text": "scale_color_identity()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_x_discrete",
+                    "text": "scale_x_discrete()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_y_discrete",
+                    "text": "scale_y_discrete()",
+                    "level": 3
+                },
+                {
+                    "id": "guides-function",
+                    "text": "guides()",
+                    "level": 3
+                },
+                {
+                    "id": "guide_legend",
+                    "text": "guide_legend()",
+                    "level": 3
+                },
+                {
+                    "id": "guide_colorbar",
+                    "text": "guide_colorbar()",
+                    "level": 3
+                },
+                {
+                    "id": "guide_colourbar",
+                    "text": "guide_colourbar()",
+                    "level": 3
+                },
+                {
+                    "id": "guide_axis",
+                    "text": "guide_axis()",
+                    "level": 3
+                },
+                {
+                    "id": "guide_none",
+                    "text": "guide_none()",
+                    "level": 3
+                },
+                {
+                    "id": "label_number",
+                    "text": "label_number()",
+                    "level": 3
+                },
+                {
+                    "id": "label_comma",
+                    "text": "label_comma()",
+                    "level": 3
+                },
+                {
+                    "id": "label_percent",
+                    "text": "label_percent()",
+                    "level": 3
+                },
+                {
+                    "id": "label_dollar",
+                    "text": "label_dollar()",
+                    "level": 3
+                },
+                {
+                    "id": "label_scientific",
+                    "text": "label_scientific()",
+                    "level": 3
+                },
+                {
+                    "id": "label_date",
+                    "text": "label_date()",
+                    "level": 3
+                },
+                {
+                    "id": "xlim-function",
+                    "text": "xlim()",
+                    "level": 3
+                },
+                {
+                    "id": "ylim-function",
+                    "text": "ylim()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference-statistics": {
+            "title": "Statistics API",
+            "headings": [
+                {
+                    "id": "coefplot-function",
+                    "text": "coefplot()",
+                    "level": 3
+                },
+                {
+                    "id": "residual_plot",
+                    "text": "residual_plot()",
+                    "level": 3
+                },
+                {
+                    "id": "qq_plot",
+                    "text": "qq_plot()",
+                    "level": 3
+                },
+                {
+                    "id": "fitted_plot",
+                    "text": "fitted_plot()",
+                    "level": 3
+                },
+                {
+                    "id": "scale_location_plot",
+                    "text": "scale_location_plot()",
+                    "level": 3
+                },
+                {
+                    "id": "diagnostic_plots",
+                    "text": "diagnostic_plots()",
+                    "level": 3
+                },
+                {
+                    "id": "effect_plot",
+                    "text": "effect_plot()",
+                    "level": 3
+                },
+                {
+                    "id": "predictions-function",
+                    "text": "predictions()",
+                    "level": 3
+                },
+                {
+                    "id": "interval_plot",
+                    "text": "interval_plot()",
+                    "level": 3
+                },
+                {
+                    "id": "marginal_means",
+                    "text": "marginal_means()",
+                    "level": 3
+                },
+                {
+                    "id": "random_effects_plot",
+                    "text": "random_effects_plot()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference-themes": {
+            "title": "Labels and themes API",
+            "headings": [
+                {
+                    "id": "labs",
+                    "text": "labs()",
+                    "level": 3
+                },
+                {
+                    "id": "title",
+                    "text": "title()",
+                    "level": 3
+                },
+                {
+                    "id": "theme",
+                    "text": "theme()",
+                    "level": 3
+                },
+                {
+                    "id": "size",
+                    "text": "size()",
+                    "level": 3
+                },
+                {
+                    "id": "width",
+                    "text": "width()",
+                    "level": 3
+                },
+                {
+                    "id": "height",
+                    "text": "height()",
+                    "level": 3
+                },
+                {
+                    "id": "description",
+                    "text": "description()",
+                    "level": 3
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "ggtitle-function",
+                    "text": "ggtitle()",
+                    "level": 3
+                },
+                {
+                    "id": "xlab-function",
+                    "text": "xlab()",
+                    "level": 3
+                },
+                {
+                    "id": "ylab-function",
+                    "text": "ylab()",
+                    "level": 3
+                },
+                {
+                    "id": "theme_gray",
+                    "text": "theme_gray()",
+                    "level": 3
+                },
+                {
+                    "id": "theme_grey",
+                    "text": "theme_grey()",
+                    "level": 3
+                },
+                {
+                    "id": "theme_bw",
+                    "text": "theme_bw()",
+                    "level": 3
+                },
+                {
+                    "id": "theme_minimal",
+                    "text": "theme_minimal()",
+                    "level": 3
+                },
+                {
+                    "id": "theme_classic",
+                    "text": "theme_classic()",
+                    "level": 3
+                },
+                {
+                    "id": "theme_light",
+                    "text": "theme_light()",
+                    "level": 3
+                },
+                {
+                    "id": "theme_dark",
+                    "text": "theme_dark()",
+                    "level": 3
+                },
+                {
+                    "id": "theme_void",
+                    "text": "theme_void()",
+                    "level": 3
+                },
+                {
+                    "id": "theme_linedraw",
+                    "text": "theme_linedraw()",
+                    "level": 3
+                },
+                {
+                    "id": "size-function",
+                    "text": "size()",
                     "level": 3
                 }
             ],
