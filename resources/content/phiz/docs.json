@@ -6,118 +6,99 @@
         },
         {
             "title": "Get started",
-            "path": "get-started"
+            "path": "get-started",
+            "section": "Getting started"
         },
         {
             "title": "Coming from ggplot2",
-            "path": "ggplot2"
+            "path": "ggplot2",
+            "section": "Getting started"
         },
         {
             "title": "Data and fields",
             "path": "data",
-            "section": "Guide"
+            "section": "Guides"
         },
         {
             "title": "Geoms",
             "path": "geoms",
-            "section": "Guide"
+            "section": "Guides"
         },
         {
             "title": "Scales, coordinates, and labels",
             "path": "scales",
-            "section": "Guide"
+            "section": "Guides"
         },
         {
             "title": "Facets and composition",
             "path": "facets",
-            "section": "Guide"
+            "section": "Guides"
         },
         {
             "title": "Themes",
             "path": "themes",
-            "section": "Guide"
+            "section": "Guides"
         },
         {
             "title": "Interaction",
             "path": "interaction",
-            "section": "Guide"
+            "section": "Guides"
         },
         {
             "title": "Statistics",
             "path": "statistics",
-            "section": "Guide"
+            "section": "Guides"
         },
         {
             "title": "Rendering",
             "path": "rendering",
-            "section": "Output"
+            "section": "Guides"
         },
         {
             "title": "Laravel and Livewire",
             "path": "laravel",
-            "section": "Output"
+            "section": "Guides"
         },
         {
             "title": "Dashboards with Livewire",
             "path": "dashboard",
-            "section": "Output"
+            "section": "Guides"
         },
         {
             "title": "Large data",
             "path": "large-data",
-            "section": "Output"
-        },
-        {
-            "title": "Design",
-            "path": "design",
-            "section": "Project"
+            "section": "Guides"
         },
         {
             "title": "API reference",
             "path": "reference",
-            "section": "Project"
+            "section": "Reference"
         },
         {
-            "title": "Plan: CmdStanPHP figures",
-            "path": "cmdstanphp",
-            "section": "Project"
+            "title": "Gallery",
+            "path": "gallery",
+            "section": "Examples"
+        },
+        {
+            "title": "Design and compatibility",
+            "path": "design",
+            "section": "Compatibility and limitations"
         },
         {
             "title": "Development",
             "path": "development",
-            "section": "Project"
+            "section": "Contributing"
         }
     ],
     "pages": {
-        "cmdstanphp": {
-            "title": "Plan: CmdStanPHP figures on phiz",
-            "headings": [
-                {
-                    "id": "background",
-                    "text": "Background",
-                    "level": 2
-                },
-                {
-                    "id": "proposed-steps",
-                    "text": "Proposed steps",
-                    "level": 2
-                },
-                {
-                    "id": "translations",
-                    "text": "Translations",
-                    "level": 2
-                },
-                {
-                    "id": "open-questions",
-                    "text": "Open questions",
-                    "level": 2
-                }
-            ],
-            "math": false
-        },
         "dashboard": {
             "title": "Dashboards with Livewire",
             "headings": [
+                {
+                    "id": "prerequisites",
+                    "text": "Prerequisites",
+                    "level": 2
+                },
                 {
                     "id": "the-charts",
                     "text": "The charts",
@@ -173,7 +154,7 @@
             "math": false
         },
         "design": {
-            "title": "Design",
+            "title": "Design and compatibility",
             "headings": [
                 {
                     "id": "vega-lite-does-the-drawing",
@@ -191,8 +172,13 @@
                     "level": 2
                 },
                 {
-                    "id": "versions",
-                    "text": "Versions",
+                    "id": "php-versions",
+                    "text": "PHP versions",
+                    "level": 2
+                },
+                {
+                    "id": "vega-lite-versions",
+                    "text": "Vega-Lite versions",
                     "level": 2
                 }
             ],
@@ -231,6 +217,277 @@
                     "id": "composition",
                     "text": "Composition",
                     "level": 2
+                }
+            ],
+            "math": false
+        },
+        "gallery": {
+            "title": "Gallery",
+            "headings": [
+                {
+                    "id": "basics",
+                    "text": "Basics",
+                    "level": 2
+                },
+                {
+                    "id": "scatter",
+                    "text": "Scatterplot",
+                    "level": 3
+                },
+                {
+                    "id": "scatter-smooth",
+                    "text": "Linear fit with confidence band",
+                    "level": 3
+                },
+                {
+                    "id": "pipe",
+                    "text": "With ggplot2-style functions",
+                    "level": 3
+                },
+                {
+                    "id": "line",
+                    "text": "Time series",
+                    "level": 3
+                },
+                {
+                    "id": "area",
+                    "text": "Stacked area",
+                    "level": 3
+                },
+                {
+                    "id": "text",
+                    "text": "Labels",
+                    "level": 3
+                },
+                {
+                    "id": "distributions",
+                    "text": "Distributions",
+                    "level": 2
+                },
+                {
+                    "id": "histogram",
+                    "text": "Histogram",
+                    "level": 3
+                },
+                {
+                    "id": "histogram-density",
+                    "text": "Histogram with density",
+                    "level": 3
+                },
+                {
+                    "id": "density",
+                    "text": "Density by group",
+                    "level": 3
+                },
+                {
+                    "id": "boxplot",
+                    "text": "Boxplots",
+                    "level": 3
+                },
+                {
+                    "id": "violin",
+                    "text": "Violins with boxplots",
+                    "level": 3
+                },
+                {
+                    "id": "jitter",
+                    "text": "Jittered strip plot",
+                    "level": 3
+                },
+                {
+                    "id": "ecdf",
+                    "text": "Empirical CDF",
+                    "level": 3
+                },
+                {
+                    "id": "qq",
+                    "text": "QQ plot",
+                    "level": 3
+                },
+                {
+                    "id": "density2d",
+                    "text": "2D density",
+                    "level": 3
+                },
+                {
+                    "id": "ellipse",
+                    "text": "Confidence ellipses",
+                    "level": 3
+                },
+                {
+                    "id": "counts",
+                    "text": "Counts",
+                    "level": 2
+                },
+                {
+                    "id": "bar",
+                    "text": "Bar chart of counts",
+                    "level": 3
+                },
+                {
+                    "id": "bar-dodge",
+                    "text": "Dodged bars",
+                    "level": 3
+                },
+                {
+                    "id": "bar-fill",
+                    "text": "Proportions",
+                    "level": 3
+                },
+                {
+                    "id": "col",
+                    "text": "Bars of values",
+                    "level": 3
+                },
+                {
+                    "id": "tile",
+                    "text": "Heatmap",
+                    "level": 3
+                },
+                {
+                    "id": "bin2d",
+                    "text": "2D histogram",
+                    "level": 3
+                },
+                {
+                    "id": "pie",
+                    "text": "Donut",
+                    "level": 3
+                },
+                {
+                    "id": "rose",
+                    "text": "Polar bars",
+                    "level": 3
+                },
+                {
+                    "id": "annotate",
+                    "text": "Annotations",
+                    "level": 3
+                },
+                {
+                    "id": "facets",
+                    "text": "Facets",
+                    "level": 2
+                },
+                {
+                    "id": "facet-wrap",
+                    "text": "Small multiples",
+                    "level": 3
+                },
+                {
+                    "id": "facet-grid",
+                    "text": "Grid of panels",
+                    "level": 3
+                },
+                {
+                    "id": "compose",
+                    "text": "Side by side",
+                    "level": 3
+                },
+                {
+                    "id": "scales-and-themes",
+                    "text": "Scales and themes",
+                    "level": 2
+                },
+                {
+                    "id": "log-scale",
+                    "text": "Log scale",
+                    "level": 3
+                },
+                {
+                    "id": "manual-colors",
+                    "text": "Manual colors",
+                    "level": 3
+                },
+                {
+                    "id": "gradient",
+                    "text": "Continuous color",
+                    "level": 3
+                },
+                {
+                    "id": "theme-gray",
+                    "text": "theme(“gray”)",
+                    "level": 3
+                },
+                {
+                    "id": "theme-classic",
+                    "text": "theme(“classic”, baseSize: 13)",
+                    "level": 3
+                },
+                {
+                    "id": "theme-dark",
+                    "text": "theme(“dark”)",
+                    "level": 3
+                },
+                {
+                    "id": "interaction",
+                    "text": "Interaction",
+                    "level": 2
+                },
+                {
+                    "id": "tooltip-zoom",
+                    "text": "Tooltips, pan and zoom",
+                    "level": 3
+                },
+                {
+                    "id": "brush-linked",
+                    "text": "Linked brushing",
+                    "level": 3
+                },
+                {
+                    "id": "highlight",
+                    "text": "Legend highlight",
+                    "level": 3
+                },
+                {
+                    "id": "slider",
+                    "text": "Slider-driven reference line",
+                    "level": 3
+                },
+                {
+                    "id": "statistics",
+                    "text": "Statistics",
+                    "level": 2
+                },
+                {
+                    "id": "coefplot",
+                    "text": "Coefficient plot",
+                    "level": 3
+                },
+                {
+                    "id": "coefplot-compare",
+                    "text": "Comparing models",
+                    "level": 3
+                },
+                {
+                    "id": "diagnostics",
+                    "text": "Regression diagnostics",
+                    "level": 3
+                },
+                {
+                    "id": "effects",
+                    "text": "Predicted values",
+                    "level": 3
+                },
+                {
+                    "id": "posterior-intervals",
+                    "text": "Posterior intervals",
+                    "level": 3
+                },
+                {
+                    "id": "errorbars",
+                    "text": "Means with error bars",
+                    "level": 3
+                },
+                {
+                    "id": "summary",
+                    "text": "Summaries",
+                    "level": 3
+                },
+                {
+                    "id": "curve",
+                    "text": "Functions",
+                    "level": 3
                 }
             ],
             "math": false
@@ -300,8 +557,13 @@
             "title": "Get started",
             "headings": [
                 {
-                    "id": "a-first-plot",
-                    "text": "A first plot",
+                    "id": "a-complete-first-chart",
+                    "text": "A complete first chart",
+                    "level": 2
+                },
+                {
+                    "id": "data-mappings-and-geoms",
+                    "text": "Data, mappings, and geoms",
                     "level": 2
                 },
                 {
@@ -461,9 +723,54 @@
             "title": "API reference",
             "headings": [
                 {
+                    "id": "exceptions",
+                    "text": "Exceptions",
+                    "level": 2
+                },
+                {
                     "id": "plot",
                     "text": "Plot",
                     "level": 2
+                },
+                {
+                    "id": "construction",
+                    "text": "Construction",
+                    "level": 3
+                },
+                {
+                    "id": "mappings-and-data",
+                    "text": "Mappings and data",
+                    "level": 3
+                },
+                {
+                    "id": "geoms",
+                    "text": "Geoms",
+                    "level": 3
+                },
+                {
+                    "id": "scales",
+                    "text": "Scales",
+                    "level": 3
+                },
+                {
+                    "id": "coordinates-and-facets",
+                    "text": "Coordinates and facets",
+                    "level": 3
+                },
+                {
+                    "id": "labels-theme-size",
+                    "text": "Labels, theme, size",
+                    "level": 3
+                },
+                {
+                    "id": "interaction",
+                    "text": "Interaction",
+                    "level": 3
+                },
+                {
+                    "id": "escape-hatches",
+                    "text": "Escape hatches",
+                    "level": 3
                 },
                 {
                     "id": "aesthetics",
@@ -479,6 +786,31 @@
                     "id": "other-classes",
                     "text": "Other classes",
                     "level": 2
+                },
+                {
+                    "id": "compose",
+                    "text": "Compose",
+                    "level": 3
+                },
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 3
+                },
+                {
+                    "id": "export",
+                    "text": "Export",
+                    "level": 3
+                },
+                {
+                    "id": "html",
+                    "text": "Html",
+                    "level": 3
+                },
+                {
+                    "id": "bin",
+                    "text": "Bin",
+                    "level": 3
                 }
             ],
             "math": false
@@ -500,6 +832,16 @@
                     "id": "static-export",
                     "text": "Static export",
                     "level": 2
+                },
+                {
+                    "id": "installing-vl-convert",
+                    "text": "Installing vl-convert",
+                    "level": 3
+                },
+                {
+                    "id": "reproducible-svg",
+                    "text": "Reproducible SVG",
+                    "level": 3
                 }
             ],
             "math": false
@@ -538,6 +880,11 @@
         "statistics": {
             "title": "Statistics",
             "headings": [
+                {
+                    "id": "requirements-and-fit-keys",
+                    "text": "Requirements and fit keys",
+                    "level": 2
+                },
                 {
                     "id": "coefficient-plots",
                     "text": "Coefficient plots",

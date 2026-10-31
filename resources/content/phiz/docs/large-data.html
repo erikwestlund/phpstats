@@ -1,6 +1,7 @@
 <p>phiz embeds inline data in the specification, and the browser keeps every row in memory to draw it. A few thousand rows render immediately. Hundreds of thousands of rows make the page heavy and slow, so large data should be summarized before it is sent. phiz does that summarizing in PHP.</p>
 <section id="sizes-to-expect" class="level2">
 <h2 class="anchored" data-anchor-id="sizes-to-expect">Sizes to expect</h2>
+<p>The thresholds below are rough guidance. The limits in practice depend on the mark type, the number of layers and interactions, the browser, and the device. Only the warning threshold is fixed by phiz.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -72,7 +73,7 @@
 </section>
 <section id="tables-stay-columnar" class="level2">
 <h2 class="anchored" data-anchor-id="tables-stay-columnar">Tables stay columnar</h2>
-<p>A phibble table or an array of columns is kept as given. The binning geoms read it column by column, and rows are built only if the specification embeds them. On a laptop, a million-row phibble table plots as follows:</p>
+<p>A phibble table or an array of columns is kept as given. The binning geoms read it column by column, and rows are built only if the specification embeds them. These timings were measured on a laptop on 2026-10-16, with phiz 0.3.0 and a million-row phibble table:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -141,7 +142,7 @@
 <section id="other-approaches" class="level2">
 <h2 class="anchored" data-anchor-id="other-approaches">Other approaches</h2>
 <ul>
-<li><strong>Summarize first.</strong> A phplyr <code>group_by() |&gt; summarise()</code> or a SQL <code>GROUP BY</code> usually answers the question with far fewer rows. <a href="phpstats://phiz/docs/dashboard">Dashboards with Livewire</a> shows charts built from summaries.</li>
+<li><strong>Summarize first.</strong> phplyr’s <code>group_by()</code> and <code>summarize()</code>, or a SQL <code>GROUP BY</code>, usually answers the question with far fewer rows. <a href="phpstats://phiz/docs/dashboard">Dashboards with Livewire</a> shows charts built from summaries.</li>
 <li><strong>Load from a URL.</strong> <code>Data::url('/data/points.csv')</code> lets the browser fetch the file, so the page itself stays small. The browser still holds every row, so this helps page size, not drawing speed.</li>
 <li><strong>Sample.</strong> <code>Bin::sample()</code> keeps a uniform random subset when a scatterplot of individual points matters more than exact counts.</li>
 </ul>

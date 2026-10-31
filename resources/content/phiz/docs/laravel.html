@@ -1,4 +1,5 @@
 <p>phiz’s Laravel service provider is discovered automatically. It registers the <code>&lt;x-phiz&gt;</code> Blade component and the <code>@phizScripts</code> directive. Without Laravel, the same classes are never loaded.</p>
+<p>The component’s tests run on Laravel 12 through Orchestra Testbench 10. The Livewire behavior below is not covered by the test suite, and phiz does not depend on Livewire.</p>
 <section id="blade" class="level2">
 <h2 class="anchored" data-anchor-id="blade">Blade</h2>
 <pre class="blade"><code>&lt;x-phiz :plot="$plot" class="h-80" /&gt;</code></pre>
@@ -32,11 +33,6 @@
 <h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
 <p>Publish the configuration with <code>php artisan vendor:publish --tag=phiz-config</code>.</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Key</th>
@@ -48,7 +44,7 @@
 <tr class="odd">
 <td><code>assets</code></td>
 <td><code>cdn</code></td>
-<td><code>cdn</code>, a URL prefix serving the three library files, or <code>none</code></td>
+<td><code>cdn</code>, a URL prefix serving the three library files, or <code>none</code>; the <code>PHIZ_ASSETS</code> environment variable sets it</td>
 </tr>
 <tr class="even">
 <td><code>inject_scripts</code></td>
@@ -59,6 +55,16 @@
 <td><code>embed_options</code></td>
 <td><code>['actions' =&gt; false]</code></td>
 <td>default vega-embed options</td>
+</tr>
+<tr class="even">
+<td><code>server_rows</code></td>
+<td><code>10_000</code></td>
+<td>inline rows above which <code>bin2d()</code> and <code>histogram()</code> bin in PHP (<a href="phpstats://phiz/docs/large-data">Large data</a>)</td>
+</tr>
+<tr class="odd">
+<td><code>warn_rows</code></td>
+<td><code>20_000</code></td>
+<td>embedded rows above which phiz raises a warning, or <code>null</code> for none</td>
 </tr>
 </tbody>
 </table>

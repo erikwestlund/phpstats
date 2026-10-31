@@ -153,3 +153,33 @@ with no diff; CI green on d92f6b8; DocsImporter dry run 8 pages. Not run:
 WSL; Python 3.10 and older; Vega-Lite claim on phiz 0.5. The site's tests now
 treat juphyter as synced, and ProseTest allows "stack frame" on its
 limitations page.
+
+### phiz (c656ce1, reported by phiz-77)
+
+All `docs/*.qmd`, released v0.5.0 behavior.
+
+| Path | Reader and purpose | Disposition | Problems found | Verified by |
+|---|---|---|---|---|
+| index | New user | Rewritten | VCS and dev-main install; "8.3 or later"; "about 30 geoms"; erikwestlund links; assumed ggplot2 | Fresh `composer require` (v0.5.0); geom count by reflection (42) |
+| get-started | First chart | Rewritten top; pipe tabbed | No complete script; pipe without chain | Script run on 8.3 and 8.4; headless screenshot; specs equal |
+| ggplot2 | ggplot2 users | Keep; tabbed | Unlabeled pipe block | Both versions compiled equal |
+| data, scales, facets, themes, interaction | Guides | Keep | none found | Read against source; tests |
+| geoms | Guide | Keep | Not audited line by line | Spot checks |
+| statistics | Guide | Rewritten in part | php-stats provenance; no phit requirement; false GLM interval explanation | Saved fits refit with phit-polyfill 0.3.0 (2e-14); GLM vs R |
+| rendering | Export | Keep, one fix | Reproducibility claim missed jitter | Three renders differ |
+| laravel | Blade, Livewire | Expanded | Config table incomplete; untested Livewire claims unmarked | config/phiz.php |
+| dashboard | Livewire walkthrough | Expanded | No prerequisites; pipe-only | chain twin; specs compared |
+| large-data | Large data | Qualified | Row-count guidance stated as fact; undated benchmark | Benchmark dated 2026-10-16, phiz 0.3.0 |
+| reference | API reference | Rewritten (generated) | ~15 geoms missing; no signatures or exceptions | `scripts/docs-reference.php` from reflection |
+| gallery (new .qmd) | Examples | New | Was skipped by the sync (no .qmd) | Generated from `examples/catalog.php` |
+| design | Compatibility | Retitled "Design and compatibility" | "Computed in PHP" list stale | Compile/Geoms.php |
+| development | Contributors | Expanded | Render workflow, twins, sitemap rule | Ran the workflow |
+| cmdstanphp (plan) | Proposal | Moved to notes/, off the site | Proposal in public nav | — |
+| README | GitHub | Rewritten short | VCS install; php-stats API; duplication | Examples compared |
+
+Checks: Pest on 8.3, 8.4, 8.5 and CI; phpcs; `scripts/render-docs` with
+vl-convert 1.9.0; read-only DocsImporter run (18 pages). Sitemap edited by
+hand from the committed copy (host, entries, lastmod only for changed pages).
+Not run: browser row-count guidance; Livewire behavior; Windows. Site check:
+Quarto tabsets switch on phpstats.org (app.js and app.css handle
+`.panel-tabset`); the gallery imports at 3.7 MB.

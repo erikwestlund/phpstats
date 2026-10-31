@@ -1,11 +1,15 @@
 <section id="vega-lite-does-the-drawing" class="level2">
 <h2 class="anchored" data-anchor-id="vega-lite-does-the-drawing">Vega-Lite does the drawing</h2>
 <p>phiz does not draw graphics. It translates a ggplot2-style description into a Vega-Lite specification. Vega-Lite then resolves scales, lays out facets and legends, runs transforms, handles interaction, and renders to canvas or SVG. The PHP side stays small, and plots behave the same in the browser and in static export.</p>
-<p>Most statistics run where Vega-Lite runs them: bins, densities, loess fits, aggregates, quantiles, and window functions are Vega-Lite transforms. phiz computes a statistic in PHP only when Vega-Lite cannot:</p>
+<p>Statistics run as Vega-Lite transforms where Vega-Lite has them: bins, densities with the default bandwidth, aggregates, quantiles, and window functions. phiz computes a statistic in PHP when Vega-Lite has no equivalent, or when matching R needs it:</p>
 <ul>
-<li>the confidence bands of <code>smooth()</code> with <code>lm</code>, <code>quad</code>, or <code>poly</code></li>
+<li><code>smooth()</code> fits and their confidence bands (loess up to 3,000 rows, <code>lm</code>, <code>quad</code>, and <code>poly</code>)</li>
+<li>violin densities, and the R <code>bw.nrd0</code> bandwidth behind <code>density(adjust:)</code></li>
+<li>2D densities, contours, and filled contours</li>
+<li><code>ellipse()</code> and the summaries of <code>summary()</code></li>
+<li><code>hex()</code>, and <code>bin2d()</code> and <code>histogram()</code> above <code>Config::$serverRows</code> rows</li>
+<li><code>line(downsample:)</code></li>
 <li><code>curve()</code> evaluations of PHP functions</li>
-<li>the bandwidth behind <code>density(adjust:)</code></li>
 <li>the statistics helpers’ intervals and predictions</li>
 </ul>
 </section>
@@ -77,8 +81,12 @@
 <h2 class="anchored" data-anchor-id="differences-from-ggplot2">Differences from ggplot2</h2>
 <p><a href="phpstats://phiz/docs/ggplot2">Coming from ggplot2</a> lists the translations and the behaviors that differ.</p>
 </section>
-<section id="versions" class="level2">
-<h2 class="anchored" data-anchor-id="versions">Versions</h2>
+<section id="php-versions" class="level2">
+<h2 class="anchored" data-anchor-id="php-versions">PHP versions</h2>
+<p>composer.json requires PHP <code>^8.3</code>. phiz supports PHP 8.3, 8.4, and 8.5, and CI runs the test suite on all three. The library code parses on PHP 8.3. Examples and tests that use the pipe operator <code>|&gt;</code> need PHP 8.5. Each documentation example that uses it has a method-chain version, and the tests check that both build the same specification.</p>
+</section>
+<section id="vega-lite-versions" class="level2">
+<h2 class="anchored" data-anchor-id="vega-lite-versions">Vega-Lite versions</h2>
 <p>phiz emits Vega-Lite 6 specifications. The pinned browser libraries are vega 6.4.0, vega-lite 6.4.3, and vega-embed 7.3.0. Static export uses vl-convert with Vega-Lite 6.1, and the tests validate every specification against the Vega-Lite 6.1.0 JSON schema, the version both renderers support.</p>
 
 

@@ -123,16 +123,17 @@ class DocsTest extends TestCase
         $this->assertCount(60, Package::find('phit')->docsNav());
     }
 
-    public function test_phiz_ships_every_docs_page_but_its_gallery(): void
+    public function test_phiz_ships_every_docs_page_with_its_gallery(): void
     {
-        // phiz renders 19 pages; docs/gallery.html has no .qmd beside it, so
-        // DocsImporter::discover() skips it. That is known and accepted: the
-        // gallery is a rendered artifact rather than a source page.
+        // phiz's gallery has had a .qmd source since its 2026-10-31 docs
+        // cleanup, so it imports like any other page, and the CmdStanPHP
+        // figures plan left the public docs.
         $paths = Package::find('phiz')->docsPaths();
 
         $this->assertCount(18, $paths);
-        $this->assertNotContains('gallery', $paths);
-        $this->get('http://phiz.phpstats.test/docs/gallery')->assertNotFound();
+        $this->assertContains('gallery', $paths);
+        $this->assertNotContains('cmdstanphp', $paths);
+        $this->get('http://phiz.phpstats.test/docs/gallery')->assertOk();
     }
 
     public function test_every_content_asset_the_synced_docs_reference_exists(): void
