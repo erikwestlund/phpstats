@@ -28,9 +28,8 @@ statistical packages, Polars, and [Stan](https://mc-stan.org).
 
 ## Validation
 
-All mathematical and statistical functions are verified against trusted
-statistics and modeling libraries in R and Python. Each package documents its
-checks:
+The packages include comparisons against established R and Python libraries.
+Each package documents its checks:
 
 <x-verification-links />
 
