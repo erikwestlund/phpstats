@@ -17,13 +17,13 @@ designed to work well together.
 PHPstats is influenced by the tidyverse, and also by R's statistical
 packages, Polars, and Stan.
 
-- <strong class="font-mono">phibble:</strong> tibble, readr, and forcats.
-- <strong class="font-mono">phplyr:</strong> dplyr, tidyr, and janitor.
-- <strong class="font-mono">phiz:</strong> ggplot2.
-- <strong class="font-mono">phit:</strong> R's stats and lme4.
-- <strong class="font-mono">phpolars:</strong> Polars and its Python API.
-- <strong class="font-mono">CmdStanPHP:</strong> a port of CmdStanR.
-- <strong class="font-mono">juphyter:</strong> IRkernel and Quarto's notebook workflows.
+- <span class="font-mono font-semibold">phibble</span> implements data frames modeled on tibble, file reading modeled on readr, and the factor functions of forcats.
+- <span class="font-mono font-semibold">phplyr</span> implements the data manipulation features of dplyr, tidyr, and janitor.
+- <span class="font-mono font-semibold">phiz</span> implements the grammar of graphics of ggplot2.
+- <span class="font-mono font-semibold">phit</span> implements regression models from R's stats package and mixed models from lme4.
+- <span class="font-mono font-semibold">phpolars</span> brings Polars to PHP, with an API that follows Polars' Python library.
+- <span class="font-mono font-semibold">CmdStanPHP</span> is a port of CmdStanR.
+- <span class="font-mono font-semibold">juphyter</span> is a PHP kernel for Jupyter, modeled on IRkernel, that also runs PHP in Quarto documents.
 
 ## Source and license
 
