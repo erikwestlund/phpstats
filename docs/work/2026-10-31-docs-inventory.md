@@ -26,3 +26,48 @@ hosts.
 ## Packages
 
 Appended as each session reports.
+
+### phibble (f0c1e8b, reported by phibble-d5)
+
+Every page documents released 0.5.0 behavior on main.
+
+| Docs path | Source | Reader and purpose | Disposition | Problems found | Verified by |
+|---|---|---|---|---|---|
+| index | docs/index.qmd | New user | Rewritten | One long intro; "phpolars is an optional Polars-backed table"; "cmdstanphp will accept"; filler; open-ended PHP | composer.json, CI matrix, CmdStanPHP suggest, phiz `Plot::of` |
+| getting-started | getting-started.qmd | First session | Rewritten in part | No autoloader; no missing-values example; old tab labels | New `missing.php` example run through `bin/docs-examples` |
+| coming-from-tibble | coming-from-tibble.qmd | R users | Keep, one fix | String functions are regex by default, with `fixed()` | Reflection on mapped signatures; runtime checks |
+| types | types.qmd | Types and casts | Keep | none | Runtime checks |
+| io | io.qmd | CSV, JSON, PDO, chunks | Keep | none | IoTest, CsvChunkTest |
+| expr | expr.qmd | Expressions | Keep, one fix | "phpolars maps it to Polars"; unqualified same-result claim | PolarsTable source |
+| sql | sql.qmd | SqlTable | Keep, one fix | "Results match DataFrame" ignored known differences | SqlTest |
+| laravel | laravel.qmd | Laravel users | Rewritten in part | Broken phplyr example (`na_rm:` for `naRm:`, missing `col()` import); no setup | Example run on SQLite, chain and pipe |
+| backends | backends.qmd | Choosing a backend | Rewritten in part | PolarsTable ownership; same-result claim; comments in code | SqlReviewTest, Polars tests (9-place rounding) |
+| contract | contract.qmd | Backend authors | Keep, fixed | Wrong implementation list; `groupRows()` missing | Diff against `src/Contracts/Table.php` |
+| development | development.qmd | Contributors | Keep | CI scope unstated | `.github/workflows/tests.yml` |
+| README | README.md | GitHub | Edited | Family list; same-result claim | Example run |
+
+Checks: `bin/render-docs` rendered 47 examples (only the new one changed);
+phpcs passed; Pest on 8.5 with PostgreSQL, MySQL, phit, and php_polars: 907
+passed, 1 skipped. Not run: 8.3, 8.4; browser check.
+
+### phit-polyfill (004c60a, reported by phit-polyfill-db)
+
+Not imported by phpstats.org (a companion of phit). Its facts feed phit's
+"extension or polyfill" guide and the site's phit overview.
+
+| Docs path | Reader and purpose | Disposition | Problems found | Verified by |
+|---|---|---|---|---|
+| README.md | GitHub users | Rewritten | Version table wrong; "phit has no tagged release yet"; open-ended PHP; duplicated docs | Packagist; fresh `composer require`; README example run |
+| site/docs/index | Overview, install, use | Rewritten | Stale release claim; advice; coexistence facts missing | Fresh install; bootstrap with and without the extension |
+| site/docs/functions | Reference | Rewritten (additions) | Warning text quoted as exception text; no CSV, mixed-model, or posterior sections | Source; `formula-lme4-r.json`; RandomizedParityTest |
+| site/docs/php-versions (now "Compatibility and limitations") | Compatibility | Rewritten | PHP 8.3 JIT default wrong; support versus CI not separated | `php -n` ini defaults; CI workflow; ACCURACY.md speed table (2026-10-16) |
+| site/docs/how-it-works | Advanced | Keep, trimmed | Duplicated differences | Source |
+| site/docs/development | Contributors | Keep | none | composer.json scripts |
+| site/vignettes | Examples | Keep | "Only about speed" (CSV is extension-only) | Ran each with the 0.3.0 extension |
+| site/site.json | Site contract | Rewritten | Missing contract keys; dangling benchmark/verification lists; pipes at line starts | Ran both example variants |
+| ACCURACY.md, CHANGELOG.md, docs/notes | Evidence, history | Keep | One "X, not Y" sentence | — |
+| composer.json | Packagist metadata | Rewritten | 0.1-era description; homepage now https://phit.phpstats.org | curl |
+
+Checks: fresh install of v0.3.0; Pest on 8.5: 590 passed, 129 skipped; lint
+clean; `composer validate`. Not run: benchmarks (kept with original dates),
+Windows, an older-extension runtime check; CI on 004c60a was pending.

@@ -3,7 +3,8 @@
 <p>The test suite uses Pest and runs on PHP 8.3, 8.4, and 8.5. Tests that use the <code>|&gt;</code> operator are in <code>tests/Php85</code>, which <code>phpunit.xml</code> loads only on PHP 8.5:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">composer</span> install</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> vendor/bin/pest</span></code></pre></div></div>
-<p>The tests that fit models need the phit extension and are skipped without it. To run them, load the extension:</p>
+<p>CI runs the suite on Ubuntu with PHP 8.3, 8.4, and 8.5, against PostgreSQL 17 and MySQL 8.0. A second job runs <code>tests/Polars</code> on PHP 8.5 with a prebuilt php_polars extension, and a third runs <code>composer lint</code>. CI does not load the phit extension.</p>
+<p>The tests that fit models or use the native CSV reader need the phit extension and are skipped without it. To run them, load the extension:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">php</span> <span class="at">-d</span> extension=/path/to/libphit.dylib vendor/bin/pest</span></code></pre></div></div>
 </section>
 <section id="comparing-with-r" class="level2">

@@ -1,4 +1,4 @@
-<p><code>Phibble\Expr</code> describes a computation over columns as a tree of objects. The in-memory <code>DataFrame</code> evaluates the tree, <code>SqlTable</code> compiles it to SQL, and phpolars maps it to Polars expressions. An expression gives the same result on each backend because every backend implements the same list of functions with R’s semantics.</p>
+<p><code>Phibble\Expr</code> describes a computation over columns as a tree of objects. The in-memory <code>DataFrame</code> evaluates the tree, <code>SqlTable</code> compiles it to SQL, and <code>PolarsTable</code> maps it to Polars expressions. Each backend implements the same list of functions with R’s semantics, and runs a function in memory when it has no exact translation. Results can still differ where a database cannot represent R’s value, as the <a href="phpstats://phibble/docs/sql#known-differences">SQL tables</a> page lists.</p>
 <p>A PHP closure can only be run. An expression can also be inspected, translated, and serialized. phibble’s verbs accept either, and a backend that cannot run a closure itself loads the rows and runs it in memory.</p>
 <section id="building-expressions" class="level2">
 <h2 class="anchored" data-anchor-id="building-expressions">Building expressions</h2>
@@ -107,7 +107,7 @@
 <ul>
 <li><code>filter()</code> keeps rows where the expression is true. NA counts as false.</li>
 <li><code>mutate()</code> adds a column with one value per row. An aggregate such as <code>mean()</code> gives one value per group, which is repeated for each row of the group.</li>
-<li><code>summarise()</code> needs one value per group. Anything else throws a <code>LengthException</code>.</li>
+<li><code>summarize()</code> needs one value per group. Anything else throws a <code>LengthException</code>.</li>
 <li><code>arrange()</code> sorts by expressions over the whole table, ignoring groups. Wrap a key in <code>desc()</code> to sort it in descending order.</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$penguins</span> <span class="op">=</span> DataFrame::fromCsv(<span class="st">'penguins.csv'</span>)<span class="ot">;</span></span>
@@ -142,7 +142,7 @@
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$penguins</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    -&gt;groupBy([<span class="st">'island'</span>])</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    -&gt;summarise([</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    -&gt;summarize([</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'n'</span> =&gt; n()<span class="ot">,</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'mass'</span> =&gt; mean(col(<span class="st">'body_mass'</span>))<span class="ot">,</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'mass_rm'</span> =&gt; mean(col(<span class="st">'body_mass'</span>)<span class="ot">,</span> na_rm<span class="ot">:</span> <span class="kw">true</span>)<span class="ot">,</span></span>

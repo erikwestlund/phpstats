@@ -10,7 +10,8 @@
         },
         {
             "title": "Coming from tibble",
-            "path": "coming-from-tibble"
+            "path": "coming-from-tibble",
+            "section": "Guides"
         },
         {
             "title": "Types",
@@ -40,16 +41,17 @@
         {
             "title": "Backends",
             "path": "backends",
-            "section": "Backends"
+            "section": "Guides"
         },
         {
             "title": "The Table contract",
             "path": "contract",
-            "section": "Backends"
+            "section": "Reference"
         },
         {
             "title": "Development",
-            "path": "development"
+            "path": "development",
+            "section": "Contributing"
         }
     ],
     "pages": {
@@ -227,8 +229,8 @@
             "title": "Getting started",
             "headings": [
                 {
-                    "id": "imports",
-                    "text": "Imports",
+                    "id": "loading-phibble",
+                    "text": "Loading phibble",
                     "level": 2
                 },
                 {
@@ -272,6 +274,11 @@
                     "level": 2
                 },
                 {
+                    "id": "missing-values",
+                    "text": "Missing values",
+                    "level": 2
+                },
+                {
                     "id": "method-chains-and-the-pipe-operator",
                     "text": "Method chains and the pipe operator",
                     "level": 2
@@ -283,13 +290,23 @@
             "title": "phibble",
             "headings": [
                 {
-                    "id": "install",
-                    "text": "Install",
+                    "id": "tables",
+                    "text": "Tables",
                     "level": 2
                 },
                 {
-                    "id": "where-to-go-next",
-                    "text": "Where to go next",
+                    "id": "backends",
+                    "text": "Backends",
+                    "level": 2
+                },
+                {
+                    "id": "other-packages",
+                    "text": "Other packages",
+                    "level": 2
+                },
+                {
+                    "id": "install",
+                    "text": "Install",
                     "level": 2
                 }
             ],
@@ -349,6 +366,11 @@
         "laravel": {
             "title": "phibble for Laravel developers",
             "headings": [
+                {
+                    "id": "the-example-data",
+                    "text": "The example data",
+                    "level": 2
+                },
                 {
                     "id": "from-a-collection-or-query-to-a-dataframe",
                     "text": "From a collection or query to a DataFrame",

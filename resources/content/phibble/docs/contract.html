@@ -1,4 +1,4 @@
-<p><code>Phibble\Contracts\Table</code> is the interface that every table backend implements. phplyr’s verbs call its methods, so a pipeline runs unchanged on any backend. phibble ships two implementations: <code>DataFrame</code>, which holds data in PHP arrays, and <code>SqlTable</code>, which compiles verbs to SQL. phpolars implements it over Polars.</p>
+<p><code>Phibble\Contracts\Table</code> is the interface that every table backend implements. phplyr’s verbs call its methods, so a pipeline runs unchanged on any backend. phibble ships three implementations: <code>DataFrame</code>, which holds data in PHP arrays, <code>Phibble\Sql\SqlTable</code>, which compiles verbs to SQL, and <code>Phibble\Polars\PolarsTable</code>, which runs them in Polars through the php_polars extension from phpolars.</p>
 <p>This page is for authors of backends. It lists the rules that every implementation follows and the semantics of each method.</p>
 <section id="rules" class="level2">
 <h2 class="anchored" data-anchor-id="rules">Rules</h2>
@@ -121,30 +121,34 @@
 <td>Yields <code>['key' =&gt; [...], 'table' =&gt; Table]</code> for each group, with ungrouped tables. An ungrouped table yields one group with an empty key.</td>
 </tr>
 <tr class="even">
-<td><code>summarise($aggregates)</code></td>
-<td>Returns one row per group: the keys, then one column per entry. Each entry is a closure given the group’s table or an expression of size 1. The result drops the last grouping level, and a rowwise table keeps its id columns. The optional second argument is dplyr’s <code>.groups</code>: <code>'drop_last'</code> (the default), <code>'drop'</code>, <code>'keep'</code>, or <code>'rowwise'</code>.</td>
+<td><code>groupRows()</code></td>
+<td>Returns <code>['key' =&gt; [...], 'rows' =&gt; [...]]</code> for each group, in <code>eachGroup()</code> order, with the group’s 0-based row positions. Empty groups have no rows, and a rowwise table has one group per row.</td>
 </tr>
 <tr class="odd">
+<td><code>summarise($aggregates)</code></td>
+<td><code>DataFrame</code> and <code>SqlTable</code> also have the alias <code>summarize()</code>. Returns one row per group: the keys, then one column per entry. Each entry is a closure given the group’s table or an expression of size 1. The result drops the last grouping level, and a rowwise table keeps its id columns. The optional second argument is dplyr’s <code>.groups</code>: <code>'drop_last'</code> (the default), <code>'drop'</code>, <code>'keep'</code>, or <code>'rowwise'</code>.</td>
+</tr>
+<tr class="even">
 <td><code>distinct($names)</code></td>
 <td>Keeps the first row of each combination of the named columns (and the grouping columns), and only those columns. An empty list means all columns.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>pivotLongerSpec($spec, dropNa:)</code></td>
 <td>tidyr’s <code>pivot_longer_spec()</code>. Spec rows are <code>['.name' =&gt; source, '.value' =&gt; value column, ...name parts]</code>. Output: id columns, name parts, then one column per <code>.value</code>; each input row yields one row per name-part combination in spec order. Values combine by vctrs rules.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>pivotWiderSpec($spec, idColumns:, valuesFill:)</code></td>
 <td>tidyr’s <code>pivot_wider_spec()</code>. Spec rows are <code>['.name' =&gt; new column, '.value' =&gt; values column, ...names_from values]</code>. New columns follow spec order; rows follow the first appearance of each id combination. Duplicates make every new column a list-column and raise tidyr’s warning.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>take($indices)</code></td>
 <td>Rows by 0-based position, in the given order. A <code>null</code> index gives an all-NA row. Keeps types, factor levels, and grouping.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>slice($offset, $length)</code>, <code>head($n)</code></td>
 <td>Rows by position. These ignore grouping.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>join($other, $by, $type, ...)</code></td>
 <td>Joins with dplyr 1.1 semantics, described below.</td>
 </tr>

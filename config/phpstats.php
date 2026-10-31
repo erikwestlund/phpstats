@@ -34,7 +34,7 @@ return [
      * without an entry show the overview from config/projects.php only.
      */
     'content' => [
-        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '80f760360d09cb1178e9739733efef295f4178e9'],
+        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => 'f0c1e8be8ff93acb8e09ac3049917a4038e9ddf6'],
         'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => '4a1e15f373a43cd9f0c1697e0bdf8945d0b2c50c'],
         'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'f7edd6e3974c7d67e4586171afac947411793d97'],
         'phit' => ['repo' => 'phpstats/phit', 'ref' => 'aaf22b4785de4504871a906ac106b9ac85739d26'],
@@ -140,7 +140,7 @@ return [
             'does' => [
                 'phit fits statistical models directly in PHP. It provides linear models with `fit_lm()`, logistic, probit, and Poisson regression with `fit_glm()`, and mixed-effects models with `fit_lmer()` and `fit_glmer()`.',
                 'It is a native extension written in Rust. It takes phibble data frames and R-style formulas and returns plain PHP arrays.',
-                '[phit-polyfill](https://github.com/phpstats/phit-polyfill) implements the same functions in plain PHP, so the same code runs where the extension cannot be installed. Mixed models are slower without the extension.',
+                '[phit-polyfill](https://github.com/phpstats/phit-polyfill) implements the same functions in plain PHP, so the same code runs where the extension cannot be installed. It is slower, and the CSV reader needs the extension.',
                 'Includes probability distributions and descriptive statistics, such as `dist_t_quantile()` and `stat_quantile()`, alongside model fitting.',
             ],
             'output' => 'Model summary and slope intervals',
