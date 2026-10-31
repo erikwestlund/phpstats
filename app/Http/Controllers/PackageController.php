@@ -19,6 +19,16 @@ class PackageController extends Controller
         if (! $item->hasDocs()) {
             return $item->externalDocs() ? redirect()->away($item->externalDocs()) : abort(404);
         }
+        // Quarto's sitemaps and the GitHub Pages redirects name a page x.html.
+        if ($path !== null && str_ends_with($path, '.html')) {
+            $bare = substr($path, 0, -5);
+            if ($bare === 'index') {
+                return redirect()->to($item->url('docs'), 301);
+            }
+            if ($item->docsPage($bare) !== null) {
+                return redirect()->to($item->url('docs', ['path' => $bare]), 301);
+            }
+        }
         $page = $item->docsPage($path ?? 'index') ?? abort(404);
 
         return $this->page($package, 'docs', ['page' => $page, 'path' => $path ?? 'index']);

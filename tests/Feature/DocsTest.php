@@ -123,6 +123,19 @@ class DocsTest extends TestCase
         $this->assertCount(60, Package::find('phit')->docsNav());
     }
 
+    public function test_a_docs_page_named_as_html_redirects_to_its_clean_url(): void
+    {
+        $phit = Package::find('phit');
+
+        $this->get('http://phit.phpstats.test/docs/formulas.html')->assertStatus(301)
+            ->assertRedirect($phit->url('docs', ['path' => 'formulas']));
+        $this->get('http://phit.phpstats.test/docs/index.html')->assertStatus(301)
+            ->assertRedirect($phit->url('docs'));
+        $this->get('http://phit.phpstats.test/docs/notebooks/lmm-math.html')->assertStatus(301)
+            ->assertRedirect($phit->url('docs', ['path' => 'notebooks/lmm-math']));
+        $this->get('http://phit.phpstats.test/docs/not-a-page.html')->assertNotFound();
+    }
+
     public function test_phiz_ships_every_docs_page_with_its_gallery(): void
     {
         // phiz's gallery has had a .qmd source since its 2026-10-31 docs
