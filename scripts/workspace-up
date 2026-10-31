@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Sets up a Polyscope workspace (or any checkout) for a local preview: a .env
+# in path mode, the SQLite database, dependencies, the Vite build, and a Herd
+# proxy from phpstats-<folder>.test to the port scripts/workspace-serve uses.
+# Safe to run again; it keeps an existing .env.
+set -euo pipefail
+
+root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+cd "$root"
+site="phpstats-$(basename -- "$root")"
+port="$(scripts/workspace-port)"
+PHP="${PHP:-php85}"
+
+for dependency in "$PHP" composer npm herd; do
+    if ! command -v "$dependency" >/dev/null 2>&1; then
+        echo "The workspace needs $dependency on PATH." >&2
+        exit 1
+    fi
+done
+
+# Path mode serves every package under /{package} on one host, which is what a
+# single tunnel URL needs, and TRUSTED_PROXIES=* lets links follow the
+# tunnel's host.
+if [ ! -f .env ]; then
+    cp .env.example .env
+    sed -i '' \
+        -e "s|^APP_URL=.*|APP_URL=https://$site.test|" \
+        -e "s|^PHPSTATS_PATHS=.*|PHPSTATS_PATHS=true|" \
+        -e "s|^TRUSTED_PROXIES=.*|TRUSTED_PROXIES=*|" \
+        .env
+    "$PHP" "$(command -v composer)" install --no-interaction --prefer-dist
+    "$PHP" artisan key:generate --force
+else
+    "$PHP" "$(command -v composer)" install --no-interaction --prefer-dist
+fi
+
+touch database/database.sqlite
+"$PHP" artisan migrate --force --no-interaction
+"$PHP" artisan db:seed --force --no-interaction
+
+npm ci --no-audit --no-fund
+npm run build
+
+herd proxy --secure "$site" "http://127.0.0.1:$port" >/dev/null
+echo "Preview: https://$site.test (served on 127.0.0.1:$port by scripts/workspace-serve)"

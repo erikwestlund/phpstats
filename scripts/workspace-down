@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Removes this checkout's Herd proxy. The .env, database, and build stay.
+set -euo pipefail
+
+root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+herd unlink "phpstats-$(basename -- "$root")" || true

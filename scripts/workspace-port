@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Prints the port this checkout's preview server listens on: 8100 to 8899,
+# chosen from the folder name so each Polyscope workspace gets its own.
+set -euo pipefail
+
+root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+sum="$(basename -- "$root" | cksum | cut -d ' ' -f 1)"
+echo $((8100 + sum % 800))

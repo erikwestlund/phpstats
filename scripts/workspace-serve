@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Serves this checkout on its workspace port with PHP 8.5 and the phit and
+# php_polars extensions, which Herd's own PHP does not load. Runs until
+# stopped. Point PHIT_EXTENSION or POLARS_EXTENSION at a build to use one other
+# than the sibling checkouts in ~/Projects; a missing build is skipped, and the
+# pages that need it say so.
+set -euo pipefail
+
+root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+cd "$root"
+port="$(scripts/workspace-port)"
+PHP="${PHP:-php85}"
+
+args=()
+for extension in \
+    "${PHIT_EXTENSION:-$HOME/Projects/phit/target/release/libphit.dylib}" \
+    "${POLARS_EXTENSION:-$HOME/Projects/phpolars/target/release/libphp_polars.dylib}"; do
+    if [ -f "$extension" ]; then
+        args+=("-dextension=$extension")
+    else
+        echo "Skipping $extension, which is not built." >&2
+    fi
+done
+
+cd public
+exec "$PHP" "${args[@]}" -S "127.0.0.1:$port" \
+    ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php

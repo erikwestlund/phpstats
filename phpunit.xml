@@ -32,5 +32,11 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <!-- The site's hosts, so a local .env in path mode or with a preview URL does not change what the tests see. -->
+        <env name="APP_URL" value="http://localhost"/>
+        <env name="PHPSTATS_ROOT_HOST" value="phpstats.test"/>
+        <env name="PHPSTATS_PACKAGE_HOST" value="{package}.phpstats.test"/>
+        <env name="PHPSTATS_PATHS" value="false"/>
+        <env name="TRUSTED_PROXIES" value=""/>
     </php>
 </phpunit>

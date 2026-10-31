@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "setup": "./scripts/workspace-up",
+    "archive": "./scripts/workspace-down"
+  },
+  "preview": {
+    "url": "https://phpstats-{{folder}}.test",
+    "command": "./scripts/workspace-serve",
+    "tunnel": true
+  }
+}
