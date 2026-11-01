@@ -10,135 +10,884 @@
 <tbody>
 <tr class="odd">
 <td><a href="phpstats://cmdstanphp/docs/api-functions">Functions</a></td>
-<td>Models and Stan files, CmdStan installation, data and CSV files, figures, and examples</td>
+<td>Standalone functions: models and Stan files, CmdStan installation, data and CSV files, figures, and examples</td>
 </tr>
 <tr class="even">
 <td><a href="phpstats://cmdstanphp/docs/api-options">Options</a></td>
-<td>Global options, shared options, and each method’s options</td>
+<td>Session options, shared options, and each method’s options</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-models">Models</a></td>
-<td>Creating, inspecting, and running a <code>CmdStanModel</code></td>
+<td><a href="phpstats://cmdstanphp/docs/api-models">CmdStanModel</a></td>
+<td>Creating, inspecting, and running a model</td>
 </tr>
 <tr class="even">
 <td><a href="phpstats://cmdstanphp/docs/api-fits">Fits</a></td>
-<td>Draws, summaries, diagnostics, files, model methods, and statistics helpers</td>
+<td>Draws, summaries, diagnostics, files, and model methods of fits</td>
 </tr>
 <tr class="odd">
 <td><a href="phpstats://cmdstanphp/docs/api-data-frames">Data frames</a></td>
-<td>Table data, <code>StanData</code>, and the phpstats family</td>
+<td>Table data, <code>StanData</code>, and <code>Tables</code></td>
 </tr>
 <tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers">Helper classes</a></td>
+<td><code>Figure</code>, <code>Plot</code>, <code>StanFunctions</code>, <code>ModelMethods</code>, and the statistics classes</td>
+</tr>
+<tr class="odd">
 <td><a href="phpstats://cmdstanphp/docs/api-errors">Errors</a></td>
 <td>Exceptions</td>
 </tr>
 </tbody>
 </table>
-<section id="sections" class="level2">
-<h2 class="anchored" data-anchor-id="sections">Sections</h2>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
+<section id="models-and-stan-files" class="level3">
+<h3 class="anchored" data-anchor-id="models-and-stan-files">Models and Stan files</h3>
 <table class="caption-top table">
 <thead>
 <tr class="header">
-<th>Section</th>
-<th>Page</th>
+<th>Function or method</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-functions" id="functions">Functions</a></td>
-<td>Functions</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#cmdstan_model"><code>cmdstan_model()</code></a></td>
+<td>Compile a Stan program, or reuse its up-to-date executable, and return a model.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-functions#models-and-stan-files" id="models-and-stan-files">Models and Stan files</a></td>
-<td>Functions</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#compile_stan_file"><code>compile_stan_file()</code></a></td>
+<td>Compile a Stan file without creating a model object.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-functions#cmdstan-installation" id="cmdstan-installation">CmdStan installation</a></td>
-<td>Functions</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#check_syntax_stan_file"><code>check_syntax_stan_file()</code></a></td>
+<td>Check a Stan file with stanc, without compiling.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-functions#data-and-csv-files" id="data-and-csv-files">Data and CSV files</a></td>
-<td>Functions</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#format_stan_file"><code>format_stan_file()</code></a></td>
+<td>Format a Stan file with stanc.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-functions#figures-and-examples" id="figures-and-examples">Figures and examples</a></td>
-<td>Functions</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#variables_stan_file"><code>variables_stan_file()</code></a></td>
+<td>List a Stan file’s declarations without compiling.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-options#global-options" id="global-options">Global options</a></td>
-<td>Options</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#print_stan_file"><code>print_stan_file()</code></a></td>
+<td>Print a Stan file.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-options#shared-options" id="shared-options">Shared options</a></td>
-<td>Options</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#write_stan_file"><code>write_stan_file()</code></a></td>
+<td>Write Stan code to a file named after its hash.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-options#method-specific-options" id="method-specific-options">Method-specific options</a></td>
-<td>Options</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#stan_build_info"><code>stan_build_info()</code></a></td>
+<td>Report how an executable was built.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cmdstan-installation" class="level3">
+<h3 class="anchored" data-anchor-id="cmdstan-installation">CmdStan installation</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-functions#install_cmdstan"><code>install_cmdstan()</code></a></td>
+<td>Download or unpack a CmdStan release, build it, and select it.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-functions#set_cmdstan_path"><code>set_cmdstan_path()</code></a></td>
+<td>Select a CmdStan installation.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-models#model-methods" id="model-methods">Creating a model</a></td>
-<td>Models</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#cmdstan_path"><code>cmdstan_path()</code></a></td>
+<td>Return the selected CmdStan installation.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-models#inspecting-a-model" id="inspecting-a-model">Inspecting a model</a></td>
-<td>Models</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#cmdstan_version"><code>cmdstan_version()</code></a></td>
+<td>Return the selected CmdStan’s version.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-models#running-a-model" id="running-a-model">Running a model</a></td>
-<td>Models</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#check_cmdstan_toolchain"><code>check_cmdstan_toolchain()</code></a></td>
+<td>Check for make, the C++ compiler, and stanc.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-fits" id="fit-methods">Fits</a></td>
-<td>Fits</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#cmdstan_make_local"><code>cmdstan_make_local()</code></a></td>
+<td>Read or write CmdStan’s make/local.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-fits#draws-and-summaries" id="draws-and-summaries">Draws and summaries</a></td>
-<td>Fits</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#rebuild_cmdstan"><code>rebuild_cmdstan()</code></a></td>
+<td>Clean and rebuild the selected CmdStan.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data-and-csv-files" class="level3">
+<h3 class="anchored" data-anchor-id="data-and-csv-files">Data and CSV files</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-functions#write_stan_json"><code>write_stan_json()</code></a></td>
+<td>Write data, initial values, or a metric as Stan JSON.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-fits#diagnostics-and-run-information" id="diagnostics-and-run-information">Diagnostics and run information</a></td>
-<td>Fits</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#read_cmdstan_csv"><code>read_cmdstan_csv()</code></a></td>
+<td>Read CmdStan CSV files into a fit.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-fits#files-and-saving" id="files-and-saving">Files and saving</a></td>
-<td>Fits</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#as_cmdstan_fit"><code>as_cmdstan_fit()</code></a></td>
+<td>Read CmdStan CSV files into a fit, optionally selecting variables.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-fits#model-methods-1" id="model-methods-1">Model methods on fits</a></td>
-<td>Fits</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#read_cmdstan_csv_list"><code>read_cmdstan_csv_list()</code></a></td>
+<td>Read CmdStan CSV files into CmdStanR’s read_cmdstan_csv() list.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-fits#methods-of-specific-fit-types" id="methods-of-specific-fit-types">Methods of specific fit types</a></td>
-<td>Fits</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#draws_to_csv"><code>draws_to_csv()</code></a></td>
+<td>Write draw rows to one CSV file per chain.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="figures-and-examples" class="level3">
+<h3 class="anchored" data-anchor-id="figures-and-examples">Figures and examples</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-functions#mcmc_trace"><code>mcmc_trace()</code></a></td>
+<td>Trace plot: chains overlaid by iteration.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-fits#statistics-helpers" id="statistics-helpers">Statistics helpers</a></td>
-<td>Fits</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#mcmc_hist"><code>mcmc_hist()</code></a></td>
+<td>Histogram of all draws.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-data-frames" id="data-frames-and-the-phpstats-family">Data frames and the phpstats family</a></td>
-<td>Data frames</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#mcmc_dens"><code>mcmc_dens()</code></a></td>
+<td>Kernel density of all draws.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-data-frames#data-in" id="data-in">Data in</a></td>
-<td>Data frames</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#mcmc_dens_overlay"><code>mcmc_dens_overlay()</code></a></td>
+<td>Kernel density of each chain.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-data-frames#regression-data" id="regression-data">Regression data</a></td>
-<td>Data frames</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#mcmc_intervals"><code>mcmc_intervals()</code></a></td>
+<td>Inner and outer posterior intervals with a point estimate.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-data-frames#draws-and-summaries-out" id="draws-and-summaries-out">Draws and summaries out</a></td>
-<td>Data frames</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#mcmc_rank_hist"><code>mcmc_rank_hist()</code></a></td>
+<td>Rank histogram of each chain.</td>
 </tr>
 <tr class="odd">
-<td><a href="phpstats://cmdstanphp/docs/api-data-frames#part-of-the-phpstats-family" id="part-of-the-phpstats-family">Part of the phpstats family</a></td>
-<td>Data frames</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#mcmc_scatter"><code>mcmc_scatter()</code></a></td>
+<td>Joint draws of two variables.</td>
 </tr>
 <tr class="even">
-<td><a href="phpstats://cmdstanphp/docs/api-errors" id="errors">Errors</a></td>
-<td>Errors</td>
+<td><a href="phpstats://cmdstanphp/docs/api-functions#mcmc_acf"><code>mcmc_acf()</code></a></td>
+<td>Autocorrelation of each chain.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-functions#pareto_k_plot"><code>pareto_k_plot()</code></a></td>
+<td>Pareto k by observation.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-functions#cmdstanr_example"><code>cmdstanr_example()</code></a></td>
+<td>Compile and fit a bundled example.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-functions#print_example_program"><code>print_example_program()</code></a></td>
+<td>Print a bundled example’s Stan program.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-functions#num_threads"><code>num_threads()</code></a></td>
+<td>Deprecated: return STAN_NUM_THREADS.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="options-index" class="level2">
+<h2 class="anchored" data-anchor-id="options-index">Options</h2>
+<section id="global-options" class="level3">
+<h3 class="anchored" data-anchor-id="global-options">Global options</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-options#options"><code>options()</code></a></td>
+<td>Set session options and return their previous values.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-options#cmdstan_option"><code>cmdstan_option()</code></a></td>
+<td>Read one session option.</td>
+</tr>
+</tbody>
+</table>
+<p>Option names and defaults: <a href="phpstats://cmdstanphp/docs/api-options#shared-options" id="shared-options">shared options</a>, taken by every inference method, and <a href="phpstats://cmdstanphp/docs/api-options#method-specific-options" id="method-specific-options">method-specific options</a>.</p>
+</section>
+</section>
+<section id="cmdstanmodel" class="level2">
+<h2 class="anchored" data-anchor-id="cmdstanmodel">CmdStanModel</h2>
+<section id="model-methods" class="level3">
+<h3 class="anchored" data-anchor-id="model-methods">Creating a model</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#constructor"><code>new CmdStanModel()</code></a></td>
+<td>Compile a program, or reuse its executable, and return a model.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="inspecting-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="inspecting-a-model">Inspecting a model</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#stanFile"><code>stanFile()</code></a>, <a href="phpstats://cmdstanphp/docs/api-models#exeFile"><code>exeFile()</code></a>, <a href="phpstats://cmdstanphp/docs/api-models#hppFile"><code>hppFile()</code></a></td>
+<td>Paths of the Stan file, executable, and generated C++.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#saveHppFile"><code>saveHppFile()</code></a></td>
+<td>Copy the generated C++ header to a directory.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#code"><code>code()</code></a></td>
+<td>The program as it was when the model was created.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#print"><code>print()</code></a></td>
+<td>Print the program.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#variables"><code>variables()</code></a></td>
+<td>The program’s declarations.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#modelName"><code>modelName()</code></a>, <a href="phpstats://cmdstanphp/docs/api-models#hasStanFile"><code>hasStanFile()</code></a></td>
+<td>The model’s name, and whether it has a Stan file.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#includePaths"><code>includePaths()</code></a>, <a href="phpstats://cmdstanphp/docs/api-models#userHeader"><code>userHeader()</code></a>, <a href="phpstats://cmdstanphp/docs/api-models#stancOptions"><code>stancOptions()</code></a>, <a href="phpstats://cmdstanphp/docs/api-models#cppOptions"><code>cppOptions()</code></a></td>
+<td>The build settings recorded for the executable.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#nativeStancOptions"><code>nativeStancOptions()</code></a></td>
+<td>Stan options for the in-process builds.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#cmdstanVersion"><code>cmdstanVersion()</code></a></td>
+<td>The CmdStan version that built the executable.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#reportedFeatures"><code>reportedFeatures()</code></a></td>
+<td>What the executable reports about its build.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#buildInfo"><code>buildInfo()</code></a></td>
+<td>The build record and reported features.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#isCurrent"><code>isCurrent()</code></a></td>
+<td>Whether the executable is up to date.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#cmdstanDefaults"><code>cmdstanDefaults()</code></a></td>
+<td>CmdStan’s default values for a method.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#checkSyntax"><code>checkSyntax()</code></a></td>
+<td>Check the model’s program with stanc.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#format"><code>format()</code></a></td>
+<td>Format the model’s program with stanc.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#exposeFunctions"><code>exposeFunctions()</code></a>, <a href="phpstats://cmdstanphp/docs/api-models#functions"><code>functions()</code></a></td>
+<td>The program’s user-defined functions as a StanFunctions object.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#stanBuildInfo"><code>CmdStanModel::stanBuildInfo()</code></a></td>
+<td>Report how any executable was built.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="running-a-model" class="level3">
+<h3 class="anchored" data-anchor-id="running-a-model">Running a model</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#sample"><code>sample()</code></a></td>
+<td>Run MCMC with the NUTS sampler.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#sampleMpi"><code>sampleMpi()</code></a></td>
+<td>Run MCMC under an MPI launcher.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#optimize"><code>optimize()</code></a></td>
+<td>Find a posterior mode or maximum likelihood estimate.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#laplace"><code>laplace()</code></a></td>
+<td>Draw from a Laplace approximation at the mode.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#variational"><code>variational()</code></a></td>
+<td>Fit an ADVI approximation.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#pathfinder"><code>pathfinder()</code></a></td>
+<td>Fit a Pathfinder approximation.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#generateQuantities"><code>generateQuantities()</code></a></td>
+<td>Run generated quantities for existing draws.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-models#diagnose"><code>diagnose()</code></a></td>
+<td>Check gradients against finite differences.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-models#logProb"><code>logProb()</code></a></td>
+<td>Run CmdStan’s log_prob method.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="fit-methods" class="level2">
+<h2 class="anchored" data-anchor-id="fit-methods">Fits</h2>
+<section id="draws-and-summaries" class="level3">
+<h3 class="anchored" data-anchor-id="draws-and-summaries">Draws and summaries</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#draws"><code>draws()</code></a></td>
+<td>Draws in one of posterior’s formats.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#samplerDiagnostics"><code>samplerDiagnostics()</code></a></td>
+<td>Sampler columns, such as divergent__ and treedepth__.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#summary"><code>summary()</code></a></td>
+<td>One summary row per variable.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#drawsColumns"><code>drawsColumns()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#summaryColumns"><code>summaryColumns()</code></a></td>
+<td>Draws or the summary as column arrays.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#drawsTable"><code>drawsTable()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#summaryTable"><code>summaryTable()</code></a></td>
+<td>Draws or the summary as a Phibble.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#print"><code>print()</code></a></td>
+<td>Print the summary as JSON.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#lp"><code>lp()</code></a></td>
+<td>lp__ by iteration and chain.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#cmdstanSummary"><code>cmdstanSummary()</code></a></td>
+<td>CmdStan’s stansummary output.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="diagnostics-and-run-information" class="level3">
+<h3 class="anchored" data-anchor-id="diagnostics-and-run-information">Diagnostics and run information</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#diagnosticSummary"><code>diagnosticSummary()</code></a></td>
+<td>Per-chain divergences, maximum tree depth hits, and E-BFMI.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#checkDiagnostics"><code>checkDiagnostics()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#diagnosticWarnings"><code>diagnosticWarnings()</code></a></td>
+<td>Run the sampler checks, or return their messages.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#cmdstanDiagnose"><code>cmdstanDiagnose()</code></a></td>
+<td>CmdStan’s diagnose utility output.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#metadata"><code>metadata()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#chainMetadata"><code>chainMetadata()</code></a></td>
+<td>CSV metadata, merged or per chain.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#variables"><code>variables()</code></a></td>
+<td>Variable names in the CSV files.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#numChains"><code>numChains()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#numDrawsSampling"><code>numDrawsSampling()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#numDrawsWarmup"><code>numDrawsWarmup()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#numProcs"><code>numProcs()</code></a></td>
+<td>Counts of chains, draws, and processes.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#stepSize"><code>stepSize()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#invMetric"><code>invMetric()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#metric"><code>metric()</code></a></td>
+<td>Adaptation results by chain.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#cmdstanConfig"><code>cmdstanConfig()</code></a></td>
+<td>CmdStan’s configuration JSON.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#time"><code>time()</code></a></td>
+<td>Warmup, sampling, and total time per chain.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#init"><code>init()</code></a></td>
+<td>The initial values each process used.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#output"><code>output()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#returnCodes"><code>returnCodes()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#command"><code>command()</code></a></td>
+<td>Console output, exit status, and command line of each process.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#code"><code>code()</code></a></td>
+<td>The Stan program.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#profiles"><code>profiles()</code></a></td>
+<td>Parsed profiling data.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="files-and-saving" class="level3">
+<h3 class="anchored" data-anchor-id="files-and-saving">Files and saving</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#outputFiles"><code>outputFiles()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#latentDynamicsFiles"><code>latentDynamicsFiles()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#profileFiles"><code>profileFiles()</code></a></td>
+<td>Paths of the output, latent-dynamics, and profile files.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#dataFile"><code>dataFile()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#configFiles"><code>configFiles()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#metricFiles"><code>metricFiles()</code></a></td>
+<td>Paths of the data, configuration, and metric files.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#saveOutputFiles"><code>saveOutputFiles()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#saveLatentDynamicsFiles"><code>saveLatentDynamicsFiles()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#saveProfileFiles"><code>saveProfileFiles()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#saveDataFile"><code>saveDataFile()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#saveConfigFiles"><code>saveConfigFiles()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#saveMetricFiles"><code>saveMetricFiles()</code></a></td>
+<td>Save the run’s files to a directory.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#materialize"><code>materialize()</code></a></td>
+<td>Read draws, initial values, and profiles into memory.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#saveObject"><code>saveObject()</code></a></td>
+<td>Serialize the fit to a file.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="model-methods-1" class="level3">
+<h3 class="anchored" data-anchor-id="model-methods-1">Model methods</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#initModelMethods"><code>initModelMethods()</code></a></td>
+<td>Compile and bind the in-process model methods.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#logProb"><code>logProb()</code></a></td>
+<td>Log density at unconstrained values.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#gradLogProb"><code>gradLogProb()</code></a></td>
+<td>Log density and gradient.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#hessian"><code>hessian()</code></a></td>
+<td>Log density, gradient, and Hessian.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#unconstrainVariables"><code>unconstrainVariables()</code></a></td>
+<td>Unconstrained values from parameter values.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#unconstrainDraws"><code>unconstrainDraws()</code></a></td>
+<td>Draws on the unconstrained scale.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#constrainVariables"><code>constrainVariables()</code></a></td>
+<td>Constrained values from unconstrained values.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#exposeFunctions"><code>exposeFunctions()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#functions"><code>functions()</code></a></td>
+<td>The fit’s user-defined Stan functions.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="methods-of-specific-fit-types" class="level3">
+<h3 class="anchored" data-anchor-id="methods-of-specific-fit-types">Methods of specific fit types</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#loo"><code>CmdStanMCMC::loo()</code></a></td>
+<td>PSIS-LOO cross-validation.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#waic"><code>CmdStanMCMC::waic()</code></a></td>
+<td>WAIC.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#mle"><code>CmdStanMLE::mle()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#optimizedParams"><code>CmdStanMLE::optimizedParams()</code></a></td>
+<td>The optimization estimates without lp__.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#variationalMean"><code>CmdStanVB::variationalMean()</code></a></td>
+<td>The mean of the ADVI approximation.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#mode"><code>CmdStanLaplace::mode()</code></a></td>
+<td>The mode the Laplace approximation used.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#singlePathFiles"><code>CmdStanPathfinder::singlePathFiles()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#singlePathJsonFiles"><code>CmdStanPathfinder::singlePathJsonFiles()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#singlePathFits"><code>CmdStanPathfinder::singlePathFits()</code></a>, <a href="phpstats://cmdstanphp/docs/api-fits#singlePathDiagnostics"><code>CmdStanPathfinder::singlePathDiagnostics()</code></a></td>
+<td>Per-path Pathfinder output.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#fittedParamsFiles"><code>CmdStanGQ::fittedParamsFiles()</code></a></td>
+<td>The CSV files of the fitted parameters.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#gradients"><code>CmdStanDiagnose::gradients()</code></a></td>
+<td>The gradient check output.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#mle-lp"><code>CmdStanMLE::lp()</code></a></td>
+<td>The log density at the optimum.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#lpApprox"><code>lpApprox()</code></a></td>
+<td>The approximation’s log density at each draw (CmdStanVB, CmdStanLaplace, and CmdStanPathfinder).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#diagnose-lp"><code>CmdStanDiagnose::lp()</code></a></td>
+<td>The log density at the checked point.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reading-csv-files" class="level3">
+<h3 class="anchored" data-anchor-id="reading-csv-files">Reading CSV files</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#fromCsv"><code>CmdStanFit::fromCsv()</code></a></td>
+<td>A fit from CmdStan CSV files.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#readCmdStanCsv"><code>CmdStanFit::readCmdStanCsv()</code></a></td>
+<td>CmdStanR’s read_cmdstan_csv() list.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#classForMethod"><code>CmdStanFit::classForMethod()</code></a></td>
+<td>The fit class for a method name.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-fits#quantile"><code>CmdStanFit::quantile()</code></a></td>
+<td>A quantile with R’s type 7 rule.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="data-frames-and-the-phpstats-family" class="level2">
+<h2 class="anchored" data-anchor-id="data-frames-and-the-phpstats-family">Data frames</h2>
+<section id="data-in" class="level3">
+<h3 class="anchored" data-anchor-id="data-in">Data in</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-fromTable"><code>StanData::fromTable()</code></a></td>
+<td>Convert a table to Stan data, keeping factor labels.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-construct"><code>new StanData()</code></a></td>
+<td>A Stan data value object with levels, columns, and metadata.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-with"><code>StanData::with()</code></a></td>
+<td>A copy with variables added or replaced.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-toArray"><code>StanData::toArray()</code></a></td>
+<td>The Stan data array.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-isTable"><code>StanData::isTable()</code></a></td>
+<td>Whether a value can be converted to Stan data.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-normalize"><code>StanData::normalize()</code></a></td>
+<td>Normalize a data argument to a Stan data array.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-columnsOf"><code>StanData::columnsOf()</code></a></td>
+<td>A table’s columns, with factors as 1-based indices.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="regression-data" class="level3">
+<h3 class="anchored" data-anchor-id="regression-data">Regression data</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-fromColumns"><code>StanData::fromColumns()</code></a></td>
+<td>Hierarchical regression data from named columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-fromFormula"><code>StanData::fromFormula()</code></a></td>
+<td>Regression data from an R-style formula.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#StanData-fromModelMatrix"><code>StanData::fromModelMatrix()</code></a></td>
+<td>Stan data from a Phit_matrix() result.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="draws-and-summaries-out" class="level3">
+<h3 class="anchored" data-anchor-id="draws-and-summaries-out">Draws and summaries out</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function or method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#Tables-fromRows"><code>Tables::fromRows()</code></a></td>
+<td>Convert associative rows to columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-data-frames#Tables-dataFrame"><code>Tables::dataFrame()</code></a></td>
+<td>A Phibblefrom columns.</td>
+</tr>
+</tbody>
+</table>
+<p>CmdStanPHP works with the <a href="phpstats://cmdstanphp/docs/api-data-frames#part-of-the-phpstats-family" id="part-of-the-phpstats-family">phpstats family</a> without depending on it.</p>
+</section>
+</section>
+<section id="statistics-helpers" class="level2">
+<h2 class="anchored" data-anchor-id="statistics-helpers">Helper classes</h2>
+<section id="helpers-figures" class="level3">
+<h3 class="anchored" data-anchor-id="helpers-figures">Figures</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#Figure"><code>Figure</code></a></td>
+<td>A computed figure, rendered as text, Vega-Lite, HTML, SVG, or PNG.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#Plot"><code>Plot</code></a></td>
+<td>The figure computations, and the statistics behind them.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="helpers-model-methods" class="level3">
+<h3 class="anchored" data-anchor-id="helpers-model-methods">Model methods and Stan functions</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#StanFunctions"><code>StanFunctions</code></a></td>
+<td>A Stan program’s user-defined functions, called through FFI.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#ModelMethods"><code>ModelMethods</code></a></td>
+<td>In-process log density, gradient, Hessian, and transforms for a Stan file.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="helpers-summaries" class="level3">
+<h3 class="anchored" data-anchor-id="helpers-summaries">Summaries and diagnostics</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#Summary"><code>Summary</code></a></td>
+<td>posterior’s summary measures on plain draws.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#Psis"><code>Psis</code></a></td>
+<td>Pareto smoothing and PSIS.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#Loo"><code>Loo</code></a></td>
+<td>PSIS-LOO and WAIC on log-likelihood draws.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#MomentMatch"><code>MomentMatch</code></a></td>
+<td>Moment matching for PSIS-LOO.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#DrawKernels"><code>DrawKernels</code></a></td>
+<td>Detection of and wrappers for the phit draw kernels.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="helpers-draws" class="level3">
+<h3 class="anchored" data-anchor-id="helpers-draws">Draws and initial values</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#Rvars"><code>Rvars</code></a></td>
+<td>draws_rvars conversions.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-helpers#Inits"><code>Inits</code></a></td>
+<td>Initial values from fits and draws.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="errors" class="level2">
+<h2 class="anchored" data-anchor-id="errors">Errors</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Exception</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-errors#InvalidArgumentException"><code>InvalidArgumentException</code></a></td>
+<td>Invalid data or options.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-errors#RuntimeException"><code>RuntimeException</code></a></td>
+<td>Missing files or toolchain, a timeout, or a malformed CSV file.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://cmdstanphp/docs/api-errors#StaleExecutableException"><code>StaleExecutableException</code></a></td>
+<td>An out-of-date executable.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://cmdstanphp/docs/api-errors#ProcessException"><code>ProcessException</code></a></td>
+<td>A CmdStan process exited with a nonzero status.</td>
 </tr>
 </tbody>
 </table>

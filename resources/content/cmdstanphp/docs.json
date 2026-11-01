@@ -2,7 +2,8 @@
     "nav": [
         {
             "title": "Overview",
-            "path": "index"
+            "path": "index",
+            "section": "Getting started"
         },
         {
             "title": "Installation",
@@ -60,39 +61,49 @@
             "section": "Guides"
         },
         {
-            "title": "API reference",
+            "title": "Compatibility with CmdStanR",
+            "path": "compatibility",
+            "section": "Guides"
+        },
+        {
+            "title": "Functions and methods",
             "path": "api",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
-            "title": "API: functions",
+            "title": "Functions",
             "path": "api-functions",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
-            "title": "API: options",
+            "title": "Options",
             "path": "api-options",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
-            "title": "API: models",
+            "title": "CmdStanModel",
             "path": "api-models",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
-            "title": "API: fits",
+            "title": "Fits",
             "path": "api-fits",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
-            "title": "API: data frames and the phpstats family",
+            "title": "Data frames",
             "path": "api-data-frames",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
-            "title": "API: errors",
+            "title": "Helper classes",
+            "path": "api-helpers",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Errors",
             "path": "api-errors",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Fit a Stan model with MCMC",
@@ -105,11 +116,6 @@
             "section": "Examples"
         },
         {
-            "title": "Compatibility with CmdStanR",
-            "path": "compatibility",
-            "section": "Compatibility and limitations"
-        },
-        {
             "title": "Contributing",
             "path": "contributing",
             "section": "Contributing"
@@ -117,18 +123,153 @@
     ],
     "pages": {
         "api": {
-            "title": "API reference",
+            "title": "Functions and methods",
             "headings": [
                 {
-                    "id": "sections",
-                    "text": "Sections",
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "models-and-stan-files",
+                    "text": "Models and Stan files",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstan-installation",
+                    "text": "CmdStan installation",
+                    "level": 3
+                },
+                {
+                    "id": "data-and-csv-files",
+                    "text": "Data and CSV files",
+                    "level": 3
+                },
+                {
+                    "id": "figures-and-examples",
+                    "text": "Figures and examples",
+                    "level": 3
+                },
+                {
+                    "id": "options-index",
+                    "text": "Options",
+                    "level": 2
+                },
+                {
+                    "id": "global-options",
+                    "text": "Global options",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstanmodel",
+                    "text": "CmdStanModel",
+                    "level": 2
+                },
+                {
+                    "id": "model-methods",
+                    "text": "Creating a model",
+                    "level": 3
+                },
+                {
+                    "id": "inspecting-a-model",
+                    "text": "Inspecting a model",
+                    "level": 3
+                },
+                {
+                    "id": "running-a-model",
+                    "text": "Running a model",
+                    "level": 3
+                },
+                {
+                    "id": "fit-methods",
+                    "text": "Fits",
+                    "level": 2
+                },
+                {
+                    "id": "draws-and-summaries",
+                    "text": "Draws and summaries",
+                    "level": 3
+                },
+                {
+                    "id": "diagnostics-and-run-information",
+                    "text": "Diagnostics and run information",
+                    "level": 3
+                },
+                {
+                    "id": "files-and-saving",
+                    "text": "Files and saving",
+                    "level": 3
+                },
+                {
+                    "id": "model-methods-1",
+                    "text": "Model methods",
+                    "level": 3
+                },
+                {
+                    "id": "methods-of-specific-fit-types",
+                    "text": "Methods of specific fit types",
+                    "level": 3
+                },
+                {
+                    "id": "reading-csv-files",
+                    "text": "Reading CSV files",
+                    "level": 3
+                },
+                {
+                    "id": "data-frames-and-the-phpstats-family",
+                    "text": "Data frames",
+                    "level": 2
+                },
+                {
+                    "id": "data-in",
+                    "text": "Data in",
+                    "level": 3
+                },
+                {
+                    "id": "regression-data",
+                    "text": "Regression data",
+                    "level": 3
+                },
+                {
+                    "id": "draws-and-summaries-out",
+                    "text": "Draws and summaries out",
+                    "level": 3
+                },
+                {
+                    "id": "statistics-helpers",
+                    "text": "Helper classes",
+                    "level": 2
+                },
+                {
+                    "id": "helpers-figures",
+                    "text": "Figures",
+                    "level": 3
+                },
+                {
+                    "id": "helpers-model-methods",
+                    "text": "Model methods and Stan functions",
+                    "level": 3
+                },
+                {
+                    "id": "helpers-summaries",
+                    "text": "Summaries and diagnostics",
+                    "level": 3
+                },
+                {
+                    "id": "helpers-draws",
+                    "text": "Draws and initial values",
+                    "level": 3
+                },
+                {
+                    "id": "errors",
+                    "text": "Errors",
                     "level": 2
                 }
             ],
             "math": false
         },
         "api-data-frames": {
-            "title": "API: data frames and the phpstats family",
+            "title": "Data frames",
             "headings": [
                 {
                     "id": "data-in",
@@ -136,14 +277,54 @@
                     "level": 2
                 },
                 {
+                    "id": "StanData-fromTable",
+                    "text": "StanData::fromTable()",
+                    "level": 3
+                },
+                {
+                    "id": "StanData-construct",
+                    "text": "new StanData(), toArray(), with()",
+                    "level": 3
+                },
+                {
+                    "id": "StanData-isTable",
+                    "text": "StanData::isTable(), normalize(), columnsOf()",
+                    "level": 3
+                },
+                {
                     "id": "regression-data",
                     "text": "Regression data",
                     "level": 2
                 },
                 {
+                    "id": "StanData-fromColumns",
+                    "text": "StanData::fromColumns()",
+                    "level": 3
+                },
+                {
+                    "id": "StanData-fromFormula",
+                    "text": "StanData::fromFormula()",
+                    "level": 3
+                },
+                {
+                    "id": "StanData-fromModelMatrix",
+                    "text": "StanData::fromModelMatrix()",
+                    "level": 3
+                },
+                {
                     "id": "draws-and-summaries-out",
                     "text": "Draws and summaries out",
                     "level": 2
+                },
+                {
+                    "id": "Tables-fromRows",
+                    "text": "Tables::fromRows()",
+                    "level": 3
+                },
+                {
+                    "id": "Tables-dataFrame",
+                    "text": "Tables::dataFrame()",
+                    "level": 3
                 },
                 {
                     "id": "part-of-the-phpstats-family",
@@ -154,12 +335,33 @@
             "math": false
         },
         "api-errors": {
-            "title": "API: errors",
-            "headings": [],
+            "title": "Errors",
+            "headings": [
+                {
+                    "id": "InvalidArgumentException",
+                    "text": "InvalidArgumentException",
+                    "level": 3
+                },
+                {
+                    "id": "RuntimeException",
+                    "text": "RuntimeException",
+                    "level": 3
+                },
+                {
+                    "id": "StaleExecutableException",
+                    "text": "StaleExecutableException",
+                    "level": 3
+                },
+                {
+                    "id": "ProcessException",
+                    "text": "ProcessException",
+                    "level": 3
+                }
+            ],
             "math": false
         },
         "api-fits": {
-            "title": "API: fits",
+            "title": "Fits",
             "headings": [
                 {
                     "id": "draws-and-summaries",
@@ -167,9 +369,114 @@
                     "level": 2
                 },
                 {
+                    "id": "draws",
+                    "text": "draws()",
+                    "level": 3
+                },
+                {
+                    "id": "samplerDiagnostics",
+                    "text": "samplerDiagnostics()",
+                    "level": 3
+                },
+                {
+                    "id": "summary",
+                    "text": "summary()",
+                    "level": 3
+                },
+                {
+                    "id": "drawsColumns",
+                    "text": "drawsColumns(), summaryColumns()",
+                    "level": 3
+                },
+                {
+                    "id": "drawsTable",
+                    "text": "drawsTable(), summaryTable()",
+                    "level": 3
+                },
+                {
+                    "id": "print",
+                    "text": "print()",
+                    "level": 3
+                },
+                {
+                    "id": "lp",
+                    "text": "lp()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstanSummary",
+                    "text": "cmdstanSummary()",
+                    "level": 3
+                },
+                {
                     "id": "diagnostics-and-run-information",
                     "text": "Diagnostics and run information",
                     "level": 2
+                },
+                {
+                    "id": "diagnosticSummary",
+                    "text": "diagnosticSummary()",
+                    "level": 3
+                },
+                {
+                    "id": "checkDiagnostics",
+                    "text": "checkDiagnostics(), diagnosticWarnings()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstanDiagnose",
+                    "text": "cmdstanDiagnose()",
+                    "level": 3
+                },
+                {
+                    "id": "metadata",
+                    "text": "metadata(), chainMetadata()",
+                    "level": 3
+                },
+                {
+                    "id": "variables",
+                    "text": "variables()",
+                    "level": 3
+                },
+                {
+                    "id": "numChains",
+                    "text": "numChains(), numDrawsSampling(), numDrawsWarmup(), numProcs()",
+                    "level": 3
+                },
+                {
+                    "id": "stepSize",
+                    "text": "stepSize(), invMetric(), metric()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstanConfig",
+                    "text": "cmdstanConfig()",
+                    "level": 3
+                },
+                {
+                    "id": "time",
+                    "text": "time()",
+                    "level": 3
+                },
+                {
+                    "id": "init",
+                    "text": "init()",
+                    "level": 3
+                },
+                {
+                    "id": "output",
+                    "text": "output(), returnCodes(), command()",
+                    "level": 3
+                },
+                {
+                    "id": "code",
+                    "text": "code()",
+                    "level": 3
+                },
+                {
+                    "id": "profiles",
+                    "text": "profiles()",
+                    "level": 3
                 },
                 {
                     "id": "files-and-saving",
@@ -177,14 +484,159 @@
                     "level": 2
                 },
                 {
+                    "id": "outputFiles",
+                    "text": "outputFiles(), latentDynamicsFiles(), profileFiles()",
+                    "level": 3
+                },
+                {
+                    "id": "dataFile",
+                    "text": "dataFile(), configFiles(), metricFiles()",
+                    "level": 3
+                },
+                {
+                    "id": "saveOutputFiles",
+                    "text": "saveOutputFiles(), saveLatentDynamicsFiles(), saveProfileFiles(), saveDataFile(), saveConfigFiles(), saveMetricFiles()",
+                    "level": 3
+                },
+                {
+                    "id": "materialize",
+                    "text": "materialize()",
+                    "level": 3
+                },
+                {
+                    "id": "saveObject",
+                    "text": "saveObject()",
+                    "level": 3
+                },
+                {
                     "id": "model-methods-1",
                     "text": "Model methods",
                     "level": 2
                 },
                 {
+                    "id": "initModelMethods",
+                    "text": "initModelMethods()",
+                    "level": 3
+                },
+                {
+                    "id": "logProb",
+                    "text": "logProb()",
+                    "level": 3
+                },
+                {
+                    "id": "gradLogProb",
+                    "text": "gradLogProb()",
+                    "level": 3
+                },
+                {
+                    "id": "hessian",
+                    "text": "hessian()",
+                    "level": 3
+                },
+                {
+                    "id": "unconstrainVariables",
+                    "text": "unconstrainVariables()",
+                    "level": 3
+                },
+                {
+                    "id": "unconstrainDraws",
+                    "text": "unconstrainDraws()",
+                    "level": 3
+                },
+                {
+                    "id": "constrainVariables",
+                    "text": "constrainVariables()",
+                    "level": 3
+                },
+                {
+                    "id": "exposeFunctions",
+                    "text": "exposeFunctions(), functions()",
+                    "level": 3
+                },
+                {
                     "id": "methods-of-specific-fit-types",
                     "text": "Methods of specific fit types",
                     "level": 2
+                },
+                {
+                    "id": "loo",
+                    "text": "loo()",
+                    "level": 3
+                },
+                {
+                    "id": "waic",
+                    "text": "waic()",
+                    "level": 3
+                },
+                {
+                    "id": "mle",
+                    "text": "mle(), optimizedParams()",
+                    "level": 3
+                },
+                {
+                    "id": "mle-lp",
+                    "text": "lp()",
+                    "level": 3
+                },
+                {
+                    "id": "variationalMean",
+                    "text": "variationalMean()",
+                    "level": 3
+                },
+                {
+                    "id": "lpApprox",
+                    "text": "lpApprox()",
+                    "level": 3
+                },
+                {
+                    "id": "mode",
+                    "text": "mode()",
+                    "level": 3
+                },
+                {
+                    "id": "singlePathFiles",
+                    "text": "singlePathFiles(), singlePathJsonFiles(), singlePathFits(), singlePathDiagnostics()",
+                    "level": 3
+                },
+                {
+                    "id": "fittedParamsFiles",
+                    "text": "fittedParamsFiles()",
+                    "level": 3
+                },
+                {
+                    "id": "gradients",
+                    "text": "gradients()",
+                    "level": 3
+                },
+                {
+                    "id": "diagnose-lp",
+                    "text": "lp()",
+                    "level": 3
+                },
+                {
+                    "id": "reading-csv-files",
+                    "text": "Reading CSV files",
+                    "level": 2
+                },
+                {
+                    "id": "fromCsv",
+                    "text": "CmdStanFit::fromCsv()",
+                    "level": 3
+                },
+                {
+                    "id": "readCmdStanCsv",
+                    "text": "CmdStanFit::readCmdStanCsv()",
+                    "level": 3
+                },
+                {
+                    "id": "classForMethod",
+                    "text": "CmdStanFit::classForMethod()",
+                    "level": 3
+                },
+                {
+                    "id": "quantile",
+                    "text": "CmdStanFit::quantile()",
+                    "level": 3
                 },
                 {
                     "id": "statistics-helpers",
@@ -195,7 +647,7 @@
             "math": false
         },
         "api-functions": {
-            "title": "API: functions",
+            "title": "Functions",
             "headings": [
                 {
                     "id": "models-and-stan-files",
@@ -203,9 +655,84 @@
                     "level": 2
                 },
                 {
+                    "id": "cmdstan_model",
+                    "text": "cmdstan_model()",
+                    "level": 3
+                },
+                {
+                    "id": "compile_stan_file",
+                    "text": "compile_stan_file()",
+                    "level": 3
+                },
+                {
+                    "id": "check_syntax_stan_file",
+                    "text": "check_syntax_stan_file()",
+                    "level": 3
+                },
+                {
+                    "id": "format_stan_file",
+                    "text": "format_stan_file()",
+                    "level": 3
+                },
+                {
+                    "id": "variables_stan_file",
+                    "text": "variables_stan_file()",
+                    "level": 3
+                },
+                {
+                    "id": "print_stan_file",
+                    "text": "print_stan_file()",
+                    "level": 3
+                },
+                {
+                    "id": "write_stan_file",
+                    "text": "write_stan_file()",
+                    "level": 3
+                },
+                {
+                    "id": "stan_build_info",
+                    "text": "stan_build_info()",
+                    "level": 3
+                },
+                {
                     "id": "cmdstan-installation",
                     "text": "CmdStan installation",
                     "level": 2
+                },
+                {
+                    "id": "install_cmdstan",
+                    "text": "install_cmdstan()",
+                    "level": 3
+                },
+                {
+                    "id": "set_cmdstan_path",
+                    "text": "set_cmdstan_path()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstan_path",
+                    "text": "cmdstan_path()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstan_version",
+                    "text": "cmdstan_version()",
+                    "level": 3
+                },
+                {
+                    "id": "check_cmdstan_toolchain",
+                    "text": "check_cmdstan_toolchain()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstan_make_local",
+                    "text": "cmdstan_make_local()",
+                    "level": 3
+                },
+                {
+                    "id": "rebuild_cmdstan",
+                    "text": "rebuild_cmdstan()",
+                    "level": 3
                 },
                 {
                     "id": "data-and-csv-files",
@@ -213,15 +740,181 @@
                     "level": 2
                 },
                 {
+                    "id": "write_stan_json",
+                    "text": "write_stan_json()",
+                    "level": 3
+                },
+                {
+                    "id": "read_cmdstan_csv",
+                    "text": "read_cmdstan_csv()",
+                    "level": 3
+                },
+                {
+                    "id": "as_cmdstan_fit",
+                    "text": "as_cmdstan_fit()",
+                    "level": 3
+                },
+                {
+                    "id": "read_cmdstan_csv_list",
+                    "text": "read_cmdstan_csv_list()",
+                    "level": 3
+                },
+                {
+                    "id": "draws_to_csv",
+                    "text": "draws_to_csv()",
+                    "level": 3
+                },
+                {
                     "id": "figures-and-examples",
                     "text": "Figures and examples",
                     "level": 2
+                },
+                {
+                    "id": "mcmc_trace",
+                    "text": "mcmc_trace()",
+                    "level": 3
+                },
+                {
+                    "id": "mcmc_hist",
+                    "text": "mcmc_hist()",
+                    "level": 3
+                },
+                {
+                    "id": "mcmc_dens",
+                    "text": "mcmc_dens()",
+                    "level": 3
+                },
+                {
+                    "id": "mcmc_dens_overlay",
+                    "text": "mcmc_dens_overlay()",
+                    "level": 3
+                },
+                {
+                    "id": "mcmc_intervals",
+                    "text": "mcmc_intervals()",
+                    "level": 3
+                },
+                {
+                    "id": "mcmc_rank_hist",
+                    "text": "mcmc_rank_hist()",
+                    "level": 3
+                },
+                {
+                    "id": "mcmc_scatter",
+                    "text": "mcmc_scatter()",
+                    "level": 3
+                },
+                {
+                    "id": "mcmc_acf",
+                    "text": "mcmc_acf()",
+                    "level": 3
+                },
+                {
+                    "id": "pareto_k_plot",
+                    "text": "pareto_k_plot()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstanr_example",
+                    "text": "cmdstanr_example()",
+                    "level": 3
+                },
+                {
+                    "id": "print_example_program",
+                    "text": "print_example_program()",
+                    "level": 3
+                },
+                {
+                    "id": "num_threads",
+                    "text": "num_threads()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "api-helpers": {
+            "title": "Helper classes",
+            "headings": [
+                {
+                    "id": "figures",
+                    "text": "Figures",
+                    "level": 2
+                },
+                {
+                    "id": "Figure",
+                    "text": "Figure",
+                    "level": 3
+                },
+                {
+                    "id": "Plot",
+                    "text": "Plot",
+                    "level": 3
+                },
+                {
+                    "id": "model-methods-and-stan-functions",
+                    "text": "Model methods and Stan functions",
+                    "level": 2
+                },
+                {
+                    "id": "StanFunctions",
+                    "text": "StanFunctions",
+                    "level": 3
+                },
+                {
+                    "id": "ModelMethods",
+                    "text": "ModelMethods",
+                    "level": 3
+                },
+                {
+                    "id": "summaries-and-diagnostics",
+                    "text": "Summaries and diagnostics",
+                    "level": 2
+                },
+                {
+                    "id": "Summary",
+                    "text": "Summary",
+                    "level": 3
+                },
+                {
+                    "id": "Psis",
+                    "text": "Psis",
+                    "level": 3
+                },
+                {
+                    "id": "Loo",
+                    "text": "Loo",
+                    "level": 3
+                },
+                {
+                    "id": "MomentMatch",
+                    "text": "MomentMatch",
+                    "level": 3
+                },
+                {
+                    "id": "DrawKernels",
+                    "text": "DrawKernels",
+                    "level": 3
+                },
+                {
+                    "id": "draws-and-initial-values",
+                    "text": "Draws and initial values",
+                    "level": 2
+                },
+                {
+                    "id": "Rvars",
+                    "text": "Rvars",
+                    "level": 3
+                },
+                {
+                    "id": "Inits",
+                    "text": "Inits",
+                    "level": 3
                 }
             ],
             "math": false
         },
         "api-models": {
-            "title": "API: models",
+            "title": "CmdStanModel",
             "headings": [
                 {
                     "id": "model-methods",
@@ -229,25 +922,175 @@
                     "level": 2
                 },
                 {
+                    "id": "constructor",
+                    "text": "new CmdStanModel()",
+                    "level": 3
+                },
+                {
                     "id": "inspecting-a-model",
                     "text": "Inspecting a model",
                     "level": 2
                 },
                 {
+                    "id": "stanFile",
+                    "text": "stanFile(), exeFile(), hppFile()",
+                    "level": 3
+                },
+                {
+                    "id": "saveHppFile",
+                    "text": "saveHppFile()",
+                    "level": 3
+                },
+                {
+                    "id": "code",
+                    "text": "code()",
+                    "level": 3
+                },
+                {
+                    "id": "print",
+                    "text": "print()",
+                    "level": 3
+                },
+                {
+                    "id": "variables",
+                    "text": "variables()",
+                    "level": 3
+                },
+                {
+                    "id": "modelName",
+                    "text": "modelName(), hasStanFile()",
+                    "level": 3
+                },
+                {
+                    "id": "includePaths",
+                    "text": "includePaths(), userHeader(), stancOptions(), cppOptions()",
+                    "level": 3
+                },
+                {
+                    "id": "nativeStancOptions",
+                    "text": "nativeStancOptions()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstanVersion",
+                    "text": "cmdstanVersion()",
+                    "level": 3
+                },
+                {
+                    "id": "reportedFeatures",
+                    "text": "reportedFeatures()",
+                    "level": 3
+                },
+                {
+                    "id": "buildInfo",
+                    "text": "buildInfo()",
+                    "level": 3
+                },
+                {
+                    "id": "stanBuildInfo",
+                    "text": "CmdStanModel::stanBuildInfo()",
+                    "level": 3
+                },
+                {
+                    "id": "isCurrent",
+                    "text": "isCurrent()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstanDefaults",
+                    "text": "cmdstanDefaults()",
+                    "level": 3
+                },
+                {
+                    "id": "checkSyntax",
+                    "text": "checkSyntax()",
+                    "level": 3
+                },
+                {
+                    "id": "format",
+                    "text": "format()",
+                    "level": 3
+                },
+                {
+                    "id": "exposeFunctions",
+                    "text": "exposeFunctions(), functions()",
+                    "level": 3
+                },
+                {
                     "id": "running-a-model",
                     "text": "Running a model",
                     "level": 2
+                },
+                {
+                    "id": "sample",
+                    "text": "sample()",
+                    "level": 3
+                },
+                {
+                    "id": "sampleMpi",
+                    "text": "sampleMpi()",
+                    "level": 3
+                },
+                {
+                    "id": "optimize",
+                    "text": "optimize()",
+                    "level": 3
+                },
+                {
+                    "id": "laplace",
+                    "text": "laplace()",
+                    "level": 3
+                },
+                {
+                    "id": "variational",
+                    "text": "variational()",
+                    "level": 3
+                },
+                {
+                    "id": "pathfinder",
+                    "text": "pathfinder()",
+                    "level": 3
+                },
+                {
+                    "id": "generateQuantities",
+                    "text": "generateQuantities()",
+                    "level": 3
+                },
+                {
+                    "id": "diagnose",
+                    "text": "diagnose()",
+                    "level": 3
+                },
+                {
+                    "id": "logProb",
+                    "text": "logProb()",
+                    "level": 3
                 }
             ],
             "math": false
         },
         "api-options": {
-            "title": "API: options",
+            "title": "Options",
             "headings": [
                 {
                     "id": "global-options",
                     "text": "Global options",
                     "level": 2
+                },
+                {
+                    "id": "options",
+                    "text": "options()",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstan_option",
+                    "text": "cmdstan_option()",
+                    "level": 3
+                },
+                {
+                    "id": "option-names",
+                    "text": "Option names",
+                    "level": 3
                 },
                 {
                     "id": "shared-options",
@@ -515,6 +1358,11 @@
                 {
                     "id": "features",
                     "text": "Features",
+                    "level": 2
+                },
+                {
+                    "id": "documentation",
+                    "text": "Documentation",
                     "level": 2
                 }
             ],

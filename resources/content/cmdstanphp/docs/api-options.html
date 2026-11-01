@@ -1,7 +1,18 @@
 <p>Global options, the options every inference method takes, and each method’s own options. Options left out or <code>null</code> use the installed CmdStan’s default, and unknown options throw.</p>
 <section id="global-options" class="level2">
 <h2 class="anchored" data-anchor-id="global-options">Global options</h2>
-<p><code>options(set: [])</code> sets options and returns their previous values, and <code>cmdstan_option(name, default: null)</code> reads one. A <code>null</code> value unsets an option, and unknown names and values of the wrong type throw.</p>
+<section id="options" class="level3">
+<h3 class="anchored" data-anchor-id="options"><code>options()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>options(<span class="dt">array</span> <span class="va">$set</span> <span class="op">=</span> [])<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>Sets session options, like R’s <code>options()</code>, and returns their previous values. A <code>null</code> value unsets an option, and unknown names and values of the wrong type throw. With no argument, returns every option that is set.</p>
+</section>
+<section id="cmdstan_option" class="level3">
+<h3 class="anchored" data-anchor-id="cmdstan_option"><code>cmdstan_option()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cmdstan_option(<span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span> <span class="dt">mixed</span> <span class="va">$default</span> <span class="op">=</span> <span class="kw">null</span>)<span class="ot">:</span> <span class="dt">mixed</span></span></code></pre></div></div>
+<p>Reads one option, or <code>default</code> when it is not set, like R’s <code>getOption()</code>.</p>
+</section>
+<section id="option-names" class="level3">
+<h3 class="anchored" data-anchor-id="option-names">Option names</h3>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -76,6 +87,7 @@
 </tr>
 </tbody>
 </table>
+</section>
 </section>
 <section id="shared-options" class="level2">
 <h2 class="anchored" data-anchor-id="shared-options">Shared options</h2>
