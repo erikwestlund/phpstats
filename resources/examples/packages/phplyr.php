@@ -16,4 +16,4 @@ $byChannel = $orders |>
         average: round(mean('total'), 2),
     );
 
-return $byChannel;
+echo $byChannel;

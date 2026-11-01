@@ -7,10 +7,12 @@ use Illuminate\Support\Str;
 
 /**
  * A runnable example from resources/examples: {name}.php uses the pipe
- * operator and {name}.chain.php, when present, the method chain. Each file
- * returns its result. The code shown on the page leaves out the opening tag,
- * any setup above a "// ---" line, and the final return statement. Imports are left
- * out too, except those placed below the "// ---" line, which are shown.
+ * operator and {name}.chain.php, when present, the method chain. A file
+ * either returns its result or echoes it, as the package explorer's do, and
+ * then what it printed is the result. The code shown on the page leaves out
+ * the opening tag, any setup above a "// ---" line, and a final return
+ * statement. Imports are left out too, except those placed below the
+ * "// ---" line, which are shown.
  *
  * The landing page shows eleven examples, among them a Polars aggregation, a
  * model fit, and two chart specifications. Their results are not serializable,
@@ -61,7 +63,15 @@ class Example
         }
         self::$runs[$path] = (self::$runs[$path] ?? 0) + 1;
 
-        return self::$results[$path] = (static fn () => require $path)();
+        ob_start();
+        try {
+            $result = (static fn () => require $path)();
+        } finally {
+            $printed = ob_get_clean();
+        }
+
+        // A file without a return statement gives 1, and its result is what it printed.
+        return self::$results[$path] = $result === 1 ? $printed : $result;
     }
 
     /**

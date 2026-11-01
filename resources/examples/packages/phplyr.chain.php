@@ -17,4 +17,4 @@ $byChannel = phplyr($orders)
     )
     ->get();
 
-return $byChannel;
+echo $byChannel;

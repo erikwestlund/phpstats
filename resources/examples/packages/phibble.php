@@ -10,4 +10,4 @@ $orders = DataFrame::fromQuery(Order::query(), types: [
     'returned' => 'bool',
 ]);
 
-return $orders->glimpse(width: 76);
+echo $orders->glimpse();

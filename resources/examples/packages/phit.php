@@ -7,4 +7,9 @@ $tracks = \Phibble\DataFrame::fromQuery(Track::query());
 
 $fit = \Phit\fit_lm('streams ~ playlist_adds + label', $tracks);
 
-return $fit;
+echo \Phibble\DataFrame::fromColumns([
+    'term' => $fit['columns'],
+    'estimate' => $fit['coefficients'],
+    'std_error' => $fit['std_errors'],
+    'p_value' => $fit['p_values'],
+]);

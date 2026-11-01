@@ -15,4 +15,4 @@ $chart = \Phiz\Plot::of($tracks)
         color: null,
     );
 
-return $chart;
+echo $chart->embed();

@@ -148,7 +148,7 @@ class ExampleCacheTest extends TestCase
 
         $this->assertSame($cold, $warm);
         $this->assertSame([], Example::runs(), 'the second call should come from the cache');
-        $this->assertStringContainsString('<table', $cold);
+        $this->assertStringContainsString('Marketplace', $cold);
     }
 
     public function test_the_page_shows_the_cached_fragment_verbatim(): void

@@ -113,7 +113,7 @@ return [
         'phit' => [
             'summary' => 'Regression, mixed models, and descriptive statistics.',
             'example' => 'Example: Fit a linear model',
-            'output' => 'Model summary',
+            'output' => 'Coefficients',
             'link' => 'examples/linear-model',
         ],
         'cmdstanphp' => [

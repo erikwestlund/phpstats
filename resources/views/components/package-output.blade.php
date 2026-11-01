@@ -1,6 +1,8 @@
 {{--
     The result of a package explorer example, in the form the package prints
-    it: a chart for a phiz plot, Polars' table for a phpolars table,
+    it: a chart for a phiz plot or the embed() markup an example echoed for
+    one, drawn here from its spec with the site's options and sized to the
+    panel, Polars' table for a phpolars table,
     phibble's printed data frame or its glimpse() text, and an R-style
     summary for a phit fit, given alone or as
     ['fit' => $fit, 'table' => $df] with a phibble data frame computed from
@@ -14,9 +16,13 @@
 @php
     // Rendered markup is shown as it is; everything else is printed as text.
     $html = is_array($value) && isset($value['html']) ? $value['html'] : null;
+    $spec = match (true) {
+        $value instanceof \Phiz\Plot => $value->toArray(),
+        is_string($value) && preg_match('/data-phiz="([^"]*)"/', $value, $match) === 1 => json_decode(html_entity_decode($match[1], ENT_QUOTES | ENT_HTML5), true, flags: JSON_THROW_ON_ERROR),
+        default => null,
+    };
     $size = $html === null ? null : ($value['size'] ?? null);
-    $text = $html !== null ? null : match (true) {
-        $value instanceof \Phiz\Plot => null,
+    $text = $html !== null || $spec !== null ? null : match (true) {
         is_object($value) && method_exists($value, 'polars') => (string) $value->polars(),
         $value instanceof \Stringable => (string) $value,
         is_string($value) => $value,
@@ -35,10 +41,10 @@
     <div class="px-5 pb-6 pt-3 sm:px-7">
         {{-- A plot that sets its own size, such as a faceted one sized per panel, keeps it and
              scrolls when it is wider than the panel. One sized to the panel never needs to. --}}
-        @if ($value->width === null)
-            <x-phiz :plot="$value->width('container')->height(300)" class="w-full overflow-hidden" />
+        @if (! isset($spec['width']))
+            <x-phiz :plot="['width' => 'container', 'height' => 300] + $spec" class="w-full overflow-hidden" />
         @else
-            <x-phiz :plot="$value" class="w-full overflow-x-auto" />
+            <x-phiz :plot="$spec" class="w-full overflow-x-auto" />
         @endif
     </div>
 @else

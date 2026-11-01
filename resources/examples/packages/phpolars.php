@@ -19,4 +19,4 @@ $byChannel = $orders
     )
     ->sort('revenue', descending: true);
 
-return $byChannel;
+echo $byChannel;
