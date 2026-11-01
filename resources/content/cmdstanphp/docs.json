@@ -100,14 +100,44 @@
                     "level": 2
                 },
                 {
+                    "id": "models-and-stan-files",
+                    "text": "Models and Stan files",
+                    "level": 3
+                },
+                {
+                    "id": "cmdstan-installation",
+                    "text": "CmdStan installation",
+                    "level": 3
+                },
+                {
+                    "id": "data-and-csv-files",
+                    "text": "Data and CSV files",
+                    "level": 3
+                },
+                {
+                    "id": "figures-and-examples",
+                    "text": "Figures and examples",
+                    "level": 3
+                },
+                {
                     "id": "global-options",
                     "text": "Global options",
                     "level": 3
                 },
                 {
                     "id": "model-methods",
-                    "text": "Model methods",
+                    "text": "Models",
                     "level": 2
+                },
+                {
+                    "id": "inspecting-a-model",
+                    "text": "Inspecting a model",
+                    "level": 3
+                },
+                {
+                    "id": "running-a-model",
+                    "text": "Running a model",
+                    "level": 3
                 },
                 {
                     "id": "shared-options",
@@ -121,8 +151,23 @@
                 },
                 {
                     "id": "fit-methods",
-                    "text": "Fit methods",
+                    "text": "Fits",
                     "level": 2
+                },
+                {
+                    "id": "draws-and-summaries",
+                    "text": "Draws and summaries",
+                    "level": 3
+                },
+                {
+                    "id": "diagnostics-and-run-information",
+                    "text": "Diagnostics and run information",
+                    "level": 3
+                },
+                {
+                    "id": "files-and-saving",
+                    "text": "Files and saving",
+                    "level": 3
                 },
                 {
                     "id": "model-methods-1",
@@ -130,8 +175,8 @@
                     "level": 3
                 },
                 {
-                    "id": "method-specific-fit-methods",
-                    "text": "Method-specific fit methods",
+                    "id": "methods-of-specific-fit-types",
+                    "text": "Methods of specific fit types",
                     "level": 3
                 },
                 {
@@ -595,18 +640,8 @@
             "title": "Verification",
             "headings": [
                 {
-                    "id": "what-ci-tests",
-                    "text": "What CI tests",
-                    "level": 2
-                },
-                {
-                    "id": "unit-tests",
-                    "text": "Unit tests",
-                    "level": 2
-                },
-                {
-                    "id": "integration-tests",
-                    "text": "Integration tests",
+                    "id": "what-ci-runs",
+                    "text": "What CI runs",
                     "level": 2
                 },
                 {
@@ -615,9 +650,34 @@
                     "level": 2
                 },
                 {
+                    "id": "other-interfaces",
+                    "text": "Other interfaces",
+                    "level": 3
+                },
+                {
+                    "id": "unit-and-integration-tests",
+                    "text": "Unit and integration tests",
+                    "level": 2
+                },
+                {
                     "id": "limits",
                     "text": "Limits",
                     "level": 2
+                },
+                {
+                    "id": "technical-notes",
+                    "text": "Technical notes",
+                    "level": 2
+                },
+                {
+                    "id": "rs-csv-parsing",
+                    "text": "R’s CSV parsing",
+                    "level": 3
+                },
+                {
+                    "id": "moment-matching-references-2026-10",
+                    "text": "Moment-matching references (2026-10)",
+                    "level": 3
                 }
             ],
             "math": false
