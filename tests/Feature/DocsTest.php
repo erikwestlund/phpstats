@@ -21,8 +21,8 @@ class DocsTest extends TestCase
     {
         $groups = Package::find('phpolars')->docsGroups();
 
-        $this->assertSame(['Guide', 'Examples', 'Guides', 'Reference', 'Benchmarks and verification', 'Contributing'], array_keys($groups));
-        $this->assertContains('reference/series', array_column($groups['Reference'], 'path'));
+        $this->assertSame(['Getting started', 'Guides', 'Functions and methods', 'Examples', 'Contributing'], array_keys($groups));
+        $this->assertContains('reference/series', array_column($groups['Functions and methods'], 'path'));
 
         // Since task 21 the nav is derived from the package's own
         // docs/_quarto.yml, so a page sits in the section phit files it under
@@ -148,10 +148,12 @@ class DocsTest extends TestCase
         // phiz's gallery has had a .qmd source since its 2026-10-31 docs
         // cleanup, so it imports like any other page, and the CmdStanPHP
         // figures plan left the public docs. Since the second docs review the
-        // reference is an overview and eight topic pages.
+        // reference is an overview and eight topic pages, and functions is
+        // the index of every public function and method.
         $paths = Package::find('phiz')->docsPaths();
 
-        $this->assertCount(29, $paths);
+        $this->assertCount(30, $paths);
+        $this->assertContains('functions', $paths);
         $this->assertCount(9, array_filter($paths, fn (string $path) => str_starts_with($path, 'reference')));
         $this->assertContains('gallery', $paths);
         $this->assertNotContains('cmdstanphp', $paths);
