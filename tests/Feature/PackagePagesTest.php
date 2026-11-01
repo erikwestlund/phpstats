@@ -450,22 +450,24 @@ class PackagePagesTest extends TestCase
 
     public function test_the_overview_links_the_functions_and_methods_section(): void
     {
-        // No section by that name: no link, and the docs card reads Documentation.
-        $phibble = Package::find('phibble');
-        $this->assertNull($phibble->apiReference());
-        $this->get($phibble->url())->assertOk()->assertSee('Documentation')->assertDontSee('of guides and reference');
-
-        $root = $this->copyContent();
-        $docs = json_decode(File::get("{$root}/phibble/docs.json"), true);
-        $page = $docs['nav'][0]['path'];
-        File::put("{$root}/phibble/docs.json", json_encode([...$docs, 'nav' => [...$docs['nav'], ['title' => 'Index', 'path' => $page, 'section' => 'Functions and methods']]]));
-        Package::flush();
+        // juphyter's Reference documents commands and settings, not a PHP API.
+        foreach (Package::all() as $key => $package) {
+            $this->assertSame($key === 'juphyter' ? null : 'Functions and methods', $package->apiReference()['title'] ?? null, $key);
+        }
         $phibble = Package::find('phibble');
         $api = $phibble->apiReference();
-        $this->assertSame('Functions and methods', $api['title']);
         $html = $this->get($phibble->url())->assertOk()->getContent();
         $this->assertGreaterThanOrEqual(2, substr_count($html, 'href="'.e($api['url']).'"'));
         $this->assertStringContainsString('Functions and methods', $html);
+
+        // Without such a section: no link, and the docs card reads Documentation.
+        $root = $this->copyContent();
+        $docs = json_decode(File::get("{$root}/phibble/docs.json"), true);
+        File::put("{$root}/phibble/docs.json", json_encode([...$docs, 'nav' => array_values(array_filter($docs['nav'], fn (array $item) => ($item['section'] ?? null) !== 'Functions and methods'))]));
+        Package::flush();
+        $phibble = Package::find('phibble');
+        $this->assertNull($phibble->apiReference());
+        $this->get($phibble->url())->assertOk()->assertSee('Documentation')->assertDontSee('of guides and reference');
     }
 
     public function test_docs_pages_drop_the_section_label_and_group_on_this_page(): void
