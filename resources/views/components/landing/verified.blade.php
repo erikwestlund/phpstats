@@ -1,9 +1,11 @@
 {{--
     The landing page's verification section: one comparison at a time, chosen
     with tabs. Each shows phit code on the left and, on the right, the values
-    that code gives next to each reference library's difference from them,
-    green with a plus when the reference is larger and red with a minus when it
-    is smaller. phit's values come from running the code shown
+    that code gives next to each reference library's values, rounded the same
+    way: model results to two decimal places, distribution values to three
+    significant figures. Where a library's rounded value differs from phit's,
+    its signed difference follows it, green with a plus when the library's
+    value is larger and red with a minus when it is smaller. phit's values come from running the code shown
     (resources/examples/verified/*.php); the references are R's and Python's
     results from phit's verification records, copied into
     database/data/verification/references.json. Model differences are
@@ -24,14 +26,19 @@
 
         return [($d > 0 ? '+' : '−').$mantissa.' × 10<sup>'.(int) $exponent.'</sup>', $d > 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400'];
     };
-    $value = function (float $x): string {
-        if ($x != 0.0 && abs($x) < 1e-4) {
-            [$mantissa, $exponent] = explode('e', sprintf('%.6e', $x));
+    // Values as shown: model results to two decimal places, distribution
+    // values to three significant figures.
+    $value = function (float $x, bool $significant): string {
+        if (! $significant) {
+            return str_replace('-', '−', number_format($x, 2, '.', ','));
+        }
+        if ($x != 0.0 && (abs($x) < 1e-3 || abs($x) >= 1e4)) {
+            [$mantissa, $exponent] = explode('e', sprintf('%.2e', $x));
 
             return $mantissa.' × 10<sup>'.(int) $exponent.'</sup>';
         }
 
-        return rtrim(rtrim(number_format($x, 6, '.', ','), '0'), '.');
+        return sprintf('%.3g', $x);
     };
 
     $panels = [
@@ -141,12 +148,12 @@
 
             @foreach ($panels as $key => $panel)
                 <div role="tabpanel" id="check-{{ $key }}" aria-labelledby="check-tab-{{ $key }}" x-show="check === '{{ $key }}'" @unless ($key === $first) x-cloak @endunless
-                     class="mt-8 grid gap-6 lg:grid-cols-[5fr_7fr] lg:items-start">
+                     class="mt-8 grid gap-8 lg:grid-cols-[5fr_7fr] lg:items-start lg:gap-16">
                     <x-code :code="$panel['code']" class="min-w-0" />
 
                     <div class="min-w-0">
                         {!! $panel['table'] !!}
-                        <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">{!! $panel['note'] !!} The other columns show each library's difference from <span class="font-mono">phit</span>.</p>
+                        <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">{!! $panel['note'] !!} Values are rounded, and a difference from <span class="font-mono">phit</span> appears only where the rounded values differ.</p>
                         <a href="{{ $record }}#{{ $panel['anchor'] }}" class="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
                             {{ $panel['label'] }} verification record <x-heroicon-m-arrow-right class="size-4" />
                         </a>
