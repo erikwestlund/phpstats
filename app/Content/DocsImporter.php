@@ -11,7 +11,8 @@ use Symfony\Component\Yaml\Yaml;
  * Turns a package's rendered Quarto pages into fragments for the site layout.
  *
  * Each page keeps the content of <main id="quarto-document-content"> with its
- * math spans, pandoc highlighting, tables, and callouts. Quarto's title block,
+ * math spans, pandoc highlighting, tables, and callouts (a collapsible one
+ * becomes a <details> element). Quarto's title block,
  * scripts, and copy buttons are dropped. Links between pages become
  * phpstats://{package}/docs/{path} placeholders that the site resolves for the
  * current host, and figures and other files are copied under public/content.
@@ -254,6 +255,25 @@ class DocsImporter
 
         foreach ($main->querySelectorAll('#title-block-header, .code-copy-button, script:not([type*="json"]), .quarto-alternate-formats, .quarto-alternate-notebooks') as $node) {
             $node->remove();
+        }
+
+        // A collapsible callout opens through Bootstrap's script, which the site
+        // does not load, so it becomes a <details> element with the callout's
+        // classes and its title as the summary.
+        foreach ($main->querySelectorAll('.callout') as $callout) {
+            $header = $callout->querySelector('.callout-header[data-bs-toggle="collapse"]');
+            $body = $callout->querySelector('.callout-collapse');
+            if ($header === null || $body === null) {
+                continue;
+            }
+            $header->querySelector('.screen-reader-only')?->remove();
+            $details = $document->createElement('details');
+            $details->setAttribute('class', $callout->getAttribute('class'));
+            $summary = $document->createElement('summary');
+            $summary->setAttribute('class', 'callout-header');
+            $summary->textContent = trim(preg_replace('/\s+/', ' ', $header->textContent));
+            $details->append($summary, ...iterator_to_array($body->childNodes));
+            $callout->replaceWith($details);
         }
 
         $directory = str_contains($path, '/') ? dirname($path) : '';

@@ -230,6 +230,12 @@ pre,
 .docs-content .callout-header {
     font-weight: 600;
 }
+.docs-content details.callout > summary {
+    cursor: pointer;
+}
+.docs-content details.callout[open] > summary {
+    margin-bottom: 0.5em;
+}
 .docs-content .callout-icon-container,
 .docs-content .callout-btn-toggle {
     display: none;

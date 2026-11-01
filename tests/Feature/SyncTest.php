@@ -240,6 +240,25 @@ class SyncTest extends TestCase
         $this->assertStringContainsString('href="http://phiz.phpstats.test/vignettes"', $resolved);
     }
 
+    public function test_a_collapsible_callout_becomes_a_details_element(): void
+    {
+        File::put("{$this->source}/docs/index.html", $this->page('Overview', implode('', [
+            '<div class="callout callout-style-default callout-note callout-titled">',
+            '<div class="callout-header d-flex collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents">',
+            '<div class="callout-icon-container"><i class="callout-icon"></i></div>',
+            '<div class="callout-title-container flex-fill"><span class="screen-reader-only">Note</span>Make the input file</div>',
+            '</div>',
+            '<div id="callout-1" class="callout-1-contents callout-collapse collapse">',
+            '<div class="callout-body-container callout-body"><p>Setup code.</p></div>',
+            '</div></div>',
+        ])));
+        $this->assertSame(0, $this->syncFromPath());
+
+        $html = File::get("{$this->content}/".self::PACKAGE.'/docs/index.html');
+        $this->assertStringContainsString('<details class="callout callout-style-default callout-note callout-titled"><summary class="callout-header">Make the input file</summary><div class="callout-body-container callout-body"><p>Setup code.</p></div></details>', $html);
+        $this->assertStringNotContainsString('data-bs-toggle', $html);
+    }
+
     public function test_the_nav_keeps_each_item_section(): void
     {
         // The fixture holds no docs/_quarto.yml, so this is the site.json nav.
