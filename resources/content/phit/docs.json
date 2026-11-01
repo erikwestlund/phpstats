@@ -2,7 +2,8 @@
     "nav": [
         {
             "title": "Overview",
-            "path": "index"
+            "path": "index",
+            "section": "Getting started"
         },
         {
             "title": "Installation",
@@ -82,57 +83,57 @@
         {
             "title": "All functions",
             "path": "functions/index",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "Models",
             "path": "functions/models",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "Mixed models",
             "path": "functions/mixed-models",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "Distributions",
             "path": "functions/distributions",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "Sampling",
             "path": "functions/sampling",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "Statistics and optimization",
             "path": "functions/statistics",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "Posterior draws",
             "path": "functions/draws",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "CSV",
             "path": "functions/csv",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "API conventions",
             "path": "contracts",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "Model contracts",
             "path": "reference-models",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "Shared rules",
             "path": "reference-utilities",
-            "section": "Functions"
+            "section": "Functions and methods"
         },
         {
             "title": "Fit a linear model and predict",
@@ -906,7 +907,7 @@
             "math": false
         },
         "functions/index": {
-            "title": "Functions",
+            "title": "Functions and methods",
             "headings": [
                 {
                     "id": "models",
