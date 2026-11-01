@@ -63,9 +63,11 @@ its own menu:
   meant. The rule is about prose only: `$frame` variables, the
   `df-table` component, and anything else in code keep their names.
 - Leave out status badges, version pills, colored dots, and stats bars.
-- Keep "checked against R" and verification claims off the landing page.
-  The About page has one Validation section that links each package's
-  verification. The reports belong on each package's Verification section.
+- Verification claims come only from the packages' saved verification
+  records, with their differences and tolerances, and link those records. The
+  landing page's "Verified against established libraries" section and the
+  About page's Validation section are the two places that summarize them.
+  Never write a bare "checked against R".
 - Don't use "Verbs" as a heading. The landing page's one mention of the
   tidyverse's influence is in the Packages introduction.
 - The about page is "About PHPstats".

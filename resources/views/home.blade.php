@@ -66,4 +66,20 @@ $chart = \Phiz\Plot::of($monthly)
         </div>
     </section>
 
+    {{-- Evidence: one connected example, a saved benchmark, and verification results --}}
+    <x-landing.together />
+    <x-landing.performance />
+    <x-landing.verified />
+
+    <section aria-label="Get started" class="border-t border-zinc-200 py-16 sm:py-20 dark:border-white/10">
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 px-4 sm:flex-row sm:px-6 lg:px-8">
+            <a href="{{ route('page', 'installation') }}" class="inline-flex items-center gap-1.5 rounded-lg bg-php-600 px-5 py-2.5 text-[0.9375rem] font-semibold text-white shadow-sm transition hover:bg-php-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-php-500">
+                Install the packages
+            </a>
+            <a href="{{ route('examples') }}" class="inline-flex items-center gap-1.5 rounded-lg px-5 py-2.5 text-[0.9375rem] font-semibold text-zinc-900 ring-1 ring-zinc-300 transition hover:bg-zinc-50 dark:text-white dark:ring-white/20 dark:hover:bg-white/5">
+                Browse examples
+            </a>
+        </div>
+    </section>
+
 </x-layout>

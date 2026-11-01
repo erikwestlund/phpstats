@@ -92,7 +92,7 @@ class ExampleCacheTest extends TestCase
     }
 
     /**
-     * The examples this server cannot run, such as the phpolars one without
+     * The landing page examples this server cannot run, such as the phpolars one without
      * the extension. Running them throws, nothing is cached, and every
      * request retries them, which is what the empty-result sentence needs.
      *
@@ -101,15 +101,14 @@ class ExampleCacheTest extends TestCase
     private function uncacheable(): array
     {
         $paths = [];
-        foreach (config('phpstats.explorer') as $key => $panel) {
-            if (isset($panel['stored'])) {
-                continue;
-            }
+        $names = array_keys(array_filter(config('phpstats.explorer'), fn (array $panel) => ! isset($panel['stored'])));
+        // The landing page's connected example runs the same way as the panels.
+        foreach ([...array_map(fn (string $key) => "packages/{$key}", $names), 'together/schools'] as $name) {
             Example::reset();
             try {
-                Example::run("packages/{$key}");
+                Example::run($name);
             } catch (\Throwable) {
-                $paths[] = Example::path("packages/{$key}");
+                $paths[] = Example::path($name);
             }
         }
         Example::reset();

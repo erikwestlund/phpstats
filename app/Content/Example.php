@@ -63,11 +63,14 @@ class Example
         }
         self::$runs[$path] = (self::$runs[$path] ?? 0) + 1;
 
+        // An example may change directory to read its data by a short name.
+        $cwd = getcwd();
         ob_start();
         try {
             $result = (static fn () => require $path)();
         } finally {
             $printed = ob_get_clean();
+            chdir($cwd);
         }
 
         // A file without a return statement gives 1, and its result is what it printed.
@@ -153,6 +156,21 @@ class Example
     private static function generation(): string
     {
         return self::$generation ??= Cache::rememberForever(self::GENERATION, fn () => Str::random(12));
+    }
+
+    /**
+     * The code of an example shown in steps: the parts between its "// ---"
+     * lines, after the hidden setup above the first one, each without a
+     * final return statement.
+     *
+     * @return list<string>
+     */
+    public static function steps(string $name): array
+    {
+        $parts = preg_split('/^\/\/ ---\n/m', file_get_contents(self::path($name)));
+        array_shift($parts);
+
+        return array_map(fn (string $part) => trim(preg_replace('/\n*^return [^;]*;\s*\z/m', '', $part))."\n", $parts);
     }
 
     public static function display(string $source): string

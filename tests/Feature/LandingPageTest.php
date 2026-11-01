@@ -43,6 +43,34 @@ class LandingPageTest extends TestCase
         $this->assertDoesNotMatchRegularExpression('#>About <span class="font-mono">#', $html);
     }
 
+    public function test_the_evidence_sections_and_the_call_to_action_follow_the_explorer(): void
+    {
+        $html = $this->get('http://phpstats.test/')->assertOk()->content();
+
+        // The connected example shows its three steps from one script.
+        $steps = Example::steps('together/schools');
+        $this->assertCount(3, $steps);
+        $this->assertStringContainsString('scan_csv(', $steps[0]);
+        $this->assertStringContainsString('fit_lmer(', $steps[1]);
+        $this->assertStringContainsString('->embed()', $steps[2]);
+        $this->assertStringContainsString('id="together"', $html);
+
+        // Verification reads phit's records and links each one.
+        $phit = Package::find('phit');
+        foreach (['distributions', 'lmm-public', 'logistic'] as $record) {
+            $this->assertStringContainsString('href="'.e($phit->url('verification')).'#'.$record.'"', $html);
+        }
+
+        // The benchmark appears only with phpolars' saved record.
+        $record = collect(Package::find('phpolars')->benchmarks())->firstWhere('id', 'csv-pipeline');
+        $this->assertSame($record !== null, str_contains($html, 'id="performance"'));
+
+        // The page ends with the two links.
+        $this->assertMatchesRegularExpression('#Install the packages.*Browse examples#s', $html);
+        $this->assertStringContainsString('href="'.e(route('page', 'installation')).'"', $html);
+        $this->assertStringContainsString('href="'.e(route('examples')).'"', $html);
+    }
+
     public function test_every_package_has_code_on_the_landing_page_and_it_runs(): void
     {
         $requires = ['phibble' => 'phibble', 'phpolars' => 'phpolars', 'phplyr' => 'phplyr', 'phiz' => 'phiz', 'phit' => 'phit'];

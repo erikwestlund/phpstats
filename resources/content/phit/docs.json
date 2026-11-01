@@ -90,6 +90,11 @@
             "section": "Examples"
         },
         {
+            "title": "Fit a mixed model to a Polars table and chart it",
+            "path": "examples/polars-mixed-model",
+            "section": "Examples"
+        },
+        {
             "title": "API overview",
             "path": "contracts",
             "section": "Reference"
@@ -841,6 +846,11 @@
                     "level": 2
                 },
                 {
+                    "id": "example-pages-with-charts",
+                    "text": "Example pages with charts",
+                    "level": 2
+                },
+                {
                     "id": "standard-figures",
                     "text": "Standard figures",
                     "level": 2
@@ -964,6 +974,32 @@
         },
         "examples/mixed-model": {
             "title": "Fit a mixed model",
+            "headings": [
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 2
+                },
+                {
+                    "id": "code",
+                    "text": "Code",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "explanation",
+                    "text": "Explanation",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "examples/polars-mixed-model": {
+            "title": "Fit a mixed model to a Polars table and chart it",
             "headings": [
                 {
                     "id": "data",
