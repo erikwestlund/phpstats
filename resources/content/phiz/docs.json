@@ -150,24 +150,34 @@
             "title": "Dashboards with Livewire",
             "headings": [
                 {
-                    "id": "prerequisites",
-                    "text": "Prerequisites",
+                    "id": "a-minimal-component",
+                    "text": "A minimal component",
                     "level": 2
                 },
                 {
-                    "id": "a-small-component",
-                    "text": "A small component",
+                    "id": "a-linked-dashboard",
+                    "text": "A linked dashboard",
                     "level": 2
                 },
                 {
-                    "id": "the-charts",
-                    "text": "The charts",
-                    "level": 2
+                    "id": "the-shared-function",
+                    "text": "The shared function",
+                    "level": 3
                 },
                 {
-                    "id": "the-livewire-component",
-                    "text": "The Livewire component",
-                    "level": 2
+                    "id": "the-component",
+                    "text": "The component",
+                    "level": 3
+                },
+                {
+                    "id": "the-view",
+                    "text": "The view",
+                    "level": 3
+                },
+                {
+                    "id": "clicks-on-a-chart",
+                    "text": "Clicks on a chart",
+                    "level": 3
                 },
                 {
                     "id": "linking-in-the-browser",
