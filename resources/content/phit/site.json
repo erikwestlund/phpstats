@@ -29,7 +29,7 @@
     ],
     "verify": {
         "command": "php -r 'echo phpversion(\"phit\"), PHP_EOL;'",
-        "output": "0.4.1",
+        "output": "0.4.2",
         "note": "PHP-FPM reads its own php.ini, so enable the extension there and restart FPM."
     },
     "installation": "installation",
@@ -150,7 +150,11 @@
         "site/benchmarks/distributions.json",
         "site/benchmarks/draws.json",
         "site/benchmarks/ols-workload.json",
-        "site/benchmarks/mixed-workload.json"
+        "site/benchmarks/mixed-workload.json",
+        "site/benchmarks/logistic-workload.json",
+        "site/benchmarks/probit-workload.json",
+        "site/benchmarks/mixed-logistic-workload.json",
+        "site/benchmarks/distributions-workload.json"
     ],
     "verifications": [
         "site/verifications/ols.json",

@@ -66,12 +66,19 @@
                     @php
                         $name = fn (array $row) => $w['names'][$row['implementation']] ?? $row['implementation'];
                         $timeChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['value'] / 1000, 'shown' => $time($r['value'])], $rows), 'Elapsed time (s)');
-                        $memoryChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['peak_memory_mib'], 'shown' => $memory($r['peak_memory_mib'])], $rows), 'Memory (MiB)');
+                        $memoryChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['peak_memory_mib'], 'shown' => $memory($r['peak_memory_mib'])], $rows), ($record['memory_measure'] ?? null) === 'peak memory footprint' ? 'Peak memory footprint (MiB)' : 'Peak resident memory (MiB)');
                     @endphp
                     <div class="mx-auto mt-6 grid max-w-5xl gap-8 md:grid-cols-2" aria-hidden="true">
                         <x-phiz :plot="$timeChart" class="min-w-0 overflow-hidden" />
                         <x-phiz :plot="$memoryChart" class="min-w-0 overflow-hidden" />
                     </div>
+                    <p class="mx-auto mt-3 max-w-4xl text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                        @if (($record['memory_measure'] ?? null) === 'peak memory footprint')
+                            Memory is each process's peak memory footprint: the most memory it held at once, as macOS reports it. That includes the language runtime, the data, and native allocations such as Polars' and phit's, and leaves out file pages the system can drop.
+                        @else
+                            Memory is each process's peak resident set size: the most physical memory it used at once, including file pages it mapped.
+                        @endif
+                    </p>
                     <div class="sr-only"><table>
                         <caption>{{ $w['label'] }}: median elapsed time and peak memory of {{ $env['repeats'] }} runs</caption>
                         <thead><tr><th scope="col">Implementation</th><th scope="col">Elapsed time</th><th scope="col">Memory</th></tr></thead>
@@ -107,11 +114,6 @@
 
                     <p class="mx-auto mt-4 max-w-4xl text-sm leading-6 text-zinc-500">
                         Medians of {{ $env['repeats'] }} runs, each in a fresh process, on {{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.
-                        @if (($record['memory_measure'] ?? null) === 'peak memory footprint')
-                            Memory is each process's peak memory footprint, which leaves out file pages the system can drop.
-                        @else
-                            Memory is each process's peak resident set size.
-                        @endif
                         The full record gives versions, thread settings, and where timing starts and stops.
                     </p>
                     <div class="mx-auto mt-3 max-w-4xl">
