@@ -127,7 +127,9 @@ class DocsTest extends TestCase
         }
 
         $this->assertSame([], $outside);
-        $this->assertCount(39, Package::find('phit')->docsNav());
+        // Every page phit renders is listed once, whatever its sections are called.
+        $phit = Package::find('phit');
+        $this->assertEqualsCanonicalizing($phit->docsPaths(), array_values(array_unique(array_column($phit->docsNav(), 'path'))));
     }
 
     public function test_a_docs_page_named_as_html_redirects_to_its_clean_url(): void

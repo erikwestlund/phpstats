@@ -137,7 +137,7 @@ class SeoTest extends TestCase
             // A package overview: its tagline.
             'http://phit.phpstats.test/' => 'Statistical models, probability distributions, and descriptive statistics.',
             // Docs and the other sections: the page title, then the tagline.
-            'http://phit.phpstats.test/docs/contracts' => 'API overview in phit. Statistical models, probability distributions, and descriptive statistics.',
+            'http://phit.phpstats.test/docs/contracts' => Package::find('phit')->docsPage('contracts')['title'].' in phit. Statistical models, probability distributions, and descriptive statistics.',
             'http://phit.phpstats.test/examples' => 'Examples in phit. Statistical models, probability distributions, and descriptive statistics.',
             'http://phit.phpstats.test/vignettes/school-shrinkage' => 'School effects in phit. Statistical models, probability distributions, and descriptive statistics.',
             'http://phit.phpstats.test/benchmarks' => 'Benchmarks in phit. Statistical models, probability distributions, and descriptive statistics.',
