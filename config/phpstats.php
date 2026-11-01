@@ -35,11 +35,11 @@ return [
      */
     'content' => [
         'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '61131e6f6d5336b88ef8a9eeed858afd045b971a'],
-        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'e3ad71e83bfc28ec56333bc50c7b5b4232025510'],
+        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => '1f2d1469e1b848ff0c00c09e2dc23299c3202448'],
         'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'a2946d16f86ebea5f265cd8f67065448e4f6fb87'],
         'phit' => ['repo' => 'phpstats/phit', 'ref' => 'ded53a2b4707f6653bba528d4cd8cb71315cc6e7'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => 'aaa4c32228c562881fcc6d8846af5fb907304c03'],
-        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => 'adb2654a73794eba96a0aaea0f9722093901efe0'],
+        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '73919936a9b9709550324988924e400ec09b6f66'],
         'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '2e1ee97c03ae7b4c70e276cb8524b4804f54b286'],
     ],
 
