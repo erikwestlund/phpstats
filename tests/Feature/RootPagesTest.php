@@ -360,7 +360,7 @@ class RootPagesTest extends TestCase
         $this->assertStringContainsString('http://phit.phpstats.test', $html);
         $this->assertStringContainsString('{{ not blade }}', html_entity_decode(strip_tags($html)));
 
-        $this->get('http://phpstats.test/about')->assertOk()->assertSee('About PHPstats')->assertSee('dplyr and tidyr');
+        $this->get('http://phpstats.test/about')->assertOk()->assertSee('About PHPstats')->assertSee('dplyr, tidyr, and janitor');
         $this->get('http://phpstats.test/no-such-page')->assertNotFound();
     }
 

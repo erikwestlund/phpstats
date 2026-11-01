@@ -132,17 +132,16 @@ class SeoTest extends TestCase
             'http://phpstats.test/' => 'A family of PHP libraries for data frames, pipelines, charts, and statistical models, run inside the application that holds the data.',
             'http://phpstats.test/about' => 'PHPstats is a set of open-source PHP packages for data frames, data transformation, statistical models, Bayesian inference, charts, and notebooks.',
             // A package overview: its tagline.
-            'http://phit.phpstats.test/' => 'Regression, mixed models and probability distributions for PHP.',
+            'http://phit.phpstats.test/' => 'Statistical models, probability distributions, and descriptive statistics.',
             // Docs and the other sections: the page title, then the tagline.
-            'http://phit.phpstats.test/docs/contracts' => 'API overview in phit. Regression, mixed models and probability distributions for PHP.',
-            'http://phit.phpstats.test/examples' => 'Examples in phit. Regression, mixed models and probability distributions for PHP.',
-            'http://phit.phpstats.test/vignettes/school-shrinkage' => 'School effects in phit. Regression, mixed models and probability distributions for PHP.',
-            'http://phit.phpstats.test/benchmarks' => 'Benchmarks in phit. Regression, mixed models and probability distributions for PHP.',
-            'http://phit.phpstats.test/verification' => 'Verification in phit. Regression, mixed models and probability distributions for PHP.',
-            // A tagline that does not end in a period still reads as a sentence.
-            'http://phpolars.phpstats.test/benchmarks' => 'Benchmarks in phpolars. Polars data frames for PHP.',
+            'http://phit.phpstats.test/docs/contracts' => 'API overview in phit. Statistical models, probability distributions, and descriptive statistics.',
+            'http://phit.phpstats.test/examples' => 'Examples in phit. Statistical models, probability distributions, and descriptive statistics.',
+            'http://phit.phpstats.test/vignettes/school-shrinkage' => 'School effects in phit. Statistical models, probability distributions, and descriptive statistics.',
+            'http://phit.phpstats.test/benchmarks' => 'Benchmarks in phit. Statistical models, probability distributions, and descriptive statistics.',
+            'http://phit.phpstats.test/verification' => 'Verification in phit. Statistical models, probability distributions, and descriptive statistics.',
+            'http://phpolars.phpstats.test/benchmarks' => 'Benchmarks in phpolars. Polars data frames for PHP through a native extension.',
             // A Livewire page renders its own view through the same layout.
-            'http://cmdstanphp.phpstats.test/vignettes/bayesian-schools' => 'Bayesian school effects in CmdStanPHP. Stan modeling and inference from PHP.',
+            'http://cmdstanphp.phpstats.test/vignettes/bayesian-schools' => 'Bayesian school effects in CmdStanPHP. A PHP port of CmdStanR for Bayesian modeling with Stan.',
         ];
 
         foreach ($pages as $url => $description) {

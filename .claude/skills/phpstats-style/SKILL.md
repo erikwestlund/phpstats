@@ -25,15 +25,18 @@ that packages sync into it.
 The packages are grouped into two categories, in this order, each with
 its own menu:
 
-- Data & Workflow: phibble, phpolars, phplyr, and juphyter.
+- Data & Workflow: phibble, phplyr, juphyter, and phpolars.
 - Statistics, Modeling & Visualization: phit, phiz, and CmdStanPHP.
 
 ## Copy
 
-- Keep package taglines (menus, package pages) short and plain, such as
-  "Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine."
-  The landing page's package explorer lists each package with a one-line
-  summary and puts the detail in three panels: "About {package}", the
+- Each package has one short description, its `summary` in
+  `config/projects.php`, such as "Immutable, typed data frames for PHP." The
+  menus, the landing page's package list, the About table, and the package
+  overview's lead all show it, and `packages` in each layer of
+  `config/phpstats.php` gives the order everywhere. Keep it short and plain.
+  The landing page's package explorer lists each package with that
+  description and puts the detail in three panels: "About {package}", the
   example (titled "Example: {what it does}", from `example` in `explorer`),
   and "Example output". The About panel has usually four bullets from
   `explorer` in `config/phpstats.php`, built only from documented

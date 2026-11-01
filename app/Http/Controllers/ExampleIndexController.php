@@ -15,7 +15,7 @@ class ExampleIndexController extends Controller
     {
         $groups = [];
         // In the menus' order: the layers in config/phpstats.php, then their packages.
-        foreach (array_merge(...array_map('array_keys', array_column(config('phpstats.layers'), 'packages'))) as $key) {
+        foreach (array_merge(...array_column(config('phpstats.layers'), 'packages')) as $key) {
             $package = Package::find($key);
             if ($package && $examples = $package->examples()) {
                 $groups[] = ['package' => $package, 'examples' => $examples];

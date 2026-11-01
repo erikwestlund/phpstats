@@ -46,10 +46,17 @@ class Package
         return array_map(fn (string $key) => self::find($key), array_combine($keys, $keys));
     }
 
-    /** @return list<string> */
+    /**
+     * The packages in the layers' order, then any package in no layer.
+     *
+     * @return list<string>
+     */
     public static function keys(): array
     {
-        return array_values(array_diff(array_keys(config('projects')), array_keys(config('phpstats.companions'))));
+        $keys = array_values(array_diff(array_keys(config('projects')), array_keys(config('phpstats.companions'))));
+        $ordered = array_merge(...array_column(config('phpstats.layers'), 'packages'));
+
+        return array_values(array_unique([...array_intersect($ordered, $keys), ...$keys]));
     }
 
     public static function flush(): void
@@ -77,9 +84,13 @@ class Package
         return $this->site['title'] ?? $this->project['name'];
     }
 
+    /**
+     * The package's short description, from config/projects.php, shown in
+     * the menus, the landing page's package list, and the overview's lead.
+     */
     public function tagline(): string
     {
-        return $this->site['tagline'] ?? $this->project['summary'];
+        return $this->project['summary'];
     }
 
     /**
@@ -224,16 +235,16 @@ class Package
         return $this->project['status_label'];
     }
 
-    /** @return array{key: string, title: string, role: string, color: string, description: string} */
+    /** @return array{key: string, title: string, role: string, color: string} */
     public function layer(): array
     {
         foreach (config('phpstats.layers') as $key => $layer) {
-            if (isset($layer['packages'][$this->key])) {
-                return ['key' => $key, 'title' => $layer['title'], 'role' => $layer['role'], 'color' => $layer['color'], 'description' => $layer['packages'][$this->key]];
+            if (in_array($this->key, $layer['packages'], true)) {
+                return ['key' => $key, 'title' => $layer['title'], 'role' => $layer['role'], 'color' => $layer['color']];
             }
         }
 
-        return ['key' => 'other', 'title' => 'Other', 'role' => '', 'color' => 'purple', 'description' => $this->project['summary']];
+        return ['key' => 'other', 'title' => 'Other', 'role' => '', 'color' => 'purple'];
     }
 
     /**

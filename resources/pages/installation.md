@@ -6,11 +6,11 @@ sidebar:
       - { id: requirements, label: Requirements }
       - { id: phibble, label: phibble, mono: true }
       - { id: phplyr, label: phplyr, mono: true }
+      - { id: juphyter, label: juphyter, mono: true }
+      - { id: phpolars, label: phpolars, mono: true }
+      - { id: phit, label: phit, mono: true }
       - { id: phiz, label: phiz, mono: true }
       - { id: cmdstanphp, label: CmdStanPHP, mono: true }
-      - { id: phit, label: phit, mono: true }
-      - { id: phpolars, label: phpolars, mono: true }
-      - { id: juphyter, label: juphyter, mono: true }
 ---
 
 <h2 id="requirements">Requirements</h2>
@@ -23,12 +23,12 @@ sidebar:
 
 <x-install package="phplyr" />
 
-<x-install package="phiz" />
-
-<x-install package="cmdstanphp" />
-
-<x-install package="phit" />
+<x-install package="juphyter" />
 
 <x-install package="phpolars" />
 
-<x-install package="juphyter" />
+<x-install package="phit" />
+
+<x-install package="phiz" />
+
+<x-install package="cmdstanphp" />

@@ -47,7 +47,7 @@ class PackagePagesTest extends TestCase
         $menus = [];
         foreach (config('phpstats.menus') as $menu) {
             foreach ($menu['layers'] as $layer) {
-                foreach (array_keys(config("phpstats.layers.{$layer}.packages")) as $key) {
+                foreach (config("phpstats.layers.{$layer}.packages") as $key) {
                     $menus[$key][] = $menu['title'];
                 }
             }

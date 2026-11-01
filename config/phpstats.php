@@ -46,25 +46,17 @@ return [
     /*
      * How the packages fit together. The landing page
      * draws these layers, and each package host shows its layer and color.
-     * Colors are Tailwind color names, and icons are Heroicons.
+     * Colors are Tailwind color names, and icons are Heroicons. packages
+     * gives the order in the menus, the footer, and the landing page; each
+     * package's short description is its summary in config/projects.php.
      */
     'layers' => [
-        'data' => ['title' => 'Data & Workflow', 'role' => 'Tables, pipelines, and notebooks', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => [
-            'phibble' => 'Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine.',
-            'phpolars' => 'Polars data frames as a PHP extension. Compatible with phibble.',
-            'phplyr' => "A PHP port of the Tidyverse's dplyr and tidyr. Pipelines use PHP 8.5's pipe operator.",
-            'juphyter' => 'PHP in Jupyter notebooks and Quarto documents.',
-        ]],
-        'stats' => ['title' => 'Statistics, Modeling & Visualization', 'role' => 'Models, inference, and charts', 'color' => 'purple', 'icon' => 'variable', 'packages' => [
-            'phit' => 'Regression, mixed models, distributions, and descriptive statistics.',
-            'phiz' => 'ggplot2-style charts, rendered with Vega-Lite.',
-            'cmdstanphp' => 'Bayesian models in Stan.',
-        ]],
+        'data' => ['title' => 'Data & Workflow', 'role' => 'Tables, pipelines, and notebooks', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => ['phibble', 'phplyr', 'juphyter', 'phpolars']],
+        'stats' => ['title' => 'Statistics, Modeling & Visualization', 'role' => 'Models, inference, and charts', 'color' => 'purple', 'icon' => 'variable', 'packages' => ['phit', 'phiz', 'cmdstanphp']],
     ],
 
     /*
-     * The landing page's package explorer: a one-line summary for the list,
-     * the title of its example, the label for its output, the docs path of
+     * The landing page's package explorer: the title of its example, the label for its output, the docs path of
      * the full example its "Full example" link opens (the docs index when
      * that page has not synced), and, for examples pages can't run, a stored
      * result: the callable that
@@ -76,25 +68,21 @@ return [
      */
     'explorer' => [
         'phibble' => [
-            'summary' => 'Immutable, typed data frames for PHP.',
             'example' => 'Example: Load an Eloquent query with typed columns',
             'output' => 'Data frame glimpse',
             'link' => 'examples/read-a-csv',
         ],
         'phpolars' => [
-            'summary' => 'Polars data frames for PHP, in a Rust extension.',
             'example' => 'Example: Aggregate database rows with expressions',
             'output' => 'Polars table',
             'link' => 'examples/expressions',
         ],
         'phplyr' => [
-            'summary' => 'dplyr and tidyr pipelines for PHP.',
             'example' => 'Example: Filter, group, and summarize orders',
             'output' => 'Data frame preview',
             'link' => 'examples/group-and-summarize',
         ],
         'juphyter' => [
-            'summary' => 'A Jupyter and Quarto kernel for PHP.',
             'example' => 'Example: A PHP cell in a Quarto document',
             'output' => 'Rendered notebook cell',
             'link' => 'examples/notebook',
@@ -105,19 +93,16 @@ return [
             ],
         ],
         'phiz' => [
-            'summary' => 'ggplot2-style charts rendered with Vega-Lite.',
             'example' => 'Example: Points with a fitted line per group',
             'output' => 'Chart',
             'link' => 'examples/layers',
         ],
         'phit' => [
-            'summary' => 'Regression, mixed models, and descriptive statistics.',
             'example' => 'Example: Fit a linear model',
             'output' => 'Coefficients',
             'link' => 'examples/linear-model',
         ],
         'cmdstanphp' => [
-            'summary' => 'Bayesian modeling in Stan from PHP.',
             'example' => 'Example: Sample a hierarchical model and summarize it',
             'output' => 'Posterior summary',
             'link' => 'examples/sample',

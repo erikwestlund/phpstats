@@ -9,7 +9,7 @@
 
 @php
     $layers = array_intersect_key(config('phpstats.layers'), array_flip($menu['layers']));
-    $holdsCurrent = $current && collect($layers)->contains(fn ($layer) => isset($layer['packages'][$current->key]));
+    $holdsCurrent = $current && collect($layers)->contains(fn ($layer) => in_array($current->key, $layer['packages'], true));
 @endphp
 
 <div x-data="{ open: false }" x-on:keydown.escape.window="open = false" x-on:click.outside="open = false" class="relative">
@@ -32,13 +32,13 @@
                     <p class="px-2.5 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-(--l600) dark:text-(--l300)">{{ $layer['title'] }}</p>
                 @endif
                 <ul>
-                    @foreach (array_keys($layer['packages']) as $key)
+                    @foreach ($layer['packages'] as $key)
                         @php $item = \App\Content\Package::find($key); @endphp
                         <li>
                             <a href="{{ $item->url() }}" @if ($current?->key === $key) aria-current="page" @endif
                                class="block rounded-lg px-3 py-2 transition hover:bg-(--l50) aria-[current]:bg-(--l50) dark:hover:bg-(--l400)/10 dark:aria-[current]:bg-(--l400)/10">
                                 <span class="font-mono text-sm font-semibold text-zinc-900 dark:text-white">{{ $item->name() }}</span>
-                                <span class="mt-px block text-xs leading-[1.125rem] text-zinc-500 dark:text-zinc-400">{{ $layer['packages'][$key] }}</span>
+                                <span class="mt-px block text-xs leading-[1.125rem] text-zinc-500 dark:text-zinc-400">{{ $item->tagline() }}</span>
                             </a>
                         </li>
                     @endforeach

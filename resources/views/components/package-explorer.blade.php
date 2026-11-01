@@ -14,7 +14,7 @@
     $explorer = config('phpstats.explorer');
     // Layer order, less any package with no explorer entry, which gets no panel.
     $keys = array_values(array_intersect(
-        array_keys(array_merge(...array_column(config('phpstats.layers'), 'packages'))),
+        array_merge(...array_column(config('phpstats.layers'), 'packages')),
         array_keys($explorer),
     ));
 @endphp
@@ -22,7 +22,7 @@
      class="overflow-hidden rounded-2xl ring-1 ring-zinc-200 lg:grid lg:grid-cols-[2fr_3fr] dark:ring-white/10">
     <div class="divide-y divide-zinc-200 border-b border-zinc-200 lg:border-b-0 lg:border-r dark:divide-white/10 dark:border-white/10" x-on:keydown.down.prevent="move(1)" x-on:keydown.up.prevent="move(-1)">
         @foreach (config('phpstats.layers') as $layer)
-            @php $tabs = array_values(array_intersect(array_keys($layer['packages']), $keys)); @endphp
+            @php $tabs = array_values(array_intersect($layer['packages'], $keys)); @endphp
             @continue ($tabs === [])
             <div class="layer-{{ $layer['color'] }} pt-5">
                 <h3 class="mb-3 flex items-center gap-2.5 px-6 text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
@@ -35,7 +35,7 @@
                                 x-on:click="open = '{{ $key }}'" x-bind:aria-selected="(open === '{{ $key }}').toString()" aria-selected="{{ $key === 'phibble' ? 'true' : 'false' }}"
                                 class="block w-full border-l-[3px] border-transparent py-3 pl-[calc(1.5rem-3px)] pr-6 text-left transition hover:bg-zinc-50 focus-visible:bg-zinc-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--l500) aria-selected:border-(--l500) aria-selected:bg-(--l50) dark:hover:bg-white/[0.03] dark:focus-visible:bg-white/[0.03] dark:aria-selected:border-(--l400) dark:aria-selected:bg-(--l400)/10">
                             <span class="font-mono text-base font-semibold text-zinc-950 dark:text-white">{{ $packages[$key]->name() }}</span>
-                            <span class="mt-1.5 block text-[0.9375rem] leading-normal text-zinc-600 dark:text-zinc-400">{{ $explorer[$key]['summary'] }}</span>
+                            <span class="mt-1.5 block text-[0.9375rem] leading-normal text-zinc-600 dark:text-zinc-400">{{ $packages[$key]->tagline() }}</span>
                         </button>
                     @endforeach
                 </div>

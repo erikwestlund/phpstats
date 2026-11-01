@@ -8,7 +8,7 @@
             <div class="layer-{{ $layer['color'] }}">
                 <p class="text-xs font-semibold uppercase tracking-wider text-(--l600) dark:text-(--l300)">{{ $layer['title'] }}</p>
                 <ul class="mt-3 space-y-2 text-sm">
-                    @foreach (array_keys($layer['packages']) as $key)
+                    @foreach ($layer['packages'] as $key)
                         <li>
                             <a href="{{ \App\Content\Package::find($key)->url() }}" class="font-mono text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">{{ \App\Content\Package::find($key)->name() }}</a>
                         </li>

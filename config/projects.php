@@ -10,7 +10,7 @@ return [
     'phit' => [
         'name' => 'phit',
         'from_r' => 'stats and lme4',
-        'summary' => 'Regression, mixed models, distributions, and descriptive statistics, in a Rust extension.',
+        'summary' => 'Statistical models, probability distributions, and descriptive statistics.',
         'status' => 'working',
         'status_label' => 'Working',
         'repo' => 'https://github.com/phpstats/phit',
@@ -39,7 +39,7 @@ return [
     'phibble' => [
         'name' => 'phibble',
         'from_r' => 'tibble and readr',
-        'summary' => 'Immutable, typed data frames from CSV files, PDO, Eloquent, or Doctrine.',
+        'summary' => 'Immutable, typed data frames for PHP.',
         'status' => 'working',
         'status_label' => 'Released, v0.3.0',
         'repo' => 'https://github.com/phpstats/phibble',
@@ -58,7 +58,7 @@ return [
     'phplyr' => [
         'name' => 'phplyr',
         'from_r' => 'dplyr and tidyr',
-        'summary' => "A PHP port of the Tidyverse's dplyr and tidyr.",
+        'summary' => 'dplyr, tidyr, and janitor data wrangling in PHP.',
         'status' => 'working',
         'status_label' => 'Released, v0.3.0',
         'repo' => 'https://github.com/phpstats/phplyr',
@@ -79,7 +79,7 @@ return [
     'phiz' => [
         'name' => 'phiz',
         'from_r' => 'ggplot2',
-        'summary' => 'ggplot2-style charts for PHP, rendered with Vega-Lite.',
+        'summary' => 'ggplot2-style charts rendered with Vega-Lite.',
         'status' => 'working',
         'status_label' => 'Released, v0.3.0',
         'repo' => 'https://github.com/phpstats/phiz',
@@ -96,7 +96,7 @@ return [
     'phpolars' => [
         'name' => 'phpolars',
         'from_r' => 'polars',
-        'summary' => 'Polars data frames as a PHP extension. Compatible with phibble.',
+        'summary' => 'Polars data frames for PHP through a native extension.',
         'status' => 'working',
         'status_label' => 'Working, PIE-packaged',
         'repo' => 'https://github.com/phpstats/phpolars',
@@ -132,7 +132,7 @@ return [
         // CmdStanPHP's build tools compile Stan models, not the package.
         'build_label' => 'To compile models',
         'from_r' => 'cmdstanr',
-        'summary' => 'Bayesian models in Stan, with an API patterned after CmdStanR.',
+        'summary' => 'A PHP port of CmdStanR for Bayesian modeling with Stan.',
         'status' => 'working',
         'status_label' => 'Working',
         'repo' => 'https://github.com/phpstats/cmdstanphp',
