@@ -17,6 +17,12 @@ class Package
 
     private ?array $docs;
 
+    /** @var array<string, list<string>>|null function names per Functions and methods page */
+    private ?array $functionEntries = null;
+
+    /** @var array<string, list<string>> names called in each docs page's code */
+    private array $calls = [];
+
     private function __construct(public readonly string $key, public readonly array $project)
     {
         $this->site = $this->readJson('site.json');
@@ -427,6 +433,118 @@ class Package
         }
 
         return $urls;
+    }
+
+    /**
+     * The functions and methods each Functions and methods page documents:
+     * the ids of its sections whose heading shows the name as a call, such
+     * as `->columns()` or `fit_ols()`, and the calls its inline code names,
+     * for pages that list entries in tables. Sections that group entries,
+     * such as "Joins", are left out.
+     *
+     * @return array<string, list<string>>
+     */
+    public function functionEntries(): array
+    {
+        if ($this->functionEntries !== null) {
+            return $this->functionEntries;
+        }
+        $entries = [];
+        foreach ($this->docsGroups() as $group => $items) {
+            if (! in_array(strtolower($group), ['functions and methods', 'functions', 'methods'], true)) {
+                continue;
+            }
+            foreach (array_column($items, 'path') as $path) {
+                $file = $this->path("docs/{$path}.html");
+                if (! is_file($file)) {
+                    continue;
+                }
+                $entries[$path] ??= [];
+                $html = file_get_contents($file);
+                preg_match_all('#<section id="([A-Za-z_]\w*)"[^>]*>\s*<h[1-6][^>]*>(.*?)</h[1-6]>#s', $html, $sections, PREG_SET_ORDER);
+                foreach ($sections as [, $id, $heading]) {
+                    $text = html_entity_decode(strip_tags($heading), ENT_QUOTES | ENT_HTML5);
+                    if (preg_match('/(?<![\w$])'.preg_quote($id, '/').'\s*\(/', $text)) {
+                        $entries[$path][] = $id;
+                    }
+                }
+                // A page that lists its entries in tables names them in inline code, as `filter()`.
+                preg_match_all('#<code>([^<]*)</code>#', $html, $inline);
+                foreach ($inline[1] as $code) {
+                    if (preg_match_all('/(?<![\w$])([A-Za-z_]\w*)\s*\(/', html_entity_decode($code, ENT_QUOTES | ENT_HTML5), $names)) {
+                        array_push($entries[$path], ...$names[1]);
+                    }
+                }
+            }
+        }
+
+        return $this->functionEntries = array_filter(array_map(fn (array $ids) => array_values(array_unique($ids)), $entries));
+    }
+
+    /**
+     * The names a docs page calls in its code blocks, as name(, ->name(, or
+     * ::name(, from the synced HTML.
+     *
+     * @return list<string>
+     */
+    public function codeCalls(string $path): array
+    {
+        if (isset($this->calls[$path])) {
+            return $this->calls[$path];
+        }
+        $file = $this->path("docs/{$path}.html");
+        $names = [];
+        if (isset($this->docs['pages'][$path]) && is_file($file) && preg_match_all('#<pre\b[^>]*>(.*?)</pre>#s', file_get_contents($file), $blocks)) {
+            $code = html_entity_decode(strip_tags(implode("\n", $blocks[1])), ENT_QUOTES | ENT_HTML5);
+            preg_match_all('/(?<![\w$])(?<!function )([A-Za-z_]\w*)\s*\(/', $code, $m);
+            $names = array_values(array_unique($m[1]));
+        }
+
+        return $this->calls[$path] = $names;
+    }
+
+    /**
+     * The example pages, from the docs nav's Examples section, that use the
+     * functions a docs page documents (on a Functions and methods page) or
+     * shows in its code (on a guide), ranked by how many they share, then in
+     * nav order. Example pages, the overview, and Contributing pages list
+     * none.
+     *
+     * @return list<array{title: string, url: string, shared: int}>
+     */
+    public function relatedExamples(string $path, int $limit = 5): array
+    {
+        $group = $this->docsGroupOf($path);
+        if ($path === 'index' || in_array(strtolower((string) $group), ['examples', 'contributing'], true)) {
+            return [];
+        }
+        $entries = $this->functionEntries();
+        $known = array_fill_keys(array_merge(...array_values($entries ?: [[]])), true);
+        $mine = isset($entries[$path]) ? $entries[$path] : array_values(array_filter($this->codeCalls($path), fn (string $name) => isset($known[$name])));
+        if ($mine === []) {
+            return [];
+        }
+        $mine = array_fill_keys($mine, true);
+
+        $matches = [];
+        foreach ($this->docsGroups() as $name => $items) {
+            if (strtolower($name) !== 'examples') {
+                continue;
+            }
+            foreach ($items as $order => $item) {
+                // The section's own index lists examples rather than being one.
+                if ($item['path'] === $path || $item['path'] === 'examples' || str_ends_with($item['path'], '/index')) {
+                    continue;
+                }
+                $shared = count(array_filter($this->codeCalls($item['path']), fn (string $call) => isset($mine[$call])));
+                if ($shared > 0) {
+                    $matches[] = ['title' => $item['title'], 'url' => $this->url('docs', ['path' => $item['path']]), 'shared' => $shared, 'order' => $order];
+                }
+            }
+        }
+        usort($matches, fn (array $a, array $b) => [$b['shared'], $a['order']] <=> [$a['shared'], $b['order']]);
+
+        return array_map(fn (array $m) => ['title' => $m['title'], 'url' => $m['url'], 'shared' => $m['shared']], array_slice($matches, 0, $limit));
     }
 
     /** The group a docs page is in. */

@@ -481,7 +481,7 @@ class PackagePagesTest extends TestCase
         // The right-hand list scrolls on its own, and narrow screens get a disclosure with the same entries.
         $this->assertStringContainsString('aria-label="On this page"', $html);
         $this->assertStringContainsString('xl:overflow-y-auto', $html);
-        $this->assertMatchesRegularExpression('#<details class="group/toc[^"]*xl:hidden#', $html);
+        $this->assertMatchesRegularExpression('#<div class="mt-6 space-y-2 xl:hidden">\s*<details class="group/toc#', $html);
         $h3 = collect($page['headings'])->firstWhere('level', 3);
         $this->assertSame(2, substr_count($html, 'href="#'.$h3['id'].'"'));
     }
@@ -527,6 +527,30 @@ class PackagePagesTest extends TestCase
         }
         // A package without the key shows no such lists.
         $this->assertNull(Package::find('phibble')->capabilities());
+    }
+
+    public function test_docs_pages_list_the_examples_that_use_their_functions(): void
+    {
+        // phit's models reference documents fit_ols(), which its linear model example calls.
+        $phit = Package::find('phit');
+        $this->assertContains('fit_ols', $phit->functionEntries()['functions/models']);
+        $titles = array_column($phit->relatedExamples('functions/models'), 'title');
+        $this->assertContains('Fit a linear model and predict', $titles);
+        $this->assertLessThanOrEqual(5, count($titles));
+        $html = $this->get($phit->url('docs', ['path' => 'functions/models']))->assertOk()->getContent();
+        $this->assertStringContainsString('aria-label="Examples using these functions"', $html);
+        $this->assertStringContainsString('>Fit a linear model and predict</a>', $html);
+        // The same list opens from a disclosure below xl.
+        $this->assertMatchesRegularExpression('#<details class="group/ex[^>]*>\s*<summary[^>]*>\s*Examples#', $html);
+
+        // The overview, an example page itself, and a page with no documented calls list none.
+        $this->assertSame([], $phit->relatedExamples('index'));
+        $this->assertSame([], $phit->relatedExamples('examples/linear-model'));
+        $juphyter = Package::find('juphyter');
+        foreach ($juphyter->docsPaths() as $path) {
+            $this->assertSame([], $juphyter->relatedExamples($path), $path);
+        }
+        $this->get($juphyter->url('docs'))->assertOk()->assertDontSee('Examples using these functions');
     }
 
     public function test_benchmarks_are_one_page_with_tabs_per_workload(): void

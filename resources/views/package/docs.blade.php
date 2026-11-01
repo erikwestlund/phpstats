@@ -16,6 +16,8 @@
         }
     }
     $toc = count($page['headings']) > 1 ? $toc : [];
+    // Example pages that use the functions this page documents or shows.
+    $examples = $package->relatedExamples($path);
 @endphp
 <x-layout :title="$page['title']" :bare="true">
     @if ($page['math'])
@@ -75,16 +77,30 @@
         {{-- Page --}}
         <article class="min-w-0 py-8 lg:py-10">
             <h1 class="text-4xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $page['title'] }}</h1>
-            @if ($toc !== [])
-                {{-- Below xl the right-hand list is hidden, so the page's sections open from here. --}}
-                <details class="group/toc mt-6 rounded-lg bg-zinc-50 text-sm ring-1 ring-zinc-200 xl:hidden dark:bg-white/5 dark:ring-white/10">
-                    <summary class="flex cursor-pointer list-none items-center justify-between px-3 py-2 font-medium [&::-webkit-details-marker]:hidden">
-                        On this page <x-heroicon-m-chevron-down class="size-4 text-zinc-400 transition group-open/toc:rotate-180" />
-                    </summary>
-                    <div class="max-h-[60vh] overflow-y-auto overscroll-contain px-3 pb-3" x-data x-on:click="$event.target.closest('a') && $el.closest('details').removeAttribute('open')">
-                        @include('package.partials.docs-toc', ['toc' => $toc, 'spy' => false])
-                    </div>
-                </details>
+            @if ($toc !== [] || $examples !== [])
+                {{-- Below xl the right-hand rail is hidden, so its lists open from here. --}}
+                <div class="mt-6 space-y-2 xl:hidden">
+                    @if ($toc !== [])
+                        <details class="group/toc rounded-lg bg-zinc-50 text-sm ring-1 ring-zinc-200 dark:bg-white/5 dark:ring-white/10">
+                            <summary class="flex cursor-pointer list-none items-center justify-between px-3 py-2 font-medium [&::-webkit-details-marker]:hidden">
+                                On this page <x-heroicon-m-chevron-down class="size-4 text-zinc-400 transition group-open/toc:rotate-180" />
+                            </summary>
+                            <div class="max-h-[60vh] overflow-y-auto overscroll-contain px-3 pb-3" x-data x-on:click="$event.target.closest('a') && $el.closest('details').removeAttribute('open')">
+                                @include('package.partials.docs-toc', ['toc' => $toc, 'spy' => false])
+                            </div>
+                        </details>
+                    @endif
+                    @if ($examples !== [])
+                        <details class="group/ex rounded-lg bg-zinc-50 text-sm ring-1 ring-zinc-200 dark:bg-white/5 dark:ring-white/10">
+                            <summary class="flex cursor-pointer list-none items-center justify-between px-3 py-2 font-medium [&::-webkit-details-marker]:hidden">
+                                Examples <x-heroicon-m-chevron-down class="size-4 text-zinc-400 transition group-open/ex:rotate-180" />
+                            </summary>
+                            <div class="px-3 pb-3">
+                                @include('package.partials.docs-examples', ['examples' => $examples])
+                            </div>
+                        </details>
+                    @endif
+                </div>
             @endif
             <div class="docs-content prose prose-zinc prose-php mt-8 max-w-none dark:prose-invert prose-headings:scroll-mt-24 prose-headings:tracking-tight prose-h2:mt-12 prose-a:font-medium">
                 {!! $page['html'] !!}
@@ -132,16 +148,29 @@
             </script>
         @endif
 
-        {{-- On this page: the page's h2 sections, each with its h3 entries, in
-             a list that scrolls on its own when it is taller than the window,
-             keeping the current entry in view. --}}
-        @if ($toc !== [])
-            <nav aria-label="On this page" x-data="tocSpy" class="hidden text-sm xl:sticky xl:top-14 xl:block xl:max-h-[calc(100vh-3.5rem)] xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:py-10">
-                <p class="text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white">On this page</p>
-                <div class="mt-3">
-                    @include('package.partials.docs-toc', ['toc' => $toc, 'spy' => true])
-                </div>
-            </nav>
+        {{-- The right-hand rail: On this page, the page's h2 sections each
+             with its h3 entries, then Examples, the example pages that use
+             this page's functions. The rail scrolls on its own when it is
+             taller than the window, keeping the current entry in view. --}}
+        @if ($toc !== [] || $examples !== [])
+            <aside data-toc-scroll class="hidden space-y-8 text-sm xl:sticky xl:top-14 xl:block xl:max-h-[calc(100vh-3.5rem)] xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:py-10">
+                @if ($toc !== [])
+                    <nav aria-label="On this page" x-data="tocSpy">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white">On this page</p>
+                        <div class="mt-3">
+                            @include('package.partials.docs-toc', ['toc' => $toc, 'spy' => true])
+                        </div>
+                    </nav>
+                @endif
+                @if ($examples !== [])
+                    <nav aria-label="Examples using these functions">
+                        <p class="text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white">Examples</p>
+                        <div class="mt-3">
+                            @include('package.partials.docs-examples', ['examples' => $examples])
+                        </div>
+                    </nav>
+                @endif
+            </aside>
         @endif
     </div>
 </x-layout>
