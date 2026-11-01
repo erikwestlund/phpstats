@@ -24,10 +24,13 @@ class ExamplesTest extends TestCase
             if (! ScriptVignette::available($requires[basename($name)] ?? 'phplyr')) {
                 continue;
             }
-            $normalize = fn (mixed $result) => match (true) {
-                $result instanceof Plot => $result->toArray(),
-                is_object($result) => [$result->types(), $result->toRows()],
-                default => $result,
+            $normalize = function (mixed $result) use (&$normalize) {
+                return match (true) {
+                    $result instanceof Plot => $result->toArray(),
+                    is_object($result) => [$result->types(), $result->toRows()],
+                    is_array($result) => array_map($normalize, $result),
+                    default => $result,
+                };
             };
 
             $this->assertEquals($normalize(Example::run($name)), $normalize(Example::run($name, 'chain')), $name);

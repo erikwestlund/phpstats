@@ -26,35 +26,39 @@
             @php
                 // The example runs like the other landing examples: its code is
                 // resources/examples/hero/temperatures.php (and .chain.php), and the
-                // Chart tab shows the chart that code draws, from illustrative data.
+                // other slides show what its two echo lines print: the data frame and
+                // the chart.
                 $hero = \App\Content\Example::code('hero/temperatures');
+                $output = fn (string $variant, string $part) => \App\Content\Example::output('hero/temperatures', $variant, fn (array $value) => view('components.package-output', ['value' => $value[$part]])->render(), files: [database_path('data/daily-temperatures.csv')]);
                 try {
-                    $heroChart = \App\Content\Example::output('hero/temperatures', 'hero-chart', fn (mixed $value) => view('components.package-output', ['value' => $value, 'label' => 'Illustrative data'])->render(), files: [database_path('data/daily-temperatures.csv')]);
+                    $heroOutputs = ['monthly' => $output('hero-monthly', 'monthly'), 'chart' => $output('hero-chart', 'chart')];
                 } catch (\Throwable $e) {
                     report($e);
-                    $heroChart = null;
+                    $heroOutputs = [];
                 }
+                $slides = ['code' => 'Code'] + ($heroOutputs === [] ? [] : ['monthly' => 'Data frame', 'chart' => 'Chart']);
                 $render = fn (string $source) => \App\Content\Code::hanging(\App\Content\Code::highlight($source, 'php'));
                 $syntaxes = ['pipe' => 'PHP 8.5+', 'chain' => 'PHP 8.3–8.4'];
+                $keys = array_keys($slides);
             @endphp
             <div class="relative">
                 <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-php-500/20 via-violet-500/10 to-transparent blur-2xl" aria-hidden="true"></div>
-                <div x-data="{ view: 'code' }" class="code-ink overflow-hidden rounded-xl shadow-2xl shadow-black/40 ring-1 ring-white/10">
+                <div x-data="heroCarousel(@js($keys))" x-on:mouseenter="paused = true" x-on:mouseleave="paused = false" x-on:focusin="paused = true" x-on:focusout="paused = false"
+                     role="region" aria-roledescription="carousel" aria-label="Example" class="code-ink overflow-hidden rounded-xl shadow-2xl shadow-black/40 ring-1 ring-white/10">
                     <div x-data="syntaxTabs">
                         <div class="flex flex-wrap items-center gap-3 border-b border-white/5 px-3 py-2 text-xs">
                             <div role="tablist" aria-label="Example view" class="flex gap-1">
-                                @foreach (['code' => 'Code', 'chart' => 'Chart'] as $key => $title)
-                                    @continue ($key === 'chart' && $heroChart === null)
-                                    <button type="button" role="tab" id="hero-tab-{{ $key }}" aria-controls="hero-panel-{{ $key }}" x-on:click="view = '{{ $key }}'"
-                                            x-bind:aria-selected="(view === '{{ $key }}').toString()" aria-selected="{{ $key === 'code' ? 'true' : 'false' }}"
+                                @foreach ($slides as $key => $title)
+                                    <button type="button" role="tab" id="hero-tab-{{ $key }}" aria-controls="hero-panel-{{ $key }}" x-on:click="show({{ $loop->index }})"
+                                            x-bind:aria-selected="(current === {{ $loop->index }}).toString()" aria-selected="{{ $loop->first ? 'true' : 'false' }}"
                                             class="rounded-md px-2.5 py-1 font-medium text-zinc-400 transition hover:text-white aria-selected:bg-white/10 aria-selected:text-white">
                                         {{ $title }}
                                     </button>
                                 @endforeach
                             </div>
-                            <div role="tablist" aria-label="Code syntax" x-show="view === 'code'" class="ml-auto flex gap-1 rounded-lg bg-white/5 p-0.5">
+                            <div role="tablist" aria-label="Code syntax" x-show="current === 0" class="ml-auto flex gap-1 rounded-lg bg-white/5 p-0.5">
                                 @foreach ($syntaxes as $key => $title)
-                                    <button type="button" role="tab" x-on:click="choose('{{ $key }}')"
+                                    <button type="button" role="tab" x-on:click="stop(); choose('{{ $key }}')"
                                             x-bind:aria-selected="(syntax === '{{ $key }}').toString()" aria-selected="{{ $key === 'pipe' ? 'true' : 'false' }}"
                                             class="rounded-md px-2.5 py-1 text-zinc-400 transition hover:text-white aria-selected:bg-php-500/30 aria-selected:text-white">
                                         {{ $title }}
@@ -62,14 +66,39 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div role="tabpanel" id="hero-panel-code" aria-labelledby="hero-tab-code" x-show="view === 'code'">
-                            @foreach ($syntaxes as $key => $title)
-                                <pre @if ($key !== 'pipe') x-cloak @endif x-show="syntax === '{{ $key }}'" class="p-4 font-mono text-[0.8125rem] leading-6"><code>{!! $render($hero[$key]) !!}</code></pre>
+                        {{-- The slides share one grid cell, so the panel keeps the height of the tallest. --}}
+                        <div class="grid">
+                            @foreach ($slides as $key => $title)
+                                <div role="tabpanel" id="hero-panel-{{ $key }}" aria-labelledby="hero-tab-{{ $key }}"
+                                     x-bind:inert="current !== {{ $loop->index }}" @unless ($loop->first) inert @endunless
+                                     x-bind:class="{ 'opacity-0 invisible': current !== {{ $loop->index }} }"
+                                     @class(['flex min-w-0 flex-col transition-[opacity,visibility] duration-500 [grid-area:1/1]', 'opacity-0 invisible' => ! $loop->first])>
+                                    @if ($key === 'code')
+                                        @foreach ($syntaxes as $syntax => $label)
+                                            <pre @if ($syntax !== 'pipe') x-cloak @endif x-show="syntax === '{{ $syntax }}'" class="p-4 font-mono text-[0.8125rem] leading-6"><code>{!! $render($hero[$syntax]) !!}</code></pre>
+                                        @endforeach
+                                    @else
+                                        <div class="flex flex-1 flex-col justify-center bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
+                                            {!! $heroOutputs[$key] !!}
+                                        </div>
+                                    @endif
+                                </div>
                             @endforeach
                         </div>
-                        @if ($heroChart)
-                            <div role="tabpanel" id="hero-panel-chart" aria-labelledby="hero-tab-chart" x-show="view === 'chart'" x-cloak class="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
-                                {!! $heroChart !!}
+                        @if (count($slides) > 1)
+                            <div class="flex items-center justify-center gap-3 border-t border-white/5 px-3 py-2">
+                                <button type="button" x-on:click="show(current - 1)" aria-label="Previous" class="rounded-md p-1 text-zinc-400 transition hover:bg-white/10 hover:text-white">
+                                    <x-heroicon-m-chevron-left class="size-4" />
+                                </button>
+                                @foreach ($slides as $key => $title)
+                                    <button type="button" x-on:click="show({{ $loop->index }})" aria-label="{{ $title }}"
+                                            x-bind:aria-current="current === {{ $loop->index }} ? 'true' : null"
+                                            x-bind:class="{ 'bg-white': current === {{ $loop->index }}, 'bg-white/30 hover:bg-white/50': current !== {{ $loop->index }} }"
+                                            @class(['size-2 rounded-full transition', 'bg-white' => $loop->first, 'bg-white/30 hover:bg-white/50' => ! $loop->first])></button>
+                                @endforeach
+                                <button type="button" x-on:click="show(current + 1)" aria-label="Next" class="rounded-md p-1 text-zinc-400 transition hover:bg-white/10 hover:text-white">
+                                    <x-heroicon-m-chevron-right class="size-4" />
+                                </button>
                             </div>
                         @endif
                     </div>

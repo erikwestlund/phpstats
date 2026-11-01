@@ -13,8 +13,12 @@ $monthly = $temps |>
     group_by('month', 'city') |>
     summarize(temp_c: mean('temp_c'));
 
-echo \Phiz\Plot::of($monthly)
+$chart = \Phiz\Plot::of($monthly)
     ->aes(x: 'month', y: 'temp_c', color: 'city')
     ->line()
-    ->labs(x: 'Month', y: 'Mean temperature (°C)', color: 'City')
-    ->embed();
+    ->labs(x: 'Month', y: 'Mean temperature (°C)', color: 'City');
+
+echo $monthly;
+echo $chart->embed();
+
+return ['monthly' => $monthly, 'chart' => $chart];

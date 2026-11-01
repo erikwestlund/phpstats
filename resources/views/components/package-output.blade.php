@@ -9,9 +9,10 @@
     it shown below, and ['html' => ..., 'size' => ...] for output a page
     cannot compute, such as the cell juphyter's kernel rendered. phibble's
     printer heads a data frame with "# A tibble: n × m"; that line is left
-    out, and the size goes in the label instead.
+    out, and the size goes in the label instead. Without a label, the size
+    stands alone, and output with neither has no label line.
 --}}
-@props(['value', 'label'])
+@props(['value', 'label' => null])
 
 @php
     // Rendered markup is shown as it is; everything else is printed as text.
@@ -34,11 +35,14 @@
         [$text, $size] = \App\Content\Package::splitTableHeader($text);
     }
 @endphp
-<p class="px-5 pt-5 text-sm sm:px-7 text-zinc-500 dark:text-zinc-400">{{ $label }}@if ($size) · {{ $size }}@endif</p>
+@php $top = $label || $size ? 'pt-3' : 'pt-5'; @endphp
+@if ($label || $size)
+    <p class="px-5 pt-5 text-sm sm:px-7 text-zinc-500 dark:text-zinc-400">{{ implode(' · ', array_filter([$label, $size])) }}</p>
+@endif
 @if ($html !== null)
-    <div class="overflow-x-auto px-5 pb-6 pt-3 sm:px-7">{!! $html !!}</div>
+    <div class="overflow-x-auto px-5 pb-6 {{ $top }} sm:px-7">{!! $html !!}</div>
 @elseif ($text === null)
-    <div class="px-5 pb-6 pt-3 sm:px-7">
+    <div class="px-5 pb-6 {{ $top }} sm:px-7">
         {{-- A plot that sets its own size, such as a faceted one sized per panel, keeps it and
              scrolls when it is wider than the panel. One sized to the panel never needs to. --}}
         @if (! isset($spec['width']))
@@ -48,5 +52,5 @@
         @endif
     </div>
 @else
-    <pre class="overflow-x-auto px-5 pb-6 pt-3 font-mono sm:px-7 text-[0.8125rem] leading-relaxed text-zinc-800 dark:text-zinc-200">{{ $text }}</pre>
+    <pre class="overflow-x-auto px-5 pb-6 {{ $top }} font-mono sm:px-7 text-[0.8125rem] leading-relaxed text-zinc-800 dark:text-zinc-200">{{ $text }}</pre>
 @endif

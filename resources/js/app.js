@@ -89,6 +89,34 @@ Alpine.data('syntaxTabs', () => ({
     },
 }));
 
+// The landing hero's example: its code, the data frame it computes, and its
+// chart, shown one at a time. It moves to the next every five seconds until a
+// visitor picks one, and not at all for visitors who ask for reduced motion.
+Alpine.data('heroCarousel', (slides) => ({
+    slides,
+    current: 0,
+    timer: null,
+    paused: false,
+    init() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+        }
+        this.timer = setInterval(() => {
+            if (!this.paused) {
+                this.current = (this.current + 1) % this.slides.length;
+            }
+        }, 5000);
+    },
+    stop() {
+        clearInterval(this.timer);
+        this.timer = null;
+    },
+    show(index) {
+        this.stop();
+        this.current = (index + this.slides.length) % this.slides.length;
+    },
+}));
+
 // "On this page" in the docs: highlight the last heading scrolled past.
 // Copies text, with a textarea fallback for pages served over plain http,
 // where navigator.clipboard is missing.
