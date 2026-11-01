@@ -63,18 +63,19 @@ return [
      * not describe its workload, and an optional note. A workload whose record has not synced is left out.
      */
     'benchmarks' => [
-        ['package' => 'phit', 'id' => 'distributions-workload', 'label' => 'Distributions', 'names' => ['R' => 'R', 'SciPy' => 'SciPy (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
+        ['package' => 'phit', 'id' => 'distributions-workload', 'label' => 'Distributions', 'names' => ['R' => 'R', 'SciPy' => 'SciPy (Python)'], 'note' => 'For easier installation, use phit-polyfill. For faster computation, use the phit extension.'],
         ['package' => 'phpolars', 'id' => 'csv-pipeline', 'label' => 'CSV processing', 'task' => 'Keep the completed orders, then total them by region and month.', 'note' => null],
-        ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS', 'names' => ['R' => 'lm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
-        ['package' => 'phit', 'id' => 'logistic-workload', 'label' => 'Logistic', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
-        ['package' => 'phit', 'id' => 'probit-workload', 'label' => 'Probit', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
-        ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Mixed Gaussian', 'names' => ['R' => 'lme4 (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
-        ['package' => 'phit', 'id' => 'mixed-logistic-workload', 'label' => 'Mixed logistic', 'names' => ['R' => 'lme4 (R)', 'GPBoost' => 'GPBoost (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
+        ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS', 'names' => ['R' => 'lm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'For easier installation, use phit-polyfill. For faster computation, use the phit extension.'],
+        ['package' => 'phit', 'id' => 'logistic-workload', 'label' => 'Logistic', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'For easier installation, use phit-polyfill. For faster computation, use the phit extension.'],
+        ['package' => 'phit', 'id' => 'probit-workload', 'label' => 'Probit', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'For easier installation, use phit-polyfill. For faster computation, use the phit extension.'],
+        ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Mixed Gaussian', 'names' => ['R' => 'lme4 (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'For easier installation, use phit-polyfill. For faster computation, use the phit extension.'],
+        ['package' => 'phit', 'id' => 'mixed-logistic-workload', 'label' => 'Mixed logistic', 'names' => ['R' => 'lme4 (R)', 'GPBoost' => 'GPBoost (Python)'], 'note' => 'For easier installation, use phit-polyfill. For faster computation, use the phit extension.'],
         ['package' => 'cmdstanphp', 'id' => 'interfaces-workload', 'label' => 'Mixed Gaussian (Bayesian)', 'names' => ['CmdStanR' => 'CmdStanR (R)', 'CmdStanPy' => 'CmdStanPy (Python)'], 'note' => null],
     ],
 
     /*
-     * The landing page's package explorer: the title of its example, the label for its output, the docs path of
+     * The landing page's package explorer: a plain sentence on the tasks the
+     * package handles (shown in the list), the title of its example, the label for its output, the docs path of
      * the fuller example its "View full example" link opens, with a
      * #fragment when it is one section of a page (the docs index when
      * that page has not synced), and, for examples pages can't run, a stored
@@ -87,21 +88,25 @@ return [
      */
     'explorer' => [
         'phibble' => [
+            'tasks' => 'Load CSV files and database queries into typed tables you can inspect, filter, sort, and join. Similar to R\'s tibble and readr.',
             'example' => 'Example: Load an Eloquent query with typed columns',
             'output' => 'Data frame glimpse',
             'link' => 'io#databases',
         ],
         'phpolars' => [
+            'tasks' => 'Process large tables quickly in the Polars engine, from CSV, Parquet, or SQL, through a PHP extension. Similar to Python\'s Polars.',
             'example' => 'Example: Aggregate database rows with expressions',
             'output' => 'Polars table',
             'link' => 'examples/expressions',
         ],
         'phplyr' => [
+            'tasks' => 'Filter, group, summarize, join, and reshape tables as a pipeline of steps. Similar to R\'s dplyr, tidyr, and janitor.',
             'example' => 'Example: Filter, group, and summarize orders',
             'output' => 'Data frame preview',
             'link' => 'examples/group-and-summarize',
         ],
         'juphyter' => [
+            'tasks' => 'Run PHP in Jupyter notebooks and Quarto documents, with tables and charts shown inline. Similar to R\'s IRkernel.',
             'example' => 'Example: A PHP cell in a Quarto document',
             'output' => 'Rendered notebook cell',
             'link' => 'examples/notebook',
@@ -112,16 +117,19 @@ return [
             ],
         ],
         'phiz' => [
+            'tasks' => 'Build charts layer by layer from your tables, and save or embed them as Vega-Lite. Similar to R\'s ggplot2.',
             'example' => 'Example: Points with a fitted line per group',
             'output' => 'Chart',
             'link' => 'examples/layers',
         ],
         'phit' => [
+            'tasks' => 'Fit linear, generalized linear, and mixed models, and compute probabilities and summary statistics. Similar to R\'s stats and lme4.',
             'example' => 'Example: Fit a linear model',
             'output' => 'Coefficients',
             'link' => 'examples/linear-model',
         ],
         'cmdstanphp' => [
+            'tasks' => 'Fit Bayesian models written in Stan and summarize their posterior draws. A port of R\'s CmdStanR.',
             'example' => 'Example: Sample a hierarchical model and summarize it',
             'output' => 'Posterior summary',
             'link' => 'examples/sample',

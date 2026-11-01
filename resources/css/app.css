@@ -283,6 +283,18 @@ pre,
     clip: rect(0 0 0 0);
 }
 
+/* The landing page never scrolls sideways: code and printed output wrap at
+   the width they have, and table cells may wrap too. */
+.landing pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+.landing .juphyter-table th,
+.landing .juphyter-table td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
 /* phiz wraps each chart in a figure; a wide one scrolls rather than overflowing. */
 .phiz-figure {
     margin: 1.5em 0;

@@ -39,6 +39,11 @@ class LandingPageTest extends TestCase
         preg_match('#OrderReport\.php.*?</section>#s', $html, $hero);
         $this->assertStringNotContainsString('lm(', strip_tags($hero[0]));
 
+        // The hero offers the packages and a start, and shows the order report's chart.
+        $this->assertStringContainsString('href="#packages"', $html);
+        $this->assertMatchesRegularExpression('#href="'.preg_quote(route('page', 'installation'), '#').'"[^>]*>Get started<#', $html);
+        $this->assertStringContainsString('Monthly revenue by channel', $html);
+
         // No "About {package}" panels: each package shows code, output, and a link.
         $this->assertDoesNotMatchRegularExpression('#>About <span class="font-mono">#', $html);
     }

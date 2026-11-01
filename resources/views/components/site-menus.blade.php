@@ -7,7 +7,8 @@
     'text-zinc-900 dark:text-white' => ! $dark,
 ]) aria-label="PHPstats home">
     <x-logo :size="28" />
-    <span @class(['hidden sm:inline' => $current])>PHPstats</span>
+    {{-- On the narrowest screens the mark alone keeps the bar from overflowing; the link keeps its label. --}}
+    <span @class(['hidden sm:inline' => $current, 'max-[419px]:sr-only' => ! $current])>PHPstats</span>
 </a>
 <div class="flex items-center">
     @foreach (config('phpstats.menus') as $menu)

@@ -35,7 +35,7 @@
                                 x-on:click="open = '{{ $key }}'" x-bind:aria-selected="(open === '{{ $key }}').toString()" aria-selected="{{ $key === 'phibble' ? 'true' : 'false' }}"
                                 class="block w-full border-l-[3px] border-transparent py-3 pl-[calc(1.5rem-3px)] pr-6 text-left transition hover:bg-zinc-50 focus-visible:bg-zinc-50 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-(--l500) aria-selected:border-(--l500) aria-selected:bg-(--l50) dark:hover:bg-white/[0.03] dark:focus-visible:bg-white/[0.03] dark:aria-selected:border-(--l400) dark:aria-selected:bg-(--l400)/10">
                             <span class="font-mono text-base font-semibold text-zinc-950 dark:text-white">{{ $packages[$key]->name() }}</span>
-                            <span class="mt-1.5 block text-[0.9375rem] leading-normal text-zinc-600 dark:text-zinc-400">{{ $packages[$key]->tagline() }}</span>
+                            <span class="mt-1.5 block text-[0.9375rem] leading-normal text-zinc-600 dark:text-zinc-400">{{ $explorer[$key]['tasks'] ?? $packages[$key]->tagline() }}</span>
                         </button>
                     @endforeach
                 </div>

@@ -1,4 +1,5 @@
 <x-layout :bare="true">
+<div class="landing">
     {{-- Hero --}}
     <section class="relative isolate overflow-hidden bg-zinc-950 text-white">
         <div class="hero-grid absolute inset-0 -z-10" aria-hidden="true"></div>
@@ -11,48 +12,34 @@
                     <span class="block bg-gradient-to-r from-php-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent">for PHP</span>
                 </h1>
                 <p class="mt-6 max-w-xl text-lg leading-8 text-zinc-300">
-                    Data processing, analysis, visualization, and modeling in native PHP.
+                    Load your application's database queries and CSV files into tables, transform and summarize them, fit statistical models, and draw charts, all in PHP.
                 </p>
                 <div class="mt-9 flex flex-wrap items-center gap-3">
                     <a href="#packages" class="rounded-full bg-php-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-php-500/30 transition hover:bg-php-400">Explore the packages</a>
-                    <a href="{{ route('page', 'about') }}" class="rounded-full px-5 py-2.5 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/10">About PHPstats</a>
+                    <a href="{{ route('page', 'installation') }}" class="rounded-full px-5 py-2.5 text-sm font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/10">Get started</a>
                 </div>
             </div>
 
             <div class="relative">
                 <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-php-500/20 via-violet-500/10 to-transparent blur-2xl" aria-hidden="true"></div>
-                <x-code-tabs label="OrderReport.php" class="shadow-2xl shadow-black/40 ring-white/10!">
-                    <x-slot:pipe>use App\Models\Order;
-use function Phplyr\{col, filter, floor_date};
-use function Phplyr\{group_by, mutate, sum, summarize};
-
-$orders = \Phibble\DataFrame::fromQuery(Order::query());
-
-$monthly = $orders |>
-    filter(col('returned')->eq(0)) |>
-    mutate(month: floor_date(col('placed_on'), 'month')) |>
-    group_by('month', 'channel') |>
-    summarize(revenue: sum('total'));
-
-$chart = \Phiz\Plot::of($monthly)
-    ->aes(x: 'month', y: 'revenue', color: 'channel')
-    ->line();</x-slot:pipe>
-                    <x-slot:chain>use App\Models\Order;
-use function Phplyr\{col, floor_date, phplyr, sum};
-
-$orders = \Phibble\DataFrame::fromQuery(Order::query());
-
-$monthly = phplyr($orders)
-    ->filter(col('returned')->eq(0))
-    ->mutate(month: floor_date(col('placed_on'), 'month'))
-    ->groupBy('month', 'channel')
-    ->summarize(revenue: sum('total'))
-    ->get();
-
-$chart = \Phiz\Plot::of($monthly)
-    ->aes(x: 'month', y: 'revenue', color: 'channel')
-    ->line();</x-slot:chain>
-                </x-code-tabs>
+                @php
+                    // The order report runs like the other landing examples: its
+                    // code is resources/examples/hero/orders.php (and .chain.php),
+                    // and the card below it shows the chart it draws.
+                    $hero = \App\Content\Example::code('hero/orders');
+                    try {
+                        $heroChart = \App\Content\Example::output('hero/orders', 'hero-chart', fn (mixed $value) => view('components.package-output', ['value' => $value, 'label' => 'Monthly revenue by channel'])->render());
+                    } catch (\Throwable $e) {
+                        report($e);
+                        $heroChart = null;
+                    }
+                @endphp
+                <x-code-tabs :pipe="$hero['pipe']" :chain="$hero['chain']" label="OrderReport.php" class="shadow-2xl shadow-black/40 ring-white/10!" />
+                @if ($heroChart)
+                    <div class="mt-4 overflow-hidden rounded-xl bg-white text-zinc-900 shadow-2xl shadow-black/40 ring-1 ring-white/10 dark:bg-zinc-900 dark:text-zinc-100">
+                        {!! $heroChart !!}
+                    </div>
+                @endif
             </div>
         </div>
     </section>
@@ -82,4 +69,5 @@ $chart = \Phiz\Plot::of($monthly)
         </div>
     </section>
 
+</div>
 </x-layout>

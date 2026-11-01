@@ -15,7 +15,7 @@
 <div x-data="{ open: false }" x-on:keydown.escape.window="open = false" x-on:click.outside="open = false" class="relative">
     <button type="button" x-on:click="open = ! open" x-bind:aria-expanded="open.toString()" aria-expanded="false" aria-haspopup="true"
             @class([
-                'flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium transition',
+                'flex items-center gap-1 whitespace-nowrap rounded-lg px-2 py-1.5 text-sm font-medium transition sm:px-2.5',
                 'text-zinc-300 hover:bg-white/10 hover:text-white' => $dark,
                 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-white/5 dark:hover:text-white' => ! $dark,
                 'text-zinc-900! dark:text-white!' => $holdsCurrent,

@@ -7,8 +7,9 @@ use Phiz\Plot;
 /**
  * A phiz bar chart of one measure of a benchmark workload: one horizontal
  * bar per implementation, in the record's order, labeled with its value as
- * the page prints it. PHPstats implementations are PHP purple and the others
- * gray, so the comparison reads at a glance.
+ * the page prints it. PHPstats implementations are PHP purple, the others
+ * gray, and phit-polyfill a lighter neutral gray, so the extension and its
+ * plain-PHP fallback read apart at a glance.
  */
 class BenchmarkChart
 {
@@ -23,7 +24,11 @@ class BenchmarkChart
             'implementation' => $bar['name'],
             'value' => $bar['value'],
             'shown' => $bar['shown'],
-            'kind' => preg_match(self::PHPSTATS, $bar['name']) ? 'PHPstats' : 'Other',
+            'kind' => match (true) {
+                str_starts_with($bar['name'], 'phit-polyfill') => 'Polyfill',
+                (bool) preg_match(self::PHPSTATS, $bar['name']) => 'PHPstats',
+                default => 'Other',
+            },
         ], $bars);
 
         return Plot::of($rows)
@@ -32,7 +37,7 @@ class BenchmarkChart
             ->text(aes: ['label' => 'shown'], align: 'left', dx: 6)
             ->coordFlip()
             ->scaleX(domain: array_column($rows, 'implementation'))
-            ->scaleFill(domain: ['PHPstats', 'Other'], range: ['#777bb4', '#9c9cb2'])
+            ->scaleFill(domain: ['PHPstats', 'Other', 'Polyfill'], range: ['#777bb4', '#9c9cb2', '#cfcfd6'])
             // Room past the longest bar for its label.
             ->scaleY(domain: [0, 1.28 * max(array_column($rows, 'value'))], nice: false)
             ->labs(x: null, y: $title, fill: null)

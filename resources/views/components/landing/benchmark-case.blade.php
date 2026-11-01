@@ -10,6 +10,10 @@
 --}}
 @props(['w', 'record', 'rows', 'code', 'id', 'time', 'memory', 'dedent', 'title'])
 @php
+    // phit-polyfill comes last, after the extension and the R and Python libraries.
+    $last = fn (string $name) => str_starts_with($name, 'phit-polyfill') ? 1 : 0;
+    $rows = collect($rows)->sortBy(fn (array $r) => $last($r['implementation']))->values()->all();
+    $code = collect($code)->sortBy(fn ($source, string $impl) => $last($impl))->all();
     $languages = $record['languages'] ?? [];
     $env = $record['environment'];
     $name = fn (array $row) => $w['names'][$row['implementation']] ?? $row['implementation'];
@@ -38,7 +42,9 @@
             @endforeach
         </div>
     @endif
-        <div class="mt-4 space-y-2 text-xs leading-snug text-zinc-500 dark:text-zinc-400">
+        <details class="group mt-4 text-xs text-zinc-500 dark:text-zinc-400">
+            <summary class="cursor-pointer select-none font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white">How this was measured</summary>
+        <div class="mt-2 space-y-2 leading-snug">
             <p>Medians of {{ $env['repeats'] }} runs, each in a fresh process.</p>
             <p>{{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.</p>
             @if ($footprint)
@@ -48,13 +54,22 @@
             @endif
             <p>The full record gives versions, thread settings, and where timing starts and stops.</p>
         </div>
+        </details>
         <a href="{{ $w['url'] }}" aria-label="View the complete {{ strtolower($w['label']) }} benchmark on {{ $w['name'] }}'s Benchmarks page" class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
             View the complete benchmark <x-heroicon-m-arrow-right class="size-4" />
         </a>
     </div>
 
     <div class="min-w-0">
-        <h3 class="mb-3 text-base font-semibold text-zinc-950 dark:text-white">{{ $title }}</h3>
+        @php
+            $fastest = collect($rows)->sortBy('value')->first();
+            $leanest = collect($rows)->sortBy('peak_memory_mib')->first();
+        @endphp
+        <h3 class="text-base font-semibold text-zinc-950 dark:text-white">{{ $title }}</h3>
+        <p class="mb-4 mt-1 text-sm leading-snug text-zinc-600 dark:text-zinc-400">
+            Fastest: {!! \App\Content\Libraries::mono(e($name($fastest))) !!}, {{ $time($fastest['value']) }}.
+            Least memory: {!! \App\Content\Libraries::mono(e($name($leanest))) !!}, {{ $memory($leanest['peak_memory_mib']) }}.
+        </p>
         <div class="space-y-6" aria-hidden="true">
             <x-phiz :plot="$timeChart" class="min-w-0 overflow-hidden" />
             <x-phiz :plot="$memoryChart" class="min-w-0 overflow-hidden" />
