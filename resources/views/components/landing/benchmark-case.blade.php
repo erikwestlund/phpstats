@@ -18,7 +18,7 @@
     $memoryChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['peak_memory_mib'], 'shown' => $memory($r['peak_memory_mib'])], $rows), $footprint ? 'Peak memory footprint (MiB)' : 'Peak resident memory (MiB)');
     $first = array_key_first($code);
 @endphp
-<div class="mt-6 grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
+<div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
     <div class="min-w-0">
     @if ($code !== [])
         <div x-data="{ impl: @js($first) }" class="code-ink min-w-0 overflow-hidden rounded-xl shadow-lg shadow-php-950/10 ring-1 ring-black/5 dark:ring-(--color-ink-line)">
@@ -38,15 +38,16 @@
             @endforeach
         </div>
     @endif
-        <p class="mt-4 text-xs leading-5 text-zinc-500 dark:text-zinc-400">
-            Medians of {{ $env['repeats'] }} runs, each in a fresh process, on {{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.
+        <div class="mt-4 space-y-2 text-xs leading-snug text-zinc-500 dark:text-zinc-400">
+            <p>Medians of {{ $env['repeats'] }} runs, each in a fresh process.</p>
+            <p>{{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.</p>
             @if ($footprint)
-                Memory is the peak memory footprint: the most memory the process held at once, including the runtime, the data, and native allocations, but not file pages the system can drop.
+                <p>Memory is the peak memory footprint: the most memory the process held at once, including the runtime, the data, and native allocations, but not file pages the system can drop.</p>
             @else
-                Memory is the peak resident set size, including file pages the process mapped.
+                <p>Memory is the peak resident set size, including file pages the process mapped.</p>
             @endif
-            The full record gives versions, thread settings, and where timing starts and stops.
-        </p>
+            <p>The full record gives versions, thread settings, and where timing starts and stops.</p>
+        </div>
         <a href="{{ $w['url'] }}" aria-label="View the complete {{ strtolower($w['label']) }} benchmark on {{ $w['name'] }}'s Benchmarks page" class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
             View the complete benchmark <x-heroicon-m-arrow-right class="size-4" />
         </a>

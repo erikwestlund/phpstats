@@ -291,7 +291,7 @@
 
             @foreach ($panels as $key => $panel)
                 <div role="tabpanel" id="check-{{ $key }}" aria-labelledby="check-tab-{{ $key }}" x-show="check === '{{ $key }}'" @unless ($key === $first) x-cloak @endunless
-                     class="mt-8">
+                     class="mt-12">
                     <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
                     @if (is_array($panel['code']))
                         @php $firstCode = array_key_first($panel['code']); @endphp
@@ -316,15 +316,18 @@
                     <div class="min-w-0">
                         <h3 class="mb-2 text-base font-semibold text-zinc-950 dark:text-white">{{ $panel['title'] }}</h3>
                         {!! $panel['table'] !!}
-                        <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
+                        {{-- One item per line: the model, then each sentence of the note (R, Python), then the data. --}}
+                        <div class="mt-4 space-y-2 text-sm leading-snug text-zinc-500 dark:text-zinc-400">
                             @if ($panel['formula'] ?? null)
-                                Model: <code>{{ $panel['formula'] }}</code>.
+                                <p>Model: <code>{{ $panel['formula'] }}</code></p>
                             @endif
-                            {!! \App\Content\Libraries::mono($panel['note']) !!}
+                            @foreach (preg_split('/(?<=\.)\s+(?=(?:R|Python|All three|Standard)\b)/', $panel['note']) as $line)
+                                <p>{!! \App\Content\Libraries::mono($line) !!}</p>
+                            @endforeach
                             @if ($panel['dataset'])
-                                Data: <code>{{ $panel['dataset'] }}</code>{!! $panel['detail'] ? ', '.$panel['detail'] : '' !!} (<a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">source</a>).
+                                <p>Data: <code>{{ $panel['dataset'] }}</code>{!! $panel['detail'] ? ', '.$panel['detail'] : '' !!} (<a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">source</a>)</p>
                             @endif
-                        </p>
+                        </div>
                         @if ($panel['link'])
                         <a href="{{ $panel['link'] }}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
                             {{ $panel['record'] }} verification record <x-heroicon-m-arrow-right class="size-4" />

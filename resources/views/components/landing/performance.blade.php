@@ -56,7 +56,7 @@
                     $code = $record['code'] ?? [];
                     $languages = $record['languages'] ?? [];
                 @endphp
-                <div role="tabpanel" id="workload-{{ $w['id'] }}" aria-labelledby="workload-tab-{{ $w['id'] }}" x-show="workload === '{{ $w['id'] }}'" @unless ($loop->first) x-cloak @endunless class="mt-8">
+                <div role="tabpanel" id="workload-{{ $w['id'] }}" aria-labelledby="workload-tab-{{ $w['id'] }}" x-show="workload === '{{ $w['id'] }}'" @unless ($loop->first) x-cloak @endunless class="mt-12">
                     @php
                         $data = $record['dataset'] ?? null;
                         $caption = $record['workload'] ?? ($data ? number_format($data['rows']).' rows, '.number_format($data['bytes'] / 1e9, 2).' GB. '.($w['task'] ?? '') : $record['title']);
@@ -71,7 +71,7 @@
                     @if (count($cases) > 1)
                         @php $firstCase = array_key_first($cases); @endphp
                         <div x-data="{ c: @js($firstCase) }">
-                            <div role="tablist" aria-label="{{ $w['label'] }} cases" class="mx-auto mt-5 flex w-fit gap-1 rounded-lg border border-zinc-200 p-0.5 text-sm dark:border-white/10">
+                            <div role="tablist" aria-label="{{ $w['label'] }} cases" class="mx-auto mb-8 flex w-fit gap-1 rounded-lg border border-zinc-200 p-0.5 text-sm dark:border-white/10">
                                 @foreach (array_keys($cases) as $case)
                                     @php $cid = $w['id'].'-'.\Illuminate\Support\Str::slug($case); @endphp
                                     <button type="button" role="tab" id="case-tab-{{ $cid }}" aria-controls="case-{{ $cid }}"
