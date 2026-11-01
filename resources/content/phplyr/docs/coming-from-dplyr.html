@@ -211,7 +211,7 @@
 </tr>
 </tbody>
 </table>
-<p>Most of these verbs take the new columns as variadic named arguments, so the prefix keeps an option apart from a column of the same name, as the dot does in dplyr:</p>
+<p>Most of these functions take the new columns as variadic named arguments, so the prefix keeps an option apart from a column of the same name, as the dot does in dplyr:</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="syntax">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">PHP 8.5+</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">PHP 8.3–8.4</a></li></ul>
 <div class="tab-content" data-group="syntax">
@@ -226,7 +226,7 @@
 <p>The first call computes <code>m</code> within each group of <code>g</code>. The second makes a column called <code>by</code>.</p>
 <ul>
 <li>An unprefixed named argument is always a column.</li>
-<li>A prefixed name that isn’t an option for that verb is an error that names the options.</li>
+<li>A prefixed name that isn’t an option for that function is an error that names the options.</li>
 <li>Every other argument is camelCase: <code>naRm:</code>, <code>orderBy:</code>, <code>namesFrom:</code>, and the rest.</li>
 </ul>
 </section>
@@ -241,7 +241,7 @@
 </section>
 <section id="across-functions" class="level2">
 <h2 class="anchored" data-anchor-id="across-functions"><code>across()</code> functions</h2>
-<p>R passes a vector to every <code>across()</code> function. In phplyr, what a function receives depends on the function and the verb. See <a href="phpstats://phplyr/docs/reference/tidyselect#across">across()</a>.</p>
+<p>R passes a vector to every <code>across()</code> function. In phplyr, what a function receives depends on the function and on the table function that calls it. See <a href="phpstats://phplyr/docs/reference/tidyselect#across">across()</a>.</p>
 
 
 </section>

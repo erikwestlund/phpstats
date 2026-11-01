@@ -1,0 +1,1887 @@
+<p>phplyr’s functions are namespaced functions in <code>Phplyr</code>. A function marked with a chain method also runs as that method on <code>phplyr($table)</code>. Expression methods are called on the vector helpers that <code>col()</code> and other functions return.</p>
+<section id="pipes-and-method-chains" class="level2">
+<h2 class="anchored" data-anchor-id="pipes-and-method-chains">Pipes and method chains</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/chains#phplyr"><code>phplyr()</code></a></td>
+<td></td>
+<td>Start a method chain on a table.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/chains#pipe"><code>pipe()</code></a></td>
+<td></td>
+<td>Apply steps to a value in order.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="single-table-functions" class="level2">
+<h2 class="anchored" data-anchor-id="single-table-functions">Single-table functions</h2>
+<section id="rows" class="level3">
+<h3 class="anchored" data-anchor-id="rows">Rows</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#filter"><code>filter()</code></a></td>
+<td><code>-&gt;filter()</code></td>
+<td>Keep rows where every condition is true.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#filter_out"><code>filter_out()</code></a></td>
+<td><code>-&gt;filterOut()</code></td>
+<td>Drop rows where every condition is true (dplyr 1.2).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#arrange"><code>arrange()</code></a></td>
+<td><code>-&gt;arrange()</code></td>
+<td>Sort rows by columns or expressions.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#desc"><code>desc()</code></a></td>
+<td></td>
+<td>Descending sort key for <code>arrange()</code>, and for rank helpers.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#distinct"><code>distinct()</code></a></td>
+<td><code>-&gt;distinct()</code></td>
+<td>Unique rows over the given columns (all columns when none are given).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#slice"><code>slice()</code></a></td>
+<td><code>-&gt;slice()</code></td>
+<td>Rows by 1-based position within each group, like dplyr’s <code>slice()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#slice_head"><code>slice_head()</code></a></td>
+<td><code>-&gt;sliceHead()</code></td>
+<td>First rows of each group.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#slice_tail"><code>slice_tail()</code></a></td>
+<td><code>-&gt;sliceTail()</code></td>
+<td>Last rows of each group.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#slice_min"><code>slice_min()</code></a></td>
+<td><code>-&gt;sliceMin()</code></td>
+<td>Rows with the smallest values of <code>$orderBy</code> in each group, ordered by it.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#slice_max"><code>slice_max()</code></a></td>
+<td><code>-&gt;sliceMax()</code></td>
+<td>Rows with the largest values of <code>$orderBy</code> in each group, ordered by it.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#slice_sample"><code>slice_sample()</code></a></td>
+<td><code>-&gt;sliceSample()</code></td>
+<td>Random rows from each group.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#head"><code>head()</code></a></td>
+<td><code>-&gt;head()</code></td>
+<td>First <code>$n</code> rows of the whole table, ignoring groups (like utils::head).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#top_n"><code>top_n()</code></a></td>
+<td><code>-&gt;topN()</code></td>
+<td>The n rows with the largest wt in each group, ties included, in their original order (superseded by <code>slice_max()</code>).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#top_frac"><code>top_frac()</code></a></td>
+<td><code>-&gt;topFrac()</code></td>
+<td><code>top_n()</code> with a proportion of each group’s rows (superseded by <code>slice_max(prop:)</code>).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#sample_n"><code>sample_n()</code></a></td>
+<td><code>-&gt;sampleN()</code></td>
+<td>n random rows from each group (superseded by <code>slice_sample()</code>).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#sample_frac"><code>sample_frac()</code></a></td>
+<td><code>-&gt;sampleFrac()</code></td>
+<td>A proportion of random rows from each group (superseded by <code>slice_sample(prop:)</code>).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#add_row"><code>add_row()</code></a></td>
+<td><code>-&gt;addRow()</code></td>
+<td>Add rows of values.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="columns" class="level3">
+<h3 class="anchored" data-anchor-id="columns">Columns</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#select"><code>select()</code></a></td>
+<td><code>-&gt;select()</code></td>
+<td>Keep or drop columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#rename"><code>rename()</code></a></td>
+<td><code>-&gt;rename()</code></td>
+<td>Rename columns, new name as the argument name.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#rename_with"><code>rename_with()</code></a></td>
+<td><code>-&gt;renameWith()</code></td>
+<td>Rename selected columns (all by default) with a function of the old name.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#relocate"><code>relocate()</code></a></td>
+<td><code>-&gt;relocate()</code></td>
+<td>Move columns.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#mutate"><code>mutate()</code></a></td>
+<td><code>-&gt;mutate()</code></td>
+<td>Add, replace, or drop (with null) columns, named by argument.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#transmute"><code>transmute()</code></a></td>
+<td><code>-&gt;transmute()</code></td>
+<td>Like <code>mutate()</code>, keeping only the grouping columns and the new columns.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#pull"><code>pull()</code></a></td>
+<td><code>-&gt;pull()</code></td>
+<td>Extract one column as a PHP list.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="summaries" class="level3">
+<h3 class="anchored" data-anchor-id="summaries">Summaries</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#summarise"><code>summarise()</code></a></td>
+<td><code>-&gt;summarise()</code></td>
+<td>One row per group.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#summarize"><code>summarize()</code></a></td>
+<td><code>-&gt;summarize()</code></td>
+<td>Alias of <code>summarise()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#reframe"><code>reframe()</code></a></td>
+<td><code>-&gt;reframe()</code></td>
+<td>Like <code>summarise()</code>, but each summary may return any number of values (a list).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#count"><code>count()</code></a></td>
+<td><code>-&gt;count()</code></td>
+<td>Count rows per combination of columns, within any existing groups.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#tally"><code>tally()</code></a></td>
+<td><code>-&gt;tally()</code></td>
+<td>Count rows in each group (<code>summarise(n = n())</code>).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#add_count"><code>add_count()</code></a></td>
+<td><code>-&gt;addCount()</code></td>
+<td>Like <code>count()</code>, but adds the count as a column instead of summarising.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/single-table#add_tally"><code>add_tally()</code></a></td>
+<td><code>-&gt;addTally()</code></td>
+<td>Like <code>tally()</code>, but adds the count as a column.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/single-table#glimpse"><code>glimpse()</code></a></td>
+<td><code>-&gt;glimpse()</code></td>
+<td>Print a compact column-by-column summary and return the table unchanged, so it can sit in the middle of a pipeline.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="joins-binding-and-set-operations" class="level2">
+<h2 class="anchored" data-anchor-id="joins-binding-and-set-operations">Joins, binding, and set operations</h2>
+<section id="joins" class="level3">
+<h3 class="anchored" data-anchor-id="joins">Joins</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#inner_join"><code>inner_join()</code></a></td>
+<td><code>-&gt;innerJoin()</code></td>
+<td>Rows of x with a match in y, with y’s columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#left_join"><code>left_join()</code></a></td>
+<td><code>-&gt;leftJoin()</code></td>
+<td>All rows of x, with y’s columns where they match (NA otherwise).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#right_join"><code>right_join()</code></a></td>
+<td><code>-&gt;rightJoin()</code></td>
+<td>All rows of y, with x’s columns where they match.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#full_join"><code>full_join()</code></a></td>
+<td><code>-&gt;fullJoin()</code></td>
+<td>All rows of both tables.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#semi_join"><code>semi_join()</code></a></td>
+<td><code>-&gt;semiJoin()</code></td>
+<td>Rows of x that have a match in y (x’s columns only).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#anti_join"><code>anti_join()</code></a></td>
+<td><code>-&gt;antiJoin()</code></td>
+<td>Rows of x that have no match in y.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#cross_join"><code>cross_join()</code></a></td>
+<td><code>-&gt;crossJoin()</code></td>
+<td>Every combination of rows of x and y.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#nest_join"><code>nest_join()</code></a></td>
+<td><code>-&gt;nestJoin()</code></td>
+<td>All rows of x, with a list-column (name) holding each row’s matching rows of y as a table.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="join_by" class="level3">
+<h3 class="anchored" data-anchor-id="join_by">join_by()</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#join_by"><code>join_by()</code></a></td>
+<td></td>
+<td>A join specification, as dplyr’s <code>join_by()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#closest"><code>closest()</code></a></td>
+<td></td>
+<td>A rolling join.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#within"><code>within()</code></a></td>
+<td></td>
+<td>x’s interval [xLower, xUpper] lies within y’s [yLower, yUpper].</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#overlaps"><code>overlaps()</code></a></td>
+<td></td>
+<td>x’s interval [xLower, xUpper] overlaps y’s [yLower, yUpper].</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="binding" class="level3">
+<h3 class="anchored" data-anchor-id="binding">Binding</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#bind_rows"><code>bind_rows()</code></a></td>
+<td><code>-&gt;bindRows()</code></td>
+<td>Stack tables under the piped one, matching columns by name.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#bind_cols"><code>bind_cols()</code></a></td>
+<td><code>-&gt;bindCols()</code></td>
+<td>Put tables side by side with the piped one.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="set-operations-and-row-updates" class="level3">
+<h3 class="anchored" data-anchor-id="set-operations-and-row-updates">Set operations and row updates</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#union"><code>union()</code></a></td>
+<td><code>-&gt;union()</code></td>
+<td>Distinct rows of both tables.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#union_all"><code>union_all()</code></a></td>
+<td><code>-&gt;unionAll()</code></td>
+<td>All rows of both tables.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#intersect"><code>intersect()</code></a></td>
+<td><code>-&gt;intersect()</code></td>
+<td>Distinct rows of x that also appear in y.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#setdiff"><code>setdiff()</code></a></td>
+<td><code>-&gt;setdiff()</code></td>
+<td>Distinct rows of x that don’t appear in y.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#symdiff"><code>symdiff()</code></a></td>
+<td><code>-&gt;symdiff()</code></td>
+<td>Rows in exactly one of the tables.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#setequal"><code>setequal()</code></a></td>
+<td><code>-&gt;setequal()</code></td>
+<td>True when both tables hold the same distinct rows, in any order.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#rows_insert"><code>rows_insert()</code></a></td>
+<td><code>-&gt;rowsInsert()</code></td>
+<td>Append rows of y whose keys are new.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#rows_append"><code>rows_append()</code></a></td>
+<td><code>-&gt;rowsAppend()</code></td>
+<td>Append all rows of y.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#rows_update"><code>rows_update()</code></a></td>
+<td><code>-&gt;rowsUpdate()</code></td>
+<td>Overwrite x’s values with y’s for matching keys.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#rows_patch"><code>rows_patch()</code></a></td>
+<td><code>-&gt;rowsPatch()</code></td>
+<td>Like <code>rows_update()</code>, but only fills x’s NA values.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/two-table#rows_upsert"><code>rows_upsert()</code></a></td>
+<td><code>-&gt;rowsUpsert()</code></td>
+<td>Update matching keys and insert new ones.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/two-table#rows_delete"><code>rows_delete()</code></a></td>
+<td><code>-&gt;rowsDelete()</code></td>
+<td>Delete rows of x whose keys appear in y.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="grouping" class="level2">
+<h2 class="anchored" data-anchor-id="grouping">Grouping</h2>
+<section id="grouping-and-ungrouping" class="level3">
+<h3 class="anchored" data-anchor-id="grouping-and-ungrouping">Grouping and ungrouping</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_by"><code>group_by()</code></a></td>
+<td><code>-&gt;groupBy()</code></td>
+<td>Group by columns (names or selectors).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/grouping#ungroup"><code>ungroup()</code></a></td>
+<td><code>-&gt;ungroup()</code></td>
+<td>Remove grouping, or only the named grouping columns.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#with_groups"><code>with_groups()</code></a></td>
+<td><code>-&gt;withGroups()</code></td>
+<td>Run a table function on the table grouped by <code>_groups</code>, then restore the original grouping (superseded in dplyr by <code>_by</code>).</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="group-utilities" class="level3">
+<h3 class="anchored" data-anchor-id="group-utilities">Group utilities</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_vars"><code>group_vars()</code></a></td>
+<td><code>-&gt;groupVars()</code></td>
+<td>The grouping column names.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/grouping#n_groups"><code>n_groups()</code></a></td>
+<td><code>-&gt;nGroups()</code></td>
+<td>The number of groups (1 for an ungrouped table).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_size"><code>group_size()</code></a></td>
+<td><code>-&gt;groupSize()</code></td>
+<td>Rows in each group, in group order.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_indices"><code>group_indices()</code></a></td>
+<td><code>-&gt;groupIndices()</code></td>
+<td>Each row’s 1-based group number.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_keys"><code>group_keys()</code></a></td>
+<td><code>-&gt;groupKeys()</code></td>
+<td>One row per group with the key columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_rows"><code>group_rows()</code></a></td>
+<td><code>-&gt;groupRows()</code></td>
+<td>Each group’s 1-based row numbers, in group order.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_data"><code>group_data()</code></a></td>
+<td><code>-&gt;groupData()</code></td>
+<td><code>group_keys()</code> with a .rows list-column of each group’s 1-based row numbers.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_trim"><code>group_trim()</code></a></td>
+<td><code>-&gt;groupTrim()</code></td>
+<td>Drop unused factor levels from the grouping columns, and with them the empty groups that drop.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_split"><code>group_split()</code></a></td>
+<td><code>-&gt;groupSplit()</code></td>
+<td>Split into a list of ungrouped tables, one per group.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_map"><code>group_map()</code></a></td>
+<td><code>-&gt;groupMap()</code></td>
+<td>Call <code>fn (Table $group, array $key)</code> for each group and return the list of results.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_modify"><code>group_modify()</code></a></td>
+<td><code>-&gt;groupModify()</code></td>
+<td>Replace each group with the table <code>fn (Table $group, array $key)</code> returns, then put the key columns back in front.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_walk"><code>group_walk()</code></a></td>
+<td><code>-&gt;groupWalk()</code></td>
+<td>Call <code>fn (Table $group, array $key)</code> for each group.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#group_nest"><code>group_nest()</code></a></td>
+<td><code>-&gt;groupNest()</code></td>
+<td>One row per group.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/grouping#nest_by"><code>nest_by()</code></a></td>
+<td><code>-&gt;nestBy()</code></td>
+<td>Nest by the given columns into a rowwise table.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#cur_group_id"><code>cur_group_id()</code></a></td>
+<td></td>
+<td>The current group’s 1-based number, inside <code>mutate()</code>, <code>summarise()</code>, or <code>reframe()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/grouping#cur_group_rows"><code>cur_group_rows()</code></a></td>
+<td></td>
+<td>The current group’s 1-based row numbers in the table.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#cur_group"><code>cur_group()</code></a></td>
+<td></td>
+<td>The current group’s key, as an array of grouping column =&amp;gt.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="row-wise-operations" class="level3">
+<h3 class="anchored" data-anchor-id="row-wise-operations">Row-wise operations</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/grouping#rowwise"><code>rowwise()</code></a></td>
+<td><code>-&gt;rowwise()</code></td>
+<td>Treat each row as its own group, for row-wise summaries.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="vector-helpers" class="level2">
+<h2 class="anchored" data-anchor-id="vector-helpers">Vector helpers</h2>
+<section id="summaries-1" class="level3">
+<h3 class="anchored" data-anchor-id="summaries-1">Summaries</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#n"><code>n()</code></a></td>
+<td></td>
+<td>Number of rows in the group.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#n_distinct"><code>n_distinct()</code></a></td>
+<td></td>
+<td>Number of distinct values (or combinations).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#sum"><code>sum()</code></a></td>
+<td></td>
+<td>Sum of x.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#mean"><code>mean()</code></a></td>
+<td></td>
+<td>Arithmetic mean of x.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#median"><code>median()</code></a></td>
+<td></td>
+<td>Median of x.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#sd"><code>sd()</code></a></td>
+<td></td>
+<td>Sample standard deviation (n - 1).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#var_"><code>var_()</code></a></td>
+<td></td>
+<td>Sample variance (n - 1).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#variance"><code>variance()</code></a></td>
+<td></td>
+<td>Alias of <code>var_()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#quantile"><code>quantile()</code></a></td>
+<td></td>
+<td>Type 7 quantile, R’s default.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#iqr"><code>iqr()</code></a></td>
+<td></td>
+<td>Interquartile range (type 7).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#min"><code>min()</code></a></td>
+<td></td>
+<td>Smallest value of x.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#max"><code>max()</code></a></td>
+<td></td>
+<td>Largest value of x.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#first"><code>first()</code></a></td>
+<td></td>
+<td>First value.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#last"><code>last()</code></a></td>
+<td></td>
+<td>Last value.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#nth"><code>nth()</code></a></td>
+<td></td>
+<td>The <code>$n</code>-th value, 1-based.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#any"><code>any()</code></a></td>
+<td></td>
+<td>True when any value is true (R’s <code>any()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#all"><code>all()</code></a></td>
+<td></td>
+<td>True when all values are true (R’s <code>all()</code>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="window-functions" class="level3">
+<h3 class="anchored" data-anchor-id="window-functions">Window functions</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#lag"><code>lag()</code></a></td>
+<td></td>
+<td>Previous values.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#lead"><code>lead()</code></a></td>
+<td></td>
+<td>Next values.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#row_number"><code>row_number()</code></a></td>
+<td></td>
+<td>Row numbers.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#min_rank"><code>min_rank()</code></a></td>
+<td></td>
+<td>Ranks with ties sharing the lowest rank (1, 2, 2, 4).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#dense_rank"><code>dense_rank()</code></a></td>
+<td></td>
+<td>Ranks with no gaps after ties (1, 2, 2, 3).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#percent_rank"><code>percent_rank()</code></a></td>
+<td></td>
+<td>min_rank rescaled to [0, 1].</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#cume_dist"><code>cume_dist()</code></a></td>
+<td></td>
+<td>Proportion of values less than or equal to each value.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#ntile"><code>ntile()</code></a></td>
+<td></td>
+<td>Split into <code>$n</code> buckets of near-equal size.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#consecutive_id"><code>consecutive_id()</code></a></td>
+<td></td>
+<td>A new id each time the value (or combination) changes.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#cumsum"><code>cumsum()</code></a></td>
+<td></td>
+<td>Running sum.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#cumprod"><code>cumprod()</code></a></td>
+<td></td>
+<td>Running product.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#cummin"><code>cummin()</code></a></td>
+<td></td>
+<td>Running minimum.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#cummax"><code>cummax()</code></a></td>
+<td></td>
+<td>Running maximum.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#cummean"><code>cummean()</code></a></td>
+<td></td>
+<td>Running mean.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#cumall"><code>cumall()</code></a></td>
+<td></td>
+<td>Running <code>all()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#cumany"><code>cumany()</code></a></td>
+<td></td>
+<td>Running <code>any()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#order_by"><code>order_by()</code></a></td>
+<td></td>
+<td>Evaluate a window function with the rows in another order, then put the results back.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conditionals-and-na" class="level3">
+<h3 class="anchored" data-anchor-id="conditionals-and-na">Conditionals and NA</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#if_else"><code>if_else()</code></a></td>
+<td></td>
+<td>Vectorised if/else.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#case_when"><code>case_when()</code></a></td>
+<td></td>
+<td>The value of the first case whose condition is true, else <code>$default</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#case_match"><code>case_match()</code></a></td>
+<td></td>
+<td>Match values like a switch (deprecated in dplyr 1.2 in favor of <code>recode_values()</code>).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#replace_when"><code>replace_when()</code></a></td>
+<td></td>
+<td>Like <code>case_when()</code>, but rows matching no case keep x’s value.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#recode"><code>recode()</code></a></td>
+<td></td>
+<td>Replace values by name (superseded in dplyr by <code>recode_values()</code>).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#recode_values"><code>recode_values()</code></a></td>
+<td></td>
+<td>Map values to new values (dplyr 1.2).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#replace_values"><code>replace_values()</code></a></td>
+<td></td>
+<td>Like <code>recode_values()</code>, but unmatched values keep their original value.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#coalesce"><code>coalesce()</code></a></td>
+<td></td>
+<td>First non-NA value across the arguments, row by row.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#na_if"><code>na_if()</code></a></td>
+<td></td>
+<td>NA where <code>$x</code> equals <code>$y</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#between"><code>between()</code></a></td>
+<td></td>
+<td><code>$left</code> &lt;= <code>$x</code> &lt;= <code>$right</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#near"><code>near()</code></a></td>
+<td></td>
+<td>Equality with tolerance, for floating point.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/vectors#when_any"><code>when_any()</code></a></td>
+<td></td>
+<td>Elementwise <code>any()</code> across conditions (x | y | z).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/vectors#when_all"><code>when_all()</code></a></td>
+<td></td>
+<td>Elementwise <code>all()</code> across conditions (x &amp; y &amp; z).</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="strings-and-dates" class="level2">
+<h2 class="anchored" data-anchor-id="strings-and-dates">Strings and dates</h2>
+<section id="strings" class="level3">
+<h3 class="anchored" data-anchor-id="strings">Strings</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_detect"><code>str_detect()</code></a></td>
+<td></td>
+<td>Does the pattern occur?.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_starts"><code>str_starts()</code></a></td>
+<td></td>
+<td>Does the string start with the pattern?.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_ends"><code>str_ends()</code></a></td>
+<td></td>
+<td>Does the string end with the pattern?.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_count"><code>str_count()</code></a></td>
+<td></td>
+<td>Number of matches.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_extract"><code>str_extract()</code></a></td>
+<td></td>
+<td>The first match, or NA.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_extract_all"><code>str_extract_all()</code></a></td>
+<td></td>
+<td>Every match, as a list per row (a list-column).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_replace"><code>str_replace()</code></a></td>
+<td></td>
+<td>Replace the first match.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_replace_all"><code>str_replace_all()</code></a></td>
+<td></td>
+<td>Replace every match.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_split"><code>str_split()</code></a></td>
+<td></td>
+<td>Split into pieces, as a list per row (a list-column).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_split_i"><code>str_split_i()</code></a></td>
+<td></td>
+<td>The i-th piece of a split (1-based.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_pad"><code>str_pad()</code></a></td>
+<td></td>
+<td>Pad to a width.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_trunc"><code>str_trunc()</code></a></td>
+<td></td>
+<td>Truncate to a width, marking the cut with an ellipsis.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_trim"><code>str_trim()</code></a></td>
+<td></td>
+<td>Trim whitespace.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_squish"><code>str_squish()</code></a></td>
+<td></td>
+<td>Trim and collapse internal whitespace.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_sub"><code>str_sub()</code></a></td>
+<td></td>
+<td>Substring by 1-based positions, as stringr’s <code>str_sub()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_length"><code>str_length()</code></a></td>
+<td></td>
+<td>Number of characters.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_to_title"><code>str_to_title()</code></a></td>
+<td></td>
+<td>Title case.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_to_upper"><code>str_to_upper()</code></a></td>
+<td></td>
+<td>Uppercase, as stringr’s <code>str_to_upper()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_to_lower"><code>str_to_lower()</code></a></td>
+<td></td>
+<td>Lowercase, as stringr’s <code>str_to_lower()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_upper"><code>str_upper()</code></a></td>
+<td></td>
+<td>Uppercase.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#str_lower"><code>str_lower()</code></a></td>
+<td></td>
+<td>Lowercase.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#paste"><code>paste()</code></a></td>
+<td></td>
+<td>Paste values together, separated by sep (default a space).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#paste0"><code>paste0()</code></a></td>
+<td></td>
+<td>Paste values together.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#fixed"><code>fixed()</code></a></td>
+<td></td>
+<td>A literal pattern.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#regex"><code>regex()</code></a></td>
+<td></td>
+<td>A regular expression with options.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dates-and-times" class="level3">
+<h3 class="anchored" data-anchor-id="dates-and-times">Dates and times</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#ymd"><code>ymd()</code></a></td>
+<td></td>
+<td>Parse year-month-day strings to dates, with any separator.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#dmy"><code>dmy()</code></a></td>
+<td></td>
+<td>Parse day-month-year strings to dates, with any separator.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#mdy"><code>mdy()</code></a></td>
+<td></td>
+<td>Parse month-day-year strings to dates, with any separator.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#ymd_hms"><code>ymd_hms()</code></a></td>
+<td></td>
+<td>Parse year-month-day hour:minute:second strings to datetimes, in UTC or tz.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#dmy_hms"><code>dmy_hms()</code></a></td>
+<td></td>
+<td>Parse day-month-year hour:minute:second strings to datetimes, in UTC or tz.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#mdy_hms"><code>mdy_hms()</code></a></td>
+<td></td>
+<td>Parse month-day-year hour:minute:second strings to datetimes, in UTC or tz.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#parse_date_time"><code>parse_date_time()</code></a></td>
+<td></td>
+<td>Parse with lubridate orders.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#year"><code>year()</code></a></td>
+<td></td>
+<td>The year of a date or datetime.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#month"><code>month()</code></a></td>
+<td></td>
+<td>The month, 1-12.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#day"><code>day()</code></a></td>
+<td></td>
+<td>The day of the month.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#wday"><code>wday()</code></a></td>
+<td></td>
+<td>Day of the week, 1-7.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#yday"><code>yday()</code></a></td>
+<td></td>
+<td>The day of the year, 1-366.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#quarter"><code>quarter()</code></a></td>
+<td></td>
+<td>The quarter, 1-4.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#hour"><code>hour()</code></a></td>
+<td></td>
+<td>The hour of a datetime, 0-23.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#minute"><code>minute()</code></a></td>
+<td></td>
+<td>The minute of a datetime, 0-59.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#second"><code>second()</code></a></td>
+<td></td>
+<td>The second of a datetime, 0-59.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#floor_date"><code>floor_date()</code></a></td>
+<td></td>
+<td>Round down to a unit.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#ceiling_date"><code>ceiling_date()</code></a></td>
+<td></td>
+<td>Round up to a unit, as <code>floor_date()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#round_date"><code>round_date()</code></a></td>
+<td></td>
+<td>Round to the nearest unit, as <code>floor_date()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#seconds"><code>seconds()</code></a></td>
+<td></td>
+<td>A period of n seconds, for date arithmetic.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#minutes"><code>minutes()</code></a></td>
+<td></td>
+<td>A period of n minutes.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#hours"><code>hours()</code></a></td>
+<td></td>
+<td>A period of n hours.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#days"><code>days()</code></a></td>
+<td></td>
+<td>A period of n days.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#weeks"><code>weeks()</code></a></td>
+<td></td>
+<td>A period of n weeks.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#months"><code>months()</code></a></td>
+<td></td>
+<td>A period of n months.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#years"><code>years()</code></a></td>
+<td></td>
+<td>A period of n years.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#difftime"><code>difftime()</code></a></td>
+<td></td>
+<td>The difference x - y in units ‘secs’, ‘mins’, ‘hours’, ‘days’, or ‘weeks’, as a double.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#with_tz"><code>with_tz()</code></a></td>
+<td></td>
+<td>The same instant in another time zone.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#force_tz"><code>force_tz()</code></a></td>
+<td></td>
+<td>The same clock time in another time zone.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#today"><code>today()</code></a></td>
+<td></td>
+<td>The current date, in the system time zone or tz.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/strings-dates#now"><code>now()</code></a></td>
+<td></td>
+<td>The current datetime, in the system time zone or tz.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="selecting-columns" class="level2">
+<h2 class="anchored" data-anchor-id="selecting-columns">Selecting columns</h2>
+<section id="selectors" class="level3">
+<h3 class="anchored" data-anchor-id="selectors">Selectors</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#starts_with"><code>starts_with()</code></a></td>
+<td></td>
+<td>Columns whose names start with a prefix (case-insensitive by default).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#ends_with"><code>ends_with()</code></a></td>
+<td></td>
+<td>Columns whose names end with a suffix (case-insensitive by default).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#contains"><code>contains()</code></a></td>
+<td></td>
+<td>Columns whose names contain a string (case-insensitive by default).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#matches"><code>matches()</code></a></td>
+<td></td>
+<td>Columns whose names match a regular expression.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#num_range"><code>num_range()</code></a></td>
+<td></td>
+<td>Columns named prefix + number for each number.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#everything"><code>everything()</code></a></td>
+<td></td>
+<td>Every column.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#last_col"><code>last_col()</code></a></td>
+<td></td>
+<td>The last column, or the one <code>$offset</code> before it.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#all_of"><code>all_of()</code></a></td>
+<td></td>
+<td>Exactly these columns.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#any_of"><code>any_of()</code></a></td>
+<td></td>
+<td>These columns, skipping any that don’t exist.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#where"><code>where()</code></a></td>
+<td></td>
+<td>Columns for which a predicate holds.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#except"><code>except()</code></a></td>
+<td></td>
+<td>Everything except these columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#any_selected"><code>any_selected()</code></a></td>
+<td></td>
+<td>Columns matched by any of the selections (union).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#all_selected"><code>all_selected()</code></a></td>
+<td></td>
+<td>Columns matched by every selection (intersection, like a &amp; b in tidyselect).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#group_cols"><code>group_cols()</code></a></td>
+<td></td>
+<td>The grouping columns.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="across" class="level3">
+<h3 class="anchored" data-anchor-id="across">across()</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#across"><code>across()</code></a></td>
+<td></td>
+<td>Apply functions to columns inside <code>mutate()</code> or <code>summarise()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#if_any"><code>if_any()</code></a></td>
+<td></td>
+<td>Per-row test that a predicate holds for any of the columns, for <code>filter()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#if_all"><code>if_all()</code></a></td>
+<td></td>
+<td>Per-row test that a predicate holds for all of the columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#c_across"><code>c_across()</code></a></td>
+<td></td>
+<td>The values of the selected columns in the current row, for <code>rowwise()</code> tables.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#pick"><code>pick()</code></a></td>
+<td><code>-&gt;pick()</code></td>
+<td>The selected columns of the current group as a table, for use in <code>summarise()</code> closures or with <code>vec()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyselect#cur_column"><code>cur_column()</code></a></td>
+<td></td>
+<td>The name of the column <code>across()</code> is working on, inside one of its functions.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="reshaping-with-tidyr" class="level2">
+<h2 class="anchored" data-anchor-id="reshaping-with-tidyr">Reshaping with tidyr</h2>
+<section id="pivoting" class="level3">
+<h3 class="anchored" data-anchor-id="pivoting">Pivoting</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#pivot_longer"><code>pivot_longer()</code></a></td>
+<td><code>-&gt;pivotLonger()</code></td>
+<td>Lengthen.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#pivot_wider"><code>pivot_wider()</code></a></td>
+<td><code>-&gt;pivotWider()</code></td>
+<td>Widen.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#build_longer_spec"><code>build_longer_spec()</code></a></td>
+<td><code>-&gt;buildLongerSpec()</code></td>
+<td>The spec <code>pivot_longer()</code> would use, as a table with .name, .value and the namesTo columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#pivot_longer_spec"><code>pivot_longer_spec()</code></a></td>
+<td><code>-&gt;pivotLongerSpec()</code></td>
+<td>Lengthen with a spec from <code>build_longer_spec()</code> (a table or a list of rows).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#build_wider_spec"><code>build_wider_spec()</code></a></td>
+<td><code>-&gt;buildWiderSpec()</code></td>
+<td>The spec <code>pivot_wider()</code> would use, as a table with .name, .value and the namesFrom columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#pivot_wider_spec"><code>pivot_wider_spec()</code></a></td>
+<td><code>-&gt;pivotWiderSpec()</code></td>
+<td>Widen with a spec from <code>build_wider_spec()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#gather"><code>gather()</code></a></td>
+<td><code>-&gt;gather()</code></td>
+<td>Gather columns into key-value pairs (superseded by <code>pivot_longer()</code>).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#spread"><code>spread()</code></a></td>
+<td><code>-&gt;spread()</code></td>
+<td>Spread a key-value pair across columns (superseded by <code>pivot_wider()</code>).</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="missing-combinations-and-values" class="level3">
+<h3 class="anchored" data-anchor-id="missing-combinations-and-values">Missing combinations and values</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#complete"><code>complete()</code></a></td>
+<td><code>-&gt;complete()</code></td>
+<td>Add missing combinations, filling other columns with NA (or with fill).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#expand"><code>expand()</code></a></td>
+<td><code>-&gt;expand()</code></td>
+<td>Every combination of the given columns, per group.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#nesting"><code>nesting()</code></a></td>
+<td></td>
+<td>Only the combinations that occur in the data, for <code>complete()</code> and <code>expand()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#crossing"><code>crossing()</code></a></td>
+<td></td>
+<td>Every combination of unique values (sorted), as a new table.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#expand_grid"><code>expand_grid()</code></a></td>
+<td></td>
+<td>Every combination of the values as given, first column varying slowest.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#full_seq"><code>full_seq()</code></a></td>
+<td></td>
+<td>Every value from the smallest to the largest of x in steps of period.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#fill"><code>fill()</code></a></td>
+<td><code>-&gt;fill()</code></td>
+<td>Fill NA with the previous (or next) value, within groups.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#drop_na"><code>drop_na()</code></a></td>
+<td><code>-&gt;dropNa()</code></td>
+<td>Drop rows with NA in any of the columns (any column when none are given).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#replace_na"><code>replace_na()</code></a></td>
+<td><code>-&gt;replaceNa()</code></td>
+<td>Replace NA per column.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#uncount"><code>uncount()</code></a></td>
+<td><code>-&gt;uncount()</code></td>
+<td>Repeat each row by a weight column.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="splitting-and-combining" class="level3">
+<h3 class="anchored" data-anchor-id="splitting-and-combining">Splitting and combining</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#separate_wider_delim"><code>separate_wider_delim()</code></a></td>
+<td><code>-&gt;separateWiderDelim()</code></td>
+<td>Split columns on a fixed delimiter into new columns.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#separate_wider_position"><code>separate_wider_position()</code></a></td>
+<td><code>-&gt;separateWiderPosition()</code></td>
+<td>Split columns by character widths.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#separate_wider_regex"><code>separate_wider_regex()</code></a></td>
+<td><code>-&gt;separateWiderRegex()</code></td>
+<td>Split columns with regular expressions.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#separate_longer_delim"><code>separate_longer_delim()</code></a></td>
+<td><code>-&gt;separateLongerDelim()</code></td>
+<td>Split columns on a fixed delimiter into rows.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#separate_longer_position"><code>separate_longer_position()</code></a></td>
+<td><code>-&gt;separateLongerPosition()</code></td>
+<td>Split columns into rows of <code>$width</code> characters.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#separate"><code>separate()</code></a></td>
+<td><code>-&gt;separate()</code></td>
+<td>Split a string column into several (superseded in tidyr, still common).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#separate_rows"><code>separate_rows()</code></a></td>
+<td><code>-&gt;separateRows()</code></td>
+<td>Split columns on a regular expression into rows (superseded by <code>separate_longer_delim()</code>).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#extract"><code>extract()</code></a></td>
+<td><code>-&gt;extract()</code></td>
+<td>Pull regular-expression groups into new columns (superseded by <code>separate_wider_regex()</code>).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#unite"><code>unite()</code></a></td>
+<td><code>-&gt;unite()</code></td>
+<td>Paste columns together into one.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="list-columns" class="level3">
+<h3 class="anchored" data-anchor-id="list-columns">List-columns</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#nest"><code>nest()</code></a></td>
+<td><code>-&gt;nest()</code></td>
+<td>Nest columns into a list-column of tables.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#unnest"><code>unnest()</code></a></td>
+<td><code>-&gt;unnest()</code></td>
+<td>Unnest list-columns of tables back into rows.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#unnest_longer"><code>unnest_longer()</code></a></td>
+<td><code>-&gt;unnestLonger()</code></td>
+<td>Turn each element of list-columns into rows.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#unnest_wider"><code>unnest_wider()</code></a></td>
+<td><code>-&gt;unnestWider()</code></td>
+<td>Turn each element of list-columns into columns.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#hoist"><code>hoist()</code></a></td>
+<td><code>-&gt;hoist()</code></td>
+<td>Pull components out of a list-column into new columns, before it.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#chop"><code>chop()</code></a></td>
+<td><code>-&gt;chop()</code></td>
+<td>Collapse rows into list-columns.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#unchop"><code>unchop()</code></a></td>
+<td><code>-&gt;unchop()</code></td>
+<td>Expand list-columns into rows, the reverse of <code>chop()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#pack"><code>pack()</code></a></td>
+<td><code>-&gt;pack()</code></td>
+<td>Pack columns into a column of named arrays (tidyr’s data frame columns).</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/tidyr#unpack"><code>unpack()</code></a></td>
+<td><code>-&gt;unpack()</code></td>
+<td>Spread columns of named arrays into columns, the reverse of <code>pack()</code>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cleaning-with-janitor" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-with-janitor">Cleaning with janitor</h2>
+<section id="clean-names" class="level3">
+<h3 class="anchored" data-anchor-id="clean-names">Clean names</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/janitor#make_clean_names"><code>make_clean_names()</code></a></td>
+<td></td>
+<td>janitor’s <code>make_clean_names()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/janitor#clean_names"><code>clean_names()</code></a></td>
+<td><code>-&gt;cleanNames()</code></td>
+<td>Rename every column with <code>make_clean_names()</code>, as janitor’s <code>clean_names()</code>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="remove-empty-rows-and-columns" class="level3">
+<h3 class="anchored" data-anchor-id="remove-empty-rows-and-columns">Remove empty rows and columns</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/janitor#remove_empty"><code>remove_empty()</code></a></td>
+<td><code>-&gt;removeEmpty()</code></td>
+<td>Drop rows and/or columns that are entirely NA, as janitor’s <code>remove_empty()</code>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="duplicates" class="level3">
+<h3 class="anchored" data-anchor-id="duplicates">Duplicates</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/janitor#get_dupes"><code>get_dupes()</code></a></td>
+<td><code>-&gt;getDupes()</code></td>
+<td>Rows whose values in these columns (all columns when none are given) appear more than once, as janitor’s <code>get_dupes()</code>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="frequency-tables" class="level3">
+<h3 class="anchored" data-anchor-id="frequency-tables">Frequency tables</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/janitor#tabyl"><code>tabyl()</code></a></td>
+<td><code>-&gt;tabyl()</code></td>
+<td>janitor’s <code>tabyl()</code> for one or two columns.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="models" class="level2">
+<h2 class="anchored" data-anchor-id="models">Models</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/models#lm"><code>lm()</code></a></td>
+<td><code>-&gt;lm()</code></td>
+<td>Linear regression.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/models#glm"><code>glm()</code></a></td>
+<td><code>-&gt;glm()</code></td>
+<td>Generalised linear model.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/models#lmer"><code>lmer()</code></a></td>
+<td><code>-&gt;lmer()</code></td>
+<td>Linear mixed model with lme4-style random effects.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/models#glmer"><code>glmer()</code></a></td>
+<td><code>-&gt;glmer()</code></td>
+<td>Generalised linear mixed model.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="databases-and-expressions" class="level2">
+<h2 class="anchored" data-anchor-id="databases-and-expressions">Databases and expressions</h2>
+<section id="expressions-functions" class="level3">
+<h3 class="anchored" data-anchor-id="expressions-functions">Expressions</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#col"><code>col()</code></a></td>
+<td></td>
+<td>A column as a vector.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#lit"><code>lit()</code></a></td>
+<td></td>
+<td>A literal value as a vector.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#vec"><code>vec()</code></a></td>
+<td></td>
+<td>A row closure as a vector, for use where a Vec is expected.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#is_na"><code>is_na()</code></a></td>
+<td></td>
+<td>True where x is NA.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#abs"><code>abs()</code></a></td>
+<td></td>
+<td>Absolute value.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#sqrt"><code>sqrt()</code></a></td>
+<td></td>
+<td>Square root.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#exp"><code>exp()</code></a></td>
+<td></td>
+<td>Exponential, e to the power x.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#log"><code>log()</code></a></td>
+<td></td>
+<td>Natural logarithm, or base <code>$base</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#log10"><code>log10()</code></a></td>
+<td></td>
+<td>Base-10 logarithm.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#round"><code>round()</code></a></td>
+<td></td>
+<td>R’s <code>round()</code>.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#floor"><code>floor()</code></a></td>
+<td></td>
+<td>Largest integer not greater than x.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#ceiling"><code>ceiling()</code></a></td>
+<td></td>
+<td>Smallest integer not less than x.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#as_int"><code>as_int()</code></a></td>
+<td></td>
+<td>Convert to integer.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#as_float"><code>as_float()</code></a></td>
+<td></td>
+<td>Convert to double.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#as_string"><code>as_string()</code></a></td>
+<td></td>
+<td>Convert to string.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#as_bool"><code>as_bool()</code></a></td>
+<td></td>
+<td>Convert to boolean.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="database-tables" class="level3">
+<h3 class="anchored" data-anchor-id="database-tables">Database tables</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Chain method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#show_query"><code>show_query()</code></a></td>
+<td><code>-&gt;showQuery()</code></td>
+<td>The SQL a lazy table would run (database backends only).</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#collect"><code>collect()</code></a></td>
+<td><code>-&gt;collect()</code></td>
+<td>Run a lazy table’s query and return an in-memory Phibble.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="chain-methods" class="level2">
+<h2 class="anchored" data-anchor-id="chain-methods">Chain methods</h2>
+<p><code>phplyr($table)</code> starts a chain. Each function above with a chain method runs as that method. These methods belong to the chain itself:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/chains#chain-get"><code>-&gt;get()</code></a></td>
+<td>Return the table.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/chains#chain-pipe"><code>-&gt;pipe()</code></a></td>
+<td>Apply your own functions to the table and continue the chain with the result.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="expression-methods" class="level2">
+<h2 class="anchored" data-anchor-id="expression-methods">Expression methods</h2>
+<p>Called on a vector helper, such as <code>col('price')-&gt;mul(1.1)</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-add"><code>-&gt;add()</code></a></td>
+<td>x + y.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-sub"><code>-&gt;sub()</code></a></td>
+<td>x - y.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-mul"><code>-&gt;mul()</code></a></td>
+<td>x * y.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-div"><code>-&gt;div()</code></a></td>
+<td>x / y.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-mod"><code>-&gt;mod()</code></a></td>
+<td>x modulo y, R’s %%.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-pow"><code>-&gt;pow()</code></a></td>
+<td>x to the power y.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-neg"><code>-&gt;neg()</code></a></td>
+<td>Negation, -x.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-eq"><code>-&gt;eq()</code></a></td>
+<td>x == y.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-ne"><code>-&gt;ne()</code></a></td>
+<td>x != y.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-lt"><code>-&gt;lt()</code></a></td>
+<td>x &amp;lt.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-le"><code>-&gt;le()</code></a></td>
+<td>x &lt;= y.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-gt"><code>-&gt;gt()</code></a></td>
+<td>x &amp;gt.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-ge"><code>-&gt;ge()</code></a></td>
+<td>x &gt;= y.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-between"><code>-&gt;between()</code></a></td>
+<td>low &lt;= x &lt;= high, inclusive.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-isin"><code>-&gt;isIn()</code></a></td>
+<td>True where x is one of the values, R’s %in%.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-isna"><code>-&gt;isNa()</code></a></td>
+<td>True where x is NA.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-and"><code>-&gt;and()</code></a></td>
+<td>Logical and, with R’s NA rules.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-or"><code>-&gt;or()</code></a></td>
+<td>Logical or, with R’s NA rules.</td>
+</tr>
+<tr class="odd">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-not"><code>-&gt;not()</code></a></td>
+<td>Logical not.</td>
+</tr>
+<tr class="even">
+<td><a href="phpstats://phplyr/docs/reference/databases#method-desc"><code>-&gt;desc()</code></a></td>
+<td>Sort in descending order, for <code>arrange()</code> and order_by.</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>

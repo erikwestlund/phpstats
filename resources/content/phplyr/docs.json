@@ -2,11 +2,18 @@
     "nav": [
         {
             "title": "Overview",
-            "path": "index"
+            "path": "index",
+            "section": "Getting started"
         },
         {
             "title": "Getting started",
-            "path": "getting-started"
+            "path": "getting-started",
+            "section": "Getting started"
+        },
+        {
+            "title": "Compatibility and limitations",
+            "path": "compatibility",
+            "section": "Getting started"
         },
         {
             "title": "Coming from dplyr",
@@ -19,54 +26,69 @@
             "section": "Guides"
         },
         {
+            "title": "Performance",
+            "path": "performance",
+            "section": "Guides"
+        },
+        {
+            "title": "Functions and methods",
+            "path": "reference/index",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Pipes and method chains",
+            "path": "reference/chains",
+            "section": "Functions and methods"
+        },
+        {
             "title": "Single-table functions",
             "path": "reference/single-table",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Joins, binding, and set operations",
             "path": "reference/two-table",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Grouping",
             "path": "reference/grouping",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Vector helpers",
             "path": "reference/vectors",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Strings and dates",
             "path": "reference/strings-dates",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Selecting columns",
             "path": "reference/tidyselect",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Reshaping with tidyr",
             "path": "reference/tidyr",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Cleaning with janitor",
             "path": "reference/janitor",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Models",
             "path": "reference/models",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Databases and expressions",
             "path": "reference/databases",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Filter rows and add columns",
@@ -92,14 +114,6 @@
             "title": "Gallery",
             "path": "gallery",
             "section": "Examples"
-        },
-        {
-            "title": "Compatibility and limitations",
-            "path": "compatibility"
-        },
-        {
-            "title": "Performance",
-            "path": "performance"
         },
         {
             "title": "Development",
@@ -341,6 +355,47 @@
             ],
             "math": false
         },
+        "reference/chains": {
+            "title": "Pipes and method chains",
+            "headings": [
+                {
+                    "id": "pipelines",
+                    "text": "Pipelines",
+                    "level": 2
+                },
+                {
+                    "id": "phplyr",
+                    "text": "phplyr()",
+                    "level": 3
+                },
+                {
+                    "id": "pipe",
+                    "text": "pipe()",
+                    "level": 3
+                },
+                {
+                    "id": "chain-methods",
+                    "text": "Chain methods",
+                    "level": 2
+                },
+                {
+                    "id": "chain-get",
+                    "text": "->get()",
+                    "level": 3
+                },
+                {
+                    "id": "chain-pipe",
+                    "text": "->pipe()",
+                    "level": 3
+                },
+                {
+                    "id": "chain-echo",
+                    "text": "echo",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
         "reference/databases": {
             "title": "Databases and expressions",
             "headings": [
@@ -350,9 +405,199 @@
                     "level": 2
                 },
                 {
+                    "id": "col",
+                    "text": "col()",
+                    "level": 3
+                },
+                {
+                    "id": "lit",
+                    "text": "lit()",
+                    "level": 3
+                },
+                {
+                    "id": "vec",
+                    "text": "vec()",
+                    "level": 3
+                },
+                {
+                    "id": "is_na",
+                    "text": "is_na()",
+                    "level": 3
+                },
+                {
+                    "id": "abs",
+                    "text": "abs()",
+                    "level": 3
+                },
+                {
+                    "id": "sqrt",
+                    "text": "sqrt()",
+                    "level": 3
+                },
+                {
+                    "id": "exp",
+                    "text": "exp()",
+                    "level": 3
+                },
+                {
+                    "id": "log",
+                    "text": "log()",
+                    "level": 3
+                },
+                {
+                    "id": "log10",
+                    "text": "log10()",
+                    "level": 3
+                },
+                {
+                    "id": "round",
+                    "text": "round()",
+                    "level": 3
+                },
+                {
+                    "id": "floor",
+                    "text": "floor()",
+                    "level": 3
+                },
+                {
+                    "id": "ceiling",
+                    "text": "ceiling()",
+                    "level": 3
+                },
+                {
+                    "id": "as_int",
+                    "text": "as_int()",
+                    "level": 3
+                },
+                {
+                    "id": "as_float",
+                    "text": "as_float()",
+                    "level": 3
+                },
+                {
+                    "id": "as_string",
+                    "text": "as_string()",
+                    "level": 3
+                },
+                {
+                    "id": "as_bool",
+                    "text": "as_bool()",
+                    "level": 3
+                },
+                {
+                    "id": "method-add",
+                    "text": "->add()",
+                    "level": 3
+                },
+                {
+                    "id": "method-sub",
+                    "text": "->sub()",
+                    "level": 3
+                },
+                {
+                    "id": "method-mul",
+                    "text": "->mul()",
+                    "level": 3
+                },
+                {
+                    "id": "method-div",
+                    "text": "->div()",
+                    "level": 3
+                },
+                {
+                    "id": "method-mod",
+                    "text": "->mod()",
+                    "level": 3
+                },
+                {
+                    "id": "method-pow",
+                    "text": "->pow()",
+                    "level": 3
+                },
+                {
+                    "id": "method-neg",
+                    "text": "->neg()",
+                    "level": 3
+                },
+                {
+                    "id": "method-eq",
+                    "text": "->eq()",
+                    "level": 3
+                },
+                {
+                    "id": "method-ne",
+                    "text": "->ne()",
+                    "level": 3
+                },
+                {
+                    "id": "method-lt",
+                    "text": "->lt()",
+                    "level": 3
+                },
+                {
+                    "id": "method-le",
+                    "text": "->le()",
+                    "level": 3
+                },
+                {
+                    "id": "method-gt",
+                    "text": "->gt()",
+                    "level": 3
+                },
+                {
+                    "id": "method-ge",
+                    "text": "->ge()",
+                    "level": 3
+                },
+                {
+                    "id": "method-between",
+                    "text": "->between()",
+                    "level": 3
+                },
+                {
+                    "id": "method-isin",
+                    "text": "->isIn()",
+                    "level": 3
+                },
+                {
+                    "id": "method-isna",
+                    "text": "->isNa()",
+                    "level": 3
+                },
+                {
+                    "id": "method-and",
+                    "text": "->and()",
+                    "level": 3
+                },
+                {
+                    "id": "method-or",
+                    "text": "->or()",
+                    "level": 3
+                },
+                {
+                    "id": "method-not",
+                    "text": "->not()",
+                    "level": 3
+                },
+                {
+                    "id": "method-desc",
+                    "text": "->desc()",
+                    "level": 3
+                },
+                {
                     "id": "database-tables",
                     "text": "Database tables",
                     "level": 2
+                },
+                {
+                    "id": "show_query",
+                    "text": "show_query()",
+                    "level": 3
+                },
+                {
+                    "id": "collect",
+                    "text": "collect()",
+                    "level": 3
                 }
             ],
             "math": false
@@ -361,13 +606,329 @@
             "title": "Grouping",
             "headings": [
                 {
+                    "id": "grouping-and-ungrouping",
+                    "text": "Grouping and ungrouping",
+                    "level": 2
+                },
+                {
+                    "id": "group_by",
+                    "text": "group_by()",
+                    "level": 3
+                },
+                {
+                    "id": "ungroup",
+                    "text": "ungroup()",
+                    "level": 3
+                },
+                {
+                    "id": "with_groups",
+                    "text": "with_groups()",
+                    "level": 3
+                },
+                {
                     "id": "group-utilities",
                     "text": "Group utilities",
                     "level": 2
                 },
                 {
+                    "id": "group_vars",
+                    "text": "group_vars()",
+                    "level": 3
+                },
+                {
+                    "id": "n_groups",
+                    "text": "n_groups()",
+                    "level": 3
+                },
+                {
+                    "id": "group_size",
+                    "text": "group_size()",
+                    "level": 3
+                },
+                {
+                    "id": "group_indices",
+                    "text": "group_indices()",
+                    "level": 3
+                },
+                {
+                    "id": "group_keys",
+                    "text": "group_keys()",
+                    "level": 3
+                },
+                {
+                    "id": "group_rows",
+                    "text": "group_rows()",
+                    "level": 3
+                },
+                {
+                    "id": "group_data",
+                    "text": "group_data()",
+                    "level": 3
+                },
+                {
+                    "id": "group_trim",
+                    "text": "group_trim()",
+                    "level": 3
+                },
+                {
+                    "id": "group_split",
+                    "text": "group_split()",
+                    "level": 3
+                },
+                {
+                    "id": "group_map",
+                    "text": "group_map()",
+                    "level": 3
+                },
+                {
+                    "id": "group_modify",
+                    "text": "group_modify()",
+                    "level": 3
+                },
+                {
+                    "id": "group_walk",
+                    "text": "group_walk()",
+                    "level": 3
+                },
+                {
+                    "id": "group_nest",
+                    "text": "group_nest()",
+                    "level": 3
+                },
+                {
+                    "id": "nest_by",
+                    "text": "nest_by()",
+                    "level": 3
+                },
+                {
+                    "id": "cur_group_id",
+                    "text": "cur_group_id()",
+                    "level": 3
+                },
+                {
+                    "id": "cur_group_rows",
+                    "text": "cur_group_rows()",
+                    "level": 3
+                },
+                {
+                    "id": "cur_group",
+                    "text": "cur_group()",
+                    "level": 3
+                },
+                {
                     "id": "row-wise-operations",
                     "text": "Row-wise operations",
+                    "level": 2
+                },
+                {
+                    "id": "rowwise",
+                    "text": "rowwise()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/index": {
+            "title": "Functions and methods",
+            "headings": [
+                {
+                    "id": "pipes-and-method-chains",
+                    "text": "Pipes and method chains",
+                    "level": 2
+                },
+                {
+                    "id": "single-table-functions",
+                    "text": "Single-table functions",
+                    "level": 2
+                },
+                {
+                    "id": "rows",
+                    "text": "Rows",
+                    "level": 3
+                },
+                {
+                    "id": "columns",
+                    "text": "Columns",
+                    "level": 3
+                },
+                {
+                    "id": "summaries",
+                    "text": "Summaries",
+                    "level": 3
+                },
+                {
+                    "id": "joins-binding-and-set-operations",
+                    "text": "Joins, binding, and set operations",
+                    "level": 2
+                },
+                {
+                    "id": "joins",
+                    "text": "Joins",
+                    "level": 3
+                },
+                {
+                    "id": "join_by",
+                    "text": "join_by()",
+                    "level": 3
+                },
+                {
+                    "id": "binding",
+                    "text": "Binding",
+                    "level": 3
+                },
+                {
+                    "id": "set-operations-and-row-updates",
+                    "text": "Set operations and row updates",
+                    "level": 3
+                },
+                {
+                    "id": "grouping",
+                    "text": "Grouping",
+                    "level": 2
+                },
+                {
+                    "id": "grouping-and-ungrouping",
+                    "text": "Grouping and ungrouping",
+                    "level": 3
+                },
+                {
+                    "id": "group-utilities",
+                    "text": "Group utilities",
+                    "level": 3
+                },
+                {
+                    "id": "row-wise-operations",
+                    "text": "Row-wise operations",
+                    "level": 3
+                },
+                {
+                    "id": "vector-helpers",
+                    "text": "Vector helpers",
+                    "level": 2
+                },
+                {
+                    "id": "summaries-1",
+                    "text": "Summaries",
+                    "level": 3
+                },
+                {
+                    "id": "window-functions",
+                    "text": "Window functions",
+                    "level": 3
+                },
+                {
+                    "id": "conditionals-and-na",
+                    "text": "Conditionals and NA",
+                    "level": 3
+                },
+                {
+                    "id": "strings-and-dates",
+                    "text": "Strings and dates",
+                    "level": 2
+                },
+                {
+                    "id": "strings",
+                    "text": "Strings",
+                    "level": 3
+                },
+                {
+                    "id": "dates-and-times",
+                    "text": "Dates and times",
+                    "level": 3
+                },
+                {
+                    "id": "selecting-columns",
+                    "text": "Selecting columns",
+                    "level": 2
+                },
+                {
+                    "id": "selectors",
+                    "text": "Selectors",
+                    "level": 3
+                },
+                {
+                    "id": "across",
+                    "text": "across()",
+                    "level": 3
+                },
+                {
+                    "id": "reshaping-with-tidyr",
+                    "text": "Reshaping with tidyr",
+                    "level": 2
+                },
+                {
+                    "id": "pivoting",
+                    "text": "Pivoting",
+                    "level": 3
+                },
+                {
+                    "id": "missing-combinations-and-values",
+                    "text": "Missing combinations and values",
+                    "level": 3
+                },
+                {
+                    "id": "splitting-and-combining",
+                    "text": "Splitting and combining",
+                    "level": 3
+                },
+                {
+                    "id": "list-columns",
+                    "text": "List-columns",
+                    "level": 3
+                },
+                {
+                    "id": "cleaning-with-janitor",
+                    "text": "Cleaning with janitor",
+                    "level": 2
+                },
+                {
+                    "id": "clean-names",
+                    "text": "Clean names",
+                    "level": 3
+                },
+                {
+                    "id": "remove-empty-rows-and-columns",
+                    "text": "Remove empty rows and columns",
+                    "level": 3
+                },
+                {
+                    "id": "duplicates",
+                    "text": "Duplicates",
+                    "level": 3
+                },
+                {
+                    "id": "frequency-tables",
+                    "text": "Frequency tables",
+                    "level": 3
+                },
+                {
+                    "id": "models",
+                    "text": "Models",
+                    "level": 2
+                },
+                {
+                    "id": "databases-and-expressions",
+                    "text": "Databases and expressions",
+                    "level": 2
+                },
+                {
+                    "id": "expressions-functions",
+                    "text": "Expressions",
+                    "level": 3
+                },
+                {
+                    "id": "database-tables",
+                    "text": "Database tables",
+                    "level": 3
+                },
+                {
+                    "id": "chain-methods",
+                    "text": "Chain methods",
+                    "level": 2
+                },
+                {
+                    "id": "expression-methods",
+                    "text": "Expression methods",
                     "level": 2
                 }
             ],
@@ -382,9 +943,24 @@
                     "level": 2
                 },
                 {
+                    "id": "make_clean_names",
+                    "text": "make_clean_names()",
+                    "level": 3
+                },
+                {
+                    "id": "clean_names",
+                    "text": "clean_names()",
+                    "level": 3
+                },
+                {
                     "id": "remove-empty-rows-and-columns",
                     "text": "Remove empty rows and columns",
                     "level": 2
+                },
+                {
+                    "id": "remove_empty",
+                    "text": "remove_empty()",
+                    "level": 3
                 },
                 {
                     "id": "duplicates",
@@ -392,9 +968,19 @@
                     "level": 2
                 },
                 {
+                    "id": "get_dupes",
+                    "text": "get_dupes()",
+                    "level": 3
+                },
+                {
                     "id": "frequency-tables",
                     "text": "Frequency tables",
                     "level": 2
+                },
+                {
+                    "id": "tabyl",
+                    "text": "tabyl()",
+                    "level": 3
                 }
             ],
             "math": false
@@ -402,6 +988,31 @@
         "reference/models": {
             "title": "Models",
             "headings": [
+                {
+                    "id": "model-functions",
+                    "text": "Model functions",
+                    "level": 2
+                },
+                {
+                    "id": "lm",
+                    "text": "lm()",
+                    "level": 3
+                },
+                {
+                    "id": "glm",
+                    "text": "glm()",
+                    "level": 3
+                },
+                {
+                    "id": "lmer",
+                    "text": "lmer()",
+                    "level": 3
+                },
+                {
+                    "id": "glmer",
+                    "text": "glmer()",
+                    "level": 3
+                },
                 {
                     "id": "results",
                     "text": "Results",
@@ -419,14 +1030,174 @@
                     "level": 2
                 },
                 {
+                    "id": "filter",
+                    "text": "filter()",
+                    "level": 3
+                },
+                {
+                    "id": "filter_out",
+                    "text": "filter_out()",
+                    "level": 3
+                },
+                {
+                    "id": "arrange",
+                    "text": "arrange()",
+                    "level": 3
+                },
+                {
+                    "id": "desc",
+                    "text": "desc()",
+                    "level": 3
+                },
+                {
+                    "id": "distinct",
+                    "text": "distinct()",
+                    "level": 3
+                },
+                {
+                    "id": "slice",
+                    "text": "slice()",
+                    "level": 3
+                },
+                {
+                    "id": "slice_head",
+                    "text": "slice_head()",
+                    "level": 3
+                },
+                {
+                    "id": "slice_tail",
+                    "text": "slice_tail()",
+                    "level": 3
+                },
+                {
+                    "id": "slice_min",
+                    "text": "slice_min()",
+                    "level": 3
+                },
+                {
+                    "id": "slice_max",
+                    "text": "slice_max()",
+                    "level": 3
+                },
+                {
+                    "id": "slice_sample",
+                    "text": "slice_sample()",
+                    "level": 3
+                },
+                {
+                    "id": "head",
+                    "text": "head()",
+                    "level": 3
+                },
+                {
+                    "id": "top_n",
+                    "text": "top_n()",
+                    "level": 3
+                },
+                {
+                    "id": "top_frac",
+                    "text": "top_frac()",
+                    "level": 3
+                },
+                {
+                    "id": "sample_n",
+                    "text": "sample_n()",
+                    "level": 3
+                },
+                {
+                    "id": "sample_frac",
+                    "text": "sample_frac()",
+                    "level": 3
+                },
+                {
+                    "id": "add_row",
+                    "text": "add_row()",
+                    "level": 3
+                },
+                {
                     "id": "columns",
                     "text": "Columns",
                     "level": 2
                 },
                 {
+                    "id": "select",
+                    "text": "select()",
+                    "level": 3
+                },
+                {
+                    "id": "rename",
+                    "text": "rename()",
+                    "level": 3
+                },
+                {
+                    "id": "rename_with",
+                    "text": "rename_with()",
+                    "level": 3
+                },
+                {
+                    "id": "relocate",
+                    "text": "relocate()",
+                    "level": 3
+                },
+                {
+                    "id": "mutate",
+                    "text": "mutate()",
+                    "level": 3
+                },
+                {
+                    "id": "transmute",
+                    "text": "transmute()",
+                    "level": 3
+                },
+                {
+                    "id": "pull",
+                    "text": "pull()",
+                    "level": 3
+                },
+                {
                     "id": "summaries",
                     "text": "Summaries",
                     "level": 2
+                },
+                {
+                    "id": "summarise",
+                    "text": "summarise()",
+                    "level": 3
+                },
+                {
+                    "id": "summarize",
+                    "text": "summarize()",
+                    "level": 3
+                },
+                {
+                    "id": "reframe",
+                    "text": "reframe()",
+                    "level": 3
+                },
+                {
+                    "id": "count",
+                    "text": "count()",
+                    "level": 3
+                },
+                {
+                    "id": "tally",
+                    "text": "tally()",
+                    "level": 3
+                },
+                {
+                    "id": "add_count",
+                    "text": "add_count()",
+                    "level": 3
+                },
+                {
+                    "id": "add_tally",
+                    "text": "add_tally()",
+                    "level": 3
+                },
+                {
+                    "id": "glimpse",
+                    "text": "glimpse()",
+                    "level": 3
                 }
             ],
             "math": false
@@ -440,9 +1211,289 @@
                     "level": 2
                 },
                 {
+                    "id": "str_detect",
+                    "text": "str_detect()",
+                    "level": 3
+                },
+                {
+                    "id": "str_starts",
+                    "text": "str_starts()",
+                    "level": 3
+                },
+                {
+                    "id": "str_ends",
+                    "text": "str_ends()",
+                    "level": 3
+                },
+                {
+                    "id": "str_count",
+                    "text": "str_count()",
+                    "level": 3
+                },
+                {
+                    "id": "str_extract",
+                    "text": "str_extract()",
+                    "level": 3
+                },
+                {
+                    "id": "str_extract_all",
+                    "text": "str_extract_all()",
+                    "level": 3
+                },
+                {
+                    "id": "str_replace",
+                    "text": "str_replace()",
+                    "level": 3
+                },
+                {
+                    "id": "str_replace_all",
+                    "text": "str_replace_all()",
+                    "level": 3
+                },
+                {
+                    "id": "str_split",
+                    "text": "str_split()",
+                    "level": 3
+                },
+                {
+                    "id": "str_split_i",
+                    "text": "str_split_i()",
+                    "level": 3
+                },
+                {
+                    "id": "str_pad",
+                    "text": "str_pad()",
+                    "level": 3
+                },
+                {
+                    "id": "str_trunc",
+                    "text": "str_trunc()",
+                    "level": 3
+                },
+                {
+                    "id": "str_trim",
+                    "text": "str_trim()",
+                    "level": 3
+                },
+                {
+                    "id": "str_squish",
+                    "text": "str_squish()",
+                    "level": 3
+                },
+                {
+                    "id": "str_sub",
+                    "text": "str_sub()",
+                    "level": 3
+                },
+                {
+                    "id": "str_length",
+                    "text": "str_length()",
+                    "level": 3
+                },
+                {
+                    "id": "str_to_title",
+                    "text": "str_to_title()",
+                    "level": 3
+                },
+                {
+                    "id": "str_to_upper",
+                    "text": "str_to_upper()",
+                    "level": 3
+                },
+                {
+                    "id": "str_to_lower",
+                    "text": "str_to_lower()",
+                    "level": 3
+                },
+                {
+                    "id": "str_upper",
+                    "text": "str_upper()",
+                    "level": 3
+                },
+                {
+                    "id": "str_lower",
+                    "text": "str_lower()",
+                    "level": 3
+                },
+                {
+                    "id": "paste",
+                    "text": "paste()",
+                    "level": 3
+                },
+                {
+                    "id": "paste0",
+                    "text": "paste0()",
+                    "level": 3
+                },
+                {
+                    "id": "fixed",
+                    "text": "fixed()",
+                    "level": 3
+                },
+                {
+                    "id": "regex",
+                    "text": "regex()",
+                    "level": 3
+                },
+                {
                     "id": "dates-and-times",
                     "text": "Dates and times",
                     "level": 2
+                },
+                {
+                    "id": "ymd",
+                    "text": "ymd()",
+                    "level": 3
+                },
+                {
+                    "id": "dmy",
+                    "text": "dmy()",
+                    "level": 3
+                },
+                {
+                    "id": "mdy",
+                    "text": "mdy()",
+                    "level": 3
+                },
+                {
+                    "id": "ymd_hms",
+                    "text": "ymd_hms()",
+                    "level": 3
+                },
+                {
+                    "id": "dmy_hms",
+                    "text": "dmy_hms()",
+                    "level": 3
+                },
+                {
+                    "id": "mdy_hms",
+                    "text": "mdy_hms()",
+                    "level": 3
+                },
+                {
+                    "id": "parse_date_time",
+                    "text": "parse_date_time()",
+                    "level": 3
+                },
+                {
+                    "id": "year",
+                    "text": "year()",
+                    "level": 3
+                },
+                {
+                    "id": "month",
+                    "text": "month()",
+                    "level": 3
+                },
+                {
+                    "id": "day",
+                    "text": "day()",
+                    "level": 3
+                },
+                {
+                    "id": "wday",
+                    "text": "wday()",
+                    "level": 3
+                },
+                {
+                    "id": "yday",
+                    "text": "yday()",
+                    "level": 3
+                },
+                {
+                    "id": "quarter",
+                    "text": "quarter()",
+                    "level": 3
+                },
+                {
+                    "id": "hour",
+                    "text": "hour()",
+                    "level": 3
+                },
+                {
+                    "id": "minute",
+                    "text": "minute()",
+                    "level": 3
+                },
+                {
+                    "id": "second",
+                    "text": "second()",
+                    "level": 3
+                },
+                {
+                    "id": "floor_date",
+                    "text": "floor_date()",
+                    "level": 3
+                },
+                {
+                    "id": "ceiling_date",
+                    "text": "ceiling_date()",
+                    "level": 3
+                },
+                {
+                    "id": "round_date",
+                    "text": "round_date()",
+                    "level": 3
+                },
+                {
+                    "id": "seconds",
+                    "text": "seconds()",
+                    "level": 3
+                },
+                {
+                    "id": "minutes",
+                    "text": "minutes()",
+                    "level": 3
+                },
+                {
+                    "id": "hours",
+                    "text": "hours()",
+                    "level": 3
+                },
+                {
+                    "id": "days",
+                    "text": "days()",
+                    "level": 3
+                },
+                {
+                    "id": "weeks",
+                    "text": "weeks()",
+                    "level": 3
+                },
+                {
+                    "id": "months",
+                    "text": "months()",
+                    "level": 3
+                },
+                {
+                    "id": "years",
+                    "text": "years()",
+                    "level": 3
+                },
+                {
+                    "id": "difftime",
+                    "text": "difftime()",
+                    "level": 3
+                },
+                {
+                    "id": "with_tz",
+                    "text": "with_tz()",
+                    "level": 3
+                },
+                {
+                    "id": "force_tz",
+                    "text": "force_tz()",
+                    "level": 3
+                },
+                {
+                    "id": "today",
+                    "text": "today()",
+                    "level": 3
+                },
+                {
+                    "id": "now",
+                    "text": "now()",
+                    "level": 3
                 }
             ],
             "math": false
@@ -456,9 +1507,99 @@
                     "level": 2
                 },
                 {
+                    "id": "pivot_longer",
+                    "text": "pivot_longer()",
+                    "level": 3
+                },
+                {
+                    "id": "pivot_wider",
+                    "text": "pivot_wider()",
+                    "level": 3
+                },
+                {
+                    "id": "build_longer_spec",
+                    "text": "build_longer_spec()",
+                    "level": 3
+                },
+                {
+                    "id": "pivot_longer_spec",
+                    "text": "pivot_longer_spec()",
+                    "level": 3
+                },
+                {
+                    "id": "build_wider_spec",
+                    "text": "build_wider_spec()",
+                    "level": 3
+                },
+                {
+                    "id": "pivot_wider_spec",
+                    "text": "pivot_wider_spec()",
+                    "level": 3
+                },
+                {
+                    "id": "gather",
+                    "text": "gather()",
+                    "level": 3
+                },
+                {
+                    "id": "spread",
+                    "text": "spread()",
+                    "level": 3
+                },
+                {
                     "id": "missing-combinations-and-values",
                     "text": "Missing combinations and values",
                     "level": 2
+                },
+                {
+                    "id": "complete",
+                    "text": "complete()",
+                    "level": 3
+                },
+                {
+                    "id": "expand",
+                    "text": "expand()",
+                    "level": 3
+                },
+                {
+                    "id": "nesting",
+                    "text": "nesting()",
+                    "level": 3
+                },
+                {
+                    "id": "crossing",
+                    "text": "crossing()",
+                    "level": 3
+                },
+                {
+                    "id": "expand_grid",
+                    "text": "expand_grid()",
+                    "level": 3
+                },
+                {
+                    "id": "full_seq",
+                    "text": "full_seq()",
+                    "level": 3
+                },
+                {
+                    "id": "fill",
+                    "text": "fill()",
+                    "level": 3
+                },
+                {
+                    "id": "drop_na",
+                    "text": "drop_na()",
+                    "level": 3
+                },
+                {
+                    "id": "replace_na",
+                    "text": "replace_na()",
+                    "level": 3
+                },
+                {
+                    "id": "uncount",
+                    "text": "uncount()",
+                    "level": 3
                 },
                 {
                     "id": "splitting-and-combining",
@@ -466,9 +1607,99 @@
                     "level": 2
                 },
                 {
+                    "id": "separate_wider_delim",
+                    "text": "separate_wider_delim()",
+                    "level": 3
+                },
+                {
+                    "id": "separate_wider_position",
+                    "text": "separate_wider_position()",
+                    "level": 3
+                },
+                {
+                    "id": "separate_wider_regex",
+                    "text": "separate_wider_regex()",
+                    "level": 3
+                },
+                {
+                    "id": "separate_longer_delim",
+                    "text": "separate_longer_delim()",
+                    "level": 3
+                },
+                {
+                    "id": "separate_longer_position",
+                    "text": "separate_longer_position()",
+                    "level": 3
+                },
+                {
+                    "id": "separate",
+                    "text": "separate()",
+                    "level": 3
+                },
+                {
+                    "id": "separate_rows",
+                    "text": "separate_rows()",
+                    "level": 3
+                },
+                {
+                    "id": "extract",
+                    "text": "extract()",
+                    "level": 3
+                },
+                {
+                    "id": "unite",
+                    "text": "unite()",
+                    "level": 3
+                },
+                {
                     "id": "list-columns",
                     "text": "List-columns",
                     "level": 2
+                },
+                {
+                    "id": "nest",
+                    "text": "nest()",
+                    "level": 3
+                },
+                {
+                    "id": "unnest",
+                    "text": "unnest()",
+                    "level": 3
+                },
+                {
+                    "id": "unnest_longer",
+                    "text": "unnest_longer()",
+                    "level": 3
+                },
+                {
+                    "id": "unnest_wider",
+                    "text": "unnest_wider()",
+                    "level": 3
+                },
+                {
+                    "id": "hoist",
+                    "text": "hoist()",
+                    "level": 3
+                },
+                {
+                    "id": "chop",
+                    "text": "chop()",
+                    "level": 3
+                },
+                {
+                    "id": "unchop",
+                    "text": "unchop()",
+                    "level": 3
+                },
+                {
+                    "id": "pack",
+                    "text": "pack()",
+                    "level": 3
+                },
+                {
+                    "id": "unpack",
+                    "text": "unpack()",
+                    "level": 3
                 }
             ],
             "math": false
@@ -482,9 +1713,109 @@
                     "level": 2
                 },
                 {
-                    "id": "across",
+                    "id": "starts_with",
+                    "text": "starts_with()",
+                    "level": 3
+                },
+                {
+                    "id": "ends_with",
+                    "text": "ends_with()",
+                    "level": 3
+                },
+                {
+                    "id": "contains",
+                    "text": "contains()",
+                    "level": 3
+                },
+                {
+                    "id": "matches",
+                    "text": "matches()",
+                    "level": 3
+                },
+                {
+                    "id": "num_range",
+                    "text": "num_range()",
+                    "level": 3
+                },
+                {
+                    "id": "everything",
+                    "text": "everything()",
+                    "level": 3
+                },
+                {
+                    "id": "last_col",
+                    "text": "last_col()",
+                    "level": 3
+                },
+                {
+                    "id": "all_of",
+                    "text": "all_of()",
+                    "level": 3
+                },
+                {
+                    "id": "any_of",
+                    "text": "any_of()",
+                    "level": 3
+                },
+                {
+                    "id": "where",
+                    "text": "where()",
+                    "level": 3
+                },
+                {
+                    "id": "except",
+                    "text": "except()",
+                    "level": 3
+                },
+                {
+                    "id": "any_selected",
+                    "text": "any_selected()",
+                    "level": 3
+                },
+                {
+                    "id": "all_selected",
+                    "text": "all_selected()",
+                    "level": 3
+                },
+                {
+                    "id": "group_cols",
+                    "text": "group_cols()",
+                    "level": 3
+                },
+                {
+                    "id": "across-section",
                     "text": "across()",
                     "level": 2
+                },
+                {
+                    "id": "across",
+                    "text": "across()",
+                    "level": 3
+                },
+                {
+                    "id": "if_any",
+                    "text": "if_any()",
+                    "level": 3
+                },
+                {
+                    "id": "if_all",
+                    "text": "if_all()",
+                    "level": 3
+                },
+                {
+                    "id": "c_across",
+                    "text": "c_across()",
+                    "level": 3
+                },
+                {
+                    "id": "pick",
+                    "text": "pick()",
+                    "level": 3
+                },
+                {
+                    "id": "cur_column",
+                    "text": "cur_column()",
+                    "level": 3
                 }
             ],
             "math": false
@@ -498,9 +1829,69 @@
                     "level": 2
                 },
                 {
-                    "id": "join_by",
+                    "id": "inner_join",
+                    "text": "inner_join()",
+                    "level": 3
+                },
+                {
+                    "id": "left_join",
+                    "text": "left_join()",
+                    "level": 3
+                },
+                {
+                    "id": "right_join",
+                    "text": "right_join()",
+                    "level": 3
+                },
+                {
+                    "id": "full_join",
+                    "text": "full_join()",
+                    "level": 3
+                },
+                {
+                    "id": "semi_join",
+                    "text": "semi_join()",
+                    "level": 3
+                },
+                {
+                    "id": "anti_join",
+                    "text": "anti_join()",
+                    "level": 3
+                },
+                {
+                    "id": "cross_join",
+                    "text": "cross_join()",
+                    "level": 3
+                },
+                {
+                    "id": "nest_join",
+                    "text": "nest_join()",
+                    "level": 3
+                },
+                {
+                    "id": "join_by-section",
                     "text": "join_by()",
                     "level": 2
+                },
+                {
+                    "id": "join_by",
+                    "text": "join_by()",
+                    "level": 3
+                },
+                {
+                    "id": "closest",
+                    "text": "closest()",
+                    "level": 3
+                },
+                {
+                    "id": "within",
+                    "text": "within()",
+                    "level": 3
+                },
+                {
+                    "id": "overlaps",
+                    "text": "overlaps()",
+                    "level": 3
                 },
                 {
                     "id": "binding",
@@ -508,9 +1899,79 @@
                     "level": 2
                 },
                 {
+                    "id": "bind_rows",
+                    "text": "bind_rows()",
+                    "level": 3
+                },
+                {
+                    "id": "bind_cols",
+                    "text": "bind_cols()",
+                    "level": 3
+                },
+                {
                     "id": "set-operations-and-row-updates",
                     "text": "Set operations and row updates",
                     "level": 2
+                },
+                {
+                    "id": "union",
+                    "text": "union()",
+                    "level": 3
+                },
+                {
+                    "id": "union_all",
+                    "text": "union_all()",
+                    "level": 3
+                },
+                {
+                    "id": "intersect",
+                    "text": "intersect()",
+                    "level": 3
+                },
+                {
+                    "id": "setdiff",
+                    "text": "setdiff()",
+                    "level": 3
+                },
+                {
+                    "id": "symdiff",
+                    "text": "symdiff()",
+                    "level": 3
+                },
+                {
+                    "id": "setequal",
+                    "text": "setequal()",
+                    "level": 3
+                },
+                {
+                    "id": "rows_insert",
+                    "text": "rows_insert()",
+                    "level": 3
+                },
+                {
+                    "id": "rows_append",
+                    "text": "rows_append()",
+                    "level": 3
+                },
+                {
+                    "id": "rows_update",
+                    "text": "rows_update()",
+                    "level": 3
+                },
+                {
+                    "id": "rows_patch",
+                    "text": "rows_patch()",
+                    "level": 3
+                },
+                {
+                    "id": "rows_upsert",
+                    "text": "rows_upsert()",
+                    "level": 3
+                },
+                {
+                    "id": "rows_delete",
+                    "text": "rows_delete()",
+                    "level": 3
                 }
             ],
             "math": false
@@ -524,14 +1985,249 @@
                     "level": 2
                 },
                 {
+                    "id": "n",
+                    "text": "n()",
+                    "level": 3
+                },
+                {
+                    "id": "n_distinct",
+                    "text": "n_distinct()",
+                    "level": 3
+                },
+                {
+                    "id": "sum",
+                    "text": "sum()",
+                    "level": 3
+                },
+                {
+                    "id": "mean",
+                    "text": "mean()",
+                    "level": 3
+                },
+                {
+                    "id": "median",
+                    "text": "median()",
+                    "level": 3
+                },
+                {
+                    "id": "sd",
+                    "text": "sd()",
+                    "level": 3
+                },
+                {
+                    "id": "var_",
+                    "text": "var_()",
+                    "level": 3
+                },
+                {
+                    "id": "variance",
+                    "text": "variance()",
+                    "level": 3
+                },
+                {
+                    "id": "quantile",
+                    "text": "quantile()",
+                    "level": 3
+                },
+                {
+                    "id": "iqr",
+                    "text": "iqr()",
+                    "level": 3
+                },
+                {
+                    "id": "min",
+                    "text": "min()",
+                    "level": 3
+                },
+                {
+                    "id": "max",
+                    "text": "max()",
+                    "level": 3
+                },
+                {
+                    "id": "first",
+                    "text": "first()",
+                    "level": 3
+                },
+                {
+                    "id": "last",
+                    "text": "last()",
+                    "level": 3
+                },
+                {
+                    "id": "nth",
+                    "text": "nth()",
+                    "level": 3
+                },
+                {
+                    "id": "any",
+                    "text": "any()",
+                    "level": 3
+                },
+                {
+                    "id": "all",
+                    "text": "all()",
+                    "level": 3
+                },
+                {
                     "id": "window-functions",
                     "text": "Window functions",
                     "level": 2
                 },
                 {
+                    "id": "lag",
+                    "text": "lag()",
+                    "level": 3
+                },
+                {
+                    "id": "lead",
+                    "text": "lead()",
+                    "level": 3
+                },
+                {
+                    "id": "row_number",
+                    "text": "row_number()",
+                    "level": 3
+                },
+                {
+                    "id": "min_rank",
+                    "text": "min_rank()",
+                    "level": 3
+                },
+                {
+                    "id": "dense_rank",
+                    "text": "dense_rank()",
+                    "level": 3
+                },
+                {
+                    "id": "percent_rank",
+                    "text": "percent_rank()",
+                    "level": 3
+                },
+                {
+                    "id": "cume_dist",
+                    "text": "cume_dist()",
+                    "level": 3
+                },
+                {
+                    "id": "ntile",
+                    "text": "ntile()",
+                    "level": 3
+                },
+                {
+                    "id": "consecutive_id",
+                    "text": "consecutive_id()",
+                    "level": 3
+                },
+                {
+                    "id": "cumsum",
+                    "text": "cumsum()",
+                    "level": 3
+                },
+                {
+                    "id": "cumprod",
+                    "text": "cumprod()",
+                    "level": 3
+                },
+                {
+                    "id": "cummin",
+                    "text": "cummin()",
+                    "level": 3
+                },
+                {
+                    "id": "cummax",
+                    "text": "cummax()",
+                    "level": 3
+                },
+                {
+                    "id": "cummean",
+                    "text": "cummean()",
+                    "level": 3
+                },
+                {
+                    "id": "cumall",
+                    "text": "cumall()",
+                    "level": 3
+                },
+                {
+                    "id": "cumany",
+                    "text": "cumany()",
+                    "level": 3
+                },
+                {
+                    "id": "order_by",
+                    "text": "order_by()",
+                    "level": 3
+                },
+                {
                     "id": "conditionals-and-na",
                     "text": "Conditionals and NA",
                     "level": 2
+                },
+                {
+                    "id": "if_else",
+                    "text": "if_else()",
+                    "level": 3
+                },
+                {
+                    "id": "case_when",
+                    "text": "case_when()",
+                    "level": 3
+                },
+                {
+                    "id": "case_match",
+                    "text": "case_match()",
+                    "level": 3
+                },
+                {
+                    "id": "replace_when",
+                    "text": "replace_when()",
+                    "level": 3
+                },
+                {
+                    "id": "recode",
+                    "text": "recode()",
+                    "level": 3
+                },
+                {
+                    "id": "recode_values",
+                    "text": "recode_values()",
+                    "level": 3
+                },
+                {
+                    "id": "replace_values",
+                    "text": "replace_values()",
+                    "level": 3
+                },
+                {
+                    "id": "coalesce",
+                    "text": "coalesce()",
+                    "level": 3
+                },
+                {
+                    "id": "na_if",
+                    "text": "na_if()",
+                    "level": 3
+                },
+                {
+                    "id": "between",
+                    "text": "between()",
+                    "level": 3
+                },
+                {
+                    "id": "near",
+                    "text": "near()",
+                    "level": 3
+                },
+                {
+                    "id": "when_any",
+                    "text": "when_any()",
+                    "level": 3
+                },
+                {
+                    "id": "when_all",
+                    "text": "when_all()",
+                    "level": 3
                 }
             ],
             "math": false

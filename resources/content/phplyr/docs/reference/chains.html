@@ -1,0 +1,37 @@
+<p>A table function such as <code>filter(...)</code> returns a closure that takes a table. The PHP 8.5 pipe operator <code>|&gt;</code>, <code>pipe()</code>, and a method chain started with <code>phplyr()</code> apply such closures in order and give the same result. <a href="phpstats://phplyr/docs/getting-started#pipelines">Pipelines</a> shows the three forms.</p>
+<section id="pipelines" class="level2">
+<h2 class="anchored" data-anchor-id="pipelines">Pipelines</h2>
+<section id="phplyr" class="level3">
+<h3 class="anchored" data-anchor-id="phplyr"><code>phplyr()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>phplyr(Table<span class="op">|</span>Chain <span class="va">$table</span>)<span class="ot">:</span> Chain</span></code></pre></div></div>
+<p>Start a method chain on a table: <code>phplyr($t)-&gt;filter(...)-&gt;head(5)</code>. Each method runs the phplyr function of that name, spelled camelCase, so <code>-&gt;groupBy()</code> runs <code>group_by()</code>. <code>get()</code> returns the table, and functions that return something else, such as <code>pull()</code>, return it plainly.</p>
+<p>Returns <code>Chain</code>.</p>
+</section>
+<section id="pipe" class="level3">
+<h3 class="anchored" data-anchor-id="pipe"><code>pipe()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pipe(<span class="dt">mixed</span> <span class="va">$value</span><span class="ot">,</span> <span class="kw">callable</span> ...<span class="va">$steps</span>)<span class="ot">:</span> <span class="dt">mixed</span></span></code></pre></div></div>
+<p>Apply steps to a value in order: <code>pipe($t, filter(...), head(5))</code> is <code>$t</code> |&gt; <code>filter(...)</code> |&gt; <code>head(5)</code>. A step is any callable.</p>
+<p>Returns <code>mixed</code>.</p>
+</section>
+</section>
+<section id="chain-methods" class="level2">
+<h2 class="anchored" data-anchor-id="chain-methods">Chain methods</h2>
+<p><code>phplyr($table)</code> returns a <code>Phplyr\Chain</code>. Each table function runs as the chain method of the same name in camelCase, such as <code>-&gt;groupBy()</code> for <code>group_by()</code>; <a href="phpstats://phplyr/docs/reference/index">Functions and methods</a> lists them. A method whose function returns a table returns a new chain, and any other result is returned as it is. A snake_case method name throws <code>BadMethodCallException</code> naming the camelCase method.</p>
+<section id="chain-get" class="level3">
+<h3 class="anchored" data-anchor-id="chain-get"><code>-&gt;get()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$chain</span>-&gt;get()<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Returns the chain’s table.</p>
+</section>
+<section id="chain-pipe" class="level3">
+<h3 class="anchored" data-anchor-id="chain-pipe"><code>-&gt;pipe()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">$chain</span>-&gt;pipe(<span class="kw">callable</span> ...<span class="va">$steps</span>)<span class="ot">:</span> <span class="dt">mixed</span></span></code></pre></div></div>
+<p>Applies each step to the table in order. Returns a new chain when the result is a table, and the result itself otherwise.</p>
+</section>
+<section id="chain-echo" class="level3">
+<h3 class="anchored" data-anchor-id="chain-echo"><code>echo</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">echo</span> <span class="va">$chain</span><span class="ot">;</span></span></code></pre></div></div>
+<p>Prints the table, as <code>echo $table</code> does.</p>
+
+
+</section>
+</section>
