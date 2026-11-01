@@ -63,8 +63,8 @@
         $hasLimitations ? ['id' => 'limitations', 'label' => 'Limitations'] : null,
         ['id' => 'reproduction', 'label' => 'Reproduction'],
     ]));
-    $section = 'mt-8 scroll-mt-28 lg:scroll-mt-20';
-    $alias = 'block scroll-mt-28 lg:scroll-mt-20';
+    $section = 'mt-8 scroll-mt-10 lg:scroll-mt-0';
+    $alias = 'block scroll-mt-10 lg:scroll-mt-0';
     $h2 = 'text-xl font-semibold tracking-tight text-zinc-950 dark:text-white';
     $dl = 'mt-3 grid max-w-4xl items-start gap-x-6 gap-y-1 text-sm leading-6 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-y-2';
     $dt = 'font-medium text-zinc-500 dark:text-zinc-400';
@@ -77,7 +77,7 @@
         {{-- Earlier section ids, before the sections took their report names. --}}
         <span id="compared" class="{{ $alias }}"></span>
         @if ($scope)
-            <section id="scope" class="mt-6 scroll-mt-28 lg:scroll-mt-20" aria-labelledby="scope-heading">
+            <section id="scope" class="mt-6 scroll-mt-10 lg:scroll-mt-0" aria-labelledby="scope-heading">
                 <h2 id="scope-heading" class="{{ $h2 }}">Scope</h2>
                 <p class="mt-2 max-w-3xl leading-relaxed text-zinc-700 dark:text-zinc-300">{!! $mono($scope) !!}</p>
             </section>

@@ -57,14 +57,14 @@
         isset($env['repeats']) ? ($statistic ? 'of ' : '').$env['repeats'].' '.Str::plural('run', $env['repeats']) : null,
     ]));
     $lead = ($what ? rtrim($what, '.').': ' : '').($what ? $measures : Str::ucfirst($measures)).' per implementation'.(count($cases) > 1 ? ' and case' : '').($over !== '' ? ", {$over}" : '').'.'.($metrics === [] ? ' Memory not measured.' : '');
-    $section = 'mt-8 scroll-mt-28 lg:scroll-mt-20';
+    $section = 'mt-8 scroll-mt-10 lg:scroll-mt-0';
     $h2 = 'text-xl font-semibold tracking-tight text-zinc-950 dark:text-white';
     $dl = 'mt-3 grid max-w-4xl items-start gap-x-6 gap-y-1 text-sm leading-6 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-y-2';
 @endphp
 <x-layout :title="Results::label($record).' benchmark'" :wide="true">
     <x-sidebar-page :title="Results::label($record)" :sidebar="Results::sidebar($package, 'benchmarks', $record['id'], $children)" :wide="true" menu="Benchmarks">
         @if (! empty($record['description']))
-            <section id="scope" class="mt-6 scroll-mt-28 lg:scroll-mt-20" aria-labelledby="scope-heading">
+            <section id="scope" class="mt-6 scroll-mt-10 lg:scroll-mt-0" aria-labelledby="scope-heading">
                 <h2 id="scope-heading" class="{{ $h2 }}">Scope</h2>
                 <p class="mt-2 max-w-3xl leading-relaxed text-zinc-700 dark:text-zinc-300">{!! \App\Content\Libraries::mono(e($record['description'])) !!}</p>
             </section>
@@ -82,7 +82,7 @@
             </section>
         @endif
 
-        <span id="methods" class="block scroll-mt-28 lg:scroll-mt-20"></span>
+        <span id="methods" class="block scroll-mt-10 lg:scroll-mt-0"></span>
         <section id="method" class="{{ $section }}" aria-labelledby="method-heading">
             <h2 id="method-heading" class="{{ $h2 }}">Method</h2>
             <dl class="{{ $dl }}">
@@ -92,7 +92,7 @@
                 @endforeach
             </dl>
             @if ($code !== [])
-                <h3 id="code" class="mt-5 scroll-mt-28 text-base font-semibold text-zinc-950 lg:scroll-mt-20 dark:text-white">Code</h3>
+                <h3 id="code" class="mt-5 scroll-mt-10 text-base font-semibold text-zinc-950 lg:scroll-mt-0 dark:text-white">Code</h3>
                 @if ($nested)
                     @foreach ($code as $case => $caseCode)
                         <h4 class="mt-4 text-sm font-semibold text-zinc-800 dark:text-zinc-200">{{ $case }}</h4>
@@ -126,7 +126,7 @@
                             }
                         }
                     @endphp
-                    <div id="{{ $slug }}" class="mt-6 scroll-mt-28 lg:scroll-mt-20">
+                    <div id="{{ $slug }}" class="mt-6 scroll-mt-10 lg:scroll-mt-0">
                         @if (count($cases) > 1)
                             <h3 class="text-base font-semibold text-zinc-950 dark:text-white">{{ $case }}</h3>
                         @endif

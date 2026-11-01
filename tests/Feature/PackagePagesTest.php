@@ -426,14 +426,26 @@ class PackagePagesTest extends TestCase
         $this->assertStringContainsString('1 pass, 0 fail, 0 skipped, 1 not reported', $text);
     }
 
-    public function test_a_note_every_verification_report_shares_is_shown_once(): void
+    public function test_a_topic_states_its_note_symbols_and_errors_once(): void
     {
-        $phplyr = Package::find('phplyr');
-        $text = html_entity_decode(strip_tags($this->get($phplyr->url('verification.topic', ['id' => 'dplyr']))->assertOk()->getContent()));
-        $this->assertSame(1, substr_count($text, 'n_compared counts the assertions in each test.'));
+        $this->fixtureRecord('phiz', 'verifications', 'specs', [
+            'title' => 'Specifications',
+            'label' => 'Specifications',
+            'note' => 'Values compared after JSON encoding.',
+            'comparison' => [['id' => 'values', 'kind' => 'tolerance', 'applies_to' => 'Numbers', 'atol' => 1e-9, 'rtol' => 1e-9, 'rel_floor' => 1]],
+            'cases' => [
+                ['name' => 'bar', 'quantity' => 'spec', 'rule' => 'values', 'max_abs_error' => 0.0, 'max_rel_error' => 0.0, 'status' => 'pass'],
+                ['name' => 'line', 'quantity' => 'spec', 'rule' => 'values', 'max_abs_error' => 0.0, 'max_rel_error' => 0.0, 'status' => 'pass'],
+            ],
+        ]);
+        $text = html_entity_decode(strip_tags($this->get(Package::find('phiz')->url('verification.topic', ['id' => 'specs']))->assertOk()->getContent()));
+        $this->assertSame(1, substr_count($text, 'Values compared after JSON encoding.'));
         $this->assertSame(1, substr_count($text, 'x: package value; r: reference value.'));
         $this->assertStringContainsString('Absolute error: |x − r|.', $text);
-        $this->assertStringContainsString('Relative error: |x − r| /', $text);
+        $this->assertStringContainsString('Relative error: |x − r| / max(|r|, 1).', $text);
+        // The cases show the rule's criterion, never its id.
+        $this->assertStringContainsString('|x − r| ≤ 1e-9 + 1e-9 × max(|r|, 1)', $text);
+        $this->assertDoesNotMatchRegularExpression('/\(values\)/', $text);
     }
 
     public function test_old_evidence_urls_redirect_to_their_topics(): void

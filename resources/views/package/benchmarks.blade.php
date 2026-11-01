@@ -42,7 +42,7 @@
                                 $measured = [Str::ucfirst($record['measure'] ?? 'time'), ...array_column(Results::memoryMetrics($record), 'label')];
                                 $date = isset($record['environment']['date']) ? Str::before($record['environment']['date'], 'T') : null;
                             @endphp
-                            <tr id="{{ $record['id'] }}" class="scroll-mt-28 align-top lg:scroll-mt-20">
+                            <tr id="{{ $record['id'] }}" class="scroll-mt-10 align-top lg:scroll-mt-0">
                                 <th scope="row" class="py-2.5 pr-4 font-normal">
                                     <a href="{{ $topics[$record['id']] }}" class="font-medium text-php-700 hover:text-php-600 dark:text-php-300 dark:hover:text-php-200">{{ Results::label($record) }}</a>
                                     @if (! empty($record['workload']))
@@ -59,7 +59,7 @@
             </div>
 
             @if ($gap)
-                <h2 id="not-measured" class="mt-10 scroll-mt-28 text-xl font-semibold tracking-tight lg:scroll-mt-20">Not measured</h2>
+                <h2 id="not-measured" class="mt-8 scroll-mt-10 text-xl font-semibold tracking-tight lg:scroll-mt-0">Not measured</h2>
                 <p class="mt-3 max-w-3xl text-zinc-700 dark:text-zinc-300">{{ $gap }}</p>
             @endif
         </x-sidebar-page>

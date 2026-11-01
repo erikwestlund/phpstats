@@ -43,7 +43,7 @@
         @endforeach
     </nav>
 
-    <article @class(['min-w-0 py-6', 'max-w-3xl' => ! $wide])>
+    <article @class(['min-w-0 break-words py-6', 'max-w-3xl' => ! $wide])>
         @if ($eyebrow)
             <p class="text-sm font-semibold text-(--l600) dark:text-(--l300)">{{ $eyebrow }}</p>
         @endif
