@@ -1,10 +1,10 @@
 {{--
     One case of a landing benchmark workload, laid out like the verification
-    tabs: each implementation's code in tabs on the left, and on the right
-    phiz bar charts of elapsed time and memory stacked one above the other,
-    the workload's note, and the details (what memory measures, the
-    statistic, and the machine) in small text, then the link to the full
-    record. The numbers are also in a table for screen readers.
+    tabs: each implementation's code in tabs on the left, with the details
+    (the statistic, the machine, and what memory measures) in small text and
+    the link to the full record below it; and on the right phiz bar charts of
+    elapsed time and memory stacked one above the other, then the workload's
+    note. The numbers are also in a table for screen readers.
     landing.performance renders it once per workload, or once per case under
     subtabs when a record measures the workload more than one way.
 --}}
@@ -19,6 +19,7 @@
     $first = array_key_first($code);
 @endphp
 <div class="mt-6 grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
+    <div class="min-w-0">
     @if ($code !== [])
         <div x-data="{ impl: @js($first) }" class="code-ink min-w-0 overflow-hidden rounded-xl shadow-lg shadow-php-950/10 ring-1 ring-black/5 dark:ring-(--color-ink-line)">
             <div role="tablist" aria-label="{{ $w['label'] }} code" class="flex flex-wrap gap-1 border-b border-white/5 px-3 py-2 text-xs">
@@ -37,6 +38,19 @@
             @endforeach
         </div>
     @endif
+        <p class="mt-4 text-xs leading-5 text-zinc-500 dark:text-zinc-400">
+            Medians of {{ $env['repeats'] }} runs, each in a fresh process, on {{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.
+            @if ($footprint)
+                Memory is the peak memory footprint: the most memory the process held at once, including the runtime, the data, and native allocations, but not file pages the system can drop.
+            @else
+                Memory is the peak resident set size, including file pages the process mapped.
+            @endif
+            The full record gives versions, thread settings, and where timing starts and stops.
+        </p>
+        <a href="{{ $w['url'] }}" aria-label="View the complete {{ strtolower($w['label']) }} benchmark on {{ $w['name'] }}'s Benchmarks page" class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
+            View the complete benchmark <x-heroicon-m-arrow-right class="size-4" />
+        </a>
+    </div>
 
     <div class="min-w-0">
         <div class="space-y-6" aria-hidden="true">
@@ -57,17 +71,5 @@
             <p class="mt-4 text-[0.9375rem] leading-relaxed text-zinc-700 dark:text-zinc-300">{!! \App\Content\Libraries::mono(e($w['note'])) !!}</p>
         @endif
 
-        <p class="mt-4 text-xs leading-5 text-zinc-500 dark:text-zinc-400">
-            Medians of {{ $env['repeats'] }} runs, each in a fresh process, on {{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.
-            @if ($footprint)
-                Memory is the peak memory footprint: the most memory the process held at once, including the runtime, the data, and native allocations, but not file pages the system can drop.
-            @else
-                Memory is the peak resident set size, including file pages the process mapped.
-            @endif
-            The full record gives versions, thread settings, and where timing starts and stops.
-        </p>
-        <a href="{{ $w['url'] }}" aria-label="View the complete {{ strtolower($w['label']) }} benchmark on {{ $w['name'] }}'s Benchmarks page" class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
-            View the complete benchmark <x-heroicon-m-arrow-right class="size-4" />
-        </a>
     </div>
 </div>
