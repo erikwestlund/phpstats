@@ -2,26 +2,18 @@
     "nav": [
         {
             "title": "Overview",
-            "path": "index"
+            "path": "index",
+            "section": "Getting started"
         },
         {
             "title": "Getting started",
-            "path": "getting-started"
-        },
-        {
-            "title": "Read a CSV file into a typed table",
-            "path": "examples/read-a-csv",
-            "section": "Examples"
-        },
-        {
-            "title": "Query a database table",
-            "path": "examples/database-table",
-            "section": "Examples"
+            "path": "getting-started",
+            "section": "Getting started"
         },
         {
             "title": "Coming from tibble",
             "path": "coming-from-tibble",
-            "section": "Guides"
+            "section": "Getting started"
         },
         {
             "title": "Types",
@@ -44,19 +36,79 @@
             "section": "Guides"
         },
         {
-            "title": "Laravel",
-            "path": "laravel",
-            "section": "Guides"
-        },
-        {
             "title": "Backends",
             "path": "backends",
             "section": "Guides"
         },
         {
+            "title": "Laravel",
+            "path": "laravel",
+            "section": "Guides"
+        },
+        {
+            "title": "Functions and methods",
+            "path": "reference/index",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Creating and loading tables",
+            "path": "reference/creating",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Rows and columns",
+            "path": "reference/rows-and-columns",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Grouping and summaries",
+            "path": "reference/grouping",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Joins and reshaping",
+            "path": "reference/combining",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Expression functions",
+            "path": "reference/expressions",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "String and date functions",
+            "path": "reference/strings-and-dates",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Types and conversion",
+            "path": "reference/types",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Output",
+            "path": "reference/output",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "SqlTable, PolarsTable, and Laravel",
+            "path": "reference/backends",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Read a CSV file into a typed table",
+            "path": "examples/read-a-csv",
+            "section": "Examples"
+        },
+        {
+            "title": "Query a database table",
+            "path": "examples/database-table",
+            "section": "Examples"
+        },
+        {
             "title": "The Table contract",
             "path": "contract",
-            "section": "Reference"
+            "section": "Contributing"
         },
         {
             "title": "Development",
@@ -132,7 +184,7 @@
                 },
                 {
                     "id": "verbs",
-                    "text": "Verbs",
+                    "text": "Methods",
                     "level": 3
                 },
                 {
@@ -177,6 +229,11 @@
                     "level": 2
                 },
                 {
+                    "id": "functions-and-methods-reference",
+                    "text": "Functions and methods reference",
+                    "level": 2
+                },
+                {
                     "id": "documentation",
                     "text": "Documentation",
                     "level": 2
@@ -204,7 +261,7 @@
                 },
                 {
                     "id": "using-expressions-with-verbs",
-                    "text": "Using expressions with verbs",
+                    "text": "Using expressions with table methods",
                     "level": 2
                 },
                 {
@@ -315,8 +372,8 @@
             "title": "phibble",
             "headings": [
                 {
-                    "id": "guides",
-                    "text": "Guides",
+                    "id": "documentation",
+                    "text": "Documentation",
                     "level": 2
                 },
                 {
@@ -450,6 +507,1826 @@
                     "id": "running-the-examples",
                     "text": "Running the examples",
                     "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/backends": {
+            "title": "SqlTable, PolarsTable, and Laravel",
+            "headings": [
+                {
+                    "id": "sqltable",
+                    "text": "SqlTable",
+                    "level": 2
+                },
+                {
+                    "id": "showquery",
+                    "text": "->showQuery()",
+                    "level": 3
+                },
+                {
+                    "id": "bindings",
+                    "text": "->bindings()",
+                    "level": 3
+                },
+                {
+                    "id": "dialect",
+                    "text": "->dialect()",
+                    "level": 3
+                },
+                {
+                    "id": "dialect-for",
+                    "text": "Dialect::for()",
+                    "level": 3
+                },
+                {
+                    "id": "dialect-tryfor",
+                    "text": "Dialect::tryFor()",
+                    "level": 3
+                },
+                {
+                    "id": "polarstable",
+                    "text": "PolarsTable",
+                    "level": 2
+                },
+                {
+                    "id": "polars",
+                    "text": "->polars()",
+                    "level": 3
+                },
+                {
+                    "id": "laravel",
+                    "text": "Laravel",
+                    "level": 2
+                },
+                {
+                    "id": "phibbleserviceprovider-registermacros",
+                    "text": "PhibbleServiceProvider::registerMacros()",
+                    "level": 3
+                },
+                {
+                    "id": "macro-phibble",
+                    "text": "->phibble()",
+                    "level": 3
+                },
+                {
+                    "id": "macro-todataframe",
+                    "text": "->toDataFrame()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/combining": {
+            "title": "Joins and reshaping",
+            "headings": [
+                {
+                    "id": "joins",
+                    "text": "Joins",
+                    "level": 2
+                },
+                {
+                    "id": "join",
+                    "text": "->join()",
+                    "level": 3
+                },
+                {
+                    "id": "binding",
+                    "text": "Binding",
+                    "level": 2
+                },
+                {
+                    "id": "dataframe-concat",
+                    "text": "DataFrame::concat()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-bindcols",
+                    "text": "DataFrame::bindCols()",
+                    "level": 3
+                },
+                {
+                    "id": "reshaping",
+                    "text": "Reshaping",
+                    "level": 2
+                },
+                {
+                    "id": "pivotlongerspec",
+                    "text": "->pivotLongerSpec()",
+                    "level": 3
+                },
+                {
+                    "id": "pivotwiderspec",
+                    "text": "->pivotWiderSpec()",
+                    "level": 3
+                },
+                {
+                    "id": "nest",
+                    "text": "->nest()",
+                    "level": 3
+                },
+                {
+                    "id": "unnest",
+                    "text": "->unnest()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/creating": {
+            "title": "Creating and loading tables",
+            "headings": [
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "fn-tibble",
+                    "text": "tibble()",
+                    "level": 3
+                },
+                {
+                    "id": "fn-tribble",
+                    "text": "tribble()",
+                    "level": 3
+                },
+                {
+                    "id": "fn-as_tibble",
+                    "text": "as_tibble()",
+                    "level": 3
+                },
+                {
+                    "id": "fn-enframe",
+                    "text": "enframe()",
+                    "level": 3
+                },
+                {
+                    "id": "fn-tbl",
+                    "text": "tbl()",
+                    "level": 3
+                },
+                {
+                    "id": "fn-polars",
+                    "text": "polars()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe",
+                    "text": "DataFrame",
+                    "level": 2
+                },
+                {
+                    "id": "dataframe-fromrows",
+                    "text": "DataFrame::fromRows()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-fromcolumns",
+                    "text": "DataFrame::fromColumns()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-fromcsv",
+                    "text": "DataFrame::fromCsv()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-fromcsvstring",
+                    "text": "DataFrame::fromCsvString()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-fromcsvchunked",
+                    "text": "DataFrame::fromCsvChunked()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-csvchunks",
+                    "text": "DataFrame::csvChunks()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-fromjson",
+                    "text": "DataFrame::fromJson()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-frompdo",
+                    "text": "DataFrame::fromPdo()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-fromquery",
+                    "text": "DataFrame::fromQuery()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-fromcollection",
+                    "text": "DataFrame::fromCollection()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-fromsource",
+                    "text": "DataFrame::fromSource()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-tibble",
+                    "text": "DataFrame::tibble()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-tribble",
+                    "text": "DataFrame::tribble()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-astibble",
+                    "text": "DataFrame::asTibble()",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe-enframe",
+                    "text": "DataFrame::enframe()",
+                    "level": 3
+                },
+                {
+                    "id": "sqltable",
+                    "text": "SqlTable",
+                    "level": 2
+                },
+                {
+                    "id": "sqltable-table",
+                    "text": "SqlTable::table()",
+                    "level": 3
+                },
+                {
+                    "id": "sqltable-query",
+                    "text": "SqlTable::query()",
+                    "level": 3
+                },
+                {
+                    "id": "sqltable-fromquery",
+                    "text": "SqlTable::fromQuery()",
+                    "level": 3
+                },
+                {
+                    "id": "sqltable-fromsource",
+                    "text": "SqlTable::fromSource()",
+                    "level": 3
+                },
+                {
+                    "id": "polarstable",
+                    "text": "PolarsTable",
+                    "level": 2
+                },
+                {
+                    "id": "polarstable-fromtable",
+                    "text": "PolarsTable::fromTable()",
+                    "level": 3
+                },
+                {
+                    "id": "polarstable-frompolars",
+                    "text": "PolarsTable::fromPolars()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/expressions": {
+            "title": "Expression functions",
+            "headings": [
+                {
+                    "id": "columns-and-literals",
+                    "text": "Columns and literals",
+                    "level": 2
+                },
+                {
+                    "id": "col",
+                    "text": "col()",
+                    "level": 3
+                },
+                {
+                    "id": "lit",
+                    "text": "lit()",
+                    "level": 3
+                },
+                {
+                    "id": "call",
+                    "text": "call()",
+                    "level": 3
+                },
+                {
+                    "id": "desc",
+                    "text": "desc()",
+                    "level": 3
+                },
+                {
+                    "id": "operators",
+                    "text": "Operators",
+                    "level": 2
+                },
+                {
+                    "id": "expr-add",
+                    "text": "Expr->add()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-sub",
+                    "text": "Expr->sub()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-mul",
+                    "text": "Expr->mul()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-div",
+                    "text": "Expr->div()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-mod",
+                    "text": "Expr->mod()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-pow",
+                    "text": "Expr->pow()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-neg",
+                    "text": "Expr->neg()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-eq",
+                    "text": "Expr->eq()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-ne",
+                    "text": "Expr->ne()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-lt",
+                    "text": "Expr->lt()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-le",
+                    "text": "Expr->le()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-gt",
+                    "text": "Expr->gt()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-ge",
+                    "text": "Expr->ge()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-and",
+                    "text": "Expr->and()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-or",
+                    "text": "Expr->or()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-not",
+                    "text": "Expr->not()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-isna",
+                    "text": "Expr->isNa()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-isin",
+                    "text": "Expr->isIn()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-between",
+                    "text": "Expr->between()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-desc",
+                    "text": "Expr->desc()",
+                    "level": 3
+                },
+                {
+                    "id": "conditionals-and-missing-values",
+                    "text": "Conditionals and missing values",
+                    "level": 2
+                },
+                {
+                    "id": "is-na",
+                    "text": "is_na()",
+                    "level": 3
+                },
+                {
+                    "id": "if-else",
+                    "text": "if_else()",
+                    "level": 3
+                },
+                {
+                    "id": "case-when",
+                    "text": "case_when()",
+                    "level": 3
+                },
+                {
+                    "id": "coalesce",
+                    "text": "coalesce()",
+                    "level": 3
+                },
+                {
+                    "id": "between",
+                    "text": "between()",
+                    "level": 3
+                },
+                {
+                    "id": "na-if",
+                    "text": "na_if()",
+                    "level": 3
+                },
+                {
+                    "id": "near",
+                    "text": "near()",
+                    "level": 3
+                },
+                {
+                    "id": "math",
+                    "text": "Math",
+                    "level": 2
+                },
+                {
+                    "id": "abs",
+                    "text": "abs()",
+                    "level": 3
+                },
+                {
+                    "id": "sqrt",
+                    "text": "sqrt()",
+                    "level": 3
+                },
+                {
+                    "id": "exp",
+                    "text": "exp()",
+                    "level": 3
+                },
+                {
+                    "id": "log",
+                    "text": "log()",
+                    "level": 3
+                },
+                {
+                    "id": "log10",
+                    "text": "log10()",
+                    "level": 3
+                },
+                {
+                    "id": "round",
+                    "text": "round()",
+                    "level": 3
+                },
+                {
+                    "id": "floor",
+                    "text": "floor()",
+                    "level": 3
+                },
+                {
+                    "id": "ceiling",
+                    "text": "ceiling()",
+                    "level": 3
+                },
+                {
+                    "id": "conversion",
+                    "text": "Conversion",
+                    "level": 2
+                },
+                {
+                    "id": "as-int",
+                    "text": "as_int()",
+                    "level": 3
+                },
+                {
+                    "id": "as-float",
+                    "text": "as_float()",
+                    "level": 3
+                },
+                {
+                    "id": "as-string",
+                    "text": "as_string()",
+                    "level": 3
+                },
+                {
+                    "id": "as-bool",
+                    "text": "as_bool()",
+                    "level": 3
+                },
+                {
+                    "id": "aggregates",
+                    "text": "Aggregates",
+                    "level": 2
+                },
+                {
+                    "id": "n",
+                    "text": "n()",
+                    "level": 3
+                },
+                {
+                    "id": "sum",
+                    "text": "sum()",
+                    "level": 3
+                },
+                {
+                    "id": "mean",
+                    "text": "mean()",
+                    "level": 3
+                },
+                {
+                    "id": "median",
+                    "text": "median()",
+                    "level": 3
+                },
+                {
+                    "id": "min",
+                    "text": "min()",
+                    "level": 3
+                },
+                {
+                    "id": "max",
+                    "text": "max()",
+                    "level": 3
+                },
+                {
+                    "id": "sd",
+                    "text": "sd()",
+                    "level": 3
+                },
+                {
+                    "id": "var-",
+                    "text": "var_()",
+                    "level": 3
+                },
+                {
+                    "id": "quantile",
+                    "text": "quantile()",
+                    "level": 3
+                },
+                {
+                    "id": "iqr",
+                    "text": "iqr()",
+                    "level": 3
+                },
+                {
+                    "id": "n-distinct",
+                    "text": "n_distinct()",
+                    "level": 3
+                },
+                {
+                    "id": "first",
+                    "text": "first()",
+                    "level": 3
+                },
+                {
+                    "id": "last",
+                    "text": "last()",
+                    "level": 3
+                },
+                {
+                    "id": "nth",
+                    "text": "nth()",
+                    "level": 3
+                },
+                {
+                    "id": "any",
+                    "text": "any()",
+                    "level": 3
+                },
+                {
+                    "id": "all",
+                    "text": "all()",
+                    "level": 3
+                },
+                {
+                    "id": "window-functions",
+                    "text": "Window functions",
+                    "level": 2
+                },
+                {
+                    "id": "lag",
+                    "text": "lag()",
+                    "level": 3
+                },
+                {
+                    "id": "lead",
+                    "text": "lead()",
+                    "level": 3
+                },
+                {
+                    "id": "row-number",
+                    "text": "row_number()",
+                    "level": 3
+                },
+                {
+                    "id": "min-rank",
+                    "text": "min_rank()",
+                    "level": 3
+                },
+                {
+                    "id": "dense-rank",
+                    "text": "dense_rank()",
+                    "level": 3
+                },
+                {
+                    "id": "percent-rank",
+                    "text": "percent_rank()",
+                    "level": 3
+                },
+                {
+                    "id": "cume-dist",
+                    "text": "cume_dist()",
+                    "level": 3
+                },
+                {
+                    "id": "ntile",
+                    "text": "ntile()",
+                    "level": 3
+                },
+                {
+                    "id": "cumsum",
+                    "text": "cumsum()",
+                    "level": 3
+                },
+                {
+                    "id": "cumprod",
+                    "text": "cumprod()",
+                    "level": 3
+                },
+                {
+                    "id": "cummean",
+                    "text": "cummean()",
+                    "level": 3
+                },
+                {
+                    "id": "cummin",
+                    "text": "cummin()",
+                    "level": 3
+                },
+                {
+                    "id": "cummax",
+                    "text": "cummax()",
+                    "level": 3
+                },
+                {
+                    "id": "cumall",
+                    "text": "cumall()",
+                    "level": 3
+                },
+                {
+                    "id": "cumany",
+                    "text": "cumany()",
+                    "level": 3
+                },
+                {
+                    "id": "consecutive-id",
+                    "text": "consecutive_id()",
+                    "level": 3
+                },
+                {
+                    "id": "expression-objects",
+                    "text": "Expression objects",
+                    "level": 2
+                },
+                {
+                    "id": "expr-of",
+                    "text": "Expr::of()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-fromarray",
+                    "text": "Expr::fromArray()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-toarray",
+                    "text": "Expr->toArray()",
+                    "level": 3
+                },
+                {
+                    "id": "expr-columns",
+                    "text": "Expr->columns()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/grouping": {
+            "title": "Grouping and summaries",
+            "headings": [
+                {
+                    "id": "grouping",
+                    "text": "Grouping",
+                    "level": 2
+                },
+                {
+                    "id": "groupby",
+                    "text": "->groupBy()",
+                    "level": 3
+                },
+                {
+                    "id": "ungroup",
+                    "text": "->ungroup()",
+                    "level": 3
+                },
+                {
+                    "id": "groups",
+                    "text": "->groups()",
+                    "level": 3
+                },
+                {
+                    "id": "dropsemptygroups",
+                    "text": "->dropsEmptyGroups()",
+                    "level": 3
+                },
+                {
+                    "id": "ngroups",
+                    "text": "->ngroups()",
+                    "level": 3
+                },
+                {
+                    "id": "rowwise",
+                    "text": "->rowwise()",
+                    "level": 3
+                },
+                {
+                    "id": "isrowwise",
+                    "text": "->isRowwise()",
+                    "level": 3
+                },
+                {
+                    "id": "summaries",
+                    "text": "Summaries",
+                    "level": 2
+                },
+                {
+                    "id": "summarise",
+                    "text": "->summarise()",
+                    "level": 3
+                },
+                {
+                    "id": "summarize",
+                    "text": "->summarize()",
+                    "level": 3
+                },
+                {
+                    "id": "per-group-operations",
+                    "text": "Per-group operations",
+                    "level": 2
+                },
+                {
+                    "id": "filtergroups",
+                    "text": "->filterGroups()",
+                    "level": 3
+                },
+                {
+                    "id": "mutategroups",
+                    "text": "->mutateGroups()",
+                    "level": 3
+                },
+                {
+                    "id": "eachgroup",
+                    "text": "->eachGroup()",
+                    "level": 3
+                },
+                {
+                    "id": "grouprows",
+                    "text": "->groupRows()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/index": {
+            "title": "Functions and methods",
+            "headings": [
+                {
+                    "id": "creating-and-loading-tables",
+                    "text": "Creating and loading tables",
+                    "level": 2
+                },
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe",
+                    "text": "DataFrame",
+                    "level": 3
+                },
+                {
+                    "id": "sqltable",
+                    "text": "SqlTable",
+                    "level": 3
+                },
+                {
+                    "id": "polarstable",
+                    "text": "PolarsTable",
+                    "level": 3
+                },
+                {
+                    "id": "rows-and-columns",
+                    "text": "Rows and columns",
+                    "level": 2
+                },
+                {
+                    "id": "size-and-names",
+                    "text": "Size and names",
+                    "level": 3
+                },
+                {
+                    "id": "values",
+                    "text": "Values",
+                    "level": 3
+                },
+                {
+                    "id": "selecting-and-renaming",
+                    "text": "Selecting and renaming",
+                    "level": 3
+                },
+                {
+                    "id": "filtering-and-sorting",
+                    "text": "Filtering and sorting",
+                    "level": 3
+                },
+                {
+                    "id": "adding-columns-and-rows",
+                    "text": "Adding columns and rows",
+                    "level": 3
+                },
+                {
+                    "id": "rows-by-position",
+                    "text": "Rows by position",
+                    "level": 3
+                },
+                {
+                    "id": "grouping-and-summaries",
+                    "text": "Grouping and summaries",
+                    "level": 2
+                },
+                {
+                    "id": "grouping",
+                    "text": "Grouping",
+                    "level": 3
+                },
+                {
+                    "id": "summaries",
+                    "text": "Summaries",
+                    "level": 3
+                },
+                {
+                    "id": "per-group-operations",
+                    "text": "Per-group operations",
+                    "level": 3
+                },
+                {
+                    "id": "joins-and-reshaping",
+                    "text": "Joins and reshaping",
+                    "level": 2
+                },
+                {
+                    "id": "joins",
+                    "text": "Joins",
+                    "level": 3
+                },
+                {
+                    "id": "binding",
+                    "text": "Binding",
+                    "level": 3
+                },
+                {
+                    "id": "reshaping",
+                    "text": "Reshaping",
+                    "level": 3
+                },
+                {
+                    "id": "expression-functions",
+                    "text": "Expression functions",
+                    "level": 2
+                },
+                {
+                    "id": "columns-and-literals",
+                    "text": "Columns and literals",
+                    "level": 3
+                },
+                {
+                    "id": "operators",
+                    "text": "Operators",
+                    "level": 3
+                },
+                {
+                    "id": "conditionals-and-missing-values",
+                    "text": "Conditionals and missing values",
+                    "level": 3
+                },
+                {
+                    "id": "math",
+                    "text": "Math",
+                    "level": 3
+                },
+                {
+                    "id": "conversion",
+                    "text": "Conversion",
+                    "level": 3
+                },
+                {
+                    "id": "aggregates",
+                    "text": "Aggregates",
+                    "level": 3
+                },
+                {
+                    "id": "window-functions",
+                    "text": "Window functions",
+                    "level": 3
+                },
+                {
+                    "id": "expression-objects",
+                    "text": "Expression objects",
+                    "level": 3
+                },
+                {
+                    "id": "string-and-date-functions",
+                    "text": "String and date functions",
+                    "level": 2
+                },
+                {
+                    "id": "strings",
+                    "text": "Strings",
+                    "level": 3
+                },
+                {
+                    "id": "patterns",
+                    "text": "Patterns",
+                    "level": 3
+                },
+                {
+                    "id": "parsing-dates",
+                    "text": "Parsing dates",
+                    "level": 3
+                },
+                {
+                    "id": "date-parts",
+                    "text": "Date parts",
+                    "level": 3
+                },
+                {
+                    "id": "rounding-and-differences",
+                    "text": "Rounding and differences",
+                    "level": 3
+                },
+                {
+                    "id": "periods",
+                    "text": "Periods",
+                    "level": 3
+                },
+                {
+                    "id": "time-zones-and-the-clock",
+                    "text": "Time zones and the clock",
+                    "level": 3
+                },
+                {
+                    "id": "types-and-conversion",
+                    "text": "Types and conversion",
+                    "level": 2
+                },
+                {
+                    "id": "column-types",
+                    "text": "Column types",
+                    "level": 3
+                },
+                {
+                    "id": "factors",
+                    "text": "Factors",
+                    "level": 3
+                },
+                {
+                    "id": "times-of-day",
+                    "text": "Times of day",
+                    "level": 3
+                },
+                {
+                    "id": "model-data",
+                    "text": "Model data",
+                    "level": 3
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "php-values",
+                    "text": "PHP values",
+                    "level": 3
+                },
+                {
+                    "id": "csv-and-json",
+                    "text": "CSV and JSON",
+                    "level": 3
+                },
+                {
+                    "id": "printing",
+                    "text": "Printing",
+                    "level": 3
+                },
+                {
+                    "id": "sqltable-polarstable-and-laravel",
+                    "text": "SqlTable, PolarsTable, and Laravel",
+                    "level": 2
+                },
+                {
+                    "id": "sqltable-1",
+                    "text": "SqlTable",
+                    "level": 3
+                },
+                {
+                    "id": "polarstable-1",
+                    "text": "PolarsTable",
+                    "level": 3
+                },
+                {
+                    "id": "laravel",
+                    "text": "Laravel",
+                    "level": 3
+                },
+                {
+                    "id": "not-listed",
+                    "text": "Not listed",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/output": {
+            "title": "Output",
+            "headings": [
+                {
+                    "id": "php-values",
+                    "text": "PHP values",
+                    "level": 2
+                },
+                {
+                    "id": "torows",
+                    "text": "->toRows()",
+                    "level": 3
+                },
+                {
+                    "id": "tocolumns",
+                    "text": "->toColumns()",
+                    "level": 3
+                },
+                {
+                    "id": "collect",
+                    "text": "->collect()",
+                    "level": 3
+                },
+                {
+                    "id": "deframe",
+                    "text": "->deframe()",
+                    "level": 3
+                },
+                {
+                    "id": "fn-deframe",
+                    "text": "deframe()",
+                    "level": 3
+                },
+                {
+                    "id": "tocollection",
+                    "text": "->toCollection()",
+                    "level": 3
+                },
+                {
+                    "id": "csv-and-json",
+                    "text": "CSV and JSON",
+                    "level": 2
+                },
+                {
+                    "id": "tocsv",
+                    "text": "->toCsv()",
+                    "level": 3
+                },
+                {
+                    "id": "writecsv",
+                    "text": "->writeCsv()",
+                    "level": 3
+                },
+                {
+                    "id": "tojson",
+                    "text": "->toJson()",
+                    "level": 3
+                },
+                {
+                    "id": "printing",
+                    "text": "Printing",
+                    "level": 2
+                },
+                {
+                    "id": "__tostring",
+                    "text": "->__toString()",
+                    "level": 3
+                },
+                {
+                    "id": "format",
+                    "text": "->format()",
+                    "level": 3
+                },
+                {
+                    "id": "glimpse",
+                    "text": "->glimpse()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/rows-and-columns": {
+            "title": "Rows and columns",
+            "headings": [
+                {
+                    "id": "size-and-names",
+                    "text": "Size and names",
+                    "level": 2
+                },
+                {
+                    "id": "columns",
+                    "text": "->columns()",
+                    "level": 3
+                },
+                {
+                    "id": "types",
+                    "text": "->types()",
+                    "level": 3
+                },
+                {
+                    "id": "type",
+                    "text": "->type()",
+                    "level": 3
+                },
+                {
+                    "id": "nrow",
+                    "text": "->nrow()",
+                    "level": 3
+                },
+                {
+                    "id": "ncol",
+                    "text": "->ncol()",
+                    "level": 3
+                },
+                {
+                    "id": "count",
+                    "text": "->count()",
+                    "level": 3
+                },
+                {
+                    "id": "has",
+                    "text": "->has()",
+                    "level": 3
+                },
+                {
+                    "id": "values",
+                    "text": "Values",
+                    "level": 2
+                },
+                {
+                    "id": "column",
+                    "text": "->column()",
+                    "level": 3
+                },
+                {
+                    "id": "row",
+                    "text": "->row()",
+                    "level": 3
+                },
+                {
+                    "id": "row-get",
+                    "text": "Row->get()",
+                    "level": 3
+                },
+                {
+                    "id": "row-has",
+                    "text": "Row->has()",
+                    "level": 3
+                },
+                {
+                    "id": "row-toarray",
+                    "text": "Row->toArray()",
+                    "level": 3
+                },
+                {
+                    "id": "selecting-and-renaming",
+                    "text": "Selecting and renaming",
+                    "level": 2
+                },
+                {
+                    "id": "select",
+                    "text": "->select()",
+                    "level": 3
+                },
+                {
+                    "id": "rename",
+                    "text": "->rename()",
+                    "level": 3
+                },
+                {
+                    "id": "namerepair-repair",
+                    "text": "NameRepair::repair()",
+                    "level": 3
+                },
+                {
+                    "id": "filtering-and-sorting",
+                    "text": "Filtering and sorting",
+                    "level": 2
+                },
+                {
+                    "id": "filter",
+                    "text": "->filter()",
+                    "level": 3
+                },
+                {
+                    "id": "arrange",
+                    "text": "->arrange()",
+                    "level": 3
+                },
+                {
+                    "id": "distinct",
+                    "text": "->distinct()",
+                    "level": 3
+                },
+                {
+                    "id": "dropna",
+                    "text": "->dropNa()",
+                    "level": 3
+                },
+                {
+                    "id": "adding-columns-and-rows",
+                    "text": "Adding columns and rows",
+                    "level": 2
+                },
+                {
+                    "id": "mutate",
+                    "text": "->mutate()",
+                    "level": 3
+                },
+                {
+                    "id": "withcolumn",
+                    "text": "->withColumn()",
+                    "level": 3
+                },
+                {
+                    "id": "addcolumn",
+                    "text": "->addColumn()",
+                    "level": 3
+                },
+                {
+                    "id": "addrow",
+                    "text": "->addRow()",
+                    "level": 3
+                },
+                {
+                    "id": "rows-by-position",
+                    "text": "Rows by position",
+                    "level": 2
+                },
+                {
+                    "id": "slice",
+                    "text": "->slice()",
+                    "level": 3
+                },
+                {
+                    "id": "head",
+                    "text": "->head()",
+                    "level": 3
+                },
+                {
+                    "id": "tail",
+                    "text": "->tail()",
+                    "level": 3
+                },
+                {
+                    "id": "take",
+                    "text": "->take()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/strings-and-dates": {
+            "title": "String and date functions",
+            "headings": [
+                {
+                    "id": "strings",
+                    "text": "Strings",
+                    "level": 2
+                },
+                {
+                    "id": "str-length",
+                    "text": "str_length()",
+                    "level": 3
+                },
+                {
+                    "id": "str-lower",
+                    "text": "str_lower()",
+                    "level": 3
+                },
+                {
+                    "id": "str-upper",
+                    "text": "str_upper()",
+                    "level": 3
+                },
+                {
+                    "id": "str-to-lower",
+                    "text": "str_to_lower()",
+                    "level": 3
+                },
+                {
+                    "id": "str-to-upper",
+                    "text": "str_to_upper()",
+                    "level": 3
+                },
+                {
+                    "id": "str-to-title",
+                    "text": "str_to_title()",
+                    "level": 3
+                },
+                {
+                    "id": "str-trim",
+                    "text": "str_trim()",
+                    "level": 3
+                },
+                {
+                    "id": "str-squish",
+                    "text": "str_squish()",
+                    "level": 3
+                },
+                {
+                    "id": "str-pad",
+                    "text": "str_pad()",
+                    "level": 3
+                },
+                {
+                    "id": "str-trunc",
+                    "text": "str_trunc()",
+                    "level": 3
+                },
+                {
+                    "id": "str-sub",
+                    "text": "str_sub()",
+                    "level": 3
+                },
+                {
+                    "id": "paste",
+                    "text": "paste()",
+                    "level": 3
+                },
+                {
+                    "id": "paste0",
+                    "text": "paste0()",
+                    "level": 3
+                },
+                {
+                    "id": "patterns",
+                    "text": "Patterns",
+                    "level": 2
+                },
+                {
+                    "id": "fixed",
+                    "text": "fixed()",
+                    "level": 3
+                },
+                {
+                    "id": "regex",
+                    "text": "regex()",
+                    "level": 3
+                },
+                {
+                    "id": "str-detect",
+                    "text": "str_detect()",
+                    "level": 3
+                },
+                {
+                    "id": "str-starts",
+                    "text": "str_starts()",
+                    "level": 3
+                },
+                {
+                    "id": "str-ends",
+                    "text": "str_ends()",
+                    "level": 3
+                },
+                {
+                    "id": "str-count",
+                    "text": "str_count()",
+                    "level": 3
+                },
+                {
+                    "id": "str-extract",
+                    "text": "str_extract()",
+                    "level": 3
+                },
+                {
+                    "id": "str-extract-all",
+                    "text": "str_extract_all()",
+                    "level": 3
+                },
+                {
+                    "id": "str-replace",
+                    "text": "str_replace()",
+                    "level": 3
+                },
+                {
+                    "id": "str-replace-all",
+                    "text": "str_replace_all()",
+                    "level": 3
+                },
+                {
+                    "id": "str-split",
+                    "text": "str_split()",
+                    "level": 3
+                },
+                {
+                    "id": "str-split-i",
+                    "text": "str_split_i()",
+                    "level": 3
+                },
+                {
+                    "id": "parsing-dates",
+                    "text": "Parsing dates",
+                    "level": 2
+                },
+                {
+                    "id": "ymd",
+                    "text": "ymd()",
+                    "level": 3
+                },
+                {
+                    "id": "dmy",
+                    "text": "dmy()",
+                    "level": 3
+                },
+                {
+                    "id": "mdy",
+                    "text": "mdy()",
+                    "level": 3
+                },
+                {
+                    "id": "ymd-hms",
+                    "text": "ymd_hms()",
+                    "level": 3
+                },
+                {
+                    "id": "dmy-hms",
+                    "text": "dmy_hms()",
+                    "level": 3
+                },
+                {
+                    "id": "mdy-hms",
+                    "text": "mdy_hms()",
+                    "level": 3
+                },
+                {
+                    "id": "parse-date-time",
+                    "text": "parse_date_time()",
+                    "level": 3
+                },
+                {
+                    "id": "date-parts",
+                    "text": "Date parts",
+                    "level": 2
+                },
+                {
+                    "id": "year",
+                    "text": "year()",
+                    "level": 3
+                },
+                {
+                    "id": "quarter",
+                    "text": "quarter()",
+                    "level": 3
+                },
+                {
+                    "id": "month",
+                    "text": "month()",
+                    "level": 3
+                },
+                {
+                    "id": "day",
+                    "text": "day()",
+                    "level": 3
+                },
+                {
+                    "id": "wday",
+                    "text": "wday()",
+                    "level": 3
+                },
+                {
+                    "id": "yday",
+                    "text": "yday()",
+                    "level": 3
+                },
+                {
+                    "id": "hour",
+                    "text": "hour()",
+                    "level": 3
+                },
+                {
+                    "id": "minute",
+                    "text": "minute()",
+                    "level": 3
+                },
+                {
+                    "id": "second",
+                    "text": "second()",
+                    "level": 3
+                },
+                {
+                    "id": "rounding-and-differences",
+                    "text": "Rounding and differences",
+                    "level": 2
+                },
+                {
+                    "id": "floor-date",
+                    "text": "floor_date()",
+                    "level": 3
+                },
+                {
+                    "id": "ceiling-date",
+                    "text": "ceiling_date()",
+                    "level": 3
+                },
+                {
+                    "id": "round-date",
+                    "text": "round_date()",
+                    "level": 3
+                },
+                {
+                    "id": "difftime",
+                    "text": "difftime()",
+                    "level": 3
+                },
+                {
+                    "id": "periods",
+                    "text": "Periods",
+                    "level": 2
+                },
+                {
+                    "id": "seconds",
+                    "text": "seconds()",
+                    "level": 3
+                },
+                {
+                    "id": "minutes",
+                    "text": "minutes()",
+                    "level": 3
+                },
+                {
+                    "id": "hours",
+                    "text": "hours()",
+                    "level": 3
+                },
+                {
+                    "id": "days",
+                    "text": "days()",
+                    "level": 3
+                },
+                {
+                    "id": "weeks",
+                    "text": "weeks()",
+                    "level": 3
+                },
+                {
+                    "id": "months",
+                    "text": "months()",
+                    "level": 3
+                },
+                {
+                    "id": "years",
+                    "text": "years()",
+                    "level": 3
+                },
+                {
+                    "id": "time-zones-and-the-clock",
+                    "text": "Time zones and the clock",
+                    "level": 2
+                },
+                {
+                    "id": "with-tz",
+                    "text": "with_tz()",
+                    "level": 3
+                },
+                {
+                    "id": "force-tz",
+                    "text": "force_tz()",
+                    "level": 3
+                },
+                {
+                    "id": "today",
+                    "text": "today()",
+                    "level": 3
+                },
+                {
+                    "id": "now",
+                    "text": "now()",
+                    "level": 3
+                },
+                {
+                    "id": "clock-freeze",
+                    "text": "Clock::freeze()",
+                    "level": 3
+                },
+                {
+                    "id": "clock-now",
+                    "text": "Clock::now()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "reference/types": {
+            "title": "Types and conversion",
+            "headings": [
+                {
+                    "id": "column-types",
+                    "text": "Column types",
+                    "level": 2
+                },
+                {
+                    "id": "cast",
+                    "text": "->cast()",
+                    "level": 3
+                },
+                {
+                    "id": "type-parse",
+                    "text": "Type::parse()",
+                    "level": 3
+                },
+                {
+                    "id": "type-abbreviation",
+                    "text": "Type->abbreviation()",
+                    "level": 3
+                },
+                {
+                    "id": "type-isnumeric",
+                    "text": "Type->isNumeric()",
+                    "level": 3
+                },
+                {
+                    "id": "factors",
+                    "text": "Factors",
+                    "level": 2
+                },
+                {
+                    "id": "asfactor",
+                    "text": "->asFactor()",
+                    "level": 3
+                },
+                {
+                    "id": "asordered",
+                    "text": "->asOrdered()",
+                    "level": 3
+                },
+                {
+                    "id": "isordered",
+                    "text": "->isOrdered()",
+                    "level": 3
+                },
+                {
+                    "id": "levels",
+                    "text": "->levels()",
+                    "level": 3
+                },
+                {
+                    "id": "fctlevels",
+                    "text": "->fctLevels()",
+                    "level": 3
+                },
+                {
+                    "id": "fctrelevel",
+                    "text": "->fctRelevel()",
+                    "level": 3
+                },
+                {
+                    "id": "fctrev",
+                    "text": "->fctRev()",
+                    "level": 3
+                },
+                {
+                    "id": "fctinorder",
+                    "text": "->fctInorder()",
+                    "level": 3
+                },
+                {
+                    "id": "fctinfreq",
+                    "text": "->fctInfreq()",
+                    "level": 3
+                },
+                {
+                    "id": "fctreorder",
+                    "text": "->fctReorder()",
+                    "level": 3
+                },
+                {
+                    "id": "fctrecode",
+                    "text": "->fctRecode()",
+                    "level": 3
+                },
+                {
+                    "id": "fctcollapse",
+                    "text": "->fctCollapse()",
+                    "level": 3
+                },
+                {
+                    "id": "fctdrop",
+                    "text": "->fctDrop()",
+                    "level": 3
+                },
+                {
+                    "id": "times-of-day",
+                    "text": "Times of day",
+                    "level": 2
+                },
+                {
+                    "id": "time-of",
+                    "text": "Time::of()",
+                    "level": 3
+                },
+                {
+                    "id": "time-fromseconds",
+                    "text": "Time::fromSeconds()",
+                    "level": 3
+                },
+                {
+                    "id": "time-parse",
+                    "text": "Time::parse()",
+                    "level": 3
+                },
+                {
+                    "id": "time-meridiem",
+                    "text": "Time::meridiem()",
+                    "level": 3
+                },
+                {
+                    "id": "time-seconds",
+                    "text": "Time->seconds()",
+                    "level": 3
+                },
+                {
+                    "id": "time-hour",
+                    "text": "Time->hour()",
+                    "level": 3
+                },
+                {
+                    "id": "time-minute",
+                    "text": "Time->minute()",
+                    "level": 3
+                },
+                {
+                    "id": "time-second",
+                    "text": "Time->second()",
+                    "level": 3
+                },
+                {
+                    "id": "model-data",
+                    "text": "Model data",
+                    "level": 2
+                },
+                {
+                    "id": "tomodeldata",
+                    "text": "->toModelData()",
+                    "level": 3
+                },
+                {
+                    "id": "tomatrix",
+                    "text": "->toMatrix()",
+                    "level": 3
+                },
+                {
+                    "id": "tovector",
+                    "text": "->toVector()",
+                    "level": 3
                 }
             ],
             "math": false

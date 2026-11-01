@@ -1,0 +1,262 @@
+<p>Methods that set groups, summarize them, and run operations per group.</p>
+<section id="grouping" class="level2">
+<h2 class="anchored" data-anchor-id="grouping">Grouping</h2>
+<section id="groupby" class="level3">
+<h3 class="anchored" data-anchor-id="groupby"><code>-&gt;groupBy()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;groupBy(<span class="dt">array</span> <span class="va">$names</span><span class="ot">,</span> <span class="dt">bool</span> <span class="va">$drop</span> <span class="op">=</span> <span class="kw">true</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Set the grouping columns, replacing any existing grouping.</p>
+<p>Grouping is metadata: <code>filter()</code>, <code>mutate()</code>, and <code>summarise()</code> work within groups, and other methods keep the grouping.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$names</code></td>
+<td><code>list&lt;string&gt;</code></td>
+<td></td>
+<td>Grouping columns.</td>
+</tr>
+<tr class="even">
+<td><code>$drop</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>dplyr’s .drop. With false, grouped operations also visit empty groups: every factor level without rows. Other key columns contribute their observed values. The setting survives row operations; <code>ungroup()</code> and <code>groupBy()</code> reset it.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/getting-started">Getting started</a>, <a href="phpstats://phibble/docs/io">Reading and writing data</a>, <a href="phpstats://phibble/docs/expr">Expressions</a></p>
+</section>
+<section id="ungroup" class="level3">
+<h3 class="anchored" data-anchor-id="ungroup"><code>-&gt;ungroup()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;ungroup()<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Remove the grouping, including rowwise grouping.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code></p>
+</section>
+<section id="groups" class="level3">
+<h3 class="anchored" data-anchor-id="groups"><code>-&gt;groups()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;groups()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>The grouping columns. Empty when ungrouped; the id columns of a rowwise table.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>list&lt;string&gt;</code></p>
+</section>
+<section id="dropsemptygroups" class="level3">
+<h3 class="anchored" data-anchor-id="dropsemptygroups"><code>-&gt;dropsEmptyGroups()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;dropsEmptyGroups()<span class="ot">:</span> <span class="dt">bool</span></span></code></pre></div></div>
+<p>Whether empty groups are dropped. False after groupBy(<code>$names</code>, drop: false).</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>bool</code></p>
+</section>
+<section id="ngroups" class="level3">
+<h3 class="anchored" data-anchor-id="ngroups"><code>-&gt;ngroups()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;ngroups()<span class="ot">:</span> <span class="dt">int</span></span></code></pre></div></div>
+<p>Number of groups (1 for an ungrouped table, nrow for a rowwise one).</p>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>int</code></p>
+</section>
+<section id="rowwise" class="level3">
+<h3 class="anchored" data-anchor-id="rowwise"><code>-&gt;rowwise()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;rowwise(<span class="dt">array</span> <span class="va">$idColumns</span> <span class="op">=</span> [])<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Treat each row as its own group, as dplyr’s <code>rowwise()</code>. <code>groupBy()</code> and <code>ungroup()</code> clear it.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$idColumns</code></td>
+<td><code>list&lt;string&gt;</code></td>
+<td><code>[]</code></td>
+<td>Columns <code>summarise()</code> keeps, as with group keys.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code></p>
+</section>
+<section id="isrowwise" class="level3">
+<h3 class="anchored" data-anchor-id="isrowwise"><code>-&gt;isRowwise()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1" class="code-line" style="--indent: 0ch"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;isRowwise()<span class="ot">:</span> <span class="dt">bool</span></span></code></pre></div></div>
+<p>Whether the table is rowwise.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>bool</code></p>
+</section>
+</section>
+<section id="summaries" class="level2">
+<h2 class="anchored" data-anchor-id="summaries">Summaries</h2>
+<section id="summarise" class="level3">
+<h3 class="anchored" data-anchor-id="summarise"><code>-&gt;summarise()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1" class="code-line" style="--indent: 0ch"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;summarise(<span class="dt">array</span> <span class="va">$aggregates</span><span class="ot">,</span> <span class="ot">?</span><span class="dt">string</span> <span class="va">$groups</span> <span class="op">=</span> <span class="kw">null</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>One row per group: the group keys, then one column per entry.</p>
+<p>Groups are sorted, with NA last. Each entry is a closure given the group’s table, or an Expr that evaluates to one value, usually an aggregate. The result drops the last grouping column, as in dplyr; a rowwise table keeps its id columns as groups.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$aggregates</code></td>
+<td><code>array&lt;string, Closure(Table): mixed|Expr&gt;</code></td>
+<td></td>
+<td>New column name =&gt; closure or expression.</td>
+</tr>
+<tr class="even">
+<td><code>$groups</code></td>
+<td><code>string|null</code></td>
+<td><code>null</code></td>
+<td>dplyr’s .groups: ‘drop_last’ (the default), ‘drop’, ‘keep’, or ‘rowwise’. Rowwise tables default to ‘keep’.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Throws</strong> <code>LengthException</code>: when an expression gives more than one value per group.</p>
+</section>
+<section id="summarize" class="level3">
+<h3 class="anchored" data-anchor-id="summarize"><code>-&gt;summarize()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1" class="code-line" style="--indent: 0ch"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;summarize(<span class="dt">array</span> <span class="va">$aggregates</span><span class="ot">,</span> <span class="ot">?</span><span class="dt">string</span> <span class="va">$groups</span> <span class="op">=</span> <span class="kw">null</span>)<span class="ot">:</span> <span class="kw">static</span></span></code></pre></div></div>
+<p>Alias of <code>summarise()</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$aggregates</code></td>
+<td><code>array</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$groups</code></td>
+<td><code>?string</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>static</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/getting-started">Getting started</a>, <a href="phpstats://phibble/docs/io">Reading and writing data</a>, <a href="phpstats://phibble/docs/expr">Expressions</a></p>
+</section>
+</section>
+<section id="per-group-operations" class="level2">
+<h2 class="anchored" data-anchor-id="per-group-operations">Per-group operations</h2>
+<section id="filtergroups" class="level3">
+<h3 class="anchored" data-anchor-id="filtergroups"><code>-&gt;filterGroups()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb10-1" class="code-line" style="--indent: 0ch"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;filterGroups(<span class="bu">Closure</span> <span class="va">$predicate</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Keep rows by a predicate that runs once per group.</p>
+<p>The closure receives the group’s table and returns one value per row; a truthy value keeps the row.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$predicate</code></td>
+<td><code>Closure(Table): list&lt;?bool&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code></p>
+</section>
+<section id="mutategroups" class="level3">
+<h3 class="anchored" data-anchor-id="mutategroups"><code>-&gt;mutateGroups()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb11-1" class="code-line" style="--indent: 0ch"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;mutateGroups(<span class="dt">array</span> <span class="va">$columns</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Add or replace columns with closures that run once per group.</p>
+<p>Each closure receives the group’s table and returns a list with one value per row of the group, or a scalar to repeat. Other values behave as in <code>mutate()</code>. Window functions and <code>across()</code> build on this method.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$columns</code></td>
+<td><code>array&lt;string, Closure(Table): (list&lt;mixed&gt;|scalar|null)|list&lt;mixed&gt;|scalar|null&gt;</code></td>
+<td></td>
+<td>New column name =&gt; value.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code></p>
+</section>
+<section id="eachgroup" class="level3">
+<h3 class="anchored" data-anchor-id="eachgroup"><code>-&gt;eachGroup()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb12-1" class="code-line" style="--indent: 0ch"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;eachGroup()<span class="ot">:</span> <span class="dt">iterable</span></span></code></pre></div></div>
+<p>Each group’s key and rows as an ungrouped table, in sorted key order.</p>
+<p>Rowwise tables yield one group per row, in row order. An ungrouped table yields one group with an empty key, also when it has no rows.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>iterable&lt;int, array{key: array&lt;string, mixed&gt;, table: Table}&gt;</code></p>
+</section>
+<section id="grouprows" class="level3">
+<h3 class="anchored" data-anchor-id="grouprows"><code>-&gt;groupRows()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb13-1" class="code-line" style="--indent: 0ch"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;groupRows()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>Each group’s key and 0-based row indexes, in the order of <code>eachGroup()</code>.</p>
+<p>Empty groups (drop: false) have no rows; a rowwise table has one group per row.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>list&lt;array{key: array&lt;string, mixed&gt;, rows: list&lt;int&gt;}&gt;</code></p>
+
+
+</section>
+</section>

@@ -1,4 +1,4 @@
-<p>Total the orders and revenue for each region of an SQLite <code>orders</code> table, with phibble’s verbs compiled to one SQL query that the database runs. The script needs the pdo_sqlite extension.</p>
+<p>Total the orders and revenue for each region of an SQLite <code>orders</code> table, with phibble’s methods compiled to one SQL query that the database runs. The script needs the pdo_sqlite extension.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="syntax">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">PHP 8.5+</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">PHP 8.3–8.4</a></li></ul>
 <div class="tab-content" data-group="syntax">
@@ -23,7 +23,7 @@ The SQL from <code>showQuery()</code>
 2 north       2     384
 3 east        2     252</code></pre>
 <ul>
-<li>Verbs only build the query. Nothing runs on the database until the rows are needed.</li>
+<li>Table methods only build the query. Nothing runs on the database until the rows are needed.</li>
 <li><code>showQuery()</code> shows the SQL with <code>?</code> placeholders, and <code>bindings()</code> gives their values.</li>
 <li><code>collect()</code> runs the query and returns a <code>DataFrame</code>.</li>
 <li>The same code runs on PostgreSQL and MySQL.</li>

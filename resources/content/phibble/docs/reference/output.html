@@ -1,0 +1,304 @@
+<p>Methods that return PHP values, write CSV and JSON, and print tables.</p>
+<section id="php-values" class="level2">
+<h2 class="anchored" data-anchor-id="php-values">PHP values</h2>
+<section id="torows" class="level3">
+<h3 class="anchored" data-anchor-id="torows"><code>-&gt;toRows()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;toRows()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>The rows as a list of associative arrays.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>list&lt;array&lt;string, mixed&gt;&gt;</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/sql">SQL tables</a></p>
+</section>
+<section id="tocolumns" class="level3">
+<h3 class="anchored" data-anchor-id="tocolumns"><code>-&gt;toColumns()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;toColumns()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>The columns as an array of PHP lists, keyed by name.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>array&lt;string, list&lt;mixed&gt;&gt;</code></p>
+</section>
+<section id="collect" class="level3">
+<h3 class="anchored" data-anchor-id="collect"><code>-&gt;collect()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;collect()<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>The rows as an in-memory DataFrame. SqlTable runs its query; a DataFrame returns itself.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/laravel">phibble for Laravel developers</a>, <a href="phpstats://phibble/docs/sql">SQL tables</a></p>
+</section>
+<section id="deframe" class="level3">
+<h3 class="anchored" data-anchor-id="deframe"><code>-&gt;deframe()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;deframe()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>A two-column DataFrame as a name =&gt; value array, or a one-column DataFrame as a list, as tibble’s <code>deframe()</code>.</p>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>array&lt;mixed&gt;</code></p>
+</section>
+<section id="fn-deframe" class="level3">
+<h3 class="anchored" data-anchor-id="fn-deframe"><code>deframe()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>deframe(DataFrame <span class="va">$dataFrame</span>)<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>A two-column DataFrame as a name =&gt; value array, or a one-column DataFrame as a list, as tibble’s <code>deframe()</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$dataFrame</code></td>
+<td><code>DataFrame</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Function</strong> in <code>Phibble</code><br>
+<strong>Returns</strong> <code>array</code></p>
+</section>
+<section id="tocollection" class="level3">
+<h3 class="anchored" data-anchor-id="tocollection"><code>-&gt;toCollection()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;toCollection()<span class="ot">:</span> <span class="dt">object</span></span></code></pre></div></div>
+<p>An <code>Illuminate\Support\Collection</code> of row arrays. Needs Laravel’s illuminate/support (or illuminate/collections) to be installed.</p>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>object</code></p>
+</section>
+</section>
+<section id="csv-and-json" class="level2">
+<h2 class="anchored" data-anchor-id="csv-and-json">CSV and JSON</h2>
+<section id="tocsv" class="level3">
+<h3 class="anchored" data-anchor-id="tocsv"><code>-&gt;toCsv()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1" class="code-line" style="--indent: 0ch"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;toCsv(</span><span id="cb7-2" class="code-line" style="--indent: 4ch"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$delimiter</span> <span class="op">=</span> <span class="st">','</span><span class="ot">,</span></span><span id="cb7-3" class="code-line" style="--indent: 4ch"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$na</span> <span class="op">=</span> <span class="st">'NA'</span><span class="ot">,</span></span><span id="cb7-4" class="code-line" style="--indent: 4ch"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bool</span> <span class="va">$colNames</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">,</span></span><span id="cb7-5" class="code-line" style="--indent: 4ch"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$quote</span> <span class="op">=</span> <span class="st">'needed'</span><span class="ot">,</span></span><span id="cb7-6" class="code-line" style="--indent: 4ch"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$escape</span> <span class="op">=</span> <span class="st">'double'</span><span class="ot">,</span></span><span id="cb7-7" class="code-line" style="--indent: 4ch"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$eol</span> <span class="op">=</span> <span class="st">'</span></span><span id="cb7-8" class="code-line" style="--indent: 0ch"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">'</span><span class="ot">,</span></span><span id="cb7-9" class="code-line" style="--indent: 0ch"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
+<p>The CSV text <code>writeCsv()</code> would write.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$delimiter</code></td>
+<td><code>string</code></td>
+<td><code>‘,’</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$na</code></td>
+<td><code>string</code></td>
+<td><code>‘NA’</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$colNames</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$quote</code></td>
+<td><code>string</code></td>
+<td><code>‘needed’</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$escape</code></td>
+<td><code>string</code></td>
+<td><code>‘double’</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$eol</code></td>
+<td><code>string</code></td>
+<td><code>’</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>’</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>string</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/io">Reading and writing data</a></p>
+</section>
+<section id="writecsv" class="level3">
+<h3 class="anchored" data-anchor-id="writecsv"><code>-&gt;writeCsv()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1" class="code-line" style="--indent: 0ch"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;writeCsv(</span><span id="cb8-2" class="code-line" style="--indent: 4ch"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$path</span><span class="ot">,</span></span><span id="cb8-3" class="code-line" style="--indent: 4ch"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$delimiter</span> <span class="op">=</span> <span class="st">','</span><span class="ot">,</span></span><span id="cb8-4" class="code-line" style="--indent: 4ch"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$na</span> <span class="op">=</span> <span class="st">'NA'</span><span class="ot">,</span></span><span id="cb8-5" class="code-line" style="--indent: 4ch"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bool</span> <span class="va">$append</span> <span class="op">=</span> <span class="kw">false</span><span class="ot">,</span></span><span id="cb8-6" class="code-line" style="--indent: 4ch"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">bool</span> <span class="va">$colNames</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb8-7" class="code-line" style="--indent: 4ch"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$quote</span> <span class="op">=</span> <span class="st">'needed'</span><span class="ot">,</span></span><span id="cb8-8" class="code-line" style="--indent: 4ch"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$escape</span> <span class="op">=</span> <span class="st">'double'</span><span class="ot">,</span></span><span id="cb8-9" class="code-line" style="--indent: 4ch"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$eol</span> <span class="op">=</span> <span class="st">'</span></span><span id="cb8-10" class="code-line" style="--indent: 0ch"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">'</span><span class="ot">,</span></span><span id="cb8-11" class="code-line" style="--indent: 0ch"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> <span class="dt">void</span></span></code></pre></div></div>
+<p>Write CSV like <code>readr::write_csv()</code>: NA as “NA”, quoting only where needed, ISO dates, UTC datetimes with “Z”, TRUE/FALSE, and numbers in readr’s shortest form. <code>$quote</code> is ‘needed’, ‘all’ or ‘none’; <code>$escape</code> is ‘double’, ‘backslash’ or ‘none’. Appending skips the header unless <code>$colNames</code> is true.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$path</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$delimiter</code></td>
+<td><code>string</code></td>
+<td><code>‘,’</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$na</code></td>
+<td><code>string</code></td>
+<td><code>‘NA’</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$append</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$colNames</code></td>
+<td><code>?bool</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$quote</code></td>
+<td><code>string</code></td>
+<td><code>‘needed’</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$escape</code></td>
+<td><code>string</code></td>
+<td><code>‘double’</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$eol</code></td>
+<td><code>string</code></td>
+<td><code>’</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>’</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code></p>
+</section>
+<section id="tojson" class="level3">
+<h3 class="anchored" data-anchor-id="tojson"><code>-&gt;toJson()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1" class="code-line" style="--indent: 0ch"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;toJson(<span class="dt">string</span> <span class="va">$orient</span> <span class="op">=</span> <span class="st">'records'</span><span class="ot">,</span> <span class="dt">int</span> <span class="va">$flags</span> <span class="op">=</span> <span class="dv">320</span>)<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
+<p>JSON as a list of records (‘records’) or an object of columns (‘columns’). NA is null (records keep every key, unlike jsonlite); dates are “Y-m-d”, datetimes ISO 8601 in UTC with “Z”, factors their labels, NaN and infinities null, nested DataFrames nested JSON.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$orient</code></td>
+<td><code>string</code></td>
+<td><code>‘records’</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$flags</code></td>
+<td><code>int</code></td>
+<td><code>320</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>string</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/io">Reading and writing data</a></p>
+</section>
+</section>
+<section id="printing" class="level2">
+<h2 class="anchored" data-anchor-id="printing">Printing</h2>
+<section id="__tostring" class="level3">
+<h3 class="anchored" data-anchor-id="__tostring"><code>-&gt;__toString()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb10-1" class="code-line" style="--indent: 0ch"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;<span class="bu">__toString</span>()<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
+<p>The table printed as tibble prints it, for echo <code>$df</code>. <code>format()</code> takes the row count and width.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code><br>
+<strong>Returns</strong> <code>string</code></p>
+</section>
+<section id="format" class="level3">
+<h3 class="anchored" data-anchor-id="format"><code>-&gt;format()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb11-1" class="code-line" style="--indent: 0ch"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;format(<span class="ot">?</span><span class="dt">int</span> <span class="va">$n</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span> <span class="dt">int</span> <span class="va">$width</span> <span class="op">=</span> <span class="dv">80</span>)<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
+<p>Print like a tibble. By default all rows are shown when there are at most 20, otherwise the first 10.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$n</code></td>
+<td><code>?int</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$width</code></td>
+<td><code>int</code></td>
+<td><code>80</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>string</code></p>
+</section>
+<section id="glimpse" class="level3">
+<h3 class="anchored" data-anchor-id="glimpse"><code>-&gt;glimpse()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb12-1" class="code-line" style="--indent: 0ch"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;glimpse(<span class="dt">int</span> <span class="va">$width</span> <span class="op">=</span> <span class="dv">80</span>)<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
+<p>One line per column with its type and leading values, as tibble’s <code>glimpse()</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$width</code></td>
+<td><code>int</code></td>
+<td><code>80</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>string</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/io">Reading and writing data</a>, <a href="phpstats://phibble/docs/getting-started">Getting started</a>, <a href="phpstats://phibble/docs/types">Types</a></p>
+
+
+</section>
+</section>

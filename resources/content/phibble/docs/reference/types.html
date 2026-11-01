@@ -1,0 +1,753 @@
+<p>Column types, casts, factors, times of day, and conversion to model data.</p>
+<section id="column-types" class="level2">
+<h2 class="anchored" data-anchor-id="column-types">Column types</h2>
+<section id="cast" class="level3">
+<h3 class="anchored" data-anchor-id="cast"><code>-&gt;cast()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;cast(<span class="dt">array</span> <span class="va">$types</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Convert columns to other types.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$types</code></td>
+<td><code>array&lt;string, Type|string&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="type-parse" class="level3">
+<h3 class="anchored" data-anchor-id="type-parse"><code>Type::parse()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Type::parse(Type<span class="op">|</span><span class="dt">string</span> <span class="va">$type</span>)<span class="ot">:</span> Type</span></code></pre></div></div>
+<p>A Type from a case or its name, such as ‘float’ or ‘date’, in any letter case.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$type</code></td>
+<td><code>Type|string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\Type</code><br>
+<strong>Returns</strong> <code>Type</code><br>
+<strong>Throws</strong> <code>InvalidArgumentException</code>: for an unknown type name.</p>
+</section>
+<section id="type-abbreviation" class="level3">
+<h3 class="anchored" data-anchor-id="type-abbreviation"><code>Type-&gt;abbreviation()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$type</span>-&gt;abbreviation()<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
+<p>The short label printed in a column header, as in tibble: dbl, int, lgl, chr, fct, date, dttm, time, or list.</p>
+<p><strong>Method</strong> of <code>Phibble\Type</code><br>
+<strong>Returns</strong> <code>string</code></p>
+</section>
+<section id="type-isnumeric" class="level3">
+<h3 class="anchored" data-anchor-id="type-isnumeric"><code>Type-&gt;isNumeric()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">$type</span>-&gt;isNumeric()<span class="ot">:</span> <span class="dt">bool</span></span></code></pre></div></div>
+<p>Whether the type is numeric: float, int, or bool.</p>
+<p><strong>Method</strong> of <code>Phibble\Type</code><br>
+<strong>Returns</strong> <code>bool</code></p>
+</section>
+</section>
+<section id="factors" class="level2">
+<h2 class="anchored" data-anchor-id="factors">Factors</h2>
+<section id="asfactor" class="level3">
+<h3 class="anchored" data-anchor-id="asfactor"><code>-&gt;asFactor()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;asFactor(</span><span id="cb5-2" class="code-line" style="--indent: 4ch"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span></span><span id="cb5-3" class="code-line" style="--indent: 4ch"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">array</span> <span class="va">$levels</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb5-4" class="code-line" style="--indent: 4ch"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bool</span> <span class="va">$ordered</span> <span class="op">=</span> <span class="kw">false</span><span class="ot">,</span></span><span id="cb5-5" class="code-line" style="--indent: 0ch"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Turn a column into a factor, as R’s <code>factor()</code>. Without levels, they are the sorted unique values. Values not in <code>$levels</code> become NA.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$levels</code></td>
+<td><code>list&lt;string|int|float&gt;|null</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$ordered</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a>, <a href="phpstats://phibble/docs/getting-started">Getting started</a></p>
+</section>
+<section id="asordered" class="level3">
+<h3 class="anchored" data-anchor-id="asordered"><code>-&gt;asOrdered()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;asOrdered(<span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span> <span class="ot">?</span><span class="dt">array</span> <span class="va">$levels</span> <span class="op">=</span> <span class="kw">null</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Convert a column to an ordered factor, as R’s <code>factor(ordered = TRUE)</code>.</p>
+<p>An existing factor keeps its levels unless <code>$levels</code> is given.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$levels</code></td>
+<td><code>list&lt;string|int|float&gt;|null</code></td>
+<td><code>null</code></td>
+<td>Levels in order; null takes the sorted distinct values.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="isordered" class="level3">
+<h3 class="anchored" data-anchor-id="isordered"><code>-&gt;isOrdered()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1" class="code-line" style="--indent: 0ch"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;isOrdered(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> <span class="dt">bool</span></span></code></pre></div></div>
+<p>Whether the column is an ordered factor.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>bool</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="levels" class="level3">
+<h3 class="anchored" data-anchor-id="levels"><code>-&gt;levels()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1" class="code-line" style="--indent: 0ch"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;levels(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>The levels of a factor column, in level order.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>list&lt;string&gt;</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="fctlevels" class="level3">
+<h3 class="anchored" data-anchor-id="fctlevels"><code>-&gt;fctLevels()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1" class="code-line" style="--indent: 0ch"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;fctLevels(<span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span> <span class="dt">array</span> <span class="va">$levels</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p><code>factor(x, levels = ...)</code>: set the full level order. Unlisted values become NA.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$levels</code></td>
+<td><code>array</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code></p>
+</section>
+<section id="fctrelevel" class="level3">
+<h3 class="anchored" data-anchor-id="fctrelevel"><code>-&gt;fctRelevel()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb10-1" class="code-line" style="--indent: 0ch"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;fctRelevel(</span><span id="cb10-2" class="code-line" style="--indent: 4ch"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span></span><span id="cb10-3" class="code-line" style="--indent: 4ch"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$levels</span><span class="ot">,</span></span><span id="cb10-4" class="code-line" style="--indent: 4ch"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> <span class="va">$after</span> <span class="op">=</span> <span class="dv">0</span><span class="ot">,</span></span><span id="cb10-5" class="code-line" style="--indent: 0ch"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Move levels to the front, or after a 0-based position (-1 for the end), as forcats’ <code>fct_relevel()</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$levels</code></td>
+<td><code>array</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$after</code></td>
+<td><code>int</code></td>
+<td><code>0</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="fctrev" class="level3">
+<h3 class="anchored" data-anchor-id="fctrev"><code>-&gt;fctRev()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb11-1" class="code-line" style="--indent: 0ch"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;fctRev(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p><code>fct_rev()</code></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="fctinorder" class="level3">
+<h3 class="anchored" data-anchor-id="fctinorder"><code>-&gt;fctInorder()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb12-1" class="code-line" style="--indent: 0ch"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;fctInorder(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p><code>fct_inorder()</code></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code></p>
+</section>
+<section id="fctinfreq" class="level3">
+<h3 class="anchored" data-anchor-id="fctinfreq"><code>-&gt;fctInfreq()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb13-1" class="code-line" style="--indent: 0ch"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;fctInfreq(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p><code>fct_infreq()</code></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="fctreorder" class="level3">
+<h3 class="anchored" data-anchor-id="fctreorder"><code>-&gt;fctReorder()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb14-1" class="code-line" style="--indent: 0ch"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;fctReorder(</span><span id="cb14-2" class="code-line" style="--indent: 4ch"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span></span><span id="cb14-3" class="code-line" style="--indent: 4ch"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$by</span><span class="ot">,</span></span><span id="cb14-4" class="code-line" style="--indent: 4ch"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="bu">Closure</span> <span class="va">$summary</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb14-5" class="code-line" style="--indent: 4ch"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bool</span> <span class="va">$descending</span> <span class="op">=</span> <span class="kw">false</span><span class="ot">,</span></span><span id="cb14-6" class="code-line" style="--indent: 0ch"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Order levels by a summary (default median) of another column, as forcats’ <code>fct_reorder()</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$by</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$summary</code></td>
+<td><code>Closure(list&lt;mixed&gt;): mixed|null</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$descending</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="fctrecode" class="level3">
+<h3 class="anchored" data-anchor-id="fctrecode"><code>-&gt;fctRecode()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb15-1" class="code-line" style="--indent: 0ch"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;fctRecode(<span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span> <span class="dt">array</span> <span class="va">$map</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Rename levels, new =&gt; old, as forcats’ <code>fct_recode()</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$map</code></td>
+<td><code>array</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="fctcollapse" class="level3">
+<h3 class="anchored" data-anchor-id="fctcollapse"><code>-&gt;fctCollapse()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb16-1" class="code-line" style="--indent: 0ch"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;fctCollapse(<span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span> <span class="dt">array</span> <span class="va">$groups</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Merge levels, new =&gt; list of old, as forcats’ <code>fct_collapse()</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$groups</code></td>
+<td><code>array</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="fctdrop" class="level3">
+<h3 class="anchored" data-anchor-id="fctdrop"><code>-&gt;fctDrop()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb17-1" class="code-line" style="--indent: 0ch"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;fctDrop(<span class="ot">?</span><span class="dt">string</span> <span class="va">$name</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span> <span class="ot">?</span><span class="dt">array</span> <span class="va">$only</span> <span class="op">=</span> <span class="kw">null</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p><code>fct_drop()</code> / <code>droplevels()</code>: remove unused levels. With no name, every factor column.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>?string</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$only</code></td>
+<td><code>list&lt;string&gt;|null</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code></p>
+</section>
+</section>
+<section id="times-of-day" class="level2">
+<h2 class="anchored" data-anchor-id="times-of-day">Times of day</h2>
+<section id="time-of" class="level3">
+<h3 class="anchored" data-anchor-id="time-of"><code>Time::of()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb18-1" class="code-line" style="--indent: 0ch"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Time</span>::of(<span class="dt">int</span> <span class="va">$hours</span><span class="ot">,</span> <span class="dt">int</span> <span class="va">$minutes</span> <span class="op">=</span> <span class="dv">0</span><span class="ot">,</span> <span class="dt">int</span><span class="op">|</span><span class="dt">float</span> <span class="va">$seconds</span> <span class="op">=</span> <span class="dv">0</span>)<span class="ot">:</span> <span class="fu">Time</span></span></code></pre></div></div>
+<p>A time from hours, minutes, and seconds, as <code>hms::hms()</code>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$hours</code></td>
+<td><code>int</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$minutes</code></td>
+<td><code>int</code></td>
+<td><code>0</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$seconds</code></td>
+<td><code>int|float</code></td>
+<td><code>0</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\Time</code><br>
+<strong>Returns</strong> <code>Time</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="time-fromseconds" class="level3">
+<h3 class="anchored" data-anchor-id="time-fromseconds"><code>Time::fromSeconds()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb19-1" class="code-line" style="--indent: 0ch"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Time</span>::fromSeconds(<span class="dt">int</span><span class="op">|</span><span class="dt">float</span> <span class="va">$seconds</span>)<span class="ot">:</span> <span class="fu">Time</span></span></code></pre></div></div>
+<p>A time from a number of seconds, rounded to the microsecond.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$seconds</code></td>
+<td><code>int|float</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\Time</code><br>
+<strong>Returns</strong> <code>Time</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="time-parse" class="level3">
+<h3 class="anchored" data-anchor-id="time-parse"><code>Time::parse()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb20-1" class="code-line" style="--indent: 0ch"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Time</span>::parse(<span class="dt">string</span> <span class="va">$text</span>)<span class="ot">:</span> <span class="ot">?</span><span class="fu">Time</span></span></code></pre></div></div>
+<p>Text such as “07:30”, “7:30:15.25”, “-01:00:00”, “100:00:00”, or “1:30 PM” as a time, or null when it is not one. Unlike reading CSV, which follows readr, fractional seconds are kept.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$text</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\Time</code><br>
+<strong>Returns</strong> <code>?Time</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="time-meridiem" class="level3">
+<h3 class="anchored" data-anchor-id="time-meridiem"><code>Time::meridiem()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb21-1" class="code-line" style="--indent: 0ch"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Time</span>::meridiem(<span class="dt">int</span> <span class="va">$hours</span><span class="ot">,</span> <span class="dt">string</span> <span class="va">$suffix</span>)<span class="ot">:</span> <span class="dt">int</span></span></code></pre></div></div>
+<p>readr’s AM/PM rule: 12 AM is hour 0, and PM adds 12 hours to any hour but 12.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$hours</code></td>
+<td><code>int</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$suffix</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\Time</code><br>
+<strong>Returns</strong> <code>int</code></p>
+</section>
+<section id="time-seconds" class="level3">
+<h3 class="anchored" data-anchor-id="time-seconds"><code>Time-&gt;seconds()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb22-1" class="code-line" style="--indent: 0ch"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="va">$time</span>-&gt;seconds()<span class="ot">:</span> <span class="dt">float</span></span></code></pre></div></div>
+<p>The number of seconds, as R’s as.<code>numeric()</code> of an hms.</p>
+<p><strong>Method</strong> of <code>Phibble\Time</code><br>
+<strong>Returns</strong> <code>float</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="time-hour" class="level3">
+<h3 class="anchored" data-anchor-id="time-hour"><code>Time-&gt;hour()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb23-1" class="code-line" style="--indent: 0ch"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="va">$time</span>-&gt;hour()<span class="ot">:</span> <span class="dt">int</span></span></code></pre></div></div>
+<p>The hour of the day, 0 to 23, as <code>lubridate::hour()</code>.</p>
+<p><strong>Method</strong> of <code>Phibble\Time</code><br>
+<strong>Returns</strong> <code>int</code></p>
+</section>
+<section id="time-minute" class="level3">
+<h3 class="anchored" data-anchor-id="time-minute"><code>Time-&gt;minute()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb24-1" class="code-line" style="--indent: 0ch"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="va">$time</span>-&gt;minute()<span class="ot">:</span> <span class="dt">int</span></span></code></pre></div></div>
+<p>The minute of the hour, as <code>lubridate::minute()</code>.</p>
+<p><strong>Method</strong> of <code>Phibble\Time</code><br>
+<strong>Returns</strong> <code>int</code></p>
+</section>
+<section id="time-second" class="level3">
+<h3 class="anchored" data-anchor-id="time-second"><code>Time-&gt;second()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb25-1" class="code-line" style="--indent: 0ch"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="va">$time</span>-&gt;second()<span class="ot">:</span> <span class="dt">float</span></span></code></pre></div></div>
+<p>The second of the minute, with its fraction, as <code>lubridate::second()</code>.</p>
+<p><strong>Method</strong> of <code>Phibble\Time</code><br>
+<strong>Returns</strong> <code>float</code></p>
+</section>
+</section>
+<section id="model-data" class="level2">
+<h2 class="anchored" data-anchor-id="model-data">Model data</h2>
+<section id="tomodeldata" class="level3">
+<h3 class="anchored" data-anchor-id="tomodeldata"><code>-&gt;toModelData()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb26-1" class="code-line" style="--indent: 0ch"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;toModelData(<span class="ot">?</span><span class="dt">array</span> <span class="va">$names</span> <span class="op">=</span> <span class="kw">null</span>)<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>Columns for model fitting (<code>Phit\fit_lm</code>, <code>Phit\fit_glm</code>, <code>Phit\model_matrix</code>):</p>
+<ul>
+<li>float, int: list&lt;float|int|null&gt;</li>
+<li>bool: list&lt;bool|null&gt; (a two-level contrast, as in R)</li>
+<li>string: list&lt;string|null&gt; (the model sorts levels, as R does)</li>
+<li>date: days since 1970-01-01; datetime: seconds since epoch</li>
+<li>factor: [‘levels’ =&gt; list<string>, ‘codes’ =&gt; list<!--?int-->, ‘ordered’ =&gt; bool], with 0-based codes, null for NA, and every level in table order</string></li>
+</ul>
+<p>List-columns cannot be modelled and throw.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$names</code></td>
+<td><code>list&lt;string&gt;|null</code></td>
+<td><code>null</code></td>
+<td>Columns to include; all by default.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>array&lt;string, list&lt;mixed&gt;|array{levels: list&lt;string&gt;, codes: list&lt;?int&gt;, ordered: bool}&gt;</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="tomatrix" class="level3">
+<h3 class="anchored" data-anchor-id="tomatrix"><code>-&gt;toMatrix()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb27-1" class="code-line" style="--indent: 0ch"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;toMatrix(<span class="dt">array</span> <span class="va">$names</span>)<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>Rows of numeric columns as floats, the shape phit’s fit_* functions take for x. Bool columns become 0.0/1.0; NA stays null.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$names</code></td>
+<td><code>list&lt;string&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>list&lt;list&lt;float|null&gt;&gt;</code></p>
+</section>
+<section id="tovector" class="level3">
+<h3 class="anchored" data-anchor-id="tovector"><code>-&gt;toVector()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb28-1" class="code-line" style="--indent: 0ch"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;toVector(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>A numeric column as floats, the shape phit’s fit_* functions take for y.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>list&lt;float|null&gt;</code></p>
+
+
+</section>
+</section>

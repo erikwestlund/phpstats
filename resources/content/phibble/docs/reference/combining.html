@@ -1,0 +1,282 @@
+<p>Methods that join, bind, pivot, and nest tables.</p>
+<section id="joins" class="level2">
+<h2 class="anchored" data-anchor-id="joins">Joins</h2>
+<section id="join" class="level3">
+<h3 class="anchored" data-anchor-id="join"><code>-&gt;join()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;<span class="fu">join</span>(</span><span id="cb1-2" class="code-line" style="--indent: 4ch"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    Table <span class="va">$other</span><span class="ot">,</span></span><span id="cb1-3" class="code-line" style="--indent: 4ch"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$by</span><span class="ot">,</span></span><span id="cb1-4" class="code-line" style="--indent: 4ch"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$type</span> <span class="op">=</span> <span class="st">'inner'</span><span class="ot">,</span></span><span id="cb1-5" class="code-line" style="--indent: 4ch"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$suffix</span> <span class="op">=</span> [<span class="st">'.x'</span><span class="ot">,</span> <span class="st">'.y'</span>]<span class="ot">,</span></span><span id="cb1-6" class="code-line" style="--indent: 4ch"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">bool</span> <span class="va">$keep</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb1-7" class="code-line" style="--indent: 4ch"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bool</span> <span class="va">$naMatches</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">,</span></span><span id="cb1-8" class="code-line" style="--indent: 4ch"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$multiple</span> <span class="op">=</span> <span class="st">'all'</span><span class="ot">,</span></span><span id="cb1-9" class="code-line" style="--indent: 4ch"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">string</span> <span class="va">$relationship</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb1-10" class="code-line" style="--indent: 4ch"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$unmatched</span> <span class="op">=</span> <span class="st">'drop'</span><span class="ot">,</span></span><span id="cb1-11" class="code-line" style="--indent: 0ch"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Join another table, with dplyr 1.1 semantics.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$other</code></td>
+<td><code>Table</code></td>
+<td></td>
+<td>The right-hand table.</td>
+</tr>
+<tr class="even">
+<td><code>$by</code></td>
+<td><code>list&lt;string|array{0: string, 1: string}&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$type</code></td>
+<td><code>string</code></td>
+<td><code>‘inner’</code></td>
+<td>inner, left, right, full, semi, anti, or cross.</td>
+</tr>
+<tr class="even">
+<td><code>$suffix</code></td>
+<td><code>array{0: string, 1: string}</code></td>
+<td><code>[‘.x’, ‘.y’]</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$keep</code></td>
+<td><code>bool|null</code></td>
+<td><code>null</code></td>
+<td>Keep both tables’ key columns.</td>
+</tr>
+<tr class="even">
+<td><code>$naMatches</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Whether NA keys match each other.</td>
+</tr>
+<tr class="odd">
+<td><code>$multiple</code></td>
+<td><code>string</code></td>
+<td><code>‘all’</code></td>
+<td>all, any, first, or last match per x row.</td>
+</tr>
+<tr class="even">
+<td><code>$relationship</code></td>
+<td><code>string|null</code></td>
+<td><code>null</code></td>
+<td>one-to-one, one-to-many, many-to-one, or many-to-many; a violation throws.</td>
+</tr>
+<tr class="odd">
+<td><code>$unmatched</code></td>
+<td><code>string</code></td>
+<td><code>‘drop’</code></td>
+<td>drop, or error when the join would drop rows. - <code>$by</code>: list of [leftColumn, rightColumn] pairs; a bare ‘k’ means [‘k’, ‘k’]. Empty for a cross join. - <code>$type</code>: inner, left, right, full, semi, anti or cross. - Columns: x’s columns, then y’s non-key columns (all of y’s with <code>$keep</code>). Clashing names get <code>$suffix</code>. Without <code>$keep</code>, key columns come from x, filled from y for rows only y has (right and full joins). - Rows: x order, with each x row’s matches in y order; right and full joins then add y’s unmatched rows in y order. Semi and anti joins keep x’s rows and columns and never duplicate rows. - Matching: NA matches NA unless !<code>$naMatches</code>; 1 matches 1.0; factors match strings by label. - <code>$multiple</code>: all, any, first or last match per x row. - <code>$relationship</code>: one-to-one, one-to-many, many-to-one or many-to-many; a violation throws. Unspecified many-to-many warns. - <code>$unmatched</code>: drop, or error when a join would drop rows. - The result keeps x’s grouping.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/getting-started">Getting started</a>, <a href="phpstats://phibble/docs/sql">SQL tables</a></p>
+</section>
+</section>
+<section id="binding" class="level2">
+<h2 class="anchored" data-anchor-id="binding">Binding</h2>
+<section id="dataframe-concat" class="level3">
+<h3 class="anchored" data-anchor-id="dataframe-concat"><code>DataFrame::concat()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>DataFrame::concat(<span class="dt">array</span> <span class="va">$tables</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Stack tables by row, matching columns by name. Columns missing from a table are NA there. A column keeps its type when every table agrees (factors also need the same levels); otherwise it is inferred again. The result takes the first table’s grouping.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$tables</code></td>
+<td><code>list&lt;Table&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code></p>
+</section>
+<section id="dataframe-bindcols" class="level3">
+<h3 class="anchored" data-anchor-id="dataframe-bindcols"><code>DataFrame::bindCols()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DataFrame::bindCols(<span class="dt">array</span> <span class="va">$tables</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Put tables side by side, as dplyr’s <code>bind_cols()</code>. They must have the same number of rows; clashing names are repaired as name…position.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$tables</code></td>
+<td><code>list&lt;Table&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code></p>
+</section>
+</section>
+<section id="reshaping" class="level2">
+<h2 class="anchored" data-anchor-id="reshaping">Reshaping</h2>
+<section id="pivotlongerspec" class="level3">
+<h3 class="anchored" data-anchor-id="pivotlongerspec"><code>-&gt;pivotLongerSpec()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;pivotLongerSpec(<span class="dt">array</span> <span class="va">$spec</span><span class="ot">,</span> <span class="dt">bool</span> <span class="va">$dropNa</span> <span class="op">=</span> <span class="kw">false</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Pivot columns into rows from a spec, as tidyr’s <code>pivot_longer_spec()</code>.</p>
+<p>Each spec row is [‘.name’ =&gt; source column, ‘.value’ =&gt; value column, …name parts]. Output: the other (id) columns, the name-part columns, then one column per distinct .value. Each input row gives one row per distinct name-part combination, in spec order; a missing (combination, .value) is NA. <code>$dropNa</code> drops rows whose value columns are all NA. Values combine by vctrs rules (int and double give double); incompatible types throw “Can’t combine”.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$spec</code></td>
+<td><code>list&lt;array&lt;string, mixed&gt;&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$dropNa</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code></p>
+</section>
+<section id="pivotwiderspec" class="level3">
+<h3 class="anchored" data-anchor-id="pivotwiderspec"><code>-&gt;pivotWiderSpec()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;pivotWiderSpec(</span><span id="cb5-2" class="code-line" style="--indent: 4ch"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$spec</span><span class="ot">,</span></span><span id="cb5-3" class="code-line" style="--indent: 4ch"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">array</span> <span class="va">$idColumns</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb5-4" class="code-line" style="--indent: 4ch"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$valuesFill</span> <span class="op">=</span> []<span class="ot">,</span></span><span id="cb5-5" class="code-line" style="--indent: 0ch"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Pivot rows into columns from a spec, as tidyr’s <code>pivot_wider_spec()</code>.</p>
+<p>Each spec row is [‘.name’ =&gt; new column, ‘.value’ =&gt; values_from column, …names_from column =&gt; value]. New columns appear in spec order after the id columns, which default to every column not used by the spec; rows follow the first appearance of each id combination. Missing cells take <code>$valuesFill[valueColumn]</code> or NA. When some cell has several values, every new column becomes a list-column (a list of values per cell, null when empty) and tidyr’s “not uniquely identified” warning is raised.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$spec</code></td>
+<td><code>list&lt;array&lt;string, mixed&gt;&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$idColumns</code></td>
+<td><code>list&lt;string&gt;|null</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$valuesFill</code></td>
+<td><code>array&lt;string, mixed&gt;</code></td>
+<td><code>[]</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code></p>
+</section>
+<section id="nest" class="level3">
+<h3 class="anchored" data-anchor-id="nest"><code>-&gt;nest()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;nest(<span class="dt">array</span> <span class="va">$columns</span> <span class="op">=</span> []<span class="ot">,</span> <span class="dt">string</span> <span class="va">$into</span> <span class="op">=</span> <span class="st">'data'</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p><code>tidyr::nest()</code>: collapse columns into a list-column of tables, one row per unique combination of the other columns (first-appearance order). On a grouped table with no columns given, nests everything but the grouping columns.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$columns</code></td>
+<td><code>list&lt;string&gt;</code></td>
+<td><code>[]</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$into</code></td>
+<td><code>string</code></td>
+<td><code>‘data’</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="unnest" class="level3">
+<h3 class="anchored" data-anchor-id="unnest"><code>-&gt;unnest()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1" class="code-line" style="--indent: 0ch"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;unnest(</span><span id="cb7-2" class="code-line" style="--indent: 4ch"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span><span class="op">|</span><span class="dt">string</span> <span class="va">$columns</span><span class="ot">,</span></span><span id="cb7-3" class="code-line" style="--indent: 4ch"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bool</span> <span class="va">$keepEmpty</span> <span class="op">=</span> <span class="kw">false</span><span class="ot">,</span></span><span id="cb7-4" class="code-line" style="--indent: 0ch"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p><code>tidyr::unnest()</code>: expand list-columns of tables (or lists of rows) into rows. Rows whose value is NA or empty are dropped unless <code>$keepEmpty</code>. Nested columns take the place of the list-column.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$columns</code></td>
+<td><code>list&lt;string&gt;|string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$keepEmpty</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+
+
+</section>
+</section>

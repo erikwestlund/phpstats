@@ -1,0 +1,113 @@
+<p>Methods specific to the SQL and Polars backends, and the Laravel integration.</p>
+<section id="sqltable" class="level2">
+<h2 class="anchored" data-anchor-id="sqltable">SqlTable</h2>
+<section id="showquery" class="level3">
+<h3 class="anchored" data-anchor-id="showquery"><code>-&gt;showQuery()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;showQuery()<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
+<p>The SQL that <code>collect()</code> would run, with ? placeholders.</p>
+<p><strong>Method</strong> of <code>SqlTable</code><br>
+<strong>Returns</strong> <code>string</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/laravel">phibble for Laravel developers</a>, <a href="phpstats://phibble/docs/sql">SQL tables</a></p>
+</section>
+<section id="bindings" class="level3">
+<h3 class="anchored" data-anchor-id="bindings"><code>-&gt;bindings()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;bindings()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>The values of the ? placeholders in <code>showQuery()</code>, in order.</p>
+<p><strong>Method</strong> of <code>SqlTable</code><br>
+<strong>Returns</strong> <code>list&lt;mixed&gt;</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/sql">SQL tables</a></p>
+</section>
+<section id="dialect" class="level3">
+<h3 class="anchored" data-anchor-id="dialect"><code>-&gt;dialect()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;dialect()<span class="ot">:</span> Dialect</span></code></pre></div></div>
+<p>The SQL dialect the table compiles to, chosen from the PDO driver.</p>
+<p><strong>Method</strong> of <code>SqlTable</code><br>
+<strong>Returns</strong> <code>Dialect</code></p>
+</section>
+<section id="dialect-for" class="level3">
+<h3 class="anchored" data-anchor-id="dialect-for"><code>Dialect::for()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Dialect::<span class="cf">for</span>(<span class="bu">PDO</span> <span class="va">$pdo</span>)<span class="ot">:</span> Dialect</span></code></pre></div></div>
+<p>The dialect for a PDO connection: SQLite, PostgreSQL, or MySQL.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$pdo</code></td>
+<td><code>PDO</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\Sql\Dialect</code><br>
+<strong>Returns</strong> <code>Dialect</code><br>
+<strong>Throws</strong> <code>InvalidArgumentException</code>: for any other driver.</p>
+</section>
+<section id="dialect-tryfor" class="level3">
+<h3 class="anchored" data-anchor-id="dialect-tryfor"><code>Dialect::tryFor()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Dialect::tryFor(<span class="bu">PDO</span> <span class="va">$pdo</span>)<span class="ot">:</span> <span class="ot">?</span>Dialect</span></code></pre></div></div>
+<p>The dialect for a PDO connection, or null for a driver SqlTable does not support.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$pdo</code></td>
+<td><code>PDO</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\Sql\Dialect</code><br>
+<strong>Returns</strong> <code>?Dialect</code></p>
+</section>
+</section>
+<section id="polarstable" class="level2">
+<h2 class="anchored" data-anchor-id="polarstable">PolarsTable</h2>
+<section id="polars" class="level3">
+<h3 class="anchored" data-anchor-id="polars"><code>-&gt;polars()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;polars()<span class="ot">:</span> Phpolars\DataFrame</span></code></pre></div></div>
+<p>The underlying Polars DataFrame.</p>
+<p><strong>Method</strong> of <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Phpolars\DataFrame</code></p>
+</section>
+</section>
+<section id="laravel" class="level2">
+<h2 class="anchored" data-anchor-id="laravel">Laravel</h2>
+<section id="phibbleserviceprovider-registermacros" class="level3">
+<h3 class="anchored" data-anchor-id="phibbleserviceprovider-registermacros"><code>PhibbleServiceProvider::registerMacros()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1" class="code-line" style="--indent: 0ch"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>PhibbleServiceProvider::registerMacros()<span class="ot">:</span> <span class="dt">void</span></span></code></pre></div></div>
+<p>Register the macros; safe to call more than once.</p>
+<p><strong>Static method</strong> of <code>Phibble\Laravel\PhibbleServiceProvider</code></p>
+</section>
+<section id="macro-phibble" class="level3">
+<h3 class="anchored" data-anchor-id="macro-phibble"><code>-&gt;phibble()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1" class="code-line" style="--indent: 0ch"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$builder</span>-&gt;phibble()<span class="ot">:</span> SqlTable</span></code></pre></div></div>
+<p>A lazy SqlTable over a Laravel query, Eloquent, or relation builder, on the builder’s connection.</p>
+<p>Global scopes, such as soft deletes, apply. Attribute casts and accessors do not, because rows come from SQL.</p>
+<p>On Illuminate, Illuminate, and Illuminate, after PhibbleServiceProvider::registerMacros(), which package discovery runs.</p>
+</section>
+<section id="macro-todataframe" class="level3">
+<h3 class="anchored" data-anchor-id="macro-todataframe"><code>-&gt;toDataFrame()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1" class="code-line" style="--indent: 0ch"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">$builderOrCollection</span>-&gt;toDataFrame(<span class="dt">array</span> <span class="va">$types</span> <span class="op">=</span> [])<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Run a Laravel query, or read a collection, into a DataFrame.</p>
+<p>On builders it calls <code>DataFrame::fromQuery()</code>; on Collection and LazyCollection it calls <code>DataFrame::fromCollection()</code>. <code>$types</code> declares column types, as in <code>fromColumns()</code>.</p>
+<p>On the query, Eloquent, and relation builders, Illuminate, and Illuminate, after PhibbleServiceProvider::registerMacros(), which package discovery runs.</p>
+
+
+</section>
+</section>

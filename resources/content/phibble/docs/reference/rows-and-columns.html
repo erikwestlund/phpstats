@@ -1,0 +1,720 @@
+<p>Methods that read, select, filter, sort, and add rows and columns.</p>
+<section id="size-and-names" class="level2">
+<h2 class="anchored" data-anchor-id="size-and-names">Size and names</h2>
+<section id="columns" class="level3">
+<h3 class="anchored" data-anchor-id="columns"><code>-&gt;columns()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;columns()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>Column names in order.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>list&lt;string&gt;</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/expr">Expressions</a></p>
+</section>
+<section id="types" class="level3">
+<h3 class="anchored" data-anchor-id="types"><code>-&gt;types()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;types()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>Column types by name.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>array&lt;string, Type&gt;</code></p>
+</section>
+<section id="type" class="level3">
+<h3 class="anchored" data-anchor-id="type"><code>-&gt;type()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;type(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> Type</span></code></pre></div></div>
+<p>One column’s type.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>Type</code><br>
+<strong>Throws</strong> <code>ColumnNotFound</code>: when the column does not exist.</p>
+</section>
+<section id="nrow" class="level3">
+<h3 class="anchored" data-anchor-id="nrow"><code>-&gt;nrow()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;nrow()<span class="ot">:</span> <span class="dt">int</span></span></code></pre></div></div>
+<p>Number of rows. SqlTable runs a COUNT(*) query.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>int</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="ncol" class="level3">
+<h3 class="anchored" data-anchor-id="ncol"><code>-&gt;ncol()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;ncol()<span class="ot">:</span> <span class="dt">int</span></span></code></pre></div></div>
+<p>Number of columns.</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>int</code></p>
+</section>
+<section id="count" class="level3">
+<h3 class="anchored" data-anchor-id="count"><code>-&gt;count()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;<span class="fu">count</span>()<span class="ot">:</span> <span class="dt">int</span></span></code></pre></div></div>
+<p>Number of rows, for count(<code>$df</code>).</p>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>int</code></p>
+</section>
+<section id="has" class="level3">
+<h3 class="anchored" data-anchor-id="has"><code>-&gt;has()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1" class="code-line" style="--indent: 0ch"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;has(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> <span class="dt">bool</span></span></code></pre></div></div>
+<p>Whether the column exists.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>bool</code></p>
+</section>
+</section>
+<section id="values" class="level2">
+<h2 class="anchored" data-anchor-id="values">Values</h2>
+<section id="column" class="level3">
+<h3 class="anchored" data-anchor-id="column"><code>-&gt;column()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1" class="code-line" style="--indent: 0ch"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;column(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>One column’s values as a PHP list. Factors return their labels.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>list&lt;mixed&gt;</code><br>
+<strong>Throws</strong> <code>ColumnNotFound</code>: when the column does not exist.<br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/getting-started">Getting started</a></p>
+</section>
+<section id="row" class="level3">
+<h3 class="anchored" data-anchor-id="row"><code>-&gt;row()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1" class="code-line" style="--indent: 0ch"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;row(<span class="dt">int</span> <span class="va">$index</span>)<span class="ot">:</span> Row</span></code></pre></div></div>
+<p>One row by 0-based position.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$index</code></td>
+<td><code>int</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>Row</code><br>
+<strong>Throws</strong> <code>InvalidArgumentException</code>: when the position is out of range.<br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/getting-started">Getting started</a></p>
+</section>
+<section id="row-get" class="level3">
+<h3 class="anchored" data-anchor-id="row-get"><code>Row-&gt;get()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb10-1" class="code-line" style="--indent: 0ch"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="va">$row</span>-&gt;get(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> <span class="dt">mixed</span></span></code></pre></div></div>
+<p>One value by column name. <code>$row</code>-&gt;name and <code>$row['name']</code> read the same value.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>Phibble\Row</code><br>
+<strong>Returns</strong> <code>mixed</code><br>
+<strong>Throws</strong> <code>ColumnNotFound</code>: when the column does not exist.<br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/laravel">phibble for Laravel developers</a></p>
+</section>
+<section id="row-has" class="level3">
+<h3 class="anchored" data-anchor-id="row-has"><code>Row-&gt;has()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb11-1" class="code-line" style="--indent: 0ch"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">$row</span>-&gt;has(<span class="dt">string</span> <span class="va">$name</span>)<span class="ot">:</span> <span class="dt">bool</span></span></code></pre></div></div>
+<p>Whether the row has the column.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>Phibble\Row</code><br>
+<strong>Returns</strong> <code>bool</code></p>
+</section>
+<section id="row-toarray" class="level3">
+<h3 class="anchored" data-anchor-id="row-toarray"><code>Row-&gt;toArray()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb12-1" class="code-line" style="--indent: 0ch"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="va">$row</span>-&gt;toArray()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>The row as an associative array of column name =&gt; value.</p>
+<p><strong>Method</strong> of <code>Phibble\Row</code><br>
+<strong>Returns</strong> <code>array&lt;string, mixed&gt;</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/expr">Expressions</a></p>
+</section>
+</section>
+<section id="selecting-and-renaming" class="level2">
+<h2 class="anchored" data-anchor-id="selecting-and-renaming">Selecting and renaming</h2>
+<section id="select" class="level3">
+<h3 class="anchored" data-anchor-id="select"><code>-&gt;select()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb13-1" class="code-line" style="--indent: 0ch"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;select(<span class="dt">array</span> <span class="va">$names</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Keep the named columns, in the given order.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$names</code></td>
+<td><code>list&lt;string&gt;</code></td>
+<td></td>
+<td>Column names.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Throws</strong> <code>ColumnNotFound</code>: when a column does not exist.<br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/expr">Expressions</a>, <a href="phpstats://phibble/docs/getting-started">Getting started</a>, <a href="phpstats://phibble/docs/laravel">phibble for Laravel developers</a></p>
+</section>
+<section id="rename" class="level3">
+<h3 class="anchored" data-anchor-id="rename"><code>-&gt;rename()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb14-1" class="code-line" style="--indent: 0ch"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;<span class="fu">rename</span>(<span class="dt">array</span> <span class="va">$map</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Rename columns.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$map</code></td>
+<td><code>array&lt;string, string&gt;</code></td>
+<td></td>
+<td>New name =&gt; old name, as in dplyr.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Throws</strong> <code>ColumnNotFound</code>: when an old name does not exist.</p>
+</section>
+<section id="namerepair-repair" class="level3">
+<h3 class="anchored" data-anchor-id="namerepair-repair"><code>NameRepair::repair()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb15-1" class="code-line" style="--indent: 0ch"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NameRepair::repair(</span><span id="cb15-2" class="code-line" style="--indent: 4ch"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$names</span><span class="ot">,</span></span><span id="cb15-3" class="code-line" style="--indent: 4ch"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Closure</span><span class="op">|</span><span class="dt">string</span> <span class="va">$mode</span> <span class="op">=</span> <span class="st">'check_unique'</span><span class="ot">,</span></span><span id="cb15-4" class="code-line" style="--indent: 0ch"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>Repair column names, as <code>vctrs::vec_as_names()</code>.</p>
+<p>Modes: minimal makes names non-null; unique adds a …n suffix to empty, <code>...</code>, <code>..j</code>, and duplicated names; check_unique throws unless names are unique and non-empty; universal is unique and also makes names syntactic in R. A closure receives the names and returns the repaired list.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$names</code></td>
+<td><code>list&lt;string|null&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$mode</code></td>
+<td><code>string|Closure(list&lt;string&gt;): list&lt;string&gt;</code></td>
+<td><code>‘check_unique’</code></td>
+<td>minimal, unique, check_unique, universal, or a closure.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Static method</strong> of <code>Phibble\NameRepair</code><br>
+<strong>Returns</strong> <code>list&lt;string&gt;</code><br>
+<strong>Throws</strong> <code>InvalidArgumentException</code>: when check_unique finds empty or duplicated names, or a closure returns a different number of names.</p>
+</section>
+</section>
+<section id="filtering-and-sorting" class="level2">
+<h2 class="anchored" data-anchor-id="filtering-and-sorting">Filtering and sorting</h2>
+<section id="filter" class="level3">
+<h3 class="anchored" data-anchor-id="filter"><code>-&gt;filter()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb16-1" class="code-line" style="--indent: 0ch"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;filter(<span class="bu">Closure</span><span class="op">|</span>Expr <span class="va">$predicate</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Keep rows where the predicate is true. NA counts as false.</p>
+<p>A closure runs once per row. An Expr runs once per group, a whole column at a time, so aggregates such as <code>mean()</code> compare within the group.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$predicate</code></td>
+<td><code>Closure(Row, Table): ?bool|Expr</code></td>
+<td></td>
+<td>A row closure or an expression.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/expr">Expressions</a>, <a href="phpstats://phibble/docs/getting-started">Getting started</a>, <a href="phpstats://phibble/docs/laravel">phibble for Laravel developers</a></p>
+</section>
+<section id="arrange" class="level3">
+<h3 class="anchored" data-anchor-id="arrange"><code>-&gt;arrange()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb17-1" class="code-line" style="--indent: 0ch"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;arrange(<span class="dt">array</span> <span class="va">$keys</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Sort rows. The sort is stable, and NA sorts last in both directions.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$keys</code></td>
+<td><code>list&lt;string|array{0: string, 1?: ‘asc’|‘desc’}|Expr&gt;</code></td>
+<td></td>
+<td>A column name sorts ascending; [name, ‘desc’] sorts descending; an Expr sorts by its value, and <code>desc()</code> reverses it.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/getting-started">Getting started</a>, <a href="phpstats://phibble/docs/types">Types</a>, <a href="phpstats://phibble/docs/laravel">phibble for Laravel developers</a></p>
+</section>
+<section id="distinct" class="level3">
+<h3 class="anchored" data-anchor-id="distinct"><code>-&gt;distinct()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb18-1" class="code-line" style="--indent: 0ch"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;distinct(<span class="dt">array</span> <span class="va">$names</span> <span class="op">=</span> [])<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Unique rows over the named columns, keeping the first of each and only those columns.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$names</code></td>
+<td><code>list&lt;string&gt;</code></td>
+<td><code>[]</code></td>
+<td>Columns to compare. An empty list compares all columns.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/getting-started">Getting started</a></p>
+</section>
+<section id="dropna" class="level3">
+<h3 class="anchored" data-anchor-id="dropna"><code>-&gt;dropNa()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb19-1" class="code-line" style="--indent: 0ch"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;dropNa(<span class="dt">array</span> <span class="va">$names</span> <span class="op">=</span> [])<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Drop rows with NA in any of the named columns (all columns when empty).</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$names</code></td>
+<td><code>list&lt;string&gt;</code></td>
+<td><code>[]</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/getting-started">Getting started</a></p>
+</section>
+</section>
+<section id="adding-columns-and-rows" class="level2">
+<h2 class="anchored" data-anchor-id="adding-columns-and-rows">Adding columns and rows</h2>
+<section id="mutate" class="level3">
+<h3 class="anchored" data-anchor-id="mutate"><code>-&gt;mutate()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb20-1" class="code-line" style="--indent: 0ch"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;mutate(<span class="dt">array</span> <span class="va">$columns</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Add or replace columns.</p>
+<p>Each value is a closure run per row, an Expr evaluated per group (aggregates repeat within the group), a list with one value per row, or a scalar to repeat. Later entries can use earlier ones.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$columns</code></td>
+<td><code>array&lt;string, Closure(Row, Table): mixed|list&lt;mixed&gt;&gt;</code></td>
+<td></td>
+<td>New column name =&gt; value.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/expr">Expressions</a>, <a href="phpstats://phibble/docs/getting-started">Getting started</a>, <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="withcolumn" class="level3">
+<h3 class="anchored" data-anchor-id="withcolumn"><code>-&gt;withColumn()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb21-1" class="code-line" style="--indent: 0ch"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;withColumn(</span><span id="cb21-2" class="code-line" style="--indent: 4ch"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$name</span><span class="ot">,</span></span><span id="cb21-3" class="code-line" style="--indent: 4ch"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    Column\Column<span class="op">|</span><span class="dt">array</span> <span class="va">$values</span><span class="ot">,</span></span><span id="cb21-4" class="code-line" style="--indent: 4ch"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    Type<span class="op">|</span><span class="dt">string</span><span class="op">|</span><span class="kw">null</span> <span class="va">$type</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb21-5" class="code-line" style="--indent: 0ch"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Add or replace one column. Replaced columns keep their position.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$name</code></td>
+<td><code>string</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$values</code></td>
+<td><code>list&lt;mixed&gt;|Column</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$type</code></td>
+<td><code>Type|string|null</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code></p>
+</section>
+<section id="addcolumn" class="level3">
+<h3 class="anchored" data-anchor-id="addcolumn"><code>-&gt;addColumn()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb22-1" class="code-line" style="--indent: 0ch"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;addColumn(</span><span id="cb22-2" class="code-line" style="--indent: 4ch"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$columns</span><span class="ot">,</span></span><span id="cb22-3" class="code-line" style="--indent: 4ch"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span><span class="op">|</span><span class="dt">int</span><span class="op">|</span><span class="kw">null</span> <span class="va">$before</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb22-4" class="code-line" style="--indent: 4ch"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span><span class="op">|</span><span class="dt">int</span><span class="op">|</span><span class="kw">null</span> <span class="va">$after</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb22-5" class="code-line" style="--indent: 0ch"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Insert columns, as tibble’s <code>add_column()</code>, with <code>tibble()</code>’s recycling rules. Place them before or after a column, by name or 0-based position; by default at the end.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$columns</code></td>
+<td><code>array&lt;string, mixed&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$before</code></td>
+<td><code>string|int|null</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$after</code></td>
+<td><code>string|int|null</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code></p>
+</section>
+<section id="addrow" class="level3">
+<h3 class="anchored" data-anchor-id="addrow"><code>-&gt;addRow()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb23-1" class="code-line" style="--indent: 0ch"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;addRow(</span><span id="cb23-2" class="code-line" style="--indent: 4ch"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$rows</span> <span class="op">=</span> []<span class="ot">,</span></span><span id="cb23-3" class="code-line" style="--indent: 4ch"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">int</span> <span class="va">$before</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb23-4" class="code-line" style="--indent: 4ch"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">int</span> <span class="va">$after</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb23-5" class="code-line" style="--indent: 0ch"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>Insert rows, as tibble’s <code>add_row()</code>. Pass one row (name =&gt; value), a list of rows, or nothing for an all-NA row. Missing columns are NA; unknown columns throw. Positions are 0-based: <code>$before</code> inserts before that row, <code>$after</code> after it. The default appends.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$rows</code></td>
+<td><code>array&lt;string, mixed&gt;|list&lt;array&lt;string, mixed&gt;&gt;</code></td>
+<td><code>[]</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>$before</code></td>
+<td><code>?int</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>$after</code></td>
+<td><code>?int</code></td>
+<td><code>null</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code></p>
+</section>
+</section>
+<section id="rows-by-position" class="level2">
+<h2 class="anchored" data-anchor-id="rows-by-position">Rows by position</h2>
+<section id="slice" class="level3">
+<h3 class="anchored" data-anchor-id="slice"><code>-&gt;slice()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb24-1" class="code-line" style="--indent: 0ch"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;slice(<span class="dt">int</span> <span class="va">$offset</span><span class="ot">,</span> <span class="ot">?</span><span class="dt">int</span> <span class="va">$length</span> <span class="op">=</span> <span class="kw">null</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Rows from <code>$offset</code>, <code>$length</code> of them or to the end. Ignores groups.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$offset</code></td>
+<td><code>int</code></td>
+<td></td>
+<td>0-based start; negative counts from the end.</td>
+</tr>
+<tr class="even">
+<td><code>$length</code></td>
+<td><code>int|null</code></td>
+<td><code>null</code></td>
+<td>Number of rows; null for the rest, negative to stop that many rows before the end.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code></p>
+</section>
+<section id="head" class="level3">
+<h3 class="anchored" data-anchor-id="head"><code>-&gt;head()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb25-1" class="code-line" style="--indent: 0ch"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;head(<span class="dt">int</span> <span class="va">$n</span> <span class="op">=</span> <span class="dv">6</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>The first <code>$n</code> rows. Ignores groups.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$n</code></td>
+<td><code>int</code></td>
+<td><code>6</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code><br>
+<strong>Examples</strong> <a href="phpstats://phibble/docs/getting-started">Getting started</a>, <a href="phpstats://phibble/docs/laravel">phibble for Laravel developers</a>, <a href="phpstats://phibble/docs/types">Types</a></p>
+</section>
+<section id="tail" class="level3">
+<h3 class="anchored" data-anchor-id="tail"><code>-&gt;tail()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb26-1" class="code-line" style="--indent: 0ch"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;tail(<span class="dt">int</span> <span class="va">$n</span> <span class="op">=</span> <span class="dv">6</span>)<span class="ot">:</span> DataFrame</span></code></pre></div></div>
+<p>The last n rows; a negative n drops the first |n| rows, as in R.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$n</code></td>
+<td><code>int</code></td>
+<td><code>6</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code><br>
+<strong>Returns</strong> <code>DataFrame</code></p>
+</section>
+<section id="take" class="level3">
+<h3 class="anchored" data-anchor-id="take"><code>-&gt;take()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb27-1" class="code-line" style="--indent: 0ch"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="va">$table</span>-&gt;take(<span class="dt">array</span> <span class="va">$indices</span>)<span class="ot">:</span> Table</span></code></pre></div></div>
+<p>Rows by 0-based position, in the given order. A null index gives an all-NA row.</p>
+<p>Types, factor levels, and grouping are kept.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>$indices</code></td>
+<td><code>list&lt;int|null&gt;</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Method</strong> of <code>DataFrame</code>, <code>SqlTable</code>, <code>PolarsTable</code><br>
+<strong>Returns</strong> <code>Table</code></p>
+
+
+</section>
+</section>

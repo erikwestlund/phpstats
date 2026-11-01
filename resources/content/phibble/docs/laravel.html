@@ -1,7 +1,7 @@
 <p>Analyze Eloquent query results with phibble, either collected into a <code>DataFrame</code> or summarized in the database. <code>composer require phpstats/phibble</code> is the whole setup, since package discovery registers two macros:</p>
 <ul>
 <li><code>-&gt;toDataFrame()</code> on collections and query builders returns an in-memory <code>DataFrame</code>.</li>
-<li><code>-&gt;phibble()</code> on query builders, Eloquent builders, and relations returns a lazy <code>SqlTable</code> that compiles verbs to SQL.</li>
+<li><code>-&gt;phibble()</code> on query builders, Eloquent builders, and relations returns a lazy <code>SqlTable</code> that compiles table methods to SQL.</li>
 </ul>
 <section id="the-example-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-example-data">The example data</h2>
@@ -37,7 +37,7 @@
 6 Gentoo    male      44 5459.
 7 Gentoo    &lt;NA&gt;       3 4750</code></pre>
 <ul>
-<li>The builder’s SQL, bindings, and scopes become the table’s source, and phibble’s verbs add to that query.</li>
+<li>The builder’s SQL, bindings, and scopes become the table’s source, and phibble’s methods add to that query.</li>
 <li>Nothing runs until the rows are needed, as with <code>collect()</code>, printing, or <code>nrow()</code>.</li>
 <li>Global scopes such as <code>SoftDeletes</code> apply. Attribute casts and accessors do not, because the rows come from SQL.</li>
 </ul>
@@ -64,7 +64,7 @@ The SQL from <code>showQuery()</code>
 </section>
 <section id="with-phplyr" class="level2">
 <h2 class="anchored" data-anchor-id="with-phplyr">With phplyr</h2>
-<p><a href="https://github.com/phpstats/phplyr">phplyr</a> runs dplyr’s verbs on the same lazy table, so this pipeline also runs in the database.</p>
+<p><a href="https://github.com/phpstats/phplyr">phplyr</a> runs dplyr’s functions on the same lazy table, so this pipeline also runs in the database.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset" data-group="syntax">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">PHP 8.5+</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">PHP 8.3–8.4</a></li></ul>
 <div class="tab-content" data-group="syntax">

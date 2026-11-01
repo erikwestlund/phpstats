@@ -1,4 +1,4 @@
-<p>Run the same pipeline in memory, in a database, or in Polars. Every verb is part of the <code>Phibble\Contracts\Table</code> interface, and three classes implement it:</p>
+<p>Run the same pipeline in memory, in a database, or in Polars. Every table method is part of the <code>Phibble\Contracts\Table</code> interface, and three classes implement it:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -29,7 +29,7 @@
 </tr>
 </tbody>
 </table>
-<p>Code written against <code>Table</code>, including phplyr’s verbs, runs on any of them. A backend that cannot run a step exactly, such as a PHP closure or a function with no exact translation, loads its rows into PHP and runs the step in a <code>DataFrame</code>. Later steps also run in memory. Results match <code>DataFrame</code> with these exceptions:</p>
+<p>Code written against <code>Table</code>, including phplyr’s functions, runs on any of them. A backend that cannot run a step exactly, such as a PHP closure or a function with no exact translation, loads its rows into PHP and runs the step in a <code>DataFrame</code>. Later steps also run in memory. Results match <code>DataFrame</code> with these exceptions:</p>
 <ul>
 <li>A database cannot represent some of R’s values, such as <code>NaN</code> in MySQL. The <a href="phpstats://phibble/docs/sql#known-differences">SQL tables</a> page lists these cases.</li>
 <li>Rows from a SQL join, and from a SQL table without <code>arrange()</code>, come back in the order the database returns them.</li>
@@ -51,7 +51,7 @@
 <ul>
 <li>Expressions, joins (including <code>join_by</code> comparisons and rolling joins), pivots, and the lubridate and stringr functions run in Polars.</li>
 <li>Steps it cannot run, such as PHP closures and <code>str_to_title()</code>, run in a <code>DataFrame</code>. <code>PolarsTable::$fallbacks</code> counts them.</li>
-<li><code>PolarsTable::$strict = true</code> throws <code>PolarsFallback</code> instead, naming the verb and the reason.</li>
+<li><code>PolarsTable::$strict = true</code> throws <code>PolarsFallback</code> instead, naming the method and the reason.</li>
 </ul>
 <p>Type mapping:</p>
 <ul>
