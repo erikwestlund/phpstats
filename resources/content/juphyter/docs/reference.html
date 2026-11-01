@@ -1,0 +1,523 @@
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Kind</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#juphyter-install"><code>juphyter install</code></a></td>
+<td>Command</td>
+<td>Register a PHP kernel with Jupyter.</td>
+</tr>
+<tr class="even">
+<td><a href="#juphyter-uninstall"><code>juphyter uninstall</code></a></td>
+<td>Command</td>
+<td>Remove a kernel juphyter registered.</td>
+</tr>
+<tr class="odd">
+<td><a href="#juphyter-doctor"><code>juphyter doctor</code></a></td>
+<td>Command</td>
+<td>Check installed kernels and Quarto.</td>
+</tr>
+<tr class="even">
+<td><a href="#juphyter-engine"><code>juphyter engine</code></a></td>
+<td>Command</td>
+<td>The execution engine the kernel starts.</td>
+</tr>
+<tr class="odd">
+<td><a href="#juphyter-version"><code>juphyter --version</code></a></td>
+<td>Command</td>
+<td>Print the version and the PHP running it.</td>
+</tr>
+<tr class="even">
+<td><a href="#display"><code>Juphyter\display()</code></a></td>
+<td>Function</td>
+<td>Show values part way through a cell.</td>
+</tr>
+<tr class="odd">
+<td><a href="#tohtml"><code>toHtml()</code></a></td>
+<td>Method a class declares</td>
+<td>Supply a value’s HTML output.</td>
+</tr>
+<tr class="even">
+<td><a href="#tomimebundle"><code>toMimeBundle()</code></a></td>
+<td>Method a class declares</td>
+<td>Supply every output format of a value.</td>
+</tr>
+<tr class="odd">
+<td><a href="#mimebundle"><code>Juphyter\Display\MimeBundle</code></a></td>
+<td>Class</td>
+<td>Build the return value of <code>toMimeBundle()</code>.</td>
+</tr>
+<tr class="even">
+<td><a href="#juphyter-json"><code>juphyter.json</code></a></td>
+<td>Configuration file</td>
+<td>Autoloader, memory limit, and include path for notebooks.</td>
+</tr>
+<tr class="odd">
+<td><a href="#kernel-environment">Kernel environment</a></td>
+<td>Environment variables</td>
+<td>What a kernelspec passes to the kernel.</td>
+</tr>
+<tr class="even">
+<td><a href="#quarto-settings">Quarto settings</a></td>
+<td>Front matter</td>
+<td>Kernel name and cell options.</td>
+</tr>
+</tbody>
+</table>
+<section id="commands" class="level2">
+<h2 class="anchored" data-anchor-id="commands">Commands</h2>
+<p>Every command prints its options with <code>--help</code> or <code>-h</code>.</p>
+<section id="juphyter-install" class="level3">
+<h3 class="anchored" data-anchor-id="juphyter-install"><code>juphyter install</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">juphyter</span> install <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span></span></code></pre></div></div>
+<p>Writes a kernelspec so that JupyterLab and Quarto can run PHP cells.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--name NAME</code></td>
+<td><code>php</code></td>
+<td>The kernel’s name and directory, used in <code>jupyter: NAME</code>.</td>
+</tr>
+<tr class="even">
+<td><code>--display-name TEXT</code></td>
+<td>The PHP version, such as <code>PHP 8.5</code></td>
+<td>The label JupyterLab shows.</td>
+</tr>
+<tr class="odd">
+<td><code>--php PATH</code></td>
+<td>The PHP running the command, as the first path on <code>PATH</code> that leads to it</td>
+<td>The PHP binary that runs cells. A bare name is resolved to an absolute path.</td>
+</tr>
+<tr class="even">
+<td><code>--python PATH</code></td>
+<td>The interpreter that owns <code>jupyter</code> on <code>PATH</code></td>
+<td>The Python that runs the kernel. It needs ipykernel 7.0 or later.</td>
+</tr>
+<tr class="odd">
+<td><code>--prefix PATH</code></td>
+<td>The per-user Jupyter data directory</td>
+<td>Write under <code>PATH/share/jupyter</code>.</td>
+</tr>
+<tr class="even">
+<td><code>--autoload PATH</code></td>
+<td>Search upward from the notebook</td>
+<td>The autoloader the engine loads, recorded as <code>JUPHYTER_AUTOLOAD</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>--create-venv PATH</code></td>
+<td>Ask, or <code>~/.venvs/juphyter</code> without a terminal</td>
+<td>Where to build a Python environment with JupyterLab when no interpreter can host the kernel.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>A kernel of the same name that juphyter wrote is replaced, and the command reports <code>Replaced</code>. One that something else wrote is refused.</li>
+<li>With <code>--python</code>, the command builds no environment. An interpreter without ipykernel is reported with the <code>pip install</code> command for it.</li>
+<li><a href="phpstats://juphyter/docs/install#register-the-kernel">Installation</a> describes the default path.</li>
+</ul>
+</section>
+<section id="juphyter-uninstall" class="level3">
+<h3 class="anchored" data-anchor-id="juphyter-uninstall"><code>juphyter uninstall</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">juphyter</span> uninstall <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span></span></code></pre></div></div>
+<p>Removes a kernelspec that juphyter installed. A kernelspec of the same name that something else wrote is refused.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--name NAME</code></td>
+<td><code>php</code></td>
+<td>The kernel to remove.</td>
+</tr>
+<tr class="even">
+<td><code>--prefix PATH</code></td>
+<td>The per-user Jupyter data directory</td>
+<td>Look under <code>PATH/share/jupyter</code>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="juphyter-doctor" class="level3">
+<h3 class="anchored" data-anchor-id="juphyter-doctor"><code>juphyter doctor</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">juphyter</span> doctor <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span></span></code></pre></div></div>
+<p>Checks juphyter’s files, the PHP that runs cells, the Python for the kernel, the Python Quarto will use, and every kernel juphyter registered. Changes nothing.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--prefix PATH</code></td>
+<td>The per-user Jupyter data directory</td>
+<td>Look under <code>PATH/share/jupyter</code>.</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Exit code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>No line is marked <code>fail</code>. Lines marked <code>warn</code>, such as a missing <code>pcntl</code>, are allowed.</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>At least one line is marked <code>fail</code>, including <code>Quarto: not ready.</code></td>
+</tr>
+</tbody>
+</table>
+<p><a href="phpstats://juphyter/docs/install#check-the-installation">Check the installation</a> lists the summary lines.</p>
+</section>
+<section id="juphyter-engine" class="level3">
+<h3 class="anchored" data-anchor-id="juphyter-engine"><code>juphyter engine</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">juphyter</span> engine <span class="pp">[</span><span class="ss">options</span><span class="pp">]</span></span></code></pre></div></div>
+<p>Runs the execution engine. The kernel’s Python transport starts it and talks to it over the Unix socket named in <code>JUPHYTER_SOCKET</code>. It is not run by hand.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--socket PATH</code></td>
+<td><code>$JUPHYTER_SOCKET</code></td>
+<td>The socket to connect to.</td>
+</tr>
+<tr class="even">
+<td><code>--autoload PATH</code></td>
+<td>Search upward from the directory</td>
+<td>The autoloader to load.</td>
+</tr>
+<tr class="odd">
+<td><code>--directory PATH</code></td>
+<td>The working directory</td>
+<td>The notebook’s directory, where the autoloader and <code>juphyter.json</code> search starts.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="juphyter-version" class="level3">
+<h3 class="anchored" data-anchor-id="juphyter-version"><code>juphyter --version</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">juphyter</span> <span class="at">--version</span></span></code></pre></div></div>
+<p>Prints the installed version and the PHP running it.</p>
+</section>
+</section>
+<section id="display-api" class="level2">
+<h2 class="anchored" data-anchor-id="display-api">Display API</h2>
+<p>A cell’s last value is displayed. These functions and methods control how a value is displayed and when.</p>
+<section id="display" class="level3">
+<h3 class="anchored" data-anchor-id="display"><code>Juphyter\display()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Juphyter\display(<span class="dt">mixed</span> <span class="va">$value</span><span class="ot">,</span> <span class="dt">mixed</span> ...<span class="va">$more</span>)<span class="ot">:</span> <span class="dt">void</span></span></code></pre></div></div>
+<p>Publishes each value as its own output, in order, part way through a cell.</p>
+<ul>
+<li>Each value is formatted the same way as a cell’s last value.</li>
+<li>Returns nothing, so a cell that ends with <code>display()</code> has no <code>Out[N]</code>.</li>
+<li>Outside a kernel, the <code>text/plain</code> form is written to standard output.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1" class="code-line" style="--indent: 0ch"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Juphyter\display(<span class="va">$summary</span><span class="ot">,</span> <span class="va">$plot</span>)<span class="ot">;</span></span></code></pre></div></div>
+</section>
+<section id="tohtml" class="level3">
+<h3 class="anchored" data-anchor-id="tohtml"><code>toHtml()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb8-1" class="code-line" style="--indent: 0ch"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> toHtml()<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
+<p>A class that declares <code>toHtml()</code> is displayed as that HTML.</p>
+<ul>
+<li><code>text/plain</code> comes from <code>__toString()</code> when the class is <code>Stringable</code>, and from a compact dump otherwise.</li>
+<li><code>toMimeBundle()</code> takes precedence when a class declares both.</li>
+<li><a href="phpstats://juphyter/docs/get-started#rich-output">Rich output</a> has an example.</li>
+</ul>
+</section>
+<section id="tomimebundle" class="level3">
+<h3 class="anchored" data-anchor-id="tomimebundle"><code>toMimeBundle()</code></h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb9-1" class="code-line" style="--indent: 0ch"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">function</span> toMimeBundle()<span class="ot">:</span> Juphyter\Display\MimeBundle<span class="op">|</span><span class="dt">array</span></span></code></pre></div></div>
+<p>A class that declares <code>toMimeBundle()</code> supplies every output format of its values. It takes precedence over every built-in format, including phibble tables and phiz plots.</p>
+<ul>
+<li>The return value is a <code>MimeBundle</code>, or an array of MIME type to data, such as <code>['text/html' =&gt; '&lt;b&gt;7&lt;/b&gt;', 'text/plain' =&gt; '7']</code>.</li>
+<li>An array with any key that is not a MIME type, or an empty array, is ignored, and the value is shown as a compact dump.</li>
+<li>When <code>text/plain</code> is missing, it comes from <code>__toString()</code> or a compact dump.</li>
+<li><code>application/json</code> and Vega-Lite data are PHP arrays, which the kernel encodes as JSON.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb10-1" class="code-line" style="--indent: 0ch"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">final</span> <span class="kw">class</span> Score</span><span id="cb10-2" class="code-line" style="--indent: 0ch"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>{</span><span id="cb10-3" class="code-line" style="--indent: 4ch"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">function</span> <span class="bu">__construct</span>(<span class="kw">private</span> <span class="dt">readonly</span> <span class="dt">int</span> <span class="va">$value</span>) {}</span><span id="cb10-4" class="code-line" style="--indent: 0ch"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span><span id="cb10-5" class="code-line" style="--indent: 4ch"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">function</span> toMimeBundle()<span class="ot">:</span> <span class="dt">array</span></span><span id="cb10-6" class="code-line" style="--indent: 4ch"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    {</span><span id="cb10-7" class="code-line" style="--indent: 8ch"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [</span><span id="cb10-8" class="code-line" style="--indent: 12ch"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">'text/html'</span> =&gt; <span class="st">"&lt;strong&gt;</span>{<span class="va">$this</span>-&gt;value}<span class="st">&lt;/strong&gt; points"</span><span class="ot">,</span></span><span id="cb10-9" class="code-line" style="--indent: 12ch"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">'text/plain'</span> =&gt; <span class="st">"</span>{<span class="va">$this</span>-&gt;value}<span class="st"> points"</span><span class="ot">,</span></span><span id="cb10-10" class="code-line" style="--indent: 8ch"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        ]<span class="ot">;</span></span><span id="cb10-11" class="code-line" style="--indent: 4ch"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    }</span><span id="cb10-12" class="code-line" style="--indent: 0ch"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></div>
+</section>
+<section id="mimebundle" class="level3">
+<h3 class="anchored" data-anchor-id="mimebundle"><code>Juphyter\Display\MimeBundle</code></h3>
+<p>An immutable, ordered map of MIME type to data, with metadata per type. Every method that changes it returns a new bundle.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Member</th>
+<th>Returns</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>new MimeBundle(array $data = [], array $metadata = [])</code></td>
+<td><code>MimeBundle</code></td>
+<td>A bundle from MIME type to data, and MIME type to metadata.</td>
+</tr>
+<tr class="even">
+<td><code>MimeBundle::plain(string $text)</code></td>
+<td><code>MimeBundle</code></td>
+<td>A bundle holding only <code>text/plain</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>with(string $type, mixed $data, ?array $metadata = null)</code></td>
+<td><code>MimeBundle</code></td>
+<td>Add or replace one type. A replaced type keeps its position.</td>
+</tr>
+<tr class="even">
+<td><code>without(string $type)</code></td>
+<td><code>MimeBundle</code></td>
+<td>Remove one type and its metadata.</td>
+</tr>
+<tr class="odd">
+<td><code>has(string $type)</code></td>
+<td><code>bool</code></td>
+<td>Whether the bundle holds the type.</td>
+</tr>
+<tr class="even">
+<td><code>get(string $type)</code></td>
+<td><code>mixed</code></td>
+<td>The type’s data, or <code>null</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>types()</code></td>
+<td><code>list&lt;string&gt;</code></td>
+<td>The MIME types, in order.</td>
+</tr>
+<tr class="even">
+<td><code>data()</code></td>
+<td><code>array</code></td>
+<td>MIME type to data.</td>
+</tr>
+<tr class="odd">
+<td><code>metadata()</code></td>
+<td><code>array</code></td>
+<td>MIME type to metadata.</td>
+</tr>
+<tr class="even">
+<td><code>count()</code></td>
+<td><code>int</code></td>
+<td>The number of types.</td>
+</tr>
+<tr class="odd">
+<td><code>isEmpty()</code></td>
+<td><code>bool</code></td>
+<td>Whether the bundle holds no type.</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Constant</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>MimeBundle::PLAIN</code></td>
+<td><code>text/plain</code></td>
+</tr>
+<tr class="even">
+<td><code>MimeBundle::HTML</code></td>
+<td><code>text/html</code></td>
+</tr>
+<tr class="odd">
+<td><code>MimeBundle::MARKDOWN</code></td>
+<td><code>text/markdown</code></td>
+</tr>
+<tr class="even">
+<td><code>MimeBundle::JSON</code></td>
+<td><code>application/json</code></td>
+</tr>
+<tr class="odd">
+<td><code>MimeBundle::SVG</code></td>
+<td><code>image/svg+xml</code></td>
+</tr>
+<tr class="even">
+<td><code>MimeBundle::VEGALITE</code></td>
+<td><code>application/vnd.vegalite.v5+json</code></td>
+</tr>
+</tbody>
+</table>
+<p>Types keep the order they were added in.</p>
+</section>
+</section>
+<section id="configuration" class="level2">
+<h2 class="anchored" data-anchor-id="configuration">Configuration</h2>
+<section id="juphyter-json" class="level3">
+<h3 class="anchored" data-anchor-id="juphyter-json"><code>juphyter.json</code></h3>
+<p>A JSON object in the notebook’s directory or any directory above it. The nearest file applies. Every key is optional.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Key</th>
+<th>Type</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>autoload</code></td>
+<td>string</td>
+<td>The autoloader to load, in place of the upward search for <code>vendor/autoload.php</code>.</td>
+</tr>
+<tr class="even">
+<td><code>memory_limit</code></td>
+<td>string</td>
+<td>PHP’s <code>memory_limit</code>, such as <code>"512M"</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>include_path</code></td>
+<td>string</td>
+<td>Prepended to PHP’s <code>include_path</code>.</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Relative paths resolve against the directory that holds the file.</li>
+<li><code>JUPHYTER_AUTOLOAD</code> in the kernel’s environment takes precedence over <code>autoload</code>.</li>
+<li>A file that is not valid JSON, or not a JSON object, is reported as an error.</li>
+</ul>
+</section>
+<section id="kernel-environment" class="level3">
+<h3 class="anchored" data-anchor-id="kernel-environment">Kernel environment</h3>
+<p><code>juphyter install</code> writes these variables into the kernelspec’s <code>env</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Set by</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>JUPHYTER_PHP</code></td>
+<td>Always</td>
+<td>The PHP binary that runs the engine.</td>
+</tr>
+<tr class="even">
+<td><code>JUPHYTER_ENGINE</code></td>
+<td>Always</td>
+<td>The <code>juphyter</code> script, or PHAR, the engine runs from.</td>
+</tr>
+<tr class="odd">
+<td><code>JUPHYTER_AUTOLOAD</code></td>
+<td><code>--autoload</code></td>
+<td>The autoloader to load. Takes precedence over <code>juphyter.json</code>.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="quarto-settings" class="level3">
+<h3 class="anchored" data-anchor-id="quarto-settings">Quarto settings</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Setting</th>
+<th>Where</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>jupyter: NAME</code></td>
+<td>Front matter</td>
+<td>Runs the document’s <code>{php}</code> cells with the kernel named <code>NAME</code>.</td>
+</tr>
+<tr class="even">
+<td><code>execute: freeze: auto</code></td>
+<td>Front matter or <code>_quarto.yml</code></td>
+<td>Re-executes a document only when its source changes.</td>
+</tr>
+</tbody>
+</table>
+<p>Cell options, as <code>#|</code> comments on a cell’s first lines:</p>
+<ul>
+<li><code>#| echo: false</code> runs the cell and hides its source.</li>
+<li><code>#| eval: false</code> shows the source without running it.</li>
+<li><code>#| output: false</code> runs the cell and hides its output.</li>
+<li><code>#| error: true</code> continues the render past an exception, and keeps the traceback.</li>
+<li><code>#| fig-cap: "..."</code> captions the cell’s figure.</li>
+<li><code>#| label: fig-NAME</code> gives the figure a cross-reference label.</li>
+</ul>
+<p><a href="phpstats://juphyter/docs/quarto">Quarto</a> covers output formats and projects.</p>
+
+
+</section>
+</section>

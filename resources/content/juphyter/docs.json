@@ -2,44 +2,58 @@
     "nav": [
         {
             "title": "Overview",
-            "path": "index"
+            "path": "index",
+            "section": "Getting started"
         },
         {
             "title": "Installation",
-            "path": "install"
+            "path": "install",
+            "section": "Getting started"
         },
         {
-            "title": "Getting started",
-            "path": "get-started"
-        },
-        {
-            "title": "Quarto",
-            "path": "quarto"
+            "title": "First steps",
+            "path": "get-started",
+            "section": "Getting started"
         },
         {
             "title": "JupyterLab",
-            "path": "jupyter"
+            "path": "jupyter",
+            "section": "Guides"
+        },
+        {
+            "title": "Quarto",
+            "path": "quarto",
+            "section": "Guides"
         },
         {
             "title": "Python and editors",
-            "path": "python"
+            "path": "python",
+            "section": "Guides"
         },
         {
             "title": "Limitations",
-            "path": "limitations"
+            "path": "limitations",
+            "section": "Guides"
         },
         {
             "title": "Troubleshooting",
-            "path": "troubleshooting"
+            "path": "troubleshooting",
+            "section": "Guides"
         },
         {
-            "title": "Contributing",
-            "path": "development"
+            "title": "Reference",
+            "path": "reference",
+            "section": "Reference"
         },
         {
             "title": "Show a table and a chart in a notebook",
             "path": "examples/notebook",
             "section": "Examples"
+        },
+        {
+            "title": "Contributing",
+            "path": "development",
+            "section": "Contributing"
         }
     ],
     "pages": {
@@ -86,7 +100,7 @@
             "math": false
         },
         "get-started": {
-            "title": "Getting started",
+            "title": "First steps",
             "headings": [
                 {
                     "id": "a-first-cell",
@@ -132,6 +146,11 @@
                 {
                     "id": "how-it-works",
                     "text": "How it works",
+                    "level": 2
+                },
+                {
+                    "id": "documentation",
+                    "text": "Documentation",
                     "level": 2
                 }
             ],
@@ -348,6 +367,87 @@
                     "id": "freeze",
                     "text": "Freeze",
                     "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference": {
+            "title": "Reference",
+            "headings": [
+                {
+                    "id": "commands",
+                    "text": "Commands",
+                    "level": 2
+                },
+                {
+                    "id": "juphyter-install",
+                    "text": "juphyter install",
+                    "level": 3
+                },
+                {
+                    "id": "juphyter-uninstall",
+                    "text": "juphyter uninstall",
+                    "level": 3
+                },
+                {
+                    "id": "juphyter-doctor",
+                    "text": "juphyter doctor",
+                    "level": 3
+                },
+                {
+                    "id": "juphyter-engine",
+                    "text": "juphyter engine",
+                    "level": 3
+                },
+                {
+                    "id": "juphyter-version",
+                    "text": "juphyter --version",
+                    "level": 3
+                },
+                {
+                    "id": "display-api",
+                    "text": "Display API",
+                    "level": 2
+                },
+                {
+                    "id": "display",
+                    "text": "Juphyter\\display()",
+                    "level": 3
+                },
+                {
+                    "id": "tohtml",
+                    "text": "toHtml()",
+                    "level": 3
+                },
+                {
+                    "id": "tomimebundle",
+                    "text": "toMimeBundle()",
+                    "level": 3
+                },
+                {
+                    "id": "mimebundle",
+                    "text": "Juphyter\\Display\\MimeBundle",
+                    "level": 3
+                },
+                {
+                    "id": "configuration",
+                    "text": "Configuration",
+                    "level": 2
+                },
+                {
+                    "id": "juphyter-json",
+                    "text": "juphyter.json",
+                    "level": 3
+                },
+                {
+                    "id": "kernel-environment",
+                    "text": "Kernel environment",
+                    "level": 3
+                },
+                {
+                    "id": "quarto-settings",
+                    "text": "Quarto settings",
+                    "level": 3
                 }
             ],
             "math": false
