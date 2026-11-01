@@ -2,30 +2,74 @@
 <section id="run-the-sampler" class="level2">
 <h2 class="anchored" data-anchor-id="run-the-sampler">Run the sampler</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$model</span> <span class="op">=</span> CmdStan\cmdstan_model(<span class="st">'examples/bernoulli.stan'</span>)<span class="ot">;</span></span><span id="cb1-2" class="code-line" style="--indent: 0ch"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">$data</span> <span class="op">=</span> [<span class="st">'N'</span> =&gt; <span class="dv">10</span><span class="ot">,</span> <span class="st">'y'</span> =&gt; [<span class="dv">0</span><span class="ot">,</span> <span class="dv">1</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">0</span><span class="ot">,</span> <span class="dv">1</span>]]<span class="ot">;</span></span><span id="cb1-3" class="code-line" style="--indent: 0ch"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span><span id="cb1-4" class="code-line" style="--indent: 0ch"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span> <span class="op">=</span> <span class="va">$model</span>-&gt;sample(</span><span id="cb1-5" class="code-line" style="--indent: 4ch"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    data<span class="ot">:</span> <span class="va">$data</span><span class="ot">,</span></span><span id="cb1-6" class="code-line" style="--indent: 4ch"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    seed<span class="ot">:</span> <span class="dv">123</span><span class="ot">,</span></span><span id="cb1-7" class="code-line" style="--indent: 4ch"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    chains<span class="ot">:</span> <span class="dv">4</span><span class="ot">,</span></span><span id="cb1-8" class="code-line" style="--indent: 4ch"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    parallel_chains<span class="ot">:</span> <span class="dv">2</span><span class="ot">,</span></span><span id="cb1-9" class="code-line" style="--indent: 4ch"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    iter_warmup<span class="ot">:</span> <span class="dv">500</span><span class="ot">,</span></span><span id="cb1-10" class="code-line" style="--indent: 4ch"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    iter_sampling<span class="ot">:</span> <span class="dv">1000</span><span class="ot">,</span></span><span id="cb1-11" class="code-line" style="--indent: 4ch"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    adapt_delta<span class="ot">:</span> <span class="fl">0.9</span><span class="ot">,</span></span><span id="cb1-12" class="code-line" style="--indent: 4ch"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    max_treedepth<span class="ot">:</span> <span class="dv">12</span><span class="ot">,</span></span><span id="cb1-13" class="code-line" style="--indent: 4ch"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="ot">:</span> <span class="st">'output'</span><span class="ot">,</span></span><span id="cb1-14" class="code-line" style="--indent: 4ch"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    show_messages<span class="ot">:</span> <span class="kw">false</span><span class="ot">,</span></span><span id="cb1-15" class="code-line" style="--indent: 0ch"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span><span id="cb1-16" class="code-line" style="--indent: 0ch"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span><span id="cb1-17" class="code-line" style="--indent: 0ch"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print_r</span>(<span class="va">$fit</span>-&gt;summary(<span class="st">'theta'</span>))<span class="ot">;</span></span><span id="cb1-18" class="code-line" style="--indent: 0ch"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print_r</span>(<span class="va">$fit</span>-&gt;diagnosticSummary())<span class="ot">;</span></span><span id="cb1-19" class="code-line" style="--indent: 0ch"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print_r</span>(<span class="va">$fit</span>-&gt;diagnosticWarnings())<span class="ot">;</span></span></code></pre></div></div>
-<ul>
-<li><code>chains</code> (default 4) sets the number of independent chains, and <code>parallel_chains</code> (default 1) how many run at once.</li>
-<li><code>iter_warmup</code> and <code>iter_sampling</code> set the iterations per chain. CmdStan’s defaults are 1,000 each. Warmup draws adapt the step size and metric and are discarded unless <code>save_warmup: true</code>.</li>
-<li><code>seed</code> makes a run reproducible. A single seed is shared by all chains, and Stan derives a separate random stream from each chain’s ID. A list gives one seed per chain.</li>
-<li><code>adapt_delta</code> is the target acceptance rate during adaptation (CmdStan’s default is 0.8). Raising it gives smaller steps.</li>
-<li><code>max_treedepth</code> limits the number of leapfrog steps per iteration to 2 to that power (CmdStan’s default depth is 10).</li>
-<li><code>output_dir</code> keeps the CSV files in a known directory. Without it, they go into a new temporary directory, which is not deleted.</li>
-</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Meaning</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>chains</code></td>
+<td>Number of independent chains</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td><code>parallel_chains</code></td>
+<td>Chains run at once</td>
+<td>The <code>mc.cores</code> option, else 1</td>
+</tr>
+<tr class="odd">
+<td><code>iter_warmup</code>, <code>iter_sampling</code></td>
+<td>Iterations per chain. Warmup draws adapt the step size and metric and are discarded unless <code>save_warmup: true</code>.</td>
+<td>1,000 each</td>
+</tr>
+<tr class="even">
+<td><code>seed</code></td>
+<td>One seed for all chains, each with its own random stream from its chain ID, or a list with one seed per chain</td>
+<td>Chosen by CmdStan</td>
+</tr>
+<tr class="odd">
+<td><code>adapt_delta</code></td>
+<td>Target acceptance rate during adaptation. Higher values give smaller steps.</td>
+<td>0.8</td>
+</tr>
+<tr class="even">
+<td><code>max_treedepth</code></td>
+<td>Limits each iteration to 2 to this power leapfrog steps</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td><code>output_dir</code></td>
+<td>Directory for the CSV files</td>
+<td>The <code>cmdstanr_output_dir</code> option, else a new temporary directory, which is not deleted</td>
+</tr>
+</tbody>
+</table>
 <p>Options left out use CmdStan’s defaults, and an unknown option throws. The <a href="phpstats://cmdstanphp/docs/api#method-specific-options">API reference</a> lists every option.</p>
 </section>
 <section id="check-convergence" class="level2">
 <h2 class="anchored" data-anchor-id="check-convergence">Check convergence</h2>
-<p>A summary is only as reliable as the chains behind it. Check these before using an estimate:</p>
+<p>Check these before using an estimate:</p>
 <ul>
-<li><strong>R-hat</strong> (<code>rhat</code> in <code>summary()</code>) compares the chains with each other and with themselves. Values above 1.01 mean the chains have not mixed, and the estimates should not be used.</li>
+<li><strong>R-hat</strong> (<code>rhat</code> in <code>summary()</code>) compares the chains with each other and with themselves. Values above 1.01 suggest that the chains have not mixed, so investigate before using the estimates.</li>
 <li><strong>Effective sample size</strong> (<code>ess_bulk</code> and <code>ess_tail</code>) estimates how many independent draws the autocorrelated draws are worth, for the center and the tails. Aim for at least 100 per chain.</li>
 <li><strong>Divergent transitions</strong> mean the sampler met curvature it could not follow, often in a hierarchical model’s funnel. Even a few can bias the estimates.</li>
-<li><strong>Maximum tree depth</strong> means some iterations stopped at <code>max_treedepth</code>. It makes sampling slower and does not bias the estimates.</li>
+<li><strong>Maximum tree depth</strong> means some iterations stopped at <code>max_treedepth</code>. It is mainly an efficiency warning, but frequent hits can point to difficult geometry or a poorly scaled model.</li>
 <li><strong>E-BFMI</strong> below 0.3 means the momentum resampling explores the energy distribution poorly, and the sampler may miss parts of the posterior.</li>
 </ul>
-<p><code>summary()</code> reports R-hat and the effective sample sizes. <code>diagnosticSummary()</code> returns per-chain arrays <code>num_divergent</code>, <code>num_max_treedepth</code>, and <code>ebfmi</code>. After sampling, the fit checks divergences, tree depth, and E-BFMI, and <code>diagnosticWarnings()</code> returns messages such as <code>Chain 2: 3 divergent transitions.</code> or <code>Chain 1: E-BFMI below 0.3.</code>. These are not PHP warnings. Pass <code>diagnostics: []</code> to skip the checks. <code>cmdstanDiagnose()</code> runs CmdStan’s own <code>diagnose</code> utility on the CSV files and returns its text.</p>
-<p>Common remedies:</p>
+<p>These checks detect common problems. Passing them does not prove that the chains converged, and a value just past a threshold does not prove that they failed.</p>
+<p><code>summary()</code> reports R-hat and the effective sample sizes. <code>diagnosticSummary()</code> returns per-chain arrays <code>num_divergent</code>, <code>num_max_treedepth</code>, and <code>ebfmi</code>. After sampling, the fit checks divergences, tree depth, and E-BFMI, and <code>diagnosticWarnings()</code> returns messages such as <code>Chain 2: 3 divergent transitions.</code> or <code>Chain 1: E-BFMI below 0.3.</code>. These are not PHP warnings, and an empty list means none of the three checks fired. Pass <code>diagnostics: []</code> to skip the checks. <code>cmdstanDiagnose()</code> runs CmdStan’s own <code>diagnose</code> utility on the CSV files and returns its text.</p>
+<p>Common remedies, none of which is guaranteed to work:</p>
 <ul>
-<li>Divergences: raise <code>adapt_delta</code>, for example to 0.95 or 0.99, or reparameterize the model. A non-centered parameterization usually removes a hierarchical funnel.</li>
+<li>Divergences: raise <code>adapt_delta</code>, for example to 0.95 or 0.99, or reparameterize the model. A non-centered parameterization often helps with a hierarchical funnel.</li>
 <li>Maximum tree depth: raise <code>max_treedepth</code>, or rescale parameters to similar magnitudes.</li>
 <li>High R-hat or low ESS: run longer chains, give better initial values, or simplify the model. Multimodal posteriors often show up here.</li>
 </ul>
@@ -37,14 +81,40 @@
 </section>
 <section id="initial-values" class="level2">
 <h2 class="anchored" data-anchor-id="initial-values">Initial values</h2>
-<p><code>init</code> accepts any of these:</p>
-<ul>
-<li>a nonnegative radius, so initial values are drawn uniformly from (−radius, radius) on the unconstrained scale (CmdStan’s default is 2)</li>
-<li>an associative array of parameter values, or a JSON file</li>
-<li>a list of arrays or files, one per chain</li>
-<li>a callable that receives the chain ID, as in <code>init: fn($id) =&gt; ['theta' =&gt; $id / 5]</code></li>
-<li>a fit object</li>
-</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>init</code> value</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A nonnegative number</td>
+<td>Draw initial values uniformly from (−value, value) on the unconstrained scale. CmdStan’s default is 2.</td>
+</tr>
+<tr class="even">
+<td>An associative array, or a JSON file name</td>
+<td>Values for the named parameters, used for every chain</td>
+</tr>
+<tr class="odd">
+<td>A list of arrays or files</td>
+<td>One per chain</td>
+</tr>
+<tr class="even">
+<td>A callable</td>
+<td>Receives the chain ID and returns the values, as in <code>init: fn($id) =&gt; ['theta' =&gt; $id / 5]</code></td>
+</tr>
+<tr class="odd">
+<td>A fit object</td>
+<td>One draw per chain from an earlier fit, described below</td>
+</tr>
+</tbody>
+</table>
 <p>Tuple parameters are given as lists of their elements, and complex parameters as <code>[re, im]</code>. <code>$fit-&gt;init()</code> returns the initial values each chain used.</p>
 <p>A fit used as <code>init</code> supplies one draw per chain, as CmdStanR’s <code>process_init()</code> does:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$pf</span> <span class="op">=</span> <span class="va">$model</span>-&gt;pathfinder(data<span class="ot">:</span> <span class="va">$data</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">123</span>)<span class="ot">;</span></span><span id="cb2-2" class="code-line" style="--indent: 0ch"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span> <span class="op">=</span> <span class="va">$model</span>-&gt;sample(data<span class="ot">:</span> <span class="va">$data</span><span class="ot">,</span> init<span class="ot">:</span> <span class="va">$pf</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">123</span><span class="ot">,</span> chains<span class="ot">:</span> <span class="dv">4</span>)<span class="ot">;</span></span></code></pre></div></div>

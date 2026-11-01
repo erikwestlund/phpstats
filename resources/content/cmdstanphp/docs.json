@@ -267,7 +267,38 @@
         },
         "draws": {
             "title": "Draws, summaries, and saving fits",
-            "headings": [],
+            "headings": [
+                {
+                    "id": "draw-formats",
+                    "text": "Draw formats",
+                    "level": 2
+                },
+                {
+                    "id": "variable-selection",
+                    "text": "Variable selection",
+                    "level": 2
+                },
+                {
+                    "id": "summaries",
+                    "text": "Summaries",
+                    "level": 2
+                },
+                {
+                    "id": "saving-and-reloading",
+                    "text": "Saving and reloading",
+                    "level": 2
+                },
+                {
+                    "id": "output-files",
+                    "text": "Output files",
+                    "level": 2
+                },
+                {
+                    "id": "logs-and-errors",
+                    "text": "Logs and errors",
+                    "level": 2
+                }
+            ],
             "math": false
         },
         "examples": {
