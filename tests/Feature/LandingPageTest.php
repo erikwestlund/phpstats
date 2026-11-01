@@ -67,11 +67,15 @@ class LandingPageTest extends TestCase
         $this->assertSame(['beta[1]', 'beta[2]', 'sigma', 'tau'], SchoolPosterior::explorerSummary()->column('variable'));
         $response->assertSee('PHP 8.3–8.4')->assertDontSee('· Pipe')->assertDontSee("can't run the example");
 
-        // Each panel links its full example in the docs, or the docs until that page syncs.
+        // Each panel links its fuller example in the docs, a section of a page
+        // when the link has a #fragment, or the docs until that page syncs.
         foreach (config('phpstats.explorer') as $key => $entry) {
             $package = Package::find($key);
-            $url = in_array($entry['link'], $package->docsPaths(), true) ? $package->url('docs', ['path' => $entry['link']]) : $package->url('docs');
+            [$path, $fragment] = array_pad(explode('#', $entry['link'], 2), 2, null);
+            $full = in_array($path, $package->docsPaths(), true);
+            $url = $full ? $package->url('docs', ['path' => $path]).($fragment ? "#{$fragment}" : '') : $package->url('docs');
             $response->assertSee('href="'.e($url).'"', false);
+            $response->assertSee('aria-label="'.($full ? 'View full example' : 'View documentation').' for '.$package->name().'"', false);
         }
     }
 
