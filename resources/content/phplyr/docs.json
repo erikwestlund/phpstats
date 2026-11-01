@@ -313,28 +313,13 @@
             "title": "Performance",
             "headings": [
                 {
-                    "id": "methods",
-                    "text": "Methods",
-                    "level": 2
-                },
-                {
-                    "id": "phplyrs-overhead",
-                    "text": "phplyr’s overhead",
-                    "level": 2
-                },
-                {
-                    "id": "phibble-workloads-at-1000000-rows",
-                    "text": "phibble workloads at 1,000,000 rows",
-                    "level": 2
-                },
-                {
                     "id": "choosing-a-backend",
                     "text": "Choosing a backend",
                     "level": 2
                 },
                 {
-                    "id": "backend-pipelines",
-                    "text": "Backend pipelines",
+                    "id": "benchmarks",
+                    "text": "Benchmarks",
                     "level": 2
                 }
             ],
@@ -422,11 +407,6 @@
         "reference/models": {
             "title": "Models",
             "headings": [
-                {
-                    "id": "phit-0.3-and-earlier",
-                    "text": "phit 0.3 and earlier",
-                    "level": 2
-                },
                 {
                     "id": "results",
                     "text": "Results",
