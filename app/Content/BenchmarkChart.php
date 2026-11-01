@@ -13,7 +13,24 @@ use Phiz\Plot;
  */
 class BenchmarkChart
 {
-    private const PHPSTATS = '/^(phpolars|phibble|phit|phplyr|CmdStanPHP)\b/';
+    /**
+     * Implementations from outside PHPstats: the R and Python libraries,
+     * the other CmdStan interfaces, CmdStan on its own, and plain PHP. A
+     * label ending in "(R)" or "(Python)" is one too. Every other label on a
+     * package's page names PHPstats code, such as DataFrame, SqlTable, "phit
+     * reader", "juphyter kernel", or "PHP engine alone".
+     */
+    private const OTHER = '/^(?:R|SciPy|statsmodels|GPBoost|lme4|lm|glm|dplyr|tidyr|readr|tibble|pandas|numpy|py-polars|python3? ipykernel|ipykernel|CmdStanR|CmdStanPy|cmdstanr|cmdstanpy|CmdStan alone|plain PHP)(?![\w-])|\((?:R|Python)\)$/';
+
+    /** How an implementation's bar is colored: PHPstats, Other, or Polyfill. */
+    public static function kind(string $implementation): string
+    {
+        return match (true) {
+            str_starts_with($implementation, 'phit-polyfill') => 'Polyfill',
+            (bool) preg_match(self::OTHER, $implementation) => 'Other',
+            default => 'PHPstats',
+        };
+    }
 
     /**
      * @param list<array{name: string, value: float, shown: string}> $bars
@@ -24,11 +41,7 @@ class BenchmarkChart
             'implementation' => $bar['name'],
             'value' => $bar['value'],
             'shown' => $bar['shown'],
-            'kind' => match (true) {
-                str_starts_with($bar['name'], 'phit-polyfill') => 'Polyfill',
-                (bool) preg_match(self::PHPSTATS, $bar['name']) => 'PHPstats',
-                default => 'Other',
-            },
+            'kind' => self::kind($bar['name']),
         ], $bars);
 
         return Plot::of($rows)
