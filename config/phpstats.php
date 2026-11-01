@@ -60,18 +60,17 @@ return [
      * whose synced benchmark record holds the saved results, the record's
      * id, the selector label, display names for the record's
      * implementations where its own are terse, the task when the record does
-     * not describe its workload, and a note on the trade-off those results
-     * show. A workload whose record has not synced is left out.
+     * not describe its workload, and an optional note. A workload whose record has not synced is left out.
      */
     'benchmarks' => [
         ['package' => 'phit', 'id' => 'distributions-workload', 'label' => 'Distributions', 'names' => ['R' => 'R', 'SciPy' => 'SciPy (Python)'], 'note' => null],
-        ['package' => 'phpolars', 'id' => 'csv-pipeline', 'label' => 'CSV processing', 'task' => 'Keep the completed orders, then total them by region and month.', 'note' => 'phibble and plain PHP read the file in pieces, so their memory stays small. For files too large to hold as PHP arrays, phpolars keeps the data in Polars and returns only the result.'],
-        ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS', 'names' => ['R' => 'lm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'statsmodels is fastest on this workload, and phit takes about twice as long. phit-polyfill, in plain PHP with no extension, takes about 15 times as long. Memory is similar for all four, because the data take most of it.'],
+        ['package' => 'phpolars', 'id' => 'csv-pipeline', 'label' => 'CSV processing', 'task' => 'Keep the completed orders, then total them by region and month.', 'note' => null],
+        ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS', 'names' => ['R' => 'lm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => null],
         ['package' => 'phit', 'id' => 'logistic-workload', 'label' => 'Logistic', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => null],
         ['package' => 'phit', 'id' => 'probit-workload', 'label' => 'Probit', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => null],
-        ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Mixed Gaussian', 'names' => ['R' => 'lme4 (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'lme4 is fastest on this workload. phit takes about three times as long and uses the least memory. phit-polyfill runs wherever PHP does, with no extension, in about 9 seconds.'],
+        ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Mixed Gaussian', 'names' => ['R' => 'lme4 (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => null],
         ['package' => 'phit', 'id' => 'mixed-logistic-workload', 'label' => 'Mixed logistic', 'names' => ['R' => 'lme4 (R)', 'GPBoost' => 'GPBoost (Python)'], 'note' => null],
-        ['package' => 'cmdstanphp', 'id' => 'interfaces-workload', 'label' => 'Mixed Gaussian (Bayesian)', 'names' => ['CmdStanR' => 'CmdStanR (R)', 'CmdStanPy' => 'CmdStanPy (Python)'], 'note' => 'The same eight schools model. All three run the same CmdStan executable and produce identical draws, so the differences are interface overhead. CmdStanPy is fastest; CmdStanPHP takes about 60% longer and uses the least memory.'],
+        ['package' => 'cmdstanphp', 'id' => 'interfaces-workload', 'label' => 'Mixed Gaussian (Bayesian)', 'names' => ['CmdStanR' => 'CmdStanR (R)', 'CmdStanPy' => 'CmdStanPy (Python)'], 'note' => null],
     ],
 
     /*

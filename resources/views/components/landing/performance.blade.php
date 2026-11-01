@@ -34,7 +34,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 id="performance-heading" class="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Performant, powerful, and flexible</h2>
         <p class="mx-auto mt-4 max-w-2xl text-center text-lg leading-snug text-zinc-600 dark:text-zinc-400">
-            Each workload has more than one implementation. Choose the one that fits its runtime, memory, and where it has to run.
+            Each workload has more than one implementation. Choose the one that fits its runtime, memory, and where it has to run. Use <span class="font-mono">phit-polyfill</span> for ease of installation and the <span class="font-mono">phit</span> extension for performance.
         </p>
 
         <div x-data="{ workload: @js($workloads[0]['id']) }" class="mt-10 sm:mt-12">
