@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de5dc5e3b96fa453f589470bc5e7d4d4",
+    "content-hash": "0f79ca3ca15a9fcff83276dc5f9e6e6c",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -2898,16 +2898,16 @@
         },
         {
             "name": "phpstats/phibble",
-            "version": "v0.6.1",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstats/phibble.git",
-                "reference": "e716d07c7180390d596fd444ca3e6ffcceff7f8b"
+                "reference": "7cf161c27b0f91cc7b592ecf8caf5e5ec2b999bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phibble/zipball/e716d07c7180390d596fd444ca3e6ffcceff7f8b",
-                "reference": "e716d07c7180390d596fd444ca3e6ffcceff7f8b",
+                "url": "https://api.github.com/repos/phpstats/phibble/zipball/7cf161c27b0f91cc7b592ecf8caf5e5ec2b999bd",
+                "reference": "7cf161c27b0f91cc7b592ecf8caf5e5ec2b999bd",
                 "shasum": ""
             },
             "require": {
@@ -2952,9 +2952,9 @@
             "description": "A typed, immutable in-memory data frame for PHP.",
             "support": {
                 "issues": "https://github.com/phpstats/phibble/issues",
-                "source": "https://github.com/phpstats/phibble/tree/v0.6.1"
+                "source": "https://github.com/phpstats/phibble/tree/v0.7.0"
             },
-            "time": "2026-11-01T14:35:58+00:00"
+            "time": "2026-11-01T23:48:55+00:00"
         },
         {
             "name": "phpstats/phiz",
@@ -3030,22 +3030,22 @@
         },
         {
             "name": "phpstats/phplyr",
-            "version": "v0.4.5",
+            "version": "v0.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstats/phplyr.git",
-                "reference": "f8d7d3851907b748bf07204a22e273059447a0e2"
+                "reference": "f11d85c4e6ffbe9286cad4a7bf419d8dc0e57241"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/f8d7d3851907b748bf07204a22e273059447a0e2",
-                "reference": "f8d7d3851907b748bf07204a22e273059447a0e2",
+                "url": "https://api.github.com/repos/phpstats/phplyr/zipball/f11d85c4e6ffbe9286cad4a7bf419d8dc0e57241",
+                "reference": "f11d85c4e6ffbe9286cad4a7bf419d8dc0e57241",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=8.3 <8.6",
-                "phpstats/phibble": "^0.3 || ^0.4 || ^0.5 || ^0.6",
+                "phpstats/phibble": "^0.3 || ^0.4 || ^0.5 || ^0.6 || ^0.7",
                 "symfony/polyfill-php84": "^1.31"
             },
             "require-dev": {
@@ -3084,9 +3084,9 @@
             "description": "A dplyr-style grammar of data manipulation for PHP 8.3+, with method chains or PHP 8.5 pipes",
             "support": {
                 "issues": "https://github.com/phpstats/phplyr/issues",
-                "source": "https://github.com/phpstats/phplyr/tree/v0.4.5"
+                "source": "https://github.com/phpstats/phplyr/tree/v0.4.6"
             },
-            "time": "2026-11-01T14:19:57+00:00"
+            "time": "2026-11-01T23:50:54+00:00"
         },
         {
             "name": "psr/clock",
