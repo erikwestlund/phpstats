@@ -65,6 +65,7 @@
     $panels = [
         'distributions' => [
             'title' => 'Normal and gamma probabilities and quantiles',
+            'detail' => null,
             'dataset' => null,
             'record' => 'Distributions',
             'label' => 'Distributions',
@@ -72,7 +73,7 @@
             'reference' => 'distributions',
             'libraries' => ['R' => 'R', 'Python' => 'SciPy (Python)'],
             'relative' => true,
-            'note' => 'R: <code>pnorm</code>, <code>qnorm</code>, <code>pgamma</code>, and <code>qgamma</code>. Python: SciPy\'s <code>norm</code> and <code>gamma</code>.',
+            'note' => 'Standard normal, and gamma with shape 2 and scale 3. R: <code>pnorm</code>, <code>qnorm</code>, <code>pgamma</code>, and <code>qgamma</code>. Python: SciPy\'s <code>norm</code> and <code>gamma</code>.',
             'anchor' => 'distributions',
             'rows' => function (array $values, array $refs) {
                 $points = [
@@ -86,7 +87,8 @@
             },
         ],
         'csv' => [
-            'title' => 'CSV processing of hourly weather at New York City airports',
+            'title' => 'CSV processing of airport weather',
+            'detail' => '26,115 hourly readings at three New York City airports in 2013',
             'dataset' => 'weather',
             'record' => 'CSV processing',
             'label' => 'CSV processing',
@@ -110,7 +112,9 @@
             },
         ],
         'ols' => [
-            'title' => 'Linear regression of fuel economy for 32 cars',
+            'title' => 'Linear regression of fuel economy',
+            'formula' => 'mpg ~ wt + hp',
+            'detail' => '32 cars from <em>Motor Trend</em>, 1974',
             'dataset' => 'mtcars',
             'record' => 'OLS regression',
             'label' => 'OLS',
@@ -123,7 +127,9 @@
             'rows' => $model([['Residual SD', 'sigma', 'sigma'], ['R²', 'r_squared', 'r_squared']]),
         ],
         'logistic' => [
-            'title' => 'Logistic regression of labor force participation for 753 married women',
+            'title' => 'Logistic regression of labor force participation',
+            'formula' => 'lfp ~ k5 + k618 + age + wc + hc + lwg + inc',
+            'detail' => '753 married women in 1975',
             'dataset' => 'mroz',
             'record' => 'Logistic regression',
             'label' => 'Logistic',
@@ -136,7 +142,9 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'probit' => [
-            'title' => 'Probit regression of labor force participation for 753 married women',
+            'title' => 'Probit regression of labor force participation',
+            'formula' => 'lfp ~ k5 + k618 + age + wc + hc + lwg + inc',
+            'detail' => '753 married women in 1975',
             'dataset' => 'mroz',
             'record' => 'Probit regression',
             'label' => 'Probit',
@@ -149,7 +157,9 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-gaussian' => [
-            'title' => 'Linear mixed model of reaction times under sleep deprivation',
+            'title' => 'Linear mixed model of reaction times',
+            'formula' => 'Reaction ~ Days + (1 | Subject)',
+            'detail' => '18 subjects over 10 days of sleep restriction',
             'dataset' => 'sleepstudy',
             'record' => 'Gaussian mixed model',
             'label' => 'Mixed Gaussian',
@@ -162,7 +172,9 @@
             'rows' => $model([['Subject variance', $groupVariance, 'group_variance'], ['Residual variance', 'residual_variance', 'residual_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-logistic' => [
-            'title' => 'Mixed logistic regression of pleuropneumonia in 15 cattle herds',
+            'title' => 'Mixed logistic regression of pleuropneumonia',
+            'formula' => 'cbind(incidence, size - incidence) ~ period + (1 | herd)',
+            'detail' => '15 cattle herds over four periods',
             'dataset' => 'cbpp',
             'record' => 'Mixed logistic model',
             'label' => 'Mixed logistic',
@@ -175,7 +187,9 @@
             'rows' => $model([['Herd variance', $groupVariance, 'group_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'bayesian' => [
-            'title' => 'Bayesian hierarchical model of coaching effects in eight schools',
+            'title' => 'Bayesian hierarchical model of coaching effects',
+            'formula' => 'y ~ normal(mu + tau * theta, sigma)',
+            'detail' => 'eight schools, Rubin (1981)',
             'dataset' => 'schools',
             'record' => 'Bayesian interfaces',
             'label' => 'Mixed Gaussian (Bayesian)',
@@ -303,9 +317,12 @@
                         <h3 class="mb-2 text-base font-semibold text-zinc-950 dark:text-white">{{ $panel['title'] }}</h3>
                         {!! $panel['table'] !!}
                         <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
+                            @if ($panel['formula'] ?? null)
+                                Model: <code>{{ $panel['formula'] }}</code>.
+                            @endif
                             {!! \App\Content\Libraries::mono($panel['note']) !!}
                             @if ($panel['dataset'])
-                                Data: <code>{{ $panel['dataset'] }}</code> (<a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">source</a>).
+                                Data: <code>{{ $panel['dataset'] }}</code>{!! $panel['detail'] ? ', '.$panel['detail'] : '' !!} (<a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">source</a>).
                             @endif
                         </p>
                         @if ($panel['link'])
