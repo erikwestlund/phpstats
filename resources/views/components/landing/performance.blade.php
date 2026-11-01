@@ -99,7 +99,7 @@
                             @foreach ($code as $impl => $source)
                                 @php $slug = $w['id'].'-'.\Illuminate\Support\Str::slug($impl); @endphp
                                 <div role="tabpanel" id="code-{{ $slug }}" aria-labelledby="code-tab-{{ $slug }}" x-show="impl === @js($impl)" @unless ($impl === $first) x-cloak @endunless>
-                                    <pre class="max-h-[30rem] overflow-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::highlight($dedent($source), $languages[$impl] ?? 'php') !!}</code></pre>
+                                    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::highlight($dedent($source), $languages[$impl] ?? 'php') !!}</code></pre>
                                 </div>
                             @endforeach
                         </div>
