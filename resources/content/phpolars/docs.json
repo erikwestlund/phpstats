@@ -216,11 +216,6 @@
                     "level": 2
                 },
                 {
-                    "id": "release-notes",
-                    "text": "Release notes",
-                    "level": 3
-                },
-                {
                     "id": "stubs",
                     "text": "Stubs",
                     "level": 2
@@ -319,28 +314,8 @@
                     "level": 2
                 },
                 {
-                    "id": "benchmark-reports",
-                    "text": "Benchmark reports",
-                    "level": 2
-                },
-                {
-                    "id": "a-csv-pipeline-best-of-five",
-                    "text": "A CSV pipeline (best of five)",
-                    "level": 3
-                },
-                {
-                    "id": "phplyr-pipelines-on-three-backends-best-of-three",
-                    "text": "phplyr pipelines on three backends (best of three)",
-                    "level": 3
-                },
-                {
                     "id": "memory-on-large-files",
                     "text": "Memory on large files",
-                    "level": 3
-                },
-                {
-                    "id": "binary-size",
-                    "text": "Binary size",
                     "level": 2
                 }
             ],
