@@ -52,7 +52,7 @@ return [
      */
     'layers' => [
         'data' => ['title' => 'Data & Workflow', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => ['phibble', 'phplyr', 'phpolars', 'juphyter']],
-        'stats' => ['title' => 'Statistics, Modeling & Visualization', 'color' => 'purple', 'icon' => 'variable', 'packages' => ['phit', 'phiz', 'cmdstanphp']],
+        'stats' => ['title' => 'Statistics, Modeling, & Visualization', 'color' => 'purple', 'icon' => 'variable', 'packages' => ['phit', 'phiz', 'cmdstanphp']],
     ],
 
     /*
@@ -189,7 +189,7 @@ return [
      */
     'menus' => [
         'data' => ['title' => 'Data & Workflow', 'short' => 'Data', 'layers' => ['data']],
-        'stats' => ['title' => 'Statistics, Modeling & Visualization', 'short' => 'Statistics', 'layers' => ['stats']],
+        'stats' => ['title' => 'Statistics, Modeling, & Visualization', 'short' => 'Statistics', 'layers' => ['stats']],
     ],
 
     /*

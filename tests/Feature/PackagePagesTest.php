@@ -22,7 +22,7 @@ class PackagePagesTest extends TestCase
             $response->assertSee("http://{$key}.phpstats.test", false);
         }
         $response->assertSee('Data &amp; Workflow', false)
-            ->assertSee('Statistics, Modeling &amp; Visualization', false)
+            ->assertSee('Statistics, Modeling, &amp; Visualization', false)
             ->assertSee('aria-label="PHPstats home"', false)
             ->assertSee('Connected packages')
             ->assertSee('phplyr functions take phibble data frames and return new ones.');
@@ -313,7 +313,7 @@ class PackagePagesTest extends TestCase
     public function test_layers_show_their_name_without_a_tagline(): void
     {
         $this->get(Package::find('phit')->url())->assertOk()
-            ->assertSee('Statistics, Modeling &amp; Visualization', false)
+            ->assertSee('Statistics, Modeling, &amp; Visualization', false)
             ->assertDontSee('Models, inference, and charts');
         $this->get(Package::find('phibble')->url())->assertOk()
             ->assertDontSee('Tables, pipelines, and notebooks');
