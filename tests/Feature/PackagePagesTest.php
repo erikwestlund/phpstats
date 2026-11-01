@@ -189,7 +189,7 @@ class PackagePagesTest extends TestCase
 
         $this->assertSame(config('projects.phibble.overview'), $package->summary());
         $this->get($package->url())->assertOk()
-            ->assertSee('phibble is the shared table type')
+            ->assertSee('Load, transform, and summarize typed data frames in PHP.')
             ->assertDontSee('One dense paragraph.')
             ->assertDontSee('<p>Array</p>', false);
     }
@@ -276,6 +276,69 @@ class PackagePagesTest extends TestCase
         $this->get(Package::find('phit')->url())->assertOk()
             ->assertSee('<aside', false)
             ->assertSee('lg:grid-cols-[minmax(0,1fr)_22rem]', false);
+    }
+
+    public function test_overview_counts_agree_with_their_numbers(): void
+    {
+        foreach (Package::all() as $key => $package) {
+            $text = html_entity_decode(strip_tags($this->get($package->url())->assertOk()->getContent()));
+            $this->assertDoesNotMatchRegularExpression('/\b1 (timing reports|pages|short, runnable examples|results agree)\b/', $text, $key);
+
+            $examples = count($package->listedExamples());
+            if ($examples > 0) {
+                $this->assertStringContainsString($examples.' short, runnable '.($examples === 1 ? 'example' : 'examples'), $text, $key);
+            }
+            $benchmarks = count($package->benchmarks());
+            if ($benchmarks > 0) {
+                $this->assertStringContainsString($benchmarks.' timing '.($benchmarks === 1 ? 'report' : 'reports'), $text, $key);
+            }
+        }
+    }
+
+    public function test_the_overview_hero_keeps_only_what_installing_needs(): void
+    {
+        $package = Package::find('cmdstanphp');
+        $html = $this->get($package->url())->assertOk()->getContent();
+        $hero = substr($html, 0, strpos($html, '</section>'));
+
+        $this->assertStringContainsString('Requires:', $hero);
+        $this->assertStringContainsString('PHP 8.2–8.5', $hero);
+        foreach ($package->optional() as $optional) {
+            $this->assertStringNotContainsString(e($optional['name']), $hero);
+        }
+        // The optional items and build tools are still on the page, below it.
+        $this->assertStringContainsString('Other dependencies', $html);
+    }
+
+    public function test_layers_show_their_name_without_a_tagline(): void
+    {
+        $this->get(Package::find('phit')->url())->assertOk()
+            ->assertSee('Statistics, Modeling &amp; Visualization', false)
+            ->assertDontSee('Models, inference, and charts');
+        $this->get(Package::find('phibble')->url())->assertOk()
+            ->assertDontSee('Tables, pipelines, and notebooks');
+    }
+
+    public function test_benchmark_methods_come_from_each_record(): void
+    {
+        $page = $this->get(Package::find('cmdstanphp')->url('benchmarks'))->assertOk();
+        // One machine is named once, and the record's own statistic and timing method show.
+        $page->assertSee('Machine:')
+            ->assertSee('Median of 7 runs')
+            ->assertSee('What the time includes')
+            ->assertDontSee('faster');
+
+        $text = html_entity_decode(strip_tags($this->get(Package::find('phit')->url('benchmarks'))->getContent()));
+        // phit's older records give no statistic, so none is invented for them.
+        $this->assertStringContainsString('3 runs', $text);
+        $this->assertStringNotContainsString('Median of 3 runs', $text);
+    }
+
+    public function test_a_note_every_verification_report_shares_is_shown_once(): void
+    {
+        $text = html_entity_decode(strip_tags($this->get(Package::find('phplyr')->url('verification'))->assertOk()->getContent()));
+        $this->assertSame(1, substr_count($text, 'n_compared counts the assertions in each test.'));
+        $this->assertStringContainsString('Max abs. error is the largest absolute difference', $text);
     }
 
     /**

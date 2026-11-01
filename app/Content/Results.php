@@ -2,6 +2,8 @@
 
 namespace App\Content;
 
+use Illuminate\Support\Str;
+
 /**
  * Shapes the benchmark and verification files from each package's site/
  * folder for display.
@@ -110,6 +112,94 @@ class Results
         }
 
         return ['columns' => array_keys(array_filter($columns)), 'peers' => array_keys($peers)];
+    }
+
+    /**
+     * The machine a benchmark ran on, in one line. A CPU listed in
+     * config/phpstats.php cpus is named by its cores, as in "2 AMD Zen 5
+     * cores"; an older record with only a platform string gives that.
+     */
+    public static function machine(array $environment): string
+    {
+        $cpu = $environment['cpu'] ?? null;
+        $cores = $environment['cores'] ?? null;
+        $memory = isset($environment['memory_gb']) ? "{$environment['memory_gb']} GB RAM" : null;
+        $os = $environment['os'] ?? $environment['platform'] ?? null;
+        $family = $cpu === null ? null : (config('phpstats.cpus')[$cpu] ?? null);
+
+        if ($family !== null && $cores !== null) {
+            return implode(', ', array_filter(["{$cores} {$family} cores", $memory, $os === null ? null : strtok($os, ',')]));
+        }
+
+        $detail = implode(', ', array_filter([$cores === null ? null : "{$cores} cores", $memory === null ? null : "{$environment['memory_gb']} GB"]));
+
+        return implode(', ', array_filter([$cpu === null ? null : $cpu.($detail === '' ? '' : " ({$detail})"), $os]));
+    }
+
+    /**
+     * The facts a benchmark record states about its own method, as label =>
+     * text, in a fixed order and only where the record gives them: the
+     * workload or dataset, repetitions and statistic, threads, software
+     * versions, other settings, and when and at which commit it ran. The
+     * record's description and its timing method are shown on their own.
+     *
+     * @return array<string, string>
+     */
+    public static function methods(array $benchmark): array
+    {
+        $env = $benchmark['environment'] ?? [];
+        $known = ['cpu', 'cores', 'memory_gb', 'os', 'platform', 'php', 'versions', 'threads', 'repeats', 'date', 'commit', 'code_commit'];
+
+        $dataset = $benchmark['dataset'] ?? null;
+        if (is_array($dataset)) {
+            $dataset = implode(', ', array_filter([
+                isset($dataset['rows']) ? number_format($dataset['rows']).' rows' : null,
+                isset($dataset['bytes']) ? number_format($dataset['bytes'] / 1e9, 2).' GB' : null,
+                isset($dataset['missing_amounts']) ? "{$dataset['missing_amounts']} of amounts missing" : null,
+            ]));
+        }
+
+        $repeats = $env['repeats'] ?? null;
+        $statistic = $benchmark['statistic'] ?? null;
+        $runs = match (true) {
+            $repeats === null => null,
+            $statistic !== null => ucfirst($statistic).' of '.$repeats.' '.Str::plural('run', $repeats),
+            default => $repeats.' '.Str::plural('run', $repeats),
+        };
+
+        $threads = $env['threads'] ?? null;
+        if (is_array($threads)) {
+            $threads = implode(', ', array_map(fn ($name, $n) => "{$name} {$n}", array_keys($threads), $threads));
+        }
+
+        $versions = array_filter([
+            'PHP' => $env['php'] ?? null,
+            ...($env['versions'] ?? []),
+            // Any other entry that reads as a version, a commit, or "R version 4.6.1".
+            ...array_filter(
+                array_diff_key($env, array_flip($known)),
+                fn ($value) => is_string($value) && preg_match('/^v?\d+(\.\d+)+|^[0-9a-f]{7,40}$|\bversion \d/', $value) === 1,
+            ),
+        ]);
+        $settings = array_filter(array_diff_key($env, array_flip($known), $versions), fn ($value) => is_scalar($value));
+        $versions = array_map(fn (string $version) => match (true) {
+            preg_match('/^[0-9a-f]{8,40}$/', $version) === 1 => substr($version, 0, 7),
+            default => preg_replace('/^.*?\bversion\s+/', '', $version),
+        }, $versions);
+
+        $recorded = isset($env['date']) ? Str::before($env['date'], 'T') : null;
+        $commit = $env['commit'] ?? $benchmark['code_commit'] ?? null;
+
+        return array_filter([
+            'Workload' => $benchmark['workload'] ?? null,
+            'Dataset' => $dataset ?: null,
+            'Runs' => $runs,
+            'Threads' => $threads,
+            'Software' => $versions === [] ? null : implode(', ', array_map(fn ($name, $version) => (strlen($name) === 1 ? strtoupper($name) : $name)." {$version}", array_keys($versions), $versions)),
+            ...array_combine(array_map(fn ($key) => Str::ucfirst(str_replace('_', ' ', $key)), array_keys($settings)), array_map(fn ($value) => (string) $value, $settings)),
+            'Memory' => isset($benchmark['memory_measure']) ? ucfirst($benchmark['memory_measure']) : null,
+            'Recorded' => implode(', ', array_filter([$recorded, $commit === null ? null : 'commit '.substr($commit, 0, 7)])) ?: null,
+        ], fn ($value) => $value !== null && $value !== '');
     }
 
     public static function error(mixed $value): string

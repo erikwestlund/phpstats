@@ -1,6 +1,6 @@
 <x-layout title="Verification" :wide="true">
     <x-page-header :eyebrow="$package->name()" title="Verification">
-        Each report compares {{ $package->name() }} with a reference implementation on the same inputs, at a stated tolerance.
+        Each report compares {{ $package->name() }} with a reference implementation on the same inputs, at a stated tolerance. A result covers the cases in its report.
     </x-page-header>
 
     @php
@@ -25,11 +25,26 @@
         @php
             $total = array_sum(array_map(fn ($report) => count($report['cases']), $reports));
             $failed = array_sum(array_map(fn ($report) => count(array_filter($report['cases'], fn ($case) => ! ($case['passed'] ?? false))), $reports));
+            $sync = $package->sync();
+            // A fact that every report states the same way is given once, above the reports.
+            $facts = fn (array $report) => array_filter([
+                'Reference' => $report['reference'] ?? null,
+                'Tolerance' => isset($report['tolerance']) ? (is_numeric($report['tolerance']) ? \App\Content\Results::error($report['tolerance']) : $report['tolerance']) : null,
+                'Notes' => $report['note'] ?? null,
+                'Recorded' => isset($report['environment']['date']) ? implode(', ', array_filter([
+                    $report['environment']['date'],
+                    isset($report['environment']['php']) ? 'PHP '.$report['environment']['php'] : null,
+                    isset($report['environment']['commit']) ? 'commit '.substr($report['environment']['commit'], 0, 7) : null,
+                ])) : null,
+            ], fn ($value) => $value !== null && $value !== '');
+            $shared = count($reports) < 2 ? [] : array_filter($facts($reports[0]), fn ($value, $label) => collect($reports)->every(fn ($report) => ($facts($report)[$label] ?? null) === $value), ARRAY_FILTER_USE_BOTH);
+            $metrics = collect($reports)->flatMap(fn ($report) => \App\Content\Results::verificationColumns($report)['columns']);
+            $hasPeers = collect($reports)->contains(fn ($report) => \App\Content\Results::verificationColumns($report)['peers'] !== []);
         @endphp
         <div class="mt-10 grid gap-4 sm:grid-cols-3">
             @foreach ([
                 [count($reports), \Illuminate\Support\Str::plural('report', count($reports))],
-                [number_format($total), 'comparisons'],
+                [number_format($total), \Illuminate\Support\Str::plural('comparison', $total)],
                 [$failed === 0 ? 'All pass' : number_format($total - $failed).' pass', $failed === 0 ? 'within tolerance' : number_format($failed).' outside tolerance'],
             ] as [$value, $label])
                 <div class="rounded-2xl bg-gradient-to-br from-(--l50) to-white p-5 ring-1 ring-(--l100) dark:from-(--l400)/10 dark:to-transparent dark:ring-(--l400)/15">
@@ -38,6 +53,19 @@
                 </div>
             @endforeach
         </div>
+        <dl class="mt-8 grid max-w-4xl gap-x-6 gap-y-1 text-sm sm:grid-cols-[auto_minmax(0,1fr)]">
+            @foreach ($shared as $label => $value)
+                <dt class="text-zinc-500">{{ $label }}</dt><dd class="mb-1 sm:mb-0">{{ $value }}</dd>
+            @endforeach
+            @if ($metrics->contains('max_abs_error') || $metrics->contains('max_rel_error'))
+                <dt class="text-zinc-500">Error</dt>
+                <dd class="mb-1 sm:mb-0">
+                    @if ($metrics->contains('max_abs_error')) Max abs. error is the largest absolute difference from the reference over the values compared. @endif
+                    @if ($metrics->contains('max_rel_error')) Max rel. error divides each difference by the size of the reference value. @endif
+                    @if ($hasPeers) Peer columns give the same measure for other implementations against the reference. @endif
+                </dd>
+            @endif
+        </dl>
         <ul class="mt-8 flex flex-wrap gap-2 text-sm">
             @foreach ($reports as $report)
                 <li><a href="#{{ $report['id'] }}" class="inline-block rounded-full bg-zinc-100 px-3 py-1 text-zinc-700 transition hover:bg-(--l100) hover:text-(--l800) dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-(--l400)/15 dark:hover:text-white">{{ $report['title'] }}</a></li>
@@ -59,17 +87,18 @@
                 @if (! empty($report['description']))
                     <p class="mt-2 max-w-3xl text-sm text-zinc-700 dark:text-zinc-300">{{ $report['description'] }}</p>
                 @endif
-                <dl class="mt-3 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-[auto_1fr]">
-                    @if (! empty($report['reference']))
-                        <dt class="text-zinc-500">Reference</dt><dd>{{ $report['reference'] }}</dd>
-                    @endif
-                    @if (isset($report['tolerance']))
-                        <dt class="text-zinc-500">Tolerance</dt><dd>{{ is_numeric($report['tolerance']) ? \App\Content\Results::error($report['tolerance']) : $report['tolerance'] }}</dd>
-                    @endif
+                <dl class="mt-3 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-[auto_minmax(0,1fr)]">
+                    @foreach (array_diff_key($facts($report), $shared) as $label => $value)
+                        <dt class="text-zinc-500">{{ $label }}</dt><dd class="mb-1 sm:mb-0">{{ $value }}</dd>
+                    @endforeach
                     <dt class="text-zinc-500">Result</dt>
                     <dd @class(['font-medium', 'text-emerald-700 dark:text-emerald-400' => $passed === count($report['cases']), 'text-red-700 dark:text-red-400' => $passed !== count($report['cases'])])>
-                        {{ number_format($passed) }} of {{ number_format(count($report['cases'])) }} comparisons pass, across {{ count($groups) }} {{ \Illuminate\Support\Str::plural('case', count($groups)) }}.
+                        {{ number_format($passed) }} of {{ number_format(count($report['cases'])) }} {{ \Illuminate\Support\Str::plural('comparison', count($report['cases'])) }} {{ count($report['cases']) === 1 ? 'passes' : 'pass' }}, across {{ count($groups) }} {{ \Illuminate\Support\Str::plural('case', count($groups)) }}.
                     </dd>
+                    @if (! empty($report['source']) && $sync && ! ($sync['local'] ?? false))
+                        <dt class="text-zinc-500">Source</dt>
+                        <dd><a href="https://github.com/{{ $sync['repo'] }}/tree/{{ $sync['commit'] }}/{{ $report['source'] }}" class="break-all font-mono text-xs underline decoration-zinc-300 underline-offset-2 hover:text-zinc-800 dark:hover:text-zinc-200">{{ $report['source'] }}</a></dd>
+                    @endif
                 </dl>
 
                 <div class="mt-6 divide-y divide-zinc-100 overflow-hidden rounded-xl ring-1 ring-zinc-200 dark:divide-white/5 dark:ring-white/10">
@@ -117,9 +146,6 @@
                         </details>
                     @endforeach
                 </div>
-                @if ($peers)
-                    <p class="mt-2 text-xs text-zinc-500">Peer columns give the same error measure for {{ implode(' and ', $peers) }} against the reference.</p>
-                @endif
             </section>
         @endforeach
     @endif
