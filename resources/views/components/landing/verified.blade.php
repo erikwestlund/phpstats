@@ -11,7 +11,8 @@
     cached like the other landing examples, so a cold cache fetches the
     datasets once. R's and Python's come from scripts/verification/build,
     saved in database/data/verification/references.json. Each panel links
-    phit's verification record for that model.
+    phit's verification record for that model, and its note links the
+    dataset's source and license in phpstats/datasets.
 --}}
 @php
     $references = \App\Data\VerificationReferences::load();
@@ -60,6 +61,8 @@
 
     $panels = [
         'distributions' => [
+            'dataset' => null,
+            'record' => 'Probability distributions',
             'label' => 'Probability distributions',
             'example' => 'verified/distributions',
             'reference' => 'distributions',
@@ -79,6 +82,8 @@
             },
         ],
         'ols' => [
+            'dataset' => 'mtcars',
+            'record' => 'OLS regression',
             'label' => 'OLS',
             'example' => 'verified/ols',
             'reference' => 'ols',
@@ -89,6 +94,8 @@
             'rows' => $model([['Residual SD', 'sigma', 'sigma'], ['R²', 'r_squared', 'r_squared']]),
         ],
         'logistic' => [
+            'dataset' => 'mroz',
+            'record' => 'Logistic regression',
             'label' => 'Logistic',
             'example' => 'verified/logistic',
             'reference' => 'logistic',
@@ -99,6 +106,8 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'probit' => [
+            'dataset' => 'mroz',
+            'record' => 'Probit regression',
             'label' => 'Probit',
             'example' => 'verified/probit',
             'reference' => 'probit',
@@ -109,6 +118,8 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-gaussian' => [
+            'dataset' => 'sleepstudy',
+            'record' => 'Gaussian mixed model',
             'label' => 'Mixed Gaussian',
             'example' => 'verified/mixed-gaussian',
             'reference' => 'mixed_gaussian',
@@ -119,6 +130,8 @@
             'rows' => $model([['Subject variance', $groupVariance, 'group_variance'], ['Residual variance', 'residual_variance', 'residual_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-logistic' => [
+            'dataset' => 'cbpp',
+            'record' => 'Mixed logistic model',
             'label' => 'Mixed logistic',
             'example' => 'verified/mixed-logistic',
             'reference' => 'mixed_logistic',
@@ -184,9 +197,14 @@
 
                     <div class="min-w-0">
                         {!! $panel['table'] !!}
-                        <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">{!! $panel['note'] !!}</p>
-                        <a href="{{ $record }}#{{ $panel['anchor'] }}" class="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
-                            {{ $panel['label'] }} verification record <x-heroicon-m-arrow-right class="size-4" />
+                        <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
+                            {!! \App\Content\Libraries::mono($panel['note']) !!}
+                            @if ($panel['dataset'])
+                                <a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">Data source</a>.
+                            @endif
+                        </p>
+                        <a href="{{ $record }}#{{ $panel['anchor'] }}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
+                            {{ $panel['record'] }} verification record <x-heroicon-m-arrow-right class="size-4" />
                         </a>
                     </div>
                 </div>

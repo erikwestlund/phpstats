@@ -68,8 +68,8 @@ $chart = \Phiz\Plot::of($monthly)
 
     {{-- Evidence: one connected example, a saved benchmark, and verification results --}}
     <x-landing.together />
-    <x-landing.performance />
     <x-landing.verified />
+    <x-landing.performance />
 
     <section aria-label="Get started" class="border-t border-zinc-200 py-16 sm:py-20 dark:border-white/10">
         <div class="mx-auto flex max-w-7xl flex-col items-center justify-center gap-3 px-4 sm:flex-row sm:px-6 lg:px-8">

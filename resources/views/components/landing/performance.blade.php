@@ -27,7 +27,6 @@
 
         return implode("\n", array_map(fn ($l) => preg_replace('/^ {0,'.$indent.'}/', '', $l), $lines));
     };
-    $mono = fn (string $implementation) => (bool) preg_match('/^(phpolars|phibble|phit|phplyr)\b/', $implementation);
 @endphp
 @if ($workloads->isNotEmpty())
 <section id="performance" aria-labelledby="performance-heading" class="scroll-mt-16 border-t border-zinc-200 py-16 sm:py-20 dark:border-white/10">
@@ -77,7 +76,7 @@
                         <tbody class="divide-y divide-zinc-100 tabular-nums dark:divide-white/5">
                             @foreach ($rows as $row)
                                 <tr>
-                                    <th scope="row" @class(['py-3 pr-4 align-top font-medium', 'font-mono text-[0.875rem]' => $mono($row['implementation'])])>{{ $w['names'][$row['implementation']] ?? $row['implementation'] }}</th>
+                                    <th scope="row" class="py-3 pr-4 align-top font-medium">{!! \App\Content\Libraries::mono(e($w['names'][$row['implementation']] ?? $row['implementation'])) !!}</th>
                                     <td class="py-3 pr-4 align-top">
                                         {{ $time($row['value']) }}
                                         <span class="mt-1.5 block h-1.5 rounded-full bg-php-500/70 dark:bg-php-400/70" style="width: {{ max(1.5, round(100 * $row['value'] / $maxTime, 1)) }}%" aria-hidden="true"></span>
@@ -91,7 +90,7 @@
                         </tbody>
                     </table>
                     @if ($w['note'])
-                        <p class="mx-auto mt-4 max-w-4xl text-[0.9375rem] leading-relaxed text-zinc-700 dark:text-zinc-300">{{ $w['note'] }}</p>
+                        <p class="mx-auto mt-4 max-w-4xl text-[0.9375rem] leading-relaxed text-zinc-700 dark:text-zinc-300">{!! \App\Content\Libraries::mono(e($w['note'])) !!}</p>
                     @endif
 
                     @if ($code !== [])
@@ -102,7 +101,7 @@
                                     @php $slug = $w['id'].'-'.\Illuminate\Support\Str::slug($impl); @endphp
                                     <button type="button" role="tab" id="code-tab-{{ $slug }}" aria-controls="code-{{ $slug }}"
                                             x-on:click="impl = @js($impl)" x-bind:aria-selected="(impl === @js($impl)).toString()" aria-selected="{{ $impl === $first ? 'true' : 'false' }}"
-                                            @class(['rounded-md px-2.5 py-1 text-zinc-400 transition hover:text-white aria-selected:bg-php-500/30 aria-selected:text-white', 'font-mono' => $mono($impl)])>{{ $w['names'][$impl] ?? $impl }}</button>
+                                            class="rounded-md px-2.5 py-1 text-zinc-400 transition hover:text-white aria-selected:bg-php-500/30 aria-selected:text-white">{!! \App\Content\Libraries::mono(e($w['names'][$impl] ?? $impl)) !!}</button>
                                 @endforeach
                             </div>
                             @foreach ($code as $impl => $source)

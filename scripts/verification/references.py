@@ -18,7 +18,7 @@ import statsmodels
 import statsmodels.formula.api as smf
 from scipy import stats
 
-BASE = "https://vincentarelbundock.github.io/Rdatasets/csv/"
+BASE = "https://raw.githubusercontent.com/phpstats/datasets/main/csv/"
 
 
 def read(path):
@@ -33,17 +33,17 @@ def fixed(fit, terms):
     }
 
 
-mtcars = read("datasets/mtcars.csv")
+mtcars = read("mtcars.csv")
 ols = smf.ols("mpg ~ wt + hp", data=mtcars).fit()
 
-mroz = read("carData/Mroz.csv")
+mroz = read("mroz.csv")
 mroz["lfp"] = (mroz["lfp"] == "yes").astype(int)
 formula = "lfp ~ k5 + k618 + age + C(wc, Treatment('no')) + C(hc, Treatment('no')) + lwg + inc"
 logit = smf.logit(formula, data=mroz).fit(method="newton", tol=1e-12, maxiter=100, disp=False)
 probit = smf.probit(formula, data=mroz).fit(method="newton", tol=1e-12, maxiter=100, disp=False)
 glm_terms = ["Intercept", "k5", "k618", "age", "C(wc, Treatment('no'))[T.yes]", "C(hc, Treatment('no'))[T.yes]", "lwg", "inc"]
 
-sleepstudy = read("lme4/sleepstudy.csv")
+sleepstudy = read("sleepstudy.csv")
 # MixedLM's default L-BFGS stops early on this flat REML surface (the subject
 # variance stays 0.05 from lme4's), so it runs BFGS to a 1e-10 gradient.
 mixed = smf.mixedlm("Reaction ~ Days", data=sleepstudy, groups=sleepstudy["Subject"]).fit(reml=True, method=["bfgs"], gtol=1e-10)

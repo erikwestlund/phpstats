@@ -82,7 +82,7 @@ class LandingPageTest extends TestCase
      */
     public function test_the_verification_examples_agree_with_the_references_as_shown(): void
     {
-        if (! ScriptVignette::available('phit') || @file_get_contents('https://vincentarelbundock.github.io/Rdatasets/csv/lme4/cbpp.csv') === false) {
+        if (! ScriptVignette::available('phit') || @file_get_contents('https://raw.githubusercontent.com/phpstats/datasets/main/csv/cbpp.csv') === false) {
             $this->markTestSkipped('The verification examples need the phit extension and the network.');
         }
         $references = \App\Data\VerificationReferences::load();

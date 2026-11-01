@@ -7,7 +7,7 @@ suppressPackageStartupMessages({
   library(jsonlite)
 })
 
-base <- "https://vincentarelbundock.github.io/Rdatasets/csv/"
+base <- "https://raw.githubusercontent.com/phpstats/datasets/main/csv/"
 read <- function(path) read.csv(paste0(base, path), stringsAsFactors = TRUE)
 
 fixed <- function(fit) {
@@ -15,19 +15,19 @@ fixed <- function(fit) {
   list(terms = rownames(s), coefficients = unname(s[, 1]), std_errors = unname(s[, 2]))
 }
 
-mtcars <- read("datasets/mtcars.csv")
+mtcars <- read("mtcars.csv")
 ols <- lm(mpg ~ wt + hp, data = mtcars)
 
-mroz <- read("carData/Mroz.csv")
+mroz <- read("mroz.csv")
 logit <- glm(lfp ~ k5 + k618 + age + wc + hc + lwg + inc, family = binomial(link = "logit"), data = mroz,
   control = glm.control(epsilon = 1e-14, maxit = 100))
 probit <- glm(lfp ~ k5 + k618 + age + wc + hc + lwg + inc, family = binomial(link = "probit"), data = mroz,
   control = glm.control(epsilon = 1e-14, maxit = 100))
 
-sleepstudy <- read("lme4/sleepstudy.csv")
+sleepstudy <- read("sleepstudy.csv")
 gaussian <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy, REML = TRUE)
 
-cbpp <- read("lme4/cbpp.csv")
+cbpp <- read("cbpp.csv")
 cbpp$period <- factor(cbpp$period)
 # glmer's default inner PIRLS tolerance (tolPwrss = 1e-7) stops the
 # conditional modes early and perturbs the Laplace log-likelihood by about

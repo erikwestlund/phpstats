@@ -4,8 +4,8 @@
 use Phibble\DataFrame;
 use function Phit\fit_lm;
 
-$rdatasets = 'https://vincentarelbundock.github.io/Rdatasets/csv';
-$mtcars = DataFrame::fromCsv("$rdatasets/datasets/mtcars.csv");
+$data = 'https://raw.githubusercontent.com/phpstats/datasets/main/csv';
+$mtcars = DataFrame::fromCsv("$data/mtcars.csv");
 
 $fit = fit_lm('mpg ~ wt + hp', $mtcars);
 

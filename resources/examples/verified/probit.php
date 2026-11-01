@@ -4,8 +4,8 @@
 use Phibble\DataFrame;
 use function Phit\fit_glm;
 
-$rdatasets = 'https://vincentarelbundock.github.io/Rdatasets/csv';
-$mroz = DataFrame::fromCsv("$rdatasets/carData/Mroz.csv");
+$data = 'https://raw.githubusercontent.com/phpstats/datasets/main/csv';
+$mroz = DataFrame::fromCsv("$data/mroz.csv");
 
 $fit = fit_glm(
     'lfp ~ k5 + k618 + age + wc + hc + lwg + inc',

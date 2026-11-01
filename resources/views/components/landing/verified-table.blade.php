@@ -7,7 +7,7 @@
                 <th scope="col" class="py-2 pr-4 font-medium"><span class="sr-only">Quantity</span></th>
                 <th scope="col" class="py-2 pr-4 text-right font-mono font-medium">phit</th>
                 @foreach ($panel['libraries'] as $library)
-                    <th scope="col" class="whitespace-nowrap py-2 pl-4 text-right font-medium">{{ $library }}</th>
+                    <th scope="col" class="whitespace-nowrap py-2 pl-4 text-right font-medium">{!! \App\Content\Libraries::mono(e($library)) !!}</th>
                 @endforeach
             </tr>
         </thead>

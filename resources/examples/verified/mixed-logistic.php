@@ -4,9 +4,9 @@
 use Phibble\DataFrame;
 use function Phit\fit_glmer;
 
-$rdatasets = 'https://vincentarelbundock.github.io/Rdatasets/csv';
+$data = 'https://raw.githubusercontent.com/phpstats/datasets/main/csv';
 $cbpp = DataFrame::fromCsv(
-    "$rdatasets/lme4/cbpp.csv",
+    "$data/cbpp.csv",
     types: ['period' => 'f'],
 );
 
