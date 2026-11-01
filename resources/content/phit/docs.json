@@ -330,6 +330,11 @@
             "title": "Distribution performance and regression preservation",
             "headings": [
                 {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
                     "id": "numerical-comparisons-before-timings",
                     "text": "Numerical comparisons before timings",
                     "level": 2
@@ -340,8 +345,8 @@
                     "level": 2
                 },
                 {
-                    "id": "seven-model-preservation",
-                    "text": "Seven-model preservation",
+                    "id": "seven-model-preservation-v0.2-release-check",
+                    "text": "Seven-model preservation (v0.2 release check)",
                     "level": 2
                 },
                 {
@@ -355,6 +360,11 @@
         "benchmarks/draws": {
             "title": "Posterior-draw scale validation and performance",
             "headings": [
+                {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
                 {
                     "id": "numerical-agreement-first",
                     "text": "Numerical agreement first",
@@ -563,6 +573,11 @@
             "title": "Seeded sampling verification and performance",
             "headings": [
                 {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
                     "id": "independent-verification-first",
                     "text": "Independent verification first",
                     "level": 2
@@ -589,8 +604,8 @@
                     "level": 2
                 },
                 {
-                    "id": "php-entry-points",
-                    "text": "PHP entry points",
+                    "id": "signatures",
+                    "text": "Signatures",
                     "level": 2
                 },
                 {
@@ -609,18 +624,33 @@
                     "level": 2
                 },
                 {
-                    "id": "errors-and-conversion",
-                    "text": "Errors and conversion",
-                    "level": 2
-                },
-                {
-                    "id": "rust-boundary",
-                    "text": "Rust boundary",
+                    "id": "input-conversion",
+                    "text": "Input conversion",
                     "level": 2
                 },
                 {
                     "id": "v01-diagnostics-and-errors",
                     "text": "Diagnostics and error codes",
+                    "level": 2
+                },
+                {
+                    "id": "exceptions",
+                    "text": "Exceptions",
+                    "level": 3
+                },
+                {
+                    "id": "diagnostics",
+                    "text": "Diagnostics",
+                    "level": 3
+                },
+                {
+                    "id": "undefined-values-and-limits",
+                    "text": "Undefined values and limits",
+                    "level": 3
+                },
+                {
+                    "id": "implementation-notes",
+                    "text": "Implementation notes",
                     "level": 2
                 }
             ],
@@ -697,28 +727,38 @@
             "title": "Descriptive statistics",
             "headings": [
                 {
-                    "id": "calls-and-conventions",
-                    "text": "Calls and conventions",
+                    "id": "summaries",
+                    "text": "Summaries",
                     "level": 2
                 },
                 {
-                    "id": "weight-definitions",
-                    "text": "Weight definitions",
+                    "id": "quantiles",
+                    "text": "Quantiles",
+                    "level": 3
+                },
+                {
+                    "id": "weights",
+                    "text": "Weights",
                     "level": 2
                 },
                 {
-                    "id": "missing-values-and-errors",
-                    "text": "Missing values and errors",
+                    "id": "missing-values",
+                    "text": "Missing values",
                     "level": 2
                 },
                 {
-                    "id": "example-and-verification",
-                    "text": "Example and verification",
+                    "id": "errors",
+                    "text": "Errors",
                     "level": 2
                 },
                 {
                     "id": "density-estimation-interpolation-and-the-ecdf",
                     "text": "Density estimation, interpolation, and the ECDF",
+                    "level": 2
+                },
+                {
+                    "id": "evidence",
+                    "text": "Evidence",
                     "level": 2
                 }
             ],
@@ -728,33 +768,28 @@
             "title": "Design philosophy",
             "headings": [
                 {
-                    "id": "a-plain-numerical-interface",
-                    "text": "A plain numerical interface",
+                    "id": "principles",
+                    "text": "Principles",
                     "level": 2
                 },
                 {
-                    "id": "convenience-belongs-around-the-raw-call",
-                    "text": "Convenience belongs around the raw call",
+                    "id": "architecture",
+                    "text": "Architecture",
                     "level": 2
                 },
                 {
-                    "id": "implementation-boundaries",
-                    "text": "Implementation boundaries",
+                    "id": "scope",
+                    "text": "Scope",
                     "level": 2
                 },
                 {
-                    "id": "current-scope-and-change-decisions",
-                    "text": "Current scope and change decisions",
+                    "id": "data-preparation",
+                    "text": "Data preparation",
                     "level": 2
                 },
                 {
-                    "id": "learning-examples-use-meaningful-simulated-data",
-                    "text": "Learning examples use meaningful simulated data",
-                    "level": 2
-                },
-                {
-                    "id": "performance-evidence",
-                    "text": "Performance evidence",
+                    "id": "conventions-for-documentation-and-evidence",
+                    "text": "Conventions for documentation and evidence",
                     "level": 2
                 }
             ],
@@ -790,13 +825,18 @@
             "title": "Probability distributions",
             "headings": [
                 {
-                    "id": "families-and-parameterizations",
-                    "text": "Families and parameterizations",
+                    "id": "operations",
+                    "text": "Operations",
                     "level": 2
                 },
                 {
-                    "id": "scalar-and-batch-operations",
-                    "text": "Scalar and batch operations",
+                    "id": "families-and-parameterizations",
+                    "text": "Families and parameters",
+                    "level": 2
+                },
+                {
+                    "id": "batch-evaluation",
+                    "text": "Batch evaluation",
                     "level": 2
                 },
                 {
@@ -805,29 +845,34 @@
                     "level": 2
                 },
                 {
-                    "id": "boundaries-and-errors",
-                    "text": "Boundaries and errors",
+                    "id": "boundaries",
+                    "text": "Boundaries",
                     "level": 2
                 },
                 {
-                    "id": "numerical-implementation-and-dependency-audit",
-                    "text": "Numerical implementation and dependency audit",
+                    "id": "errors",
+                    "text": "Errors",
                     "level": 2
                 },
                 {
-                    "id": "reference-evidence-and-release-scope",
-                    "text": "Reference evidence and release scope",
+                    "id": "evidence",
+                    "text": "Evidence",
+                    "level": 2
+                },
+                {
+                    "id": "implementation-notes",
+                    "text": "Implementation notes",
                     "level": 2
                 }
             ],
-            "math": true
+            "math": false
         },
         "documentation": {
             "title": "Building and maintaining the documentation",
             "headings": [
                 {
-                    "id": "render-or-preview-saved-results",
-                    "text": "Render or preview saved results",
+                    "id": "render-and-preview",
+                    "text": "Render and preview",
                     "level": 2
                 },
                 {
@@ -836,19 +881,14 @@
                     "level": 2
                 },
                 {
-                    "id": "recompute-each-models-notebooks",
-                    "text": "Recompute each model’s notebooks",
-                    "level": 2
-                },
-                {
                     "id": "writing-a-walkthrough",
                     "text": "Writing a walkthrough",
                     "level": 2
                 },
                 {
-                    "id": "authoring-and-verification",
-                    "text": "Authoring and verification",
-                    "level": 2
+                    "id": "authoring-rules",
+                    "text": "Authoring rules",
+                    "level": 3
                 },
                 {
                     "id": "example-pages-with-charts",
@@ -856,13 +896,13 @@
                     "level": 2
                 },
                 {
-                    "id": "standard-figures",
-                    "text": "Standard figures",
+                    "id": "figures",
+                    "text": "Figures",
                     "level": 2
                 },
                 {
-                    "id": "publish",
-                    "text": "Publish",
+                    "id": "publishing",
+                    "text": "Publishing",
                     "level": 2
                 }
             ],
@@ -877,18 +917,18 @@
                     "level": 2
                 },
                 {
-                    "id": "covariance-map-and-tolerances",
-                    "text": "Covariance map and tolerances",
+                    "id": "covariance-map",
+                    "text": "Covariance map",
                     "level": 2
                 },
                 {
-                    "id": "affine-transformation-and-determinant",
-                    "text": "Affine transformation and determinant",
+                    "id": "affine-transformation",
+                    "text": "Affine transformation",
                     "level": 2
                 },
                 {
-                    "id": "using-the-php-api",
-                    "text": "Using the PHP API",
+                    "id": "limits",
+                    "text": "Limits",
                     "level": 2
                 },
                 {
@@ -1008,13 +1048,18 @@
             "title": "Extension or polyfill",
             "headings": [
                 {
+                    "id": "versions",
+                    "text": "Versions",
+                    "level": 2
+                },
+                {
                     "id": "how-they-coexist",
                     "text": "How they coexist",
                     "level": 2
                 },
                 {
-                    "id": "what-the-polyfill-covers",
-                    "text": "What the polyfill covers",
+                    "id": "coverage",
+                    "text": "Coverage",
                     "level": 2
                 },
                 {
@@ -1025,11 +1070,6 @@
                 {
                     "id": "speed",
                     "text": "Speed",
-                    "level": 2
-                },
-                {
-                    "id": "versions-and-platforms",
-                    "text": "Versions and platforms",
                     "level": 2
                 }
             ],
@@ -1141,8 +1181,8 @@
             "title": "phit",
             "headings": [
                 {
-                    "id": "what-phit-provides",
-                    "text": "What phit provides",
+                    "id": "capabilities",
+                    "text": "Capabilities",
                     "level": 2
                 },
                 {
@@ -1167,8 +1207,8 @@
                     "level": 2
                 },
                 {
-                    "id": "install-with-pie",
-                    "text": "Install with PIE",
+                    "id": "how-pie-installs-phit",
+                    "text": "How PIE installs phit",
                     "level": 2
                 },
                 {
@@ -1195,6 +1235,11 @@
                     "id": "upgrade",
                     "text": "Upgrade",
                     "level": 2
+                },
+                {
+                    "id": "release-history",
+                    "text": "Release history",
+                    "level": 2
                 }
             ],
             "math": false
@@ -1208,13 +1253,28 @@
                     "level": 2
                 },
                 {
-                    "id": "result",
-                    "text": "Result",
+                    "id": "types",
+                    "text": "Types",
                     "level": 2
                 },
                 {
-                    "id": "reading-in-chunks",
-                    "text": "Reading in chunks",
+                    "id": "guessing",
+                    "text": "Guessing",
+                    "level": 3
+                },
+                {
+                    "id": "parsing",
+                    "text": "Parsing",
+                    "level": 3
+                },
+                {
+                    "id": "missing-values",
+                    "text": "Missing values",
+                    "level": 2
+                },
+                {
+                    "id": "result",
+                    "text": "Result",
                     "level": 2
                 },
                 {
@@ -1223,13 +1283,8 @@
                     "level": 2
                 },
                 {
-                    "id": "guessing",
-                    "text": "Guessing",
-                    "level": 2
-                },
-                {
-                    "id": "parsing",
-                    "text": "Parsing",
+                    "id": "reading-in-chunks",
+                    "text": "Reading in chunks",
                     "level": 2
                 },
                 {
@@ -1243,9 +1298,24 @@
                     "level": 2
                 },
                 {
-                    "id": "performance",
-                    "text": "Performance",
+                    "id": "implementation-notes",
+                    "text": "Implementation notes",
                     "level": 2
+                },
+                {
+                    "id": "tokenizers",
+                    "text": "Tokenizers",
+                    "level": 3
+                },
+                {
+                    "id": "memory-and-passes",
+                    "text": "Memory and passes",
+                    "level": 3
+                },
+                {
+                    "id": "timing",
+                    "text": "Timing",
+                    "level": 3
                 },
                 {
                     "id": "verification",
@@ -1994,38 +2064,43 @@
             "title": "R compatibility: target, coverage and remaining work",
             "headings": [
                 {
-                    "id": "distribution-and-statistical-utility-compatibility",
-                    "text": "Distribution and statistical utility compatibility",
+                    "id": "supported",
+                    "text": "Supported",
                     "level": 2
                 },
                 {
-                    "id": "implemented-and-verified",
-                    "text": "Implemented and verified",
+                    "id": "optimizers",
+                    "text": "Optimizers",
                     "level": 2
                 },
                 {
-                    "id": "optimizers-runtime-versus-reference",
-                    "text": "Optimizers: runtime versus reference",
+                    "id": "differences-from-r",
+                    "text": "Differences from R",
+                    "level": 2
+                },
+                {
+                    "id": "glm-covariance",
+                    "text": "GLM covariance",
+                    "level": 3
+                },
+                {
+                    "id": "glmer-conditional-modes",
+                    "text": "glmer conditional modes",
+                    "level": 3
+                },
+                {
+                    "id": "not-supported",
+                    "text": "Not supported",
                     "level": 2
                 },
                 {
                     "id": "evidence-and-tolerance-policy",
-                    "text": "Evidence and tolerance policy",
-                    "level": 2
-                },
-                {
-                    "id": "remaining-compatibility-work",
-                    "text": "Remaining compatibility work",
+                    "text": "Evidence and tolerances",
                     "level": 2
                 },
                 {
                     "id": "reproduce",
                     "text": "Reproduce",
-                    "level": 2
-                },
-                {
-                    "id": "binomial-mixed-model-evidence",
-                    "text": "Binomial mixed-model evidence",
                     "level": 2
                 }
             ],
@@ -2078,6 +2153,11 @@
                     "id": "binomial-random-intercept-ml",
                     "text": "Binomial random-intercept ML",
                     "level": 2
+                },
+                {
+                    "id": "implementation-notes",
+                    "text": "Implementation notes",
+                    "level": 2
                 }
             ],
             "math": false
@@ -2089,6 +2169,21 @@
                     "id": "probability-distributions-and-descriptive-statistics",
                     "text": "Probability distributions and descriptive statistics",
                     "level": 2
+                },
+                {
+                    "id": "distribution-functions",
+                    "text": "Distribution functions",
+                    "level": 3
+                },
+                {
+                    "id": "seeded-sampling",
+                    "text": "Seeded sampling",
+                    "level": 3
+                },
+                {
+                    "id": "descriptive-statistics",
+                    "text": "Descriptive statistics",
+                    "level": 3
                 },
                 {
                     "id": "posterior-draw-numerical-kernels",
@@ -2112,13 +2207,18 @@
             "title": "Releasing",
             "headings": [
                 {
-                    "id": "binary-artifacts",
-                    "text": "Binary artifacts",
+                    "id": "before-tagging",
+                    "text": "Before tagging",
                     "level": 2
                 },
                 {
-                    "id": "versioned-release-process",
-                    "text": "Versioned release process",
+                    "id": "release-workflow",
+                    "text": "Release workflow",
+                    "level": 2
+                },
+                {
+                    "id": "binary-artifacts",
+                    "text": "Binary artifacts",
                     "level": 2
                 },
                 {
@@ -2127,9 +2227,9 @@
                     "level": 2
                 },
                 {
-                    "id": "packaging-record-of-2026-10-12",
-                    "text": "Packaging record of 2026-10-12",
-                    "level": 3
+                    "id": "history-packaging-record-of-2026-10-12",
+                    "text": "History: packaging record of 2026-10-12",
+                    "level": 2
                 }
             ],
             "math": false
@@ -2138,29 +2238,34 @@
             "title": "Seeded batch sampling",
             "headings": [
                 {
-                    "id": "api-and-state-ownership",
-                    "text": "API and state ownership",
+                    "id": "signature-and-parameters",
+                    "text": "Signature and parameters",
+                    "level": 2
+                },
+                {
+                    "id": "reproducibility-and-state",
+                    "text": "Reproducibility and state",
                     "level": 2
                 },
                 {
                     "id": "uniform-categorical-and-permutation-sampling",
-                    "text": "Uniform, categorical and permutation sampling",
+                    "text": "Uniform, categorical, and permutation sampling",
                     "level": 2
                 },
                 {
-                    "id": "numerical-method-and-reproducibility",
-                    "text": "Numerical method and reproducibility",
+                    "id": "errors",
+                    "text": "Errors",
                     "level": 2
                 },
                 {
-                    "id": "validation",
-                    "text": "Validation",
+                    "id": "implementation-and-reproducibility",
+                    "text": "Implementation and reproducibility",
                     "level": 2
                 },
                 {
                     "id": "independent-verification",
                     "text": "Independent verification",
-                    "level": 2
+                    "level": 3
                 }
             ],
             "math": false
@@ -2246,13 +2351,23 @@
                     "level": 2
                 },
                 {
-                    "id": "probability-and-descriptive-apis",
-                    "text": "Probability and descriptive APIs",
+                    "id": "shared-metric",
+                    "text": "Shared metric",
                     "level": 2
                 },
                 {
-                    "id": "posterior-draw-kernels",
-                    "text": "Posterior-draw kernels",
+                    "id": "records",
+                    "text": "Records",
+                    "level": 2
+                },
+                {
+                    "id": "ols-fixtures-and-coverage",
+                    "text": "OLS fixtures and coverage",
+                    "level": 2
+                },
+                {
+                    "id": "glm-and-mixed-model-fixtures",
+                    "text": "GLM and mixed-model fixtures",
                     "level": 2
                 },
                 {
@@ -2261,89 +2376,54 @@
                     "level": 2
                 },
                 {
-                    "id": "reference-and-tolerances",
-                    "text": "Reference and tolerances",
+                    "id": "distributions-descriptive-statistics-sampling-and-draws",
+                    "text": "Distributions, descriptive statistics, sampling, and draws",
                     "level": 2
                 },
                 {
-                    "id": "current-coverage-and-limits",
-                    "text": "Current coverage and limits",
-                    "level": 2
-                },
-                {
-                    "id": "maintaining-evidence",
-                    "text": "Maintaining evidence",
-                    "level": 2
-                },
-                {
-                    "id": "executed-three-way-evidence",
-                    "text": "Executed three-way evidence",
-                    "level": 2
-                },
-                {
-                    "id": "scale-and-performance-checks",
-                    "text": "Scale and performance checks",
-                    "level": 2
-                },
-                {
-                    "id": "binary-logistic-regression",
-                    "text": "Binary logistic regression",
-                    "level": 2
-                },
-                {
-                    "id": "probit-and-poisson",
-                    "text": "Probit and Poisson",
-                    "level": 2
-                },
-                {
-                    "id": "gaussian-random-intercept-ml",
-                    "text": "Gaussian random-intercept ML",
-                    "level": 2
-                },
-                {
-                    "id": "published-gaussian-mixed-model-data",
-                    "text": "Published Gaussian mixed-model data",
-                    "level": 2
-                },
-                {
-                    "id": "expanded-r-compatibility",
-                    "text": "Expanded R compatibility",
-                    "level": 2
-                },
-                {
-                    "id": "binomial-logit-with-one-random-intercept",
-                    "text": "Binomial logit with one random intercept",
+                    "id": "contributor-notes",
+                    "text": "Contributor notes",
                     "level": 2
                 }
             ],
-            "math": false
+            "math": true
         },
         "verifications/distributions": {
             "title": "Distribution and utility verification",
             "headings": [
                 {
-                    "id": "executed-reference-comparison",
-                    "text": "Executed reference comparison",
+                    "id": "compared",
+                    "text": "Compared",
                     "level": 2
                 },
                 {
-                    "id": "reference-generation-and-limitations",
-                    "text": "Reference generation and limitations",
+                    "id": "results",
+                    "text": "Results",
                     "level": 2
                 },
                 {
-                    "id": "release-gate-tolerances-and-checks",
-                    "text": "Release-gate tolerances and checks",
+                    "id": "inputs-and-references",
+                    "text": "Inputs and references",
                     "level": 2
                 },
                 {
-                    "id": "documented-reference-differences",
-                    "text": "Documented reference differences",
+                    "id": "tolerance-and-checks",
+                    "text": "Tolerance and checks",
                     "level": 2
                 },
                 {
-                    "id": "backend-and-model-path-audit",
-                    "text": "Backend and model-path audit",
+                    "id": "known-exceptions",
+                    "text": "Known exceptions",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
+                    "level": 2
+                },
+                {
+                    "id": "implementation-history-backend-and-model-path-audit",
+                    "text": "Implementation history: backend and model-path audit",
                     "level": 2
                 }
             ],
@@ -2351,25 +2431,81 @@
         },
         "verifications/lmm": {
             "title": "Gaussian random-intercept ML verification record",
-            "headings": [],
+            "headings": [
+                {
+                    "id": "compared",
+                    "text": "Compared",
+                    "level": 2
+                },
+                {
+                    "id": "inputs-and-scope",
+                    "text": "Inputs and scope",
+                    "level": 2
+                },
+                {
+                    "id": "reference-and-versions",
+                    "text": "Reference and versions",
+                    "level": 2
+                },
+                {
+                    "id": "metric-and-tolerance",
+                    "text": "Metric and tolerance",
+                    "level": 2
+                },
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                },
+                {
+                    "id": "known-exceptions-and-limits",
+                    "text": "Known exceptions and limits",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
+                    "level": 2
+                }
+            ],
             "math": false
         },
         "verifications/logistic": {
             "title": "Binary logistic regression verification record",
             "headings": [
                 {
-                    "id": "reference-cases-and-conventions",
-                    "text": "Reference cases and conventions",
+                    "id": "compared",
+                    "text": "Compared",
                     "level": 2
                 },
                 {
-                    "id": "failure-and-integration-checks",
-                    "text": "Failure and integration checks",
+                    "id": "inputs-and-scope",
+                    "text": "Inputs and scope",
                     "level": 2
                 },
                 {
-                    "id": "reproduce",
-                    "text": "Reproduce",
+                    "id": "reference-and-versions",
+                    "text": "Reference and versions",
+                    "level": 2
+                },
+                {
+                    "id": "metric-and-tolerance",
+                    "text": "Metric and tolerance",
+                    "level": 2
+                },
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                },
+                {
+                    "id": "known-exceptions-and-limits",
+                    "text": "Known exceptions and limits",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
                     "level": 2
                 }
             ],
@@ -2379,18 +2515,38 @@
             "title": "OLS verification in R, statsmodels and PHP",
             "headings": [
                 {
+                    "id": "compared",
+                    "text": "Compared",
+                    "level": 2
+                },
+                {
+                    "id": "inputs-and-scope",
+                    "text": "Inputs and scope",
+                    "level": 2
+                },
+                {
+                    "id": "reference-and-versions",
+                    "text": "Reference and versions",
+                    "level": 2
+                },
+                {
+                    "id": "metric-and-tolerance",
+                    "text": "Metric and tolerance",
+                    "level": 2
+                },
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                },
+                {
+                    "id": "known-exceptions",
+                    "text": "Known exceptions",
+                    "level": 2
+                },
+                {
                     "id": "reproduction",
                     "text": "Reproduction",
-                    "level": 2
-                },
-                {
-                    "id": "equivalent-specifications",
-                    "text": "Equivalent specifications",
-                    "level": 2
-                },
-                {
-                    "id": "verified-cases",
-                    "text": "Verified cases",
                     "level": 2
                 }
             ],
@@ -2400,18 +2556,38 @@
             "title": "Poisson regression verification record",
             "headings": [
                 {
-                    "id": "reference-cases-and-conventions",
-                    "text": "Reference cases and conventions",
+                    "id": "compared",
+                    "text": "Compared",
                     "level": 2
                 },
                 {
-                    "id": "failure-and-integration-checks",
-                    "text": "Failure and integration checks",
+                    "id": "inputs-and-scope",
+                    "text": "Inputs and scope",
                     "level": 2
                 },
                 {
-                    "id": "reproduce",
-                    "text": "Reproduce",
+                    "id": "reference-and-versions",
+                    "text": "Reference and versions",
+                    "level": 2
+                },
+                {
+                    "id": "metric-and-tolerance",
+                    "text": "Metric and tolerance",
+                    "level": 2
+                },
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                },
+                {
+                    "id": "known-exceptions-and-limits",
+                    "text": "Known exceptions and limits",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
                     "level": 2
                 }
             ],
@@ -2421,18 +2597,38 @@
             "title": "Probit regression verification record",
             "headings": [
                 {
-                    "id": "reference-cases-and-conventions",
-                    "text": "Reference cases and conventions",
+                    "id": "compared",
+                    "text": "Compared",
                     "level": 2
                 },
                 {
-                    "id": "failure-and-integration-checks",
-                    "text": "Failure and integration checks",
+                    "id": "inputs-and-scope",
+                    "text": "Inputs and scope",
                     "level": 2
                 },
                 {
-                    "id": "reproduce",
-                    "text": "Reproduce",
+                    "id": "reference-and-versions",
+                    "text": "Reference and versions",
+                    "level": 2
+                },
+                {
+                    "id": "metric-and-tolerance",
+                    "text": "Metric and tolerance",
+                    "level": 2
+                },
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                },
+                {
+                    "id": "known-exceptions-and-limits",
+                    "text": "Known exceptions and limits",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
                     "level": 2
                 }
             ],
