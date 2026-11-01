@@ -2,12 +2,14 @@
     $layer = $package->layer();
     $verified = collect($package->verifications())->flatMap(fn ($v) => $v['cases'] ?? []);
     $count = fn (int $n, string $noun, string $rest = '') => $n.' '.\Illuminate\Support\Str::plural($noun, $n).$rest;
-    $agreeing = $verified->where('passed', true)->count();
+    $agreeing = $verified->filter(fn ($case) => \App\Content\Results::status($case) === 'pass')->count();
+    $api = $package->apiReference();
     $sections = array_filter([
-        'docs' => $package->hasDocs() ? ['Docs', 'book-open', $count(count($package->docsNav()), 'page', ' of guides and reference')] : null,
+        'docs' => $package->hasDocs() ? ['Documentation', 'book-open', $count(count($package->docsNav()), 'page')] : null,
+        'api' => $api ? [$api['title'], 'code-bracket', 'Every public '.strtolower($api['title']).', grouped by task', $api['url']] : null,
         'examples' => $package->listedExamples() ? ['Examples', 'play-circle', count($package->listedExamples()).' short, runnable '.\Illuminate\Support\Str::plural('example', count($package->listedExamples()))] : null,
-        'benchmarks' => $package->benchmarks() ? ['Benchmarks', 'clock', $count(count($package->benchmarks()), 'timing report')] : null,
-        'verification' => $package->verifications() ? ['Verification', 'check-badge', $agreeing.' of '.$count($verified->count(), 'result').' '.($verified->count() === 1 ? 'agrees' : 'agree').' with the reference'] : null,
+        'benchmarks' => $package->benchmarks() ? ['Benchmarks', 'clock', $count(count($package->benchmarks()), 'workload')] : null,
+        'verification' => $package->verifications() ? ['Verification', 'check-badge', number_format($agreeing).' of '.$count($verified->count(), 'comparison').' '.($verified->count() === 1 ? 'passes' : 'pass')] : null,
     ]);
     $relations = collect($package->relations())->groupBy('kind');
 @endphp
@@ -25,6 +27,11 @@
                     @if ($package->hasDocs() || $package->externalDocs())
                         <a href="{{ $package->hasDocs() ? $package->url('docs') : $package->externalDocs() }}" class="inline-flex items-center gap-2 rounded-full bg-(--l600) px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-(--l500)/25 transition hover:bg-(--l500)">
                             <x-heroicon-m-book-open class="size-4" /> Read the docs
+                        </a>
+                    @endif
+                    @if ($api)
+                        <a href="{{ $api['url'] }}" class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-zinc-900 ring-1 ring-zinc-200 transition hover:ring-(--l300) dark:bg-white/5 dark:text-white dark:ring-white/10">
+                            <x-heroicon-m-code-bracket class="size-4 text-(--l500)" /> {{ $api['title'] }}
                         </a>
                     @endif
                     @if ($package->listedExamples())
@@ -173,7 +180,7 @@
             @if ($sections)
                 <div class="space-y-3">
                     @foreach ($sections as $section => [$label, $icon, $description])
-                        <a href="{{ $package->url($section) }}" class="group flex items-start gap-3 rounded-xl bg-white p-4 ring-1 ring-zinc-200 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-(--l500)/10 hover:ring-(--l300) dark:bg-white/[0.03] dark:ring-white/10 dark:hover:ring-(--l400)/40">
+                        <a href="{{ $sections[$section][3] ?? $package->url($section) }}" class="group flex items-start gap-3 rounded-xl bg-white p-4 ring-1 ring-zinc-200 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-(--l500)/10 hover:ring-(--l300) dark:bg-white/[0.03] dark:ring-white/10 dark:hover:ring-(--l400)/40">
                             <span class="rounded-lg bg-(--l50) p-2 text-(--l600) dark:bg-(--l400)/10 dark:text-(--l300)"><x-dynamic-component :component="'heroicon-o-'.$icon" class="size-5" /></span>
                             <span>
                                 <span class="flex items-center gap-1 font-semibold text-zinc-900 dark:text-white">{{ $label }} <x-heroicon-m-arrow-right class="size-3.5 opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100" /></span>

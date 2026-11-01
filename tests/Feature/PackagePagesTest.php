@@ -295,7 +295,7 @@ class PackagePagesTest extends TestCase
     {
         foreach (Package::all() as $key => $package) {
             $text = html_entity_decode(strip_tags($this->get($package->url())->assertOk()->getContent()));
-            $this->assertDoesNotMatchRegularExpression('/\b1 (timing reports|pages|short, runnable examples|results agree)\b/', $text, $key);
+            $this->assertDoesNotMatchRegularExpression('/\b1 (workloads|pages|short, runnable examples|comparisons pass)\b/', $text, $key);
 
             $examples = count($package->listedExamples());
             if ($examples > 0) {
@@ -303,7 +303,7 @@ class PackagePagesTest extends TestCase
             }
             $benchmarks = count($package->benchmarks());
             if ($benchmarks > 0) {
-                $this->assertStringContainsString($benchmarks.' timing '.($benchmarks === 1 ? 'report' : 'reports'), $text, $key);
+                $this->assertStringContainsString($benchmarks.' '.($benchmarks === 1 ? 'workload' : 'workloads'), $text, $key);
             }
         }
     }
@@ -446,6 +446,42 @@ class PackagePagesTest extends TestCase
         // The cases show the rule's criterion, never its id.
         $this->assertStringContainsString('|x − r| ≤ 1e-9 + 1e-9 × max(|r|, 1)', $text);
         $this->assertDoesNotMatchRegularExpression('/\(values\)/', $text);
+    }
+
+    public function test_the_overview_links_the_functions_and_methods_section(): void
+    {
+        // No section by that name: no link, and the docs card reads Documentation.
+        $phibble = Package::find('phibble');
+        $this->assertNull($phibble->apiReference());
+        $this->get($phibble->url())->assertOk()->assertSee('Documentation')->assertDontSee('of guides and reference');
+
+        $root = $this->copyContent();
+        $docs = json_decode(File::get("{$root}/phibble/docs.json"), true);
+        $page = $docs['nav'][0]['path'];
+        File::put("{$root}/phibble/docs.json", json_encode([...$docs, 'nav' => [...$docs['nav'], ['title' => 'Index', 'path' => $page, 'section' => 'Functions and methods']]]));
+        Package::flush();
+        $phibble = Package::find('phibble');
+        $api = $phibble->apiReference();
+        $this->assertSame('Functions and methods', $api['title']);
+        $html = $this->get($phibble->url())->assertOk()->getContent();
+        $this->assertGreaterThanOrEqual(2, substr_count($html, 'href="'.e($api['url']).'"'));
+        $this->assertStringContainsString('Functions and methods', $html);
+    }
+
+    public function test_docs_pages_drop_the_section_label_and_group_on_this_page(): void
+    {
+        $phit = Package::find('phit');
+        $path = collect($phit->docsPaths())->first(fn ($p) => collect($phit->docsPage($p)['headings'])->contains('level', 3) && count($phit->docsPage($p)['headings']) > 3);
+        $page = $phit->docsPage($path);
+        $html = $this->get($phit->url('docs', ['path' => $path]))->assertOk()->getContent();
+        // No section label above the title.
+        $this->assertDoesNotMatchRegularExpression('#<p class="text-sm font-semibold[^"]*">[^<]*</p>\s*<h1#', $html);
+        // The right-hand list scrolls on its own, and narrow screens get a disclosure with the same entries.
+        $this->assertStringContainsString('aria-label="On this page"', $html);
+        $this->assertStringContainsString('xl:overflow-y-auto', $html);
+        $this->assertMatchesRegularExpression('#<details class="group/toc[^"]*xl:hidden#', $html);
+        $h3 = collect($page['headings'])->firstWhere('level', 3);
+        $this->assertSame(2, substr_count($html, 'href="#'.$h3['id'].'"'));
     }
 
     public function test_benchmarks_are_one_page_with_tabs_per_workload(): void

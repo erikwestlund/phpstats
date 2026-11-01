@@ -345,7 +345,27 @@ class Package
         return $groups;
     }
 
-    /** The group a docs page is in, for the page eyebrow. */
+    /**
+     * The docs section that is the package's API reference, by its nav
+     * name: "Functions and methods", "Functions", or "Methods". Its URL is
+     * the section's first page.
+     *
+     * @return array{title: string, url: string, count: int}|null
+     */
+    public function apiReference(): ?array
+    {
+        foreach ($this->docsGroups() as $group => $items) {
+            if (in_array(strtolower($group), ['functions and methods', 'functions', 'methods'], true) && $items !== []) {
+                $path = $items[0]['path'];
+
+                return ['title' => $group, 'url' => $this->url('docs', ['path' => $path === 'index' ? null : $path]), 'count' => count($items)];
+            }
+        }
+
+        return null;
+    }
+
+    /** The group a docs page is in. */
     public function docsGroupOf(string $path): ?string
     {
         foreach ($this->docsGroups() as $group => $items) {
