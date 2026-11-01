@@ -268,6 +268,11 @@
                     "level": 2
                 },
                 {
+                    "id": "benchmarks",
+                    "text": "Benchmarks",
+                    "level": 2
+                },
+                {
                     "id": "gallery",
                     "text": "Gallery",
                     "level": 2
@@ -682,6 +687,11 @@
                     "id": "raw-layers",
                     "text": "Raw layers",
                     "level": 2
+                },
+                {
+                    "id": "agreement-with-r",
+                    "text": "Agreement with R",
+                    "level": 2
                 }
             ],
             "math": false
@@ -695,13 +705,13 @@
                     "level": 2
                 },
                 {
-                    "id": "a-complete-first-chart",
-                    "text": "A complete first chart",
+                    "id": "a-first-chart",
+                    "text": "A first chart",
                     "level": 2
                 },
                 {
-                    "id": "data-mappings-and-geoms",
-                    "text": "Data, mappings, and geoms",
+                    "id": "mappings-and-fixed-properties",
+                    "text": "Mappings and fixed properties",
                     "level": 2
                 },
                 {
@@ -2210,8 +2220,13 @@
                     "level": 2
                 },
                 {
-                    "id": "html",
-                    "text": "HTML",
+                    "id": "in-the-browser",
+                    "text": "In the browser",
+                    "level": 2
+                },
+                {
+                    "id": "library-sources-and-offline-pages",
+                    "text": "Library sources and offline pages",
                     "level": 2
                 },
                 {
@@ -2228,6 +2243,11 @@
                     "id": "reproducible-svg",
                     "text": "Reproducible SVG",
                     "level": 3
+                },
+                {
+                    "id": "versions",
+                    "text": "Versions",
+                    "level": 2
                 }
             ],
             "math": false
@@ -2267,8 +2287,8 @@
             "title": "Statistics",
             "headings": [
                 {
-                    "id": "requirements-and-fit-keys",
-                    "text": "Requirements and fit keys",
+                    "id": "requirements",
+                    "text": "Requirements",
                     "level": 2
                 },
                 {
@@ -2299,6 +2319,11 @@
                 {
                     "id": "posterior-intervals",
                     "text": "Posterior intervals",
+                    "level": 2
+                },
+                {
+                    "id": "agreement-with-r",
+                    "text": "Agreement with R",
                     "level": 2
                 }
             ],
