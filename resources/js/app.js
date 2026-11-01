@@ -215,6 +215,14 @@ Alpine.data('tocSpy', () => ({
             const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
             const passed = bottom ? headings : headings.filter((heading) => heading.getBoundingClientRect().top < 120);
             this.active = (passed.at(-1) ?? headings[0])?.id ?? null;
+            // A list taller than its box, as on a long reference page,
+            // scrolls itself to keep the current entry in view.
+            const box = this.$el;
+            const link = this.active && box.querySelector(`[data-toc="${CSS.escape(this.active)}"]`);
+            if (link && box.scrollHeight > box.clientHeight + 1) {
+                const top = link.getBoundingClientRect().top - box.getBoundingClientRect().top + box.scrollTop;
+                if (top < box.scrollTop || top > box.scrollTop + box.clientHeight - 40) box.scrollTop = Math.max(0, top - box.clientHeight / 3);
+            }
         };
         window.addEventListener('scroll', update, { passive: true });
         // A jump to a #fragment can land after init, without a scroll event.

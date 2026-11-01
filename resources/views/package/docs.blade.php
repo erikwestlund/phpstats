@@ -5,6 +5,17 @@
     $previous = $index !== false && $index > 0 ? $nav[$index - 1] : null;
     $next = $index !== false && $index < count($nav) - 1 ? $nav[$index + 1] : null;
     $docsUrl = fn (string $page) => $package->url('docs', ['path' => $page === 'index' ? null : $page]);
+    // The page's sections for "On this page": each h2 with the h3s under it.
+    // An h3 before any h2 stands on its own.
+    $toc = [];
+    foreach ($page['headings'] as $heading) {
+        if ($heading['level'] === 3 && $toc !== []) {
+            $toc[array_key_last($toc)]['children'][] = $heading;
+        } elseif (in_array($heading['level'], [2, 3], true)) {
+            $toc[] = [...$heading, 'children' => []];
+        }
+    }
+    $toc = count($page['headings']) > 1 ? $toc : [];
 @endphp
 <x-layout :title="$page['title']" :bare="true">
     @if ($page['math'])
@@ -63,8 +74,18 @@
 
         {{-- Page --}}
         <article class="min-w-0 py-8 lg:py-10">
-            <p class="text-sm font-semibold text-(--l600) dark:text-(--l300)">{{ $package->docsGroupOf($path) ?? 'Docs' }}</p>
-            <h1 class="mt-2 text-4xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $page['title'] }}</h1>
+            <h1 class="text-4xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $page['title'] }}</h1>
+            @if ($toc !== [])
+                {{-- Below xl the right-hand list is hidden, so the page's sections open from here. --}}
+                <details class="group/toc mt-6 rounded-lg bg-zinc-50 text-sm ring-1 ring-zinc-200 xl:hidden dark:bg-white/5 dark:ring-white/10">
+                    <summary class="flex cursor-pointer list-none items-center justify-between px-3 py-2 font-medium [&::-webkit-details-marker]:hidden">
+                        On this page <x-heroicon-m-chevron-down class="size-4 text-zinc-400 transition group-open/toc:rotate-180" />
+                    </summary>
+                    <div class="max-h-[60vh] overflow-y-auto overscroll-contain px-3 pb-3" x-data x-on:click="$event.target.closest('a') && $el.closest('details').removeAttribute('open')">
+                        @include('package.partials.docs-toc', ['toc' => $toc, 'spy' => false])
+                    </div>
+                </details>
+            @endif
             <div class="docs-content prose prose-zinc prose-php mt-8 max-w-none dark:prose-invert prose-headings:scroll-mt-24 prose-headings:tracking-tight prose-h2:mt-12 prose-a:font-medium">
                 {!! $page['html'] !!}
             </div>
@@ -111,19 +132,15 @@
             </script>
         @endif
 
-        {{-- On this page --}}
-        @if (count($page['headings']) > 1)
-            <nav aria-label="On this page" x-data="tocSpy" class="hidden text-sm xl:sticky xl:top-14 xl:block xl:max-h-[calc(100vh-3.5rem)] xl:self-start xl:overflow-y-auto xl:py-10">
+        {{-- On this page: the page's h2 sections, each with its h3 entries, in
+             a list that scrolls on its own when it is taller than the window,
+             keeping the current entry in view. --}}
+        @if ($toc !== [])
+            <nav aria-label="On this page" x-data="tocSpy" class="hidden text-sm xl:sticky xl:top-14 xl:block xl:max-h-[calc(100vh-3.5rem)] xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:py-10">
                 <p class="text-xs font-semibold uppercase tracking-wider text-zinc-900 dark:text-white">On this page</p>
-                <ul class="mt-3 space-y-2">
-                    @foreach ($page['headings'] as $heading)
-                        <li @class(['pl-3' => $heading['level'] === 3])>
-                            <a href="#{{ $heading['id'] }}" data-toc="{{ $heading['id'] }}"
-                               x-bind:aria-current="active === '{{ $heading['id'] }}' ? 'location' : null"
-                               class="block text-zinc-500 transition hover:text-zinc-900 aria-[current]:font-medium aria-[current]:text-(--l700) dark:text-zinc-400 dark:hover:text-white dark:aria-[current]:text-(--l300)">{{ $heading['text'] }}</a>
-                        </li>
-                    @endforeach
-                </ul>
+                <div class="mt-3">
+                    @include('package.partials.docs-toc', ['toc' => $toc, 'spy' => true])
+                </div>
             </nav>
         @endif
     </div>
