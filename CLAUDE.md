@@ -75,6 +75,11 @@ These committed files are generated, not hand-edited:
   kernel or Quarto. Capture it again as `App\Data\JuphyterCell` describes
   when `resources/examples/packages/juphyter.qmd` changes, then run
   `php artisan examples:clear`.
+- `database/data/verification/references.json`: the R and Python results the
+  landing page's verification section compares phit with, copied from phit's
+  verification records by `php artisan verification:references /path/to/phit`
+  (use a checkout at the commit pinned for phit). phit's own values come from
+  running `resources/examples/verified/*.php`.
 - `resources/content/{package}/` and `public/content/{package}/`: each
   package's `site/` folder (site.json, benchmarks, verifications, vignettes,
   and data) and its rendered Quarto docs, at the commit pinned in

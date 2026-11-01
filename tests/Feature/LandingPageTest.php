@@ -55,9 +55,10 @@ class LandingPageTest extends TestCase
         $this->assertStringContainsString('->embed()', $steps[2]);
         $this->assertStringContainsString('id="together"', $html);
 
-        // Verification reads phit's records and links each one.
+        // Verification compares the values its code gives with the stored
+        // references, and links each record.
         $phit = Package::find('phit');
-        foreach (['distributions', 'lmm-public', 'logistic'] as $record) {
+        foreach (['lmm', 'logistic', 'distributions'] as $record) {
             $this->assertStringContainsString('href="'.e($phit->url('verification')).'#'.$record.'"', $html);
         }
 
@@ -69,6 +70,39 @@ class LandingPageTest extends TestCase
         $this->assertMatchesRegularExpression('#Install the packages.*Browse examples#s', $html);
         $this->assertStringContainsString('href="'.e(route('page', 'installation')).'"', $html);
         $this->assertStringContainsString('href="'.e(route('examples')).'"', $html);
+    }
+
+    /**
+     * The verification section's code gives values within each record's
+     * tolerance of the stored R and Python references: 1e-7 + 1e-6 × |reference|
+     * for the mixed model, 1e-9 + 1e-7 × |reference| for logistic regression,
+     * and 1e-12 relative for the distributions.
+     */
+    public function test_the_verification_examples_agree_with_the_stored_references(): void
+    {
+        if (! ScriptVignette::available('phit')) {
+            $this->markTestSkipped('The verification examples need the phit extension.');
+        }
+        $references = \App\Data\VerificationReferences::load();
+        $close = fn (float $mine, float $theirs, float $absolute, float $relative) => abs($mine - $theirs) <= $absolute + $relative * abs($theirs);
+
+        $mixed = Example::run('verified/mixed');
+        $logistic = Example::run('verified/logistic');
+        foreach (['R', 'statsmodels'] as $library) {
+            foreach ($mixed['coefficients'] as $i => $b) {
+                $this->assertTrue($close($b, $references['mixed'][$library]['coefficients'][$i], 1e-7, 1e-6), "mixed {$library} coefficient {$i}");
+            }
+            $this->assertTrue($close($mixed['random'][0]['covariance'][0][0], $references['mixed'][$library]['random_intercept_variance'], 1e-7, 1e-6), "mixed {$library} school variance");
+            $this->assertTrue($close($mixed['residual_variance'], $references['mixed'][$library]['residual_variance'], 1e-7, 1e-6), "mixed {$library} residual variance");
+            foreach ($logistic['coefficients'] as $i => $b) {
+                $this->assertTrue($close($b, $references['logistic'][$library]['coefficients'][$i], 1e-9, 1e-7), "logistic {$library} coefficient {$i}");
+            }
+        }
+        foreach (Example::run('verified/distributions') as $i => $value) {
+            foreach ($references['distributions']['points'][$i]['values'] as $library => $theirs) {
+                $this->assertTrue($close($value, $theirs, 0.0, 1e-12), "distribution point {$i} against {$library}");
+            }
+        }
     }
 
     public function test_every_package_has_code_on_the_landing_page_and_it_runs(): void

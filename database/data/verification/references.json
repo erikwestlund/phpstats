@@ -1,0 +1,140 @@
+{
+    "source": {
+        "repository": "phpstats/phit",
+        "commit": "618e1241d371cbcb42bc10c70dc9c453724ffbf6"
+    },
+    "mixed": {
+        "versions": {
+            "R": "R version 4.6.1 (2026-06-24)",
+            "lme4": "2.0.6",
+            "statsmodels": "0.15.0",
+            "PHP": "8.5.10",
+            "Python": "3.14.7"
+        },
+        "R": {
+            "coefficients": [
+                46.65518658102517,
+                1.6139078946454086,
+                0.24543063302324322
+            ],
+            "std_errors": [
+                2.204067320429983,
+                0.16024723353170836,
+                0.04171301990575452
+            ],
+            "residual_variance": 25.355429333476824,
+            "random_intercept_variance": 18.105139011022015,
+            "log_likelihood": -775.3741989085033
+        },
+        "statsmodels": {
+            "coefficients": [
+                46.65518657849815,
+                1.6139078945768133,
+                0.24543063307253452
+            ],
+            "std_errors": [
+                2.2040673122596184,
+                0.16024723362559024,
+                0.04171301992956056
+            ],
+            "residual_variance": 25.355429364938463,
+            "random_intercept_variance": 18.105138533153504,
+            "log_likelihood": -775.3741989085034
+        }
+    },
+    "logistic": {
+        "versions": {
+            "R": "R version 4.6.1 (2026-06-24)",
+            "statsmodels": "0.15.0",
+            "numpy": "2.5.4",
+            "Python": "3.14.7",
+            "PHP": "8.5.10"
+        },
+        "R": {
+            "coefficients": [
+                -3.1709805238655355,
+                0.06367532072903287,
+                0.03424801009641729
+            ],
+            "std_errors": [
+                1.478959262251806,
+                0.11318199347432666,
+                0.028940552831168587
+            ],
+            "log_likelihood": -49.48432505729114
+        },
+        "statsmodels": {
+            "coefficients": [
+                -3.1709805238655355,
+                0.06367532072903312,
+                0.034248010096417245
+            ],
+            "std_errors": [
+                1.4789592622521102,
+                0.11318199347433952,
+                0.028940552831172667
+            ],
+            "log_likelihood": -49.484325057291116
+        }
+    },
+    "distributions": {
+        "versions": {
+            "R": "R version 4.6.1 (2026-06-24)",
+            "SciPy": "SciPy 1.18.1, NumPy 2.5.4"
+        },
+        "points": [
+            {
+                "distribution": "normal",
+                "params": {
+                    "mean": 0,
+                    "sd": 1
+                },
+                "operation": "cdf",
+                "input": -8,
+                "values": {
+                    "R": 6.220960574271785e-16,
+                    "SciPy": 6.22096057427174e-16
+                }
+            },
+            {
+                "distribution": "normal",
+                "params": {
+                    "mean": 0,
+                    "sd": 1
+                },
+                "operation": "quantile",
+                "input": 0.975,
+                "values": {
+                    "R": 1.9599639845400534,
+                    "SciPy": 1.959963984540054
+                }
+            },
+            {
+                "distribution": "gamma",
+                "params": {
+                    "shape": 2,
+                    "scale": 3
+                },
+                "operation": "cdf",
+                "input": 12,
+                "values": {
+                    "R": 0.9084218055563291,
+                    "SciPy": 0.9084218055563291
+                }
+            },
+            {
+                "distribution": "gamma",
+                "params": {
+                    "shape": 2,
+                    "scale": 3
+                },
+                "operation": "quantile",
+                "input": 0.999,
+                "values": {
+                    "R": 27.700240429354754,
+                    "SciPy": 27.700240429354754
+                }
+            }
+        ]
+    }
+}
