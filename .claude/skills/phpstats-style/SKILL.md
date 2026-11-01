@@ -68,8 +68,12 @@ its own menu:
   landing page's "Verified against established libraries" section and the
   About page's Validation section are the two places that summarize them.
   Never write a bare "checked against R".
-- Don't use "Verbs" as a heading. The landing page's one mention of the
-  tidyverse's influence is in the Packages introduction.
+- Never call the packages' APIs "verbs". Write "functions" for standalone
+  functions, "methods" for class methods, "functions and methods" for both,
+  and "operations" for processing in general: "dplyr functions", "table
+  methods", "single-table functions". Code identifiers and quotations stay
+  as they are. The landing page's one mention of the tidyverse's influence
+  is in the Packages introduction.
 - The about page is "About PHPstats".
 
 ## Code examples

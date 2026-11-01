@@ -70,7 +70,7 @@ return [
         ],
         'overview' => [
             'Filter, transform, join, and reshape tables with dplyr- and tidyr-style functions. Pipelines use PHP 8.5\'s pipe operator, or method chains on PHP 8.3 and 8.4.',
-            'The dplyr functions cover single-table verbs, joins, set operations, window functions, and across() with tidyselect-style selectors. The tidyr functions cover pivots, separating and uniting columns, nesting, and completing and filling missing values.',
+            'The dplyr functions cover single-table functions, joins, set operations, window functions, and across() with tidyselect-style selectors. The tidyr functions cover pivots, separating and uniting columns, nesting, and completing and filling missing values.',
             'Summary helpers such as n(), mean(), sd(), and quantile() follow R\'s rules for missing values and use phit when the extension is loaded.',
         ],
     ],
