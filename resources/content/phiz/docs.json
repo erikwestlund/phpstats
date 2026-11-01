@@ -2,7 +2,8 @@
     "nav": [
         {
             "title": "Overview",
-            "path": "index"
+            "path": "index",
+            "section": "Getting started"
         },
         {
             "title": "Get started",
@@ -70,49 +71,59 @@
             "section": "Guides"
         },
         {
-            "title": "API reference",
+            "title": "Design and compatibility",
+            "path": "design",
+            "section": "Guides"
+        },
+        {
+            "title": "Functions and methods",
+            "path": "functions",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "API conventions",
             "path": "reference",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Plots and data API",
             "path": "reference-plots",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Geoms API",
             "path": "reference-geoms",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Scales and guides API",
             "path": "reference-scales",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Coordinates, facets, and composition API",
             "path": "reference-facets",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Labels and themes API",
             "path": "reference-themes",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Interaction API",
             "path": "reference-interaction",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Output API",
             "path": "reference-output",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Statistics API",
             "path": "reference-statistics",
-            "section": "Reference"
+            "section": "Functions and methods"
         },
         {
             "title": "Layer points and a fitted line",
@@ -133,11 +144,6 @@
             "title": "Gallery",
             "path": "gallery",
             "section": "Examples"
-        },
-        {
-            "title": "Design and compatibility",
-            "path": "design",
-            "section": "Compatibility and limitations"
         },
         {
             "title": "Development",
@@ -354,6 +360,52 @@
                 {
                     "id": "composition",
                     "text": "Composition",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "functions": {
+            "title": "Functions and methods",
+            "headings": [
+                {
+                    "id": "plots-and-data",
+                    "text": "Plots and data",
+                    "level": 2
+                },
+                {
+                    "id": "geoms",
+                    "text": "Geoms",
+                    "level": 2
+                },
+                {
+                    "id": "scales-and-guides",
+                    "text": "Scales and guides",
+                    "level": 2
+                },
+                {
+                    "id": "coordinates-facets-and-composition",
+                    "text": "Coordinates, facets, and composition",
+                    "level": 2
+                },
+                {
+                    "id": "labels-and-themes",
+                    "text": "Labels and themes",
+                    "level": 2
+                },
+                {
+                    "id": "interaction",
+                    "text": "Interaction",
+                    "level": 2
+                },
+                {
+                    "id": "output",
+                    "text": "Output",
+                    "level": 2
+                },
+                {
+                    "id": "statistics",
+                    "text": "Statistics",
                     "level": 2
                 }
             ],
@@ -868,29 +920,8 @@
             "math": false
         },
         "reference": {
-            "title": "API reference",
-            "headings": [
-                {
-                    "id": "conventions",
-                    "text": "Conventions",
-                    "level": 2
-                },
-                {
-                    "id": "aesthetics",
-                    "text": "Aesthetics",
-                    "level": 2
-                },
-                {
-                    "id": "exceptions",
-                    "text": "Exceptions",
-                    "level": 2
-                },
-                {
-                    "id": "other-classes",
-                    "text": "Other classes",
-                    "level": 2
-                }
-            ],
+            "title": "API conventions",
+            "headings": [],
             "math": false
         },
         "reference-facets": {
@@ -1573,11 +1604,6 @@
                 {
                     "id": "data-count",
                     "text": "$data->count()",
-                    "level": 3
-                },
-                {
-                    "id": "data-source",
-                    "text": "$data->source()",
                     "level": 3
                 },
                 {

@@ -9,10 +9,12 @@
 <section id="to-array" class="level3">
 <h3 class="anchored" data-anchor-id="to-array"><code>toArray()</code></h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>-&gt;toArray()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>The Vega-Lite specification as a PHP array, with $schema and config.</p>
 </section>
 <section id="to-spec" class="level3">
 <h3 class="anchored" data-anchor-id="to-spec"><code>toSpec()</code></h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>-&gt;toSpec()<span class="ot">:</span> <span class="dt">array</span></span></code></pre></div></div>
+<p>The specification for nesting in a composition: without $schema or config.</p>
 </section>
 <section id="to-json" class="level3">
 <h3 class="anchored" data-anchor-id="to-json"><code>toJson()</code></h3>
@@ -27,7 +29,7 @@
 <section id="html" class="level3">
 <h3 class="anchored" data-anchor-id="html"><code>html()</code></h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>-&gt;html(<span class="ot">?</span><span class="dt">string</span> <span class="va">$title</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span> <span class="dt">array</span> <span class="va">$options</span> <span class="op">=</span> []<span class="ot">,</span> <span class="ot">?</span>Assets <span class="va">$assets</span> <span class="op">=</span> <span class="kw">null</span>)<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
-<p>A standalone HTML page.</p>
+<p>A complete HTML page that draws the chart, loading the libraries from the CDN unless assets says otherwise.</p>
 </section>
 <section id="svg" class="level3">
 <h3 class="anchored" data-anchor-id="svg"><code>svg()</code></h3>
@@ -93,6 +95,7 @@
 <section id="html-attributes" class="level3">
 <h3 class="anchored" data-anchor-id="html-attributes"><code>Html::attributes()</code></h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb17-1" class="code-line" style="--indent: 0ch"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Html::attributes(<span class="dt">array</span> <span class="va">$attributes</span>)<span class="ot">:</span> <span class="dt">string</span></span></code></pre></div></div>
+<p>HTML attributes from a name =&gt; value map: true writes a bare attribute, and null or false leaves it out.</p>
 </section>
 </section>
 <section id="class-assets" class="level2">
