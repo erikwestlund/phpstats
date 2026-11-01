@@ -64,6 +64,8 @@
 
     $panels = [
         'distributions' => [
+            'title' => 'Probability distributions',
+            'model' => 'Normal and gamma (shape 2, scale 3) distribution functions and quantiles',
             'dataset' => null,
             'record' => 'Distributions',
             'label' => 'Distributions',
@@ -85,6 +87,8 @@
             },
         ],
         'csv' => [
+            'title' => 'CSV processing',
+            'model' => 'Hours of readings, mean temperature, and mean humidity by airport, skipping missing values',
             'dataset' => 'weather',
             'record' => 'CSV processing',
             'label' => 'CSV processing',
@@ -108,6 +112,8 @@
             },
         ],
         'ols' => [
+            'title' => 'Ordinary least squares',
+            'model' => '<code>mpg ~ wt + hp</code>',
             'dataset' => 'mtcars',
             'record' => 'OLS regression',
             'label' => 'OLS',
@@ -120,6 +126,8 @@
             'rows' => $model([['Residual SD', 'sigma', 'sigma'], ['R²', 'r_squared', 'r_squared']]),
         ],
         'logistic' => [
+            'title' => 'Logistic regression',
+            'model' => '<code>lfp ~ k5 + k618 + age + wc + hc + lwg + inc</code>, binomial with the logit link',
             'dataset' => 'mroz',
             'record' => 'Logistic regression',
             'label' => 'Logistic',
@@ -132,6 +140,8 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'probit' => [
+            'title' => 'Probit regression',
+            'model' => '<code>lfp ~ k5 + k618 + age + wc + hc + lwg + inc</code>, binomial with the probit link',
             'dataset' => 'mroz',
             'record' => 'Probit regression',
             'label' => 'Probit',
@@ -144,6 +154,8 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-gaussian' => [
+            'title' => 'Linear mixed model',
+            'model' => '<code>Reaction ~ Days + (1 | Subject)</code>, fitted by REML',
             'dataset' => 'sleepstudy',
             'record' => 'Gaussian mixed model',
             'label' => 'Mixed Gaussian',
@@ -156,6 +168,8 @@
             'rows' => $model([['Subject variance', $groupVariance, 'group_variance'], ['Residual variance', 'residual_variance', 'residual_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-logistic' => [
+            'title' => 'Mixed logistic regression',
+            'model' => '<code>cbind(incidence, size - incidence) ~ period + (1 | herd)</code>, Laplace approximation',
             'dataset' => 'cbpp',
             'record' => 'Mixed logistic model',
             'label' => 'Mixed logistic',
@@ -168,6 +182,8 @@
             'rows' => $model([['Herd variance', $groupVariance, 'group_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'bayesian' => [
+            'title' => 'Bayesian hierarchical model',
+            'model' => '<code>y ~ normal(mu + tau * theta, sigma)</code>, sampled by NUTS in four chains',
             'dataset' => 'schools',
             'record' => 'Bayesian interfaces',
             'label' => 'Mixed Gaussian (Bayesian)',
@@ -269,7 +285,12 @@
 
             @foreach ($panels as $key => $panel)
                 <div role="tabpanel" id="check-{{ $key }}" aria-labelledby="check-tab-{{ $key }}" x-show="check === '{{ $key }}'" @unless ($key === $first) x-cloak @endunless
-                     class="mt-8 grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
+                     class="mt-8">
+                    <div class="mb-6 text-center">
+                        <h3 class="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $panel['title'] }}</h3>
+                        <p class="mt-1 text-[0.9375rem] text-zinc-600 dark:text-zinc-400">{!! $panel['model'] !!}</p>
+                    </div>
+                    <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
                     @if (is_array($panel['code']))
                         @php $firstCode = array_key_first($panel['code']); @endphp
                         <div x-data="{ lib: @js($firstCode) }" class="code-ink min-w-0 overflow-hidden rounded-xl shadow-lg shadow-php-950/10 ring-1 ring-black/5 dark:ring-(--color-ink-line)">
@@ -303,6 +324,7 @@
                             {{ $panel['record'] }} verification record <x-heroicon-m-arrow-right class="size-4" />
                         </a>
                         @endif
+                    </div>
                     </div>
                 </div>
             @endforeach
