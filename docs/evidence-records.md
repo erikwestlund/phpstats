@@ -18,8 +18,11 @@ JSON records from the package's `site/` folder. `site:sync` copies them to
 ```
 
 A record's file name is its id and its URL: `/benchmarks/{id}` and
-`/verification/{id}`. Keep ids stable; renaming one breaks links. The old
-`/benchmarks#{id}` and `/verification#{id}` links redirect to the topic page.
+`/verification/{id}`. The old `/benchmarks#{id}` and `/verification#{id}`
+links redirect to the topic page. When a record is renamed or merged, list
+the old id in `evidence_redirects`, as
+`{"benchmarks": {"py-polars": "read-group-join"}}`, and the old URL
+redirects to the new topic.
 
 `evidence_gaps` is optional. Each entry is one plain sentence naming what is
 not measured or checked. A package with no records shows its gap sentence, or
@@ -49,7 +52,7 @@ One record is one topic: a behavior or calculation checked one way.
 | `known_differences` | List of sentences: where the package differs from the reference on purpose. |
 | `reproduce` | Shell command, or list of commands, run from the package repository root. |
 | `source` | Repository path of the full machine-readable results. Linked at the pinned commit. |
-| `data` | Repository path or URL of the input data. |
+| `data` | Repository path or URL of the input data. An object holds the input values themselves, such as Stan data, and shows under Inputs. |
 | `environment` | `{"date", "commit", "php", "os"}` of the run. |
 | `group` | Sidebar group heading, when a package has many topics. |
 
@@ -82,6 +85,7 @@ than one.
 | Field | Meaning |
 | --- | --- |
 | `name` (required) | The input or fixture, such as "sleepstudy". Cases with the same name form one row group. |
+| `category` | A heading that groups cases, such as "Joins". When cases have one, the summary table is by category. |
 | `quantity` | What was compared, such as "coefficients" or "6 rows × 9 columns". |
 | `status` | `pass`, `fail`, or `skipped`. Replaces `passed`, which still reads as pass or fail. A case with neither shows "not reported", never pass. |
 | `reason` | Required for `fail` and `skipped`: one sentence. |
