@@ -217,6 +217,14 @@ pre,
     border: 1px solid var(--color-zinc-200);
     box-shadow: none;
 }
+/* Quarto's muted text, as for phit-polyfill's figures beside the extension's:
+   the light neutral gray the benchmark charts give the polyfill. */
+.docs-content .text-muted {
+    color: var(--color-zinc-400);
+}
+.dark .docs-content .text-muted {
+    color: var(--color-zinc-500);
+}
 /* Long inline code, such as a path, may break anywhere, and a chart that
    vega-embed drew at a fixed width scales down to fit the column. */
 .docs-content :not(pre) > code {

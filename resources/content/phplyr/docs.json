@@ -323,8 +323,8 @@
                     "level": 2
                 },
                 {
-                    "id": "timings-at-1000000-rows",
-                    "text": "Timings at 1,000,000 rows",
+                    "id": "phibble-workloads-at-1000000-rows",
+                    "text": "phibble workloads at 1,000,000 rows",
                     "level": 2
                 },
                 {
@@ -333,8 +333,8 @@
                     "level": 2
                 },
                 {
-                    "id": "polarstable",
-                    "text": "PolarsTable",
+                    "id": "backend-pipelines",
+                    "text": "Backend pipelines",
                     "level": 2
                 }
             ],
