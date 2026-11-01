@@ -1,16 +1,15 @@
 <?php
 
-chdir(database_path('data'));
-
 // ---
 use Phibble\DataFrame;
 use function Phit\fit_glm;
 
-$students = DataFrame::fromCsv('learning.csv');
+$rdatasets = 'https://vincentarelbundock.github.io/Rdatasets/csv';
+$mroz = DataFrame::fromCsv("$rdatasets/carData/Mroz.csv");
 
 $fit = fit_glm(
-    'passed ~ study_hours + practice_score',
-    $students,
+    'lfp ~ k5 + k618 + age + wc + hc + lwg + inc',
+    $mroz,
     family: 'binomial',
 );
 

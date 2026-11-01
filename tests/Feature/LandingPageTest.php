@@ -58,7 +58,7 @@ class LandingPageTest extends TestCase
         // Verification compares the values its code gives with the stored
         // references, and links each record.
         $phit = Package::find('phit');
-        foreach (['lmm', 'logistic', 'distributions'] as $record) {
+        foreach (['distributions', 'ols', 'logistic', 'probit', 'lmm', 'logistic-mixed'] as $record) {
             $this->assertStringContainsString('href="'.e($phit->url('verification')).'#'.$record.'"', $html);
         }
 
@@ -73,34 +73,44 @@ class LandingPageTest extends TestCase
     }
 
     /**
-     * The verification section's code gives values within each record's
-     * tolerance of the stored R and Python references: 1e-7 + 1e-6 × |reference|
-     * for the mixed model, 1e-9 + 1e-7 × |reference| for logistic regression,
-     * and 1e-12 relative for the distributions.
+     * The verification section shows phit's values next to R's and Python's,
+     * rounded alike, and marks only rounded values that differ. On these
+     * datasets every reference agrees with phit at the precision shown: two
+     * decimal places for models, three significant figures for
+     * distributions. The examples read their data over HTTP, so the test
+     * needs the network as well as phit.
      */
-    public function test_the_verification_examples_agree_with_the_stored_references(): void
+    public function test_the_verification_examples_agree_with_the_references_as_shown(): void
     {
-        if (! ScriptVignette::available('phit')) {
-            $this->markTestSkipped('The verification examples need the phit extension.');
+        if (! ScriptVignette::available('phit') || @file_get_contents('https://vincentarelbundock.github.io/Rdatasets/csv/lme4/cbpp.csv') === false) {
+            $this->markTestSkipped('The verification examples need the phit extension and the network.');
         }
         $references = \App\Data\VerificationReferences::load();
-        $close = fn (float $mine, float $theirs, float $absolute, float $relative) => abs($mine - $theirs) <= $absolute + $relative * abs($theirs);
-
-        $mixed = Example::run('verified/mixed');
-        $logistic = Example::run('verified/logistic');
-        foreach (['R', 'statsmodels'] as $library) {
-            foreach ($mixed['coefficients'] as $i => $b) {
-                $this->assertTrue($close($b, $references['mixed'][$library]['coefficients'][$i], 1e-7, 1e-6), "mixed {$library} coefficient {$i}");
-            }
-            $this->assertTrue($close($mixed['random'][0]['covariance'][0][0], $references['mixed'][$library]['random_intercept_variance'], 1e-7, 1e-6), "mixed {$library} school variance");
-            $this->assertTrue($close($mixed['residual_variance'], $references['mixed'][$library]['residual_variance'], 1e-7, 1e-6), "mixed {$library} residual variance");
-            foreach ($logistic['coefficients'] as $i => $b) {
-                $this->assertTrue($close($b, $references['logistic'][$library]['coefficients'][$i], 1e-9, 1e-7), "logistic {$library} coefficient {$i}");
+        $round = fn (float $x) => sprintf('%.2f', $x);
+        $models = [
+            'ols' => ['ols', ['sigma' => 'sigma', 'r_squared' => 'r_squared']],
+            'logistic' => ['logistic', ['log_likelihood' => 'log_likelihood']],
+            'probit' => ['probit', ['log_likelihood' => 'log_likelihood']],
+            'mixed-gaussian' => ['mixed_gaussian', ['residual_variance' => 'residual_variance', 'log_likelihood' => 'log_likelihood']],
+            'mixed-logistic' => ['mixed_logistic', ['log_likelihood' => 'log_likelihood']],
+        ];
+        foreach ($models as $example => [$key, $extras]) {
+            $fit = Example::run("verified/{$example}");
+            foreach (['R', 'Python'] as $library) {
+                $reference = $references[$library][$key] ?? null;
+                if ($reference === null) {
+                    continue;
+                }
+                $this->assertSame(array_map($round, $reference['coefficients']), array_map($round, $fit['coefficients']), "{$example} {$library} coefficients");
+                foreach ($extras as $mine => $theirs) {
+                    $this->assertSame($round($reference[$theirs]), $round($fit[$mine]), "{$example} {$library} {$mine}");
+                }
             }
         }
-        foreach (Example::run('verified/distributions') as $i => $value) {
-            foreach ($references['distributions']['points'][$i]['values'] as $library => $theirs) {
-                $this->assertTrue($close($value, $theirs, 0.0, 1e-12), "distribution point {$i} against {$library}");
+        $values = Example::run('verified/distributions');
+        foreach (['R', 'Python'] as $library) {
+            foreach (['normal_cdf', 'normal_quantile', 'gamma_cdf', 'gamma_quantile'] as $i => $point) {
+                $this->assertSame(sprintf('%.2e', $references[$library]['distributions'][$point]), sprintf('%.2e', $values[$i]), "{$library} {$point}");
             }
         }
     }

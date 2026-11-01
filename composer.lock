@@ -2898,16 +2898,16 @@
         },
         {
             "name": "phpstats/phibble",
-            "version": "v0.5.1",
+            "version": "v0.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstats/phibble.git",
-                "reference": "36d0f3fde2e115b68341bb972e99e5f47b817dd2"
+                "reference": "b2e68e7408d15e264e33f0a188d921f736000e81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstats/phibble/zipball/36d0f3fde2e115b68341bb972e99e5f47b817dd2",
-                "reference": "36d0f3fde2e115b68341bb972e99e5f47b817dd2",
+                "url": "https://api.github.com/repos/phpstats/phibble/zipball/b2e68e7408d15e264e33f0a188d921f736000e81",
+                "reference": "b2e68e7408d15e264e33f0a188d921f736000e81",
                 "shasum": ""
             },
             "require": {
@@ -2952,9 +2952,9 @@
             "description": "A typed, immutable in-memory data frame for PHP.",
             "support": {
                 "issues": "https://github.com/phpstats/phibble/issues",
-                "source": "https://github.com/phpstats/phibble/tree/v0.5.1"
+                "source": "https://github.com/phpstats/phibble/tree/v0.5.3"
             },
-            "time": "2026-10-31T17:17:23+00:00"
+            "time": "2026-11-01T14:09:46+00:00"
         },
         {
             "name": "phpstats/phiz",

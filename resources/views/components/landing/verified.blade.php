@@ -1,16 +1,17 @@
 {{--
     The landing page's verification section: one comparison at a time, chosen
-    with tabs. Each shows phit code on the left and, on the right, the values
-    that code gives next to each reference library's values, rounded the same
-    way: model results to two decimal places, distribution values to three
-    significant figures. Where a library's rounded value differs from phit's,
-    its signed difference follows it, green with a plus when the library's
-    value is larger and red with a minus when it is smaller. phit's values come from running the code shown
-    (resources/examples/verified/*.php); the references are R's and Python's
-    results from phit's verification records, copied into
-    database/data/verification/references.json. Model differences are
-    absolute; distribution differences are relative to phit's value. Each
-    panel links its full verification record.
+    with tabs. Each shows phit code on the left, reading a public dataset from
+    Rdatasets by URL, and on the right the values that code gives next to R's
+    and Python's on the same data, rounded the same way: model results to two
+    decimal places, distribution values to three significant figures. Where a
+    library's rounded value differs from phit's, its signed difference follows
+    it, green with a plus when the library's value is larger and red with a
+    minus when it is smaller; a dash marks a library with no equivalent.
+    phit's values come from running resources/examples/verified/*.php and are
+    cached like the other landing examples, so a cold cache fetches the
+    datasets once. R's and Python's come from scripts/verification/build,
+    saved in database/data/verification/references.json. Each panel links
+    phit's verification record for that model.
 --}}
 @php
     $references = \App\Data\VerificationReferences::load();
@@ -41,62 +42,91 @@
         return sprintf('%.3g', $x);
     };
 
+    // Each fitted model's rows: its coefficients by term, then the extra
+    // quantities listed as [label, phit's key or getter, the references' key].
+    $model = fn (array $extras) => function (array $fit, array $refs) use ($extras) {
+        $rows = [];
+        foreach ($fit['columns'] as $i => $term) {
+            $rows[] = [$term, $fit['coefficients'][$i], array_map(fn ($r) => $r === null ? null : $r['coefficients'][$i], $refs), true];
+        }
+        foreach ($extras as [$label, $mine, $theirs]) {
+            $rows[] = [$label, is_callable($mine) ? $mine($fit) : $fit[$mine], array_map(fn ($r) => $r[$theirs] ?? null, $refs), false];
+        }
+
+        return $rows;
+    };
+    $groupVariance = fn (array $fit) => $fit['random'][0]['covariance'][0][0] ?? $fit['random_intercept_variance'];
+    $python = 'statsmodels (Python)';
+
     $panels = [
-        'mixed' => [
-            'label' => 'Linear mixed model',
-            'example' => 'verified/mixed',
-            'files' => [database_path('data/schools.csv')],
-            'libraries' => ['R' => 'lme4 (R)', 'statsmodels' => 'statsmodels (Python)'],
-            'relative' => false,
-            'note' => 'Maximum likelihood on the schools data. R: lme4 <code>lmer(REML = FALSE)</code>. Python: <code>MixedLM</code>.',
-            'anchor' => 'lmm',
-            'rows' => function (array $fit, array $ref) {
-                $rows = [];
-                foreach ($fit['columns'] as $i => $term) {
-                    $rows[] = [$term, $fit['coefficients'][$i], array_map(fn ($r) => $r['coefficients'][$i], $ref)];
-                }
-                $rows[] = ['School variance', $fit['random'][0]['covariance'][0][0], array_map(fn ($r) => $r['random_intercept_variance'], $ref)];
-                $rows[] = ['Residual variance', $fit['residual_variance'], array_map(fn ($r) => $r['residual_variance'], $ref)];
-                $rows[] = ['Log-likelihood', $fit['log_likelihood'], array_map(fn ($r) => $r['log_likelihood'], $ref)];
-
-                return $rows;
-            },
-        ],
-        'logistic' => [
-            'label' => 'Logistic regression',
-            'example' => 'verified/logistic',
-            'files' => [database_path('data/learning.csv')],
-            'libraries' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'],
-            'relative' => false,
-            'note' => 'Maximum likelihood on 80 simulated students. R: <code>glm(family = binomial)</code>. Python: <code>Logit</code>.',
-            'anchor' => 'logistic',
-            'rows' => function (array $fit, array $ref) {
-                $rows = [];
-                foreach ($fit['columns'] as $i => $term) {
-                    $rows[] = [$term, $fit['coefficients'][$i], array_map(fn ($r) => $r['coefficients'][$i], $ref)];
-                }
-                $rows[] = ['Log-likelihood', $fit['log_likelihood'], array_map(fn ($r) => $r['log_likelihood'], $ref)];
-
-                return $rows;
-            },
-        ],
         'distributions' => [
             'label' => 'Probability distributions',
             'example' => 'verified/distributions',
-            'files' => [],
-            'libraries' => ['R' => 'R', 'SciPy' => 'SciPy (Python)'],
+            'reference' => 'distributions',
+            'libraries' => ['R' => 'R', 'Python' => 'SciPy (Python)'],
             'relative' => true,
             'note' => 'R: <code>pnorm</code>, <code>qnorm</code>, <code>pgamma</code>, and <code>qgamma</code>. Python: SciPy\'s <code>norm</code> and <code>gamma</code>.',
             'anchor' => 'distributions',
-            'rows' => function (array $values, array $ref) {
-                $labels = ['Normal CDF at −8', 'Normal quantile at 0.975', 'Gamma CDF at 12', 'Gamma quantile at 0.999'];
-                $rows = [];
-                foreach ($ref['points'] as $i => $point) {
-                    $rows[] = [$labels[$i], $values[$i], $point['values']];
-                }
+            'rows' => function (array $values, array $refs) {
+                $points = [
+                    ['Normal CDF at −8', 'normal_cdf'],
+                    ['Normal quantile at 0.975', 'normal_quantile'],
+                    ['Gamma CDF at 12', 'gamma_cdf'],
+                    ['Gamma quantile at 0.999', 'gamma_quantile'],
+                ];
 
-                return $rows;
+                return array_map(fn ($p, $i) => [$p[0], $values[$i], array_map(fn ($r) => $r[$p[1]], $refs), false], $points, array_keys($points));
             },
+        ],
+        'ols' => [
+            'label' => 'OLS',
+            'example' => 'verified/ols',
+            'reference' => 'ols',
+            'libraries' => ['R' => 'lm (R)', 'Python' => $python],
+            'relative' => false,
+            'note' => 'Motor Trend cars (<code>mtcars</code>). R: <code>lm()</code>. Python: <code>ols()</code>.',
+            'anchor' => 'ols',
+            'rows' => $model([['Residual SD', 'sigma', 'sigma'], ['R²', 'r_squared', 'r_squared']]),
+        ],
+        'logistic' => [
+            'label' => 'Logistic',
+            'example' => 'verified/logistic',
+            'reference' => 'logistic',
+            'libraries' => ['R' => 'glm (R)', 'Python' => $python],
+            'relative' => false,
+            'note' => 'Labor force participation of 753 married women (Mroz). R: <code>glm(family = binomial)</code>. Python: <code>logit()</code>.',
+            'anchor' => 'logistic',
+            'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
+        ],
+        'probit' => [
+            'label' => 'Probit',
+            'example' => 'verified/probit',
+            'reference' => 'probit',
+            'libraries' => ['R' => 'glm (R)', 'Python' => $python],
+            'relative' => false,
+            'note' => 'The same Mroz data with the probit link. R: <code>glm(family = binomial("probit"))</code>. Python: <code>probit()</code>.',
+            'anchor' => 'probit',
+            'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
+        ],
+        'mixed-gaussian' => [
+            'label' => 'Mixed Gaussian',
+            'example' => 'verified/mixed-gaussian',
+            'reference' => 'mixed_gaussian',
+            'libraries' => ['R' => 'lme4 (R)', 'Python' => $python],
+            'relative' => false,
+            'note' => 'lme4\'s sleep deprivation study (<code>sleepstudy</code>), fitted by REML. R: <code>lmer()</code>. Python: <code>mixedlm()</code>.',
+            'anchor' => 'lmm',
+            'rows' => $model([['Subject variance', $groupVariance, 'group_variance'], ['Residual variance', 'residual_variance', 'residual_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
+        ],
+        'mixed-logistic' => [
+            'label' => 'Mixed logistic',
+            'example' => 'verified/mixed-logistic',
+            'reference' => 'mixed_logistic',
+            'libraries' => ['R' => 'lme4 (R)', 'Python' => $python],
+            'relative' => false,
+            'note' => 'lme4\'s contagious bovine pleuropneumonia data (<code>cbpp</code>), Laplace approximation. R: <code>glmer()</code>. statsmodels has no maximum-likelihood mixed logistic model.',
+            'anchor' => 'logistic-mixed',
+            'rows' => $model([['Herd variance', $groupVariance, 'group_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
     ];
 
@@ -112,13 +142,14 @@
                 fn (mixed $result) => view('components.landing.verified-table', [
                     'panel' => $panel,
                     'key' => $key,
-                    'rows' => ($panel['rows'])($result, $key === 'distributions'
-                        ? $references['distributions']
-                        : array_intersect_key($references[$key], $panel['libraries'])),
+                    'rows' => ($panel['rows'])($result, array_map(
+                        fn (string $library) => $references[$library][$panel['reference']] ?? null,
+                        array_combine(array_keys($panel['libraries']), array_keys($panel['libraries'])),
+                    )),
                     'value' => $value,
                     'diff' => $diff,
                 ])->render(),
-                files: [\App\Data\VerificationReferences::path(), ...$panel['files']],
+                files: [\App\Data\VerificationReferences::path()],
             );
         } catch (\Throwable $e) {
             report($e);
@@ -148,7 +179,7 @@
 
             @foreach ($panels as $key => $panel)
                 <div role="tabpanel" id="check-{{ $key }}" aria-labelledby="check-tab-{{ $key }}" x-show="check === '{{ $key }}'" @unless ($key === $first) x-cloak @endunless
-                     class="mt-8 grid gap-8 lg:grid-cols-[5fr_7fr] lg:items-start lg:gap-16">
+                     class="mt-8 grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
                     <x-code :code="$panel['code']" class="min-w-0" />
 
                     <div class="min-w-0">

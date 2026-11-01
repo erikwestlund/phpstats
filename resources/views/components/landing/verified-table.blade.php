@@ -1,4 +1,4 @@
-{{-- One verification panel's table: phit's values and each library's, rounded alike, with a signed difference only where the rounded values differ. Rendered by landing.verified and cached with the example. --}}
+{{-- One verification panel's table: phit's values and each library's, rounded alike, with a signed difference only where the rounded values differ, and a dash where a library has no equivalent. Rendered by landing.verified and cached with the example. --}}
 <div class="overflow-x-auto">
     <table class="w-full text-left text-[0.9375rem] tabular-nums">
         <caption class="sr-only">{{ $panel['label'] }}: phit's values and each library's values</caption>
@@ -12,23 +12,27 @@
             </tr>
         </thead>
         <tbody class="divide-y divide-zinc-100 dark:divide-white/5">
-            @foreach ($rows as [$label, $mine, $theirs])
+            @foreach ($rows as [$label, $mine, $theirs, $term])
                 <tr>
-                    <th scope="row" @class(['whitespace-nowrap py-2.5 pr-4 font-normal', 'font-mono text-[0.875rem]' => $key !== 'distributions' && preg_match('/^[\w()]+$/', $label) && $label !== 'Log-likelihood'])>{{ $label }}</th>
+                    <th scope="row" @class(['whitespace-nowrap py-2.5 pr-4 font-normal', 'font-mono text-[0.875rem]' => $term])>{{ $label }}</th>
                     @php $shown = $value($mine, $panel['relative']); @endphp
                     <td class="whitespace-nowrap py-2.5 pr-4 text-right">{!! $shown !!}</td>
                     @foreach (array_keys($panel['libraries']) as $library)
-                        @php
-                            $theirsShown = $value($theirs[$library], $panel['relative']);
-                            $d = $theirs[$library] - $mine;
-                            [$text, $class] = $diff($panel['relative'] && $mine != 0.0 ? $d / abs($mine) : $d);
-                        @endphp
-                        <td class="whitespace-nowrap py-2.5 pl-4 text-right">
-                            {!! $theirsShown !!}
-                            @if ($theirsShown !== $shown)
-                                <span class="ml-1.5 text-xs {{ $class }}">{!! $text !!}</span>
-                            @endif
-                        </td>
+                        @if (($theirs[$library] ?? null) === null)
+                            <td class="whitespace-nowrap py-2.5 pl-4 text-right text-zinc-400 dark:text-zinc-500"><span aria-label="no equivalent">—</span></td>
+                        @else
+                            @php
+                                $theirsShown = $value($theirs[$library], $panel['relative']);
+                                $d = $theirs[$library] - $mine;
+                                [$text, $class] = $diff($panel['relative'] && $mine != 0.0 ? $d / abs($mine) : $d);
+                            @endphp
+                            <td class="whitespace-nowrap py-2.5 pl-4 text-right">
+                                {!! $theirsShown !!}
+                                @if ($theirsShown !== $shown)
+                                    <span class="ml-1.5 text-xs {{ $class }}">{!! $text !!}</span>
+                                @endif
+                            </td>
+                        @endif
                     @endforeach
                 </tr>
             @endforeach

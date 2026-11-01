@@ -1,0 +1,22 @@
+#!/bin/sh
+# Rebuild database/data/verification/references.json: R's and Python's
+# results on the public datasets the landing page's verification examples
+# read. Needs R with lme4 and jsonlite, and a Python with statsmodels and
+# scipy: PYTHON=/path/to/python scripts/verification/build
+set -e
+cd "$(dirname "$0")/../.."
+tmp=$(mktemp -d)
+Rscript scripts/verification/references.R > "$tmp/r.json"
+"${PYTHON:-python3}" scripts/verification/references.py > "$tmp/python.json"
+"${PYTHON:-python3}" - "$tmp/r.json" "$tmp/python.json" > database/data/verification/references.json <<'PY'
+import json, sys, datetime
+r, py = (json.load(open(f)) for f in sys.argv[1:3])
+print(json.dumps({
+    "recorded": datetime.date.today().isoformat(),
+    "datasets": "https://vincentarelbundock.github.io/Rdatasets/",
+    "R": r,
+    "Python": py,
+}, indent=2))
+PY
+rm -r "$tmp"
+echo "Wrote database/data/verification/references.json"
