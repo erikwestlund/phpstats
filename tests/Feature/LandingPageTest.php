@@ -36,7 +36,7 @@ class LandingPageTest extends TestCase
             ->content();
 
         // The hero is one workflow: load, summarize, chart. No model fit.
-        preg_match('#temperatures\.php.*?</section>#s', $html, $hero);
+        preg_match('#id="hero-panel-code".*?</section>#s', $html, $hero);
         $this->assertStringNotContainsString('lm(', strip_tags($hero[0]));
 
         // The hero offers the packages and a start, and charts monthly mean temperatures.
