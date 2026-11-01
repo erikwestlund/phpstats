@@ -9,6 +9,11 @@ on:
 permissions:
   contents: read
 
+# A newer push replaces a queued or running check of an older commit.
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     runs-on: ubuntu-latest
