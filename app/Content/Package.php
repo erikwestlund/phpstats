@@ -235,16 +235,16 @@ class Package
         return $this->project['status_label'];
     }
 
-    /** @return array{key: string, title: string, role: string, color: string} */
+    /** @return array{key: string, title: string, color: string} */
     public function layer(): array
     {
         foreach (config('phpstats.layers') as $key => $layer) {
             if (in_array($this->key, $layer['packages'], true)) {
-                return ['key' => $key, 'title' => $layer['title'], 'role' => $layer['role'], 'color' => $layer['color']];
+                return ['key' => $key, 'title' => $layer['title'], 'color' => $layer['color']];
             }
         }
 
-        return ['key' => 'other', 'title' => 'Other', 'role' => '', 'color' => 'purple'];
+        return ['key' => 'other', 'title' => 'Other', 'color' => 'purple'];
     }
 
     /**

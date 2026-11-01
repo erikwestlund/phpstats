@@ -4,14 +4,20 @@
     for the Installation page, keeps only what installing needs: the required
     items and the conditional build tools, each row on one line.
     The optional features and platforms are in the package's installation guide.
+    Secondary, for the package overview, whose hero already gives PHP, the
+    platforms, and the required items, keeps only the optional items and the
+    build tools.
 --}}
-@props(['package', 'compact' => false])
+@props(['package', 'compact' => false, 'secondary' => false])
 @php
     $optional = array_map(
         fn (array $item) => $item['for'] ? $item['name'].' ('.$item['for'].')' : $item['name'],
         $package->optional(),
     );
-    $groups = array_filter($compact ? [
+    $groups = array_filter($secondary ? [
+        'Optional' => $optional,
+        $package->buildLabel() => $package->build(),
+    ] : ($compact ? [
         'Requires' => $package->requires(),
         $package->buildLabel() => $package->build(),
     ] : [
@@ -19,7 +25,7 @@
         'Optional' => $optional,
         $package->buildLabel() => $package->build(),
         'Supported platforms' => $package->platforms(),
-    ]);
+    ]));
 @endphp
 @if ($groups !== [] && $compact)
     {{-- Each row runs in after its label, so no column leaves a gap. --}}

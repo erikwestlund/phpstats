@@ -16,10 +16,9 @@ return [
         'repo' => 'https://github.com/phpstats/phit',
         'docs' => 'https://phpstats.github.io/phit/',
         'overview' => [
-            'phit fits statistical models inside PHP and returns plain PHP arrays. It provides OLS, logistic, probit, and Poisson regression, linear mixed models, and mixed logistic regression.',
-            'It also provides probability distributions, descriptive statistics, posterior-draw kernels, and a seeded random number generator. Results are verified against R.',
-            'Every function is in the Phit namespace, such as Phit\fit_lm(), Phit\predict(), and Phit\dist_normal_cdf(). The functions were named stats_* when the extension was called php-stats.',
-            'The extension targets PHP 8.3 to 8.5 on Linux and macOS and installs with PIE as phit.',
+            'Fit statistical models, compute probability distributions, and summarize data in PHP. Model functions accept formulas or explicit designs and return PHP arrays.',
+            'The models are OLS, logistic, probit, and Poisson regression, linear mixed models, and mixed logistic regression. The library also has probability distributions, descriptive statistics, posterior-draw kernels, and a seeded random number generator.',
+            'Every function is in the Phit namespace, such as Phit\fit_ols(), Phit\predict(), and Phit\dist_normal_cdf().',
         ],
     ],
     'phit-polyfill' => [
@@ -49,8 +48,8 @@ return [
             'Release notes' => 'https://github.com/phpstats/phibble/releases/tag/v0.3.0',
         ],
         'overview' => [
-            'phibble is the shared table type for phplyr, phpolars, phit, and CmdStanPHP. Every operation returns a new data frame.',
-            'Columns are typed as float, int, bool, string, factor, or date, and types are inferred on load. Missing values are PHP null.',
+            'Load, transform, and summarize typed data frames in PHP. Tables are immutable, and null represents missing data.',
+            'Columns are typed as float, int, bool, string, factor, or date, and types are inferred on load. phibble is the table type that phplyr, phpolars, phit, and CmdStanPHP read or return.',
             'Data frames load from CSV files, PDO statements, and Laravel, Eloquent, or Doctrine query builders, so analysis can start from the application database. phibble does not depend on Laravel or Doctrine.',
             'toMatrix() and toVector() hand columns to phit functions such as Phit\fit_ols().',
         ],
@@ -70,10 +69,9 @@ return [
             'Release notes' => 'https://github.com/phpstats/phplyr/releases/tag/v0.3.0',
         ],
         'overview' => [
-            'phplyr covers most of dplyr and tidyr. Each function returns a closure, so steps compose with the PHP 8.5 pipe operator.',
-            'The dplyr side includes the single-table functions, mutating and filtering joins, set operations, window functions such as lag(), lead(), and row_number(), and across() with tidyselect-style selectors.',
-            'The tidyr side includes pivot_longer(), pivot_wider(), separate and unite functions, nesting, and functions for completing and filling missing values.',
-            'Summary helpers such as n(), mean(), sd(), and quantile() follow R conventions for missing values and use phit when the extension is loaded. Model formulas such as monthly_rent ~ area_m2 + neighborhood will fit models through phit.',
+            'Filter, transform, join, and reshape tables with dplyr- and tidyr-style functions. Pipelines use PHP 8.5\'s pipe operator, or method chains on PHP 8.3 and 8.4.',
+            'The dplyr functions cover single-table verbs, joins, set operations, window functions, and across() with tidyselect-style selectors. The tidyr functions cover pivots, separating and uniting columns, nesting, and completing and filling missing values.',
+            'Summary helpers such as n(), mean(), sd(), and quantile() follow R\'s rules for missing values and use phit when the extension is loaded.',
         ],
     ],
     'phiz' => [
@@ -88,7 +86,7 @@ return [
             'Release notes' => 'https://github.com/phpstats/phiz/releases/tag/v0.3.0',
         ],
         'overview' => [
-            'phiz describes charts with a grammar modeled on ggplot2 and produces Vega-Lite specifications, which the browser renders.',
+            'Build charts in PHP with data, mappings, and layers. Render interactive charts with Vega-Lite or export static images.',
             'Plots take rows, columns, phibble data frames, or Laravel collections, and support layers, scales, facets, themes, and interactive selections.',
             'The <x-phiz> Blade component renders a plot and re-renders it when a Livewire component updates. Every chart on this site is drawn with it.',
         ],
@@ -105,9 +103,9 @@ return [
             'Performance' => 'https://phpstats.github.io/phpolars/performance.html',
         ],
         'overview' => [
-            'phpolars is a native PHP extension, written in Rust, that brings the Polars columnar engine to PHP. PIE installs it as the php_polars extension for PHP 8.3, 8.4, and 8.5 on Linux and macOS.',
+            'Query and transform data with Polars from PHP. Use eager data frames or build lazy queries with expressions.',
+            'phpolars is a PHP extension written in Rust. PIE installs it as the php_polars extension.',
             'phibble\'s PolarsTable holds a table in Polars through this extension, so phplyr pipelines can run in Polars. phibble and phplyr work without phpolars.',
-            'In phplyr\'s backend benchmark (Apple M5 Ultra, PHP 8.5.10, October 2026), pipelines on a PolarsTable ran 1.3 to 15 times faster than on an in-memory phibble data frame. The pipeline that filters with a PHP closure gained the least.',
         ],
     ],
     'juphyter' => [
@@ -120,11 +118,9 @@ return [
         // juphyter's docs are synced to this site and have no GitHub Pages copy.
         'docs' => null,
         'overview' => [
-            'juphyter is a Jupyter kernel for PHP. It runs PHP cells in a notebook, so analysis with the PHPstats packages can be written and read as a notebook rather than a script.',
+            'Run PHP in Jupyter notebooks and Quarto documents, with tables and charts displayed alongside code.',
             'Quarto names a kernel in a document\'s front matter, so the same kernel executes PHP in a .qmd file and renders it to HTML or PDF.',
             'It corresponds to IRkernel, which runs R in Jupyter, and to knitr, which executes R in Quarto and R Markdown.',
-            'Composer installs it globally with composer global require phpstats/juphyter, or into a project as a dev dependency. Then juphyter install, or vendor/bin/juphyter install in a project, writes the kernelspec that JupyterLab and Quarto read.',
-            'The kernel needs PHP 8.3, 8.4, or 8.5 and a Python installation with Jupyter and ipykernel. Its wrapper runs inside ipykernel.',
         ],
     ],
     'cmdstanphp' => [
@@ -138,7 +134,7 @@ return [
         'repo' => 'https://github.com/phpstats/cmdstanphp',
         'docs' => 'https://phpstats.github.io/CmdStanPHP/',
         'overview' => [
-            'CmdStanPHP runs real Stan programs through CmdStan. It needs no R installation and no PHP framework.',
+            'Compile Stan models, run Bayesian inference, and inspect posterior draws from PHP. CmdStanPHP runs Stan programs through CmdStan and needs no R installation.',
             'It supports compilation, parallel MCMC, optimization, ADVI, Pathfinder, and Laplace approximation, along with posterior summaries and fit persistence.',
             'MCMC fits compute PSIS-LOO and WAIC. Moment matching for PSIS-LOO uses the phit draw kernels when the extension is loaded.',
             'Trace, density, interval, rank, and Pareto k figures render as ASCII text, Vega-Lite charts, HTML, or SVG.',

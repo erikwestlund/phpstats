@@ -51,8 +51,8 @@ return [
      * package's short description is its summary in config/projects.php.
      */
     'layers' => [
-        'data' => ['title' => 'Data & Workflow', 'role' => 'Tables, pipelines, and notebooks', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => ['phibble', 'phplyr', 'phpolars', 'juphyter']],
-        'stats' => ['title' => 'Statistics, Modeling & Visualization', 'role' => 'Models, inference, and charts', 'color' => 'purple', 'icon' => 'variable', 'packages' => ['phit', 'phiz', 'cmdstanphp']],
+        'data' => ['title' => 'Data & Workflow', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => ['phibble', 'phplyr', 'phpolars', 'juphyter']],
+        'stats' => ['title' => 'Statistics, Modeling & Visualization', 'color' => 'purple', 'icon' => 'variable', 'packages' => ['phit', 'phiz', 'cmdstanphp']],
     ],
 
     /*

@@ -8,7 +8,7 @@
 <div class="not-prose overflow-hidden rounded-xl ring-1 ring-zinc-200 dark:ring-white/10">
     <div class="flex items-center justify-between gap-4 border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-xs dark:border-white/10 dark:bg-white/[0.03]">
         <span class="font-mono text-zinc-600 dark:text-zinc-300">{{ $file }}</span>
-        <span class="text-zinc-500">{{ number_format($df->nrow()) }} rows × {{ count($types) }} columns</span>
+        <span class="text-zinc-500">{{ number_format($df->nrow()) }} {{ $df->nrow() === 1 ? 'row' : 'rows' }} × {{ count($types) }} {{ count($types) === 1 ? 'column' : 'columns' }}</span>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full text-sm tabular-nums">

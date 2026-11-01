@@ -1,11 +1,13 @@
 @php
     $layer = $package->layer();
     $verified = collect($package->verifications())->flatMap(fn ($v) => $v['cases'] ?? []);
+    $count = fn (int $n, string $noun, string $rest = '') => $n.' '.\Illuminate\Support\Str::plural($noun, $n).$rest;
+    $agreeing = $verified->where('passed', true)->count();
     $sections = array_filter([
-        'docs' => $package->hasDocs() ? ['Docs', 'book-open', count($package->docsNav()).' pages of guides and reference'] : null,
-        'examples' => $package->listedExamples() ? ['Examples', 'play-circle', count($package->listedExamples()).' short, runnable examples'] : null,
-        'benchmarks' => $package->benchmarks() ? ['Benchmarks', 'clock', count($package->benchmarks()).' timing reports'] : null,
-        'verification' => $package->verifications() ? ['Verification', 'check-badge', $verified->where('passed', true)->count().' of '.$verified->count().' results agree with the reference'] : null,
+        'docs' => $package->hasDocs() ? ['Docs', 'book-open', $count(count($package->docsNav()), 'page', ' of guides and reference')] : null,
+        'examples' => $package->listedExamples() ? ['Examples', 'play-circle', count($package->listedExamples()).' short, runnable '.\Illuminate\Support\Str::plural('example', count($package->listedExamples()))] : null,
+        'benchmarks' => $package->benchmarks() ? ['Benchmarks', 'clock', $count(count($package->benchmarks()), 'timing report')] : null,
+        'verification' => $package->verifications() ? ['Verification', 'check-badge', $agreeing.' of '.$count($verified->count(), 'result').' '.($verified->count() === 1 ? 'agrees' : 'agree').' with the reference'] : null,
     ]);
     $relations = collect($package->relations())->groupBy('kind');
 @endphp
@@ -14,9 +16,7 @@
         <div class="absolute -right-40 -top-40 -z-10 size-[32rem] rounded-full bg-(--l300)/30 blur-3xl dark:bg-(--l500)/10" aria-hidden="true"></div>
         <div class="mx-auto grid max-w-7xl gap-12 px-4 py-14 *:min-w-0 sm:px-6 lg:grid-cols-[1.15fr_1fr] lg:px-8 lg:py-20">
             <div>
-                <p class="flex items-center gap-2 text-sm font-semibold text-(--l700) dark:text-(--l300)">{{ $layer['title'] }}
-                    <span class="font-normal text-zinc-500 dark:text-zinc-400">· {{ $layer['role'] }}</span>
-                </p>
+                <p class="text-sm font-semibold text-(--l700) dark:text-(--l300)">{{ $layer['title'] }}</p>
                 <div class="mt-4 flex flex-wrap items-center gap-4">
                     <h1 class="font-mono text-5xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $package->name() }}</h1>
                 </div>
@@ -43,7 +43,27 @@
             <div class="self-center">
                 @if ($package->install())
                     <x-code :code="implode(PHP_EOL, $package->install())" lang="bash" label="Install" />
-                    <x-requirements class="mt-4" :package="$package" />
+                    {{-- Only what installing needs stays in the hero: PHP, platforms,
+                         and the required items. Optional features and build tools
+                         are under Other dependencies, lower on the page. --}}
+                    @php
+                        $php = $package->php();
+                        $essentials = array_filter([
+                            $php === [] ? null : 'PHP '.($php[0] === end($php) ? $php[0] : $php[0].'–'.end($php)),
+                            $package->platforms() === [] ? null : implode(', ', $package->platforms()),
+                        ]);
+                    @endphp
+                    <div class="mt-4 space-y-1 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                        @if ($essentials)
+                            <p>{{ implode(' · ', $essentials) }}</p>
+                        @endif
+                        @if ($package->requires())
+                            <p><span class="font-semibold text-zinc-900 dark:text-zinc-100">Requires:</span> {{ implode(', ', $package->requires()) }}</p>
+                        @endif
+                        @if ($guide = $package->installation())
+                            <p><a href="{{ $guide }}" class="font-medium text-(--l700) underline decoration-(--l300) underline-offset-2 hover:text-(--l600) dark:text-(--l300) dark:decoration-(--l700)">Installation guide →</a></p>
+                        @endif
+                    </div>
                     @foreach ($package->companions() as $companion)
                         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
                             Can't install extensions? <a href="{{ $companion->repository() }}" class="font-medium text-(--l700) underline decoration-(--l300) underline-offset-2 dark:text-(--l300)">{{ $companion->name() }}</a> defines the same functions in plain PHP.
@@ -84,14 +104,17 @@
         'lg:grid-cols-[minmax(0,1fr)_22rem]' => $hasAside,
     ])>
         <div @class(['min-w-0', 'lg:max-w-4xl' => ! $hasAside])>
+            {{-- The first paragraph introduces the example, which comes before
+                 the rest of the overview so code and output show sooner. --}}
+            @php [$lead, $more] = [array_slice($package->summary(), 0, 1), array_slice($package->summary(), 1)]; @endphp
             <div class="prose prose-zinc prose-php max-w-none text-[1.0625rem] dark:prose-invert">
-                @foreach ($package->summary() as $paragraph)
+                @foreach ($lead as $paragraph)
                     <p>{{ $paragraph }}</p>
                 @endforeach
             </div>
 
             @if ($example = $package->example())
-                <h2 class="mt-12 text-lg font-semibold tracking-tight">Example</h2>
+                <h2 class="mt-10 text-lg font-semibold tracking-tight">Example</h2>
                 @if ($example['chain'] && $example['pipe'])
                     <x-code-tabs class="mt-4">
                         <x-slot:chain>{{ $example['chain'] }}</x-slot:chain>
@@ -109,12 +132,25 @@
                 @endif
             @endif
 
+            @if ($more)
+                <div class="prose prose-zinc prose-php mt-10 max-w-none text-[1.0625rem] dark:prose-invert">
+                    @foreach ($more as $paragraph)
+                        <p>{{ $paragraph }}</p>
+                    @endforeach
+                </div>
+            @endif
+
             @if ($examples = array_slice($package->listedExamples(), 0, 4))
                 <div class="mt-12 flex items-baseline justify-between gap-4">
                     <h2 class="text-lg font-semibold tracking-tight">Examples</h2>
                     <a href="{{ $package->url('examples') }}" class="text-sm font-medium text-(--l700) hover:text-(--l600) dark:text-(--l300)">All examples →</a>
                 </div>
                 <x-example-list class="mt-4" :examples="$examples" :package="$package" />
+            @endif
+
+            @if ($package->install() && ($package->optional() || $package->build()))
+                <h2 class="mt-12 text-lg font-semibold tracking-tight">Other dependencies</h2>
+                <x-requirements class="mt-4" :package="$package" secondary />
             @endif
 
             @unless ($package->synced())

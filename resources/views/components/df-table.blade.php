@@ -38,6 +38,6 @@
         </table>
     </div>
     <p class="border-t border-zinc-100 px-4 py-2 text-xs text-zinc-500 dark:border-white/5">
-        {{ number_format($df->nrow()) }} {{ $df->nrow() === 1 ? 'row' : 'rows' }} × {{ count($types) }} columns{{ $df->nrow() > $rows ? ', first '.$rows.' shown' : '' }}
+        {{ number_format($df->nrow()) }} {{ $df->nrow() === 1 ? 'row' : 'rows' }} × {{ count($types) }} {{ count($types) === 1 ? 'column' : 'columns' }}{{ $df->nrow() > $rows ? ', first '.$rows.' shown' : '' }}
     </p>
 </div>
