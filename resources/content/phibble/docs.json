@@ -238,9 +238,19 @@
                     "level": 2
                 },
                 {
+                    "id": "expression-trees",
+                    "text": "Expression trees",
+                    "level": 2
+                },
+                {
                     "id": "serialization",
                     "text": "Serialization",
-                    "level": 2
+                    "level": 3
+                },
+                {
+                    "id": "reference-tests",
+                    "text": "Reference tests",
+                    "level": 3
                 }
             ],
             "math": false
@@ -254,58 +264,38 @@
                     "level": 2
                 },
                 {
-                    "id": "a-first-script",
-                    "text": "A first script",
-                    "level": 2
-                },
-                {
                     "id": "imports",
                     "text": "Imports",
                     "level": 2
                 },
                 {
-                    "id": "building-data-frames",
-                    "text": "Building data frames",
+                    "id": "load",
+                    "text": "Load",
                     "level": 2
                 },
                 {
-                    "id": "printing",
-                    "text": "Printing",
+                    "id": "inspect",
+                    "text": "Inspect",
                     "level": 2
                 },
                 {
-                    "id": "types-and-na",
-                    "text": "Types and NA",
+                    "id": "transform",
+                    "text": "Transform",
                     "level": 2
                 },
                 {
-                    "id": "reading-values",
-                    "text": "Reading values",
+                    "id": "summarize",
+                    "text": "Summarize",
                     "level": 2
                 },
                 {
-                    "id": "verbs",
-                    "text": "Verbs",
+                    "id": "combine",
+                    "text": "Combine",
                     "level": 2
                 },
                 {
-                    "id": "groups",
-                    "text": "Groups",
-                    "level": 2
-                },
-                {
-                    "id": "distinct-rows-and-joins",
-                    "text": "Distinct rows and joins",
-                    "level": 2
-                },
-                {
-                    "id": "immutability",
-                    "text": "Immutability",
-                    "level": 2
-                },
-                {
-                    "id": "missing-values",
-                    "text": "Missing values",
+                    "id": "output",
+                    "text": "Output",
                     "level": 2
                 },
                 {
@@ -320,8 +310,8 @@
             "title": "phibble",
             "headings": [
                 {
-                    "id": "tables",
-                    "text": "Tables",
+                    "id": "guides",
+                    "text": "Guides",
                     "level": 2
                 },
                 {
@@ -332,11 +322,6 @@
                 {
                     "id": "other-packages",
                     "text": "Other packages",
-                    "level": 2
-                },
-                {
-                    "id": "install",
-                    "text": "Install",
                     "level": 2
                 }
             ],
@@ -351,29 +336,44 @@
                     "level": 2
                 },
                 {
+                    "id": "options",
+                    "text": "Options",
+                    "level": 3
+                },
+                {
                     "id": "column-types",
                     "text": "Column types",
-                    "level": 2
+                    "level": 3
                 },
                 {
                     "id": "guessing",
                     "text": "Guessing",
-                    "level": 2
+                    "level": 3
+                },
+                {
+                    "id": "parse-problems",
+                    "text": "Parse problems",
+                    "level": 3
                 },
                 {
                     "id": "quotes",
                     "text": "Quotes",
+                    "level": 3
+                },
+                {
+                    "id": "large-csv-files",
+                    "text": "Large CSV files",
                     "level": 2
                 },
                 {
                     "id": "reading-in-chunks",
                     "text": "Reading in chunks",
-                    "level": 2
+                    "level": 3
                 },
                 {
-                    "id": "large-files",
-                    "text": "Large files",
-                    "level": 2
+                    "id": "memory",
+                    "text": "Memory",
+                    "level": 3
                 },
                 {
                     "id": "writing-csv",
@@ -381,14 +381,24 @@
                     "level": 2
                 },
                 {
-                    "id": "json",
-                    "text": "JSON",
+                    "id": "writing-and-reading-json",
+                    "text": "Writing and reading JSON",
                     "level": 2
                 },
                 {
                     "id": "databases",
                     "text": "Databases",
                     "level": 2
+                },
+                {
+                    "id": "query-results",
+                    "text": "Query results",
+                    "level": 3
+                },
+                {
+                    "id": "query-builders",
+                    "text": "Query builders",
+                    "level": 3
                 },
                 {
                     "id": "laravel-collections",
@@ -458,13 +468,28 @@
                     "level": 2
                 },
                 {
+                    "id": "on-every-database",
+                    "text": "On every database",
+                    "level": 3
+                },
+                {
+                    "id": "by-database",
+                    "text": "By database",
+                    "level": 3
+                },
+                {
+                    "id": "sqlite-column-types",
+                    "text": "SQLite column types",
+                    "level": 3
+                },
+                {
                     "id": "known-differences",
                     "text": "Known differences",
                     "level": 2
                 },
                 {
-                    "id": "window-functions",
-                    "text": "Window functions",
+                    "id": "row-order-and-window-functions",
+                    "text": "Row order and window functions",
                     "level": 2
                 },
                 {
