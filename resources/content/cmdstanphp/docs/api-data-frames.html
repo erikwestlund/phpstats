@@ -1,0 +1,162 @@
+<p>CmdStanPHP works with the <a href="#part-of-the-phpstats-family">phpstats family</a> without depending on it. phibble is detected by method and class names. The <code>phit</code> extension is detected by function name.</p>
+<section id="data-in" class="level2">
+<h2 class="anchored" data-anchor-id="data-in">Data in</h2>
+<p>Every <code>data</code> argument (<code>sample()</code>, <code>sampleMpi()</code>, <code>optimize()</code>, <code>variational()</code>, <code>pathfinder()</code>, <code>laplace()</code>, <code>generateQuantities()</code>, <code>diagnose()</code>, and <code>logProb()</code>) and <code>write_stan_json()</code> accept a plain array, a JSON file, a <code>CmdStan\StanData</code>, or a table. A table is any object with <code>toModelData()</code> or <code>toColumns()</code>, such as a <a href="https://github.com/phpstats/phibble">phibble</a> <code>Phibble\DataFrame</code>. <code>toModelData()</code> is used when both exist. <code>StanData::fromTable($table, addN: true)</code> performs the same conversion and keeps the factor labels.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Stan data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>int or float</td>
+<td>The list of values, unchanged</td>
+</tr>
+<tr class="even">
+<td>bool</td>
+<td>0/1 integers</td>
+</tr>
+<tr class="odd">
+<td>list cells</td>
+<td>Nested arrays, which must be rectangular</td>
+</tr>
+<tr class="even">
+<td>factor</td>
+<td>1-based integer indices in level order, plus <code>J_&lt;name&gt;</code>, the number of levels</td>
+</tr>
+<tr class="odd">
+<td>string</td>
+<td>Rejected, as in CmdStanR 1.0; make the column a factor so its levels set the codes</td>
+</tr>
+<tr class="even">
+<td>null, dates, other objects</td>
+<td>Rejected with the column name and row, because Stan data has no missing values</td>
+</tr>
+</tbody>
+</table>
+<p>Factor levels come from a <code>toModelData()</code> descriptor (<code>['levels' =&gt; list&lt;string&gt;, 'codes' =&gt; list&lt;?int&gt;, 'ordered' =&gt; bool]</code>, with 0-based codes, as phibble’s <code>DataFrame::toModelData()</code> returns them from phibble 0.1.0; add <code>'base' =&gt; 1</code> for 1-based codes) or, for a <code>toColumns()</code> table, from <code>levels($name)</code> when <code>types()</code> reports a factor. The <code>ordered</code> flag is ignored. Labels cannot be written to Stan JSON, so they are returned in <code>StanData::$levels</code>, keyed by data variable, where label <code>i</code> has index <code>i + 1</code>. The conversion adds <code>N</code>, the row count, unless the table has a column named <code>N</code>, and adds <code>J_&lt;name&gt;</code> unless a column already has that name. CmdStan ignores data variables that the program does not declare. Column names must be valid Stan identifiers.</p>
+<p>Fit methods are camelCase, as are <code>StanData</code>‘s and <code>Tables</code>’ <code>from...()</code> constructors and the package’s other static helpers, such as <code>CmdStanFit::fromCsv()</code> and <code>Inits::fromFit()</code>. <code>StanData</code> is a value object with readonly <code>data</code>, <code>levels</code>, <code>columns</code> (the names of the columns of <code>X</code>), and <code>meta</code>. <code>toArray()</code> returns <code>data</code>, and <code>with(['prior_scale' =&gt; 2.5])</code> adds or replaces variables.</p>
+</section>
+<section id="regression-data" class="level2">
+<h2 class="anchored" data-anchor-id="regression-data">Regression data</h2>
+<p><code>StanData::fromColumns($columns, y: 'y', x: ['x1', 'x2'], groups: 'school', intercept: false)</code> builds the usual hierarchical regression data block from named columns or a table:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>N</code></td>
+<td>Number of rows</td>
+</tr>
+<tr class="even">
+<td><code>K</code></td>
+<td>Number of predictors (columns of <code>X</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>X</code></td>
+<td>N rows of K floats, in the order of <code>x</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td>The outcome, keeping integers as integers</td>
+</tr>
+<tr class="odd">
+<td><code>&lt;g&gt;_id</code></td>
+<td>For each grouping column <code>g</code>, the 1-based group index of each row</td>
+</tr>
+<tr class="even">
+<td><code>J_&lt;g&gt;</code></td>
+<td>For each grouping column, the number of groups</td>
+</tr>
+<tr class="odd">
+<td><code>J</code></td>
+<td>The number of groups, when there is exactly one grouping column</td>
+</tr>
+</tbody>
+</table>
+<p>Groups are numbered over sorted unique values (numbers numerically, otherwise in <code>strcmp</code> order) or over a factor’s levels, and the labels are in <code>levels['&lt;g&gt;_id']</code>. Predictors must be numeric. <code>intercept: true</code> prepends a column of ones named <code>(Intercept)</code>. It is off by default because Stan programs usually give the intercept its own parameter.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">$data</span> <span class="op">=</span> CmdStan\StanData::fromColumns(<span class="va">$df</span><span class="ot">,</span> <span class="st">'score'</span><span class="ot">,</span> [<span class="st">'hours'</span>]<span class="ot">,</span> <span class="st">'school'</span>)<span class="ot">;</span></span><span id="cb1-2" class="code-line" style="--indent: 0ch"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span> <span class="op">=</span> <span class="va">$model</span>-&gt;sample(data<span class="ot">:</span> <span class="va">$data</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">1</span>)<span class="ot">;</span></span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span><span id="cb2-2" class="code-line" style="--indent: 2ch"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span><span id="cb2-3" class="code-line" style="--indent: 2ch"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; K;</span><span id="cb2-4" class="code-line" style="--indent: 2ch"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">matrix</span>[N, K] X;</span><span id="cb2-5" class="code-line" style="--indent: 2ch"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] y;</span><span id="cb2-6" class="code-line" style="--indent: 2ch"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; J;</span><span id="cb2-7" class="code-line" style="--indent: 2ch"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=J&gt; school_id;</span><span id="cb2-8" class="code-line" style="--indent: 0ch"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></div>
+<p><code>StanData::fromFormula('y ~ x1 + f + (1 + x1 | g)', $data, dropIntercept: false, missing: 'drop')</code> builds regression data from an R-style formula through <code>Phit\model_matrix()</code> in the <a href="https://github.com/phpstats/phit"><code>phit</code></a> extension (phit 0.1.0 and later). The function handles factor predictors (treatment contrasts), interactions, transforms, and offsets, and keeps the <code>(Intercept)</code> column in <code>X</code> unless <code>dropIntercept: true</code>. <code>$data</code> can be columns, factor descriptors, or a table, whose <code>toModelData()</code> is passed unchanged. Without the function, <code>fromFormula()</code> throws a <code>RuntimeException</code> that names the requirement. <code>StanData::fromModelMatrix($result)</code> maps an existing <code>Phit\model_matrix()</code> result and is the only code that depends on its shape.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formula part</th>
+<th>Stan data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Design matrix</td>
+<td><code>N</code> (retained rows), <code>K</code>, and <code>X</code>; the column names are in <code>columns</code></td>
+</tr>
+<tr class="even">
+<td>Numeric response</td>
+<td><code>y</code>, as integers when every value is integral, so it suits <code>int</code> and <code>real</code> declarations</td>
+</tr>
+<tr class="odd">
+<td>Factor response</td>
+<td><code>y</code> as 0/1 for two levels (Bernoulli), or 1..<code>C</code> with <code>C</code> levels (categorical); labels in <code>levels['y']</code></td>
+</tr>
+<tr class="even">
+<td><code>cbind(s, f)</code> response</td>
+<td><code>y</code> (successes) and <code>trials</code> (successes plus failures)</td>
+</tr>
+<tr class="odd">
+<td><code>offset()</code></td>
+<td><code>offset</code></td>
+</tr>
+<tr class="even">
+<td><code>(... \| g)</code></td>
+<td><code>&lt;g&gt;_id</code> (1-based) and <code>J_&lt;g&gt;</code> per grouping factor, and <code>J</code> when there is one grouping factor</td>
+</tr>
+<tr class="odd">
+<td>Random slopes, such as <code>(1 + x \| g)</code></td>
+<td><code>Z_&lt;g&gt;</code> (N rows of the group’s columns, including the intercept column) and <code>Q_&lt;g&gt;</code>, the number of columns; omitted when every term on the group is intercept-only</td>
+</tr>
+</tbody>
+</table>
+<p>Group names that are not Stan identifiers have other characters replaced by <code>_</code>, so the nested group <code>g2:g1</code> gives <code>g2_g1_id</code>. Groups are numbered in factor level order when the data has descriptors or table factors, and otherwise over sorted labels (numbers numerically, otherwise byte order, as <code>Phit\model_matrix()</code> sorts levels). Terms on the same group are concatenated into one <code>Z_&lt;g&gt;</code>, intercept-only terms included, so <code>(1 | g) + (0 + x | g)</code> gives the same <code>Z_g</code> as <code>(1 + x | g)</code>. Two groups whose names map to the same <code>&lt;g&gt;</code>, such as <code>a.b</code> and <code>a_b</code>, are rejected. Factors reach <code>Phit\model_matrix()</code> as descriptors in the data’s level order, so the first level is the reference level and a factor response is coded in that order, while plain string columns use sorted levels. <code>missing: 'drop'</code> removes rows with missing values in any variable the formula uses, with one <code>E_WARNING</code> from <code>Phit\model_matrix()</code>, and <code>missing: 'raise'</code> rejects them. The remaining result keys, including <code>retained_rows</code>, <code>dropped_rows</code>, <code>n_input</code>, <code>n_dropped</code>, <code>terms</code>, and <code>assign</code>, are kept in <code>meta</code>, and <code>meta['random'][&lt;g&gt;]</code> lists each group’s columns and terms.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span><span id="cb3-2" class="code-line" style="--indent: 2ch"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;</span><span id="cb3-3" class="code-line" style="--indent: 2ch"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; K;</span><span id="cb3-4" class="code-line" style="--indent: 2ch"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">matrix</span>[N, K] X;          <span class="co">// includes the intercept column</span></span><span id="cb3-5" class="code-line" style="--indent: 2ch"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] y;</span><span id="cb3-6" class="code-line" style="--indent: 2ch"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; J;</span><span id="cb3-7" class="code-line" style="--indent: 2ch"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=J&gt; g_id;</span><span id="cb3-8" class="code-line" style="--indent: 2ch"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; Q_g;</span><span id="cb3-9" class="code-line" style="--indent: 2ch"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">matrix</span>[N, Q_g] Z_g;      <span class="co">// (1 + x1 | g)</span></span><span id="cb3-10" class="code-line" style="--indent: 0ch"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></div>
+</section>
+<section id="draws-and-summaries-out" class="level2">
+<h2 class="anchored" data-anchor-id="draws-and-summaries-out">Draws and summaries out</h2>
+<ul>
+<li><code>drawsColumns(variables: null, incWarmup: false)</code> returns draws as columns, like posterior’s <code>as_draws_df()</code>: one list per variable element (such as <code>beta[2]</code>), then one-based <code>.chain</code>, <code>.iteration</code>, and <code>.draw</code> columns.</li>
+<li><code>summaryColumns(variables: null, probs: [0.05, 0.95], measures: [])</code> returns <code>summary()</code> as columns: <code>variable</code> and one column per measure.</li>
+<li><code>drawsTable()</code> and <code>summaryTable()</code> take the same arguments and return a <code>Phibble\DataFrame</code> built with <code>DataFrame::fromColumns()</code>. They need <code>phpstats/phibble</code>, which requires PHP 8.3 or later, and throw a <code>RuntimeException</code> explaining this when it is not installed.</li>
+<li><code>CmdStan\Tables::fromRows($rows)</code> converts any list of associative rows, such as <code>loo()['pointwise']</code>, to columns.</li>
+</ul>
+<p>The column arrays need no other package and suit any data frame library that accepts name-to-values columns.</p>
+</section>
+<section id="part-of-the-phpstats-family" class="level2">
+<h2 class="anchored" data-anchor-id="part-of-the-phpstats-family">Part of the phpstats family</h2>
+<p>CmdStanPHP is part of the phpstats family of PHP statistics packages:</p>
+<ul>
+<li><a href="https://github.com/phpstats/phit">phit</a>: the <code>phit</code> native extension (<code>Phit\</code> functions), which provides the moment-matching draw kernels and, when available, <code>Phit\model_matrix()</code>.</li>
+<li><a href="https://github.com/phpstats/phibble">phibble</a>: data frames (<code>Phibble\DataFrame</code>).</li>
+<li><a href="https://github.com/phpstats/phplyr">phplyr</a>: dplyr-style verbs for phibble tables.</li>
+<li><a href="https://github.com/phpstats/phiz">phiz</a>: a Vega-Lite grammar of graphics.</li>
+</ul>
+<p>CmdStanPHP requires none of them. phibble, phplyr, and phiz require PHP 8.3 or later, and the phit extension supports PHP 8.3, 8.4, and 8.5.</p>
+
+
+</section>

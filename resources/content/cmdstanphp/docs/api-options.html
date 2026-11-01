@@ -1,0 +1,204 @@
+<p>Global options, the options every inference method takes, and each method’s own options. Options left out or <code>null</code> use the installed CmdStan’s default, and unknown options throw.</p>
+<section id="global-options" class="level2">
+<h2 class="anchored" data-anchor-id="global-options">Global options</h2>
+<p><code>options(set: [])</code> sets options and returns their previous values, and <code>cmdstan_option(name, default: null)</code> reads one. A <code>null</code> value unsets an option, and unknown names and values of the wrong type throw.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cmdstanr_output_dir</code></td>
+<td>Default <code>output_dir</code></td>
+</tr>
+<tr class="even">
+<td><code>cmdstanr_write_stan_file_dir</code></td>
+<td>Default directory for <code>write_stan_file()</code></td>
+</tr>
+<tr class="odd">
+<td><code>cmdstanr_force_recompile</code></td>
+<td>Default <code>forceRecompile</code></td>
+</tr>
+<tr class="even">
+<td><code>cmdstanr_draws_format</code></td>
+<td>Default draws format: <code>draws_array</code>, <code>draws_matrix</code>, <code>draws_df</code>, or <code>draws_list</code></td>
+</tr>
+<tr class="odd">
+<td><code>cmdstanr_compress</code></td>
+<td>Default <code>compress</code>: <code>'none'</code>, <code>'gzip'</code>, or <code>'bzip2'</code></td>
+</tr>
+<tr class="even">
+<td><code>cmdstanr_progress_bar</code></td>
+<td>Default <code>show_progress_bar</code> for <code>sample()</code></td>
+</tr>
+<tr class="odd">
+<td><code>cmdstanr_save_metric</code></td>
+<td>Default <code>save_metric</code> for <code>sample()</code></td>
+</tr>
+<tr class="even">
+<td><code>cmdstanr_save_config</code></td>
+<td>Default <code>save_cmdstan_config</code></td>
+</tr>
+<tr class="odd">
+<td><code>cmdstanr_verbose</code></td>
+<td>Reports whether and why a model compiles</td>
+</tr>
+<tr class="even">
+<td><code>cmdstanr_warn_inits</code></td>
+<td>Warns when initial values cover only some parameters, and passes on warnings from initializing with a fit. On by default.</td>
+</tr>
+<tr class="odd">
+<td><code>cmdstanr_max_rows</code></td>
+<td>Variables printed by <code>print()</code> (default 10)</td>
+</tr>
+<tr class="even">
+<td><code>cmdstanr_print_line_numbers</code></td>
+<td>Default <code>lineNumbers</code> for <code>print_stan_file()</code> and <code>print()</code></td>
+</tr>
+<tr class="odd">
+<td><code>mc.cores</code></td>
+<td>Default <code>parallel_chains</code> and installer core count</td>
+</tr>
+<tr class="even">
+<td><code>cmdstanphp_example_dir</code></td>
+<td>Directory for compiled examples</td>
+</tr>
+<tr class="odd">
+<td><code>cmdstanr_no_ver_check</code>, <code>cmdstanr_spinner</code></td>
+<td>Accepted and ignored</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="shared-options" class="level2">
+<h2 class="anchored" data-anchor-id="shared-options">Shared options</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Option</th>
+<th>Meaning</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>data</code></td>
+<td>An array, a JSON file, a <code>StanData</code>, or a <a href="phpstats://cmdstanphp/docs/api-data-frames#data-in">table</a></td>
+<td>None</td>
+</tr>
+<tr class="even">
+<td><code>seed</code></td>
+<td>Random seed</td>
+<td>Chosen by CmdStan</td>
+</tr>
+<tr class="odd">
+<td><code>init</code></td>
+<td>Initial values: a radius, values, files, a callable, or a fit. See <a href="phpstats://cmdstanphp/docs/mcmc#initial-values">initial values</a>.</td>
+<td>CmdStan’s radius of 2</td>
+</tr>
+<tr class="even">
+<td><code>refresh</code></td>
+<td>Iterations between progress lines</td>
+<td>CmdStan’s</td>
+</tr>
+<tr class="odd">
+<td><code>output_dir</code></td>
+<td>Directory for output files</td>
+<td>The <code>cmdstanr_output_dir</code> option, else a new temporary directory</td>
+</tr>
+<tr class="even">
+<td><code>output_basename</code></td>
+<td>File name prefix: letters, numbers, dots, underscores, and hyphens. Files are then named <code>&lt;output_basename&gt;-&lt;id&gt;.csv</code>.</td>
+<td><code>&lt;model&gt;-&lt;YYYYmmddHHMM&gt;</code>, with a random suffix after the chain id</td>
+</tr>
+<tr class="odd">
+<td><code>sig_figs</code></td>
+<td>Significant figures in the CSV output, 1 to 18</td>
+<td>CmdStan’s</td>
+</tr>
+<tr class="even">
+<td><code>compress</code></td>
+<td><code>'none'</code>, <code>'gzip'</code>, or <code>'bzip2'</code> for the output and latent-dynamics CSV files. Not for <code>diagnose()</code> or <code>logProb()</code>.</td>
+<td>The <code>cmdstanr_compress</code> option</td>
+</tr>
+<tr class="odd">
+<td><code>opencl_ids</code></td>
+<td>OpenCL platform and device IDs. Needs an OpenCL build.</td>
+<td>None</td>
+</tr>
+<tr class="even">
+<td><code>save_cmdstan_config</code></td>
+<td>Writes CmdStan’s configuration JSON beside the CSV files</td>
+<td>The <code>cmdstanr_save_config</code> option</td>
+</tr>
+<tr class="odd">
+<td><code>show_messages</code>, <code>show_exceptions</code></td>
+<td>Print CmdStan’s standard output and standard error</td>
+<td><code>true</code>, and <code>show_exceptions</code> follows <code>show_messages</code></td>
+</tr>
+<tr class="even">
+<td><code>timeout</code></td>
+<td>Seconds allowed per process</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p>Threads are <code>threads_per_chain</code> for <code>sample()</code> and <code>generateQuantities()</code>, and <code>threads</code> for <code>optimize()</code>, <code>variational()</code>, <code>pathfinder()</code>, and <code>laplace()</code>. <code>pathfinder()</code> still accepts <code>num_threads</code> with an <code>E_USER_DEPRECATED</code> notice. Asking for more than one thread from an executable built without threading is an error.</p>
+<p>CmdStanR 1.0’s removed names are unknown options here too: <code>sample()</code>’s <code>cores</code>, <code>num_cores</code>, <code>num_chains</code>, <code>num_warmup</code>, <code>num_samples</code>, <code>max_depth</code>, <code>stepsize</code>, <code>save_extra_diagnostics</code>, and <code>validate_csv</code>, and <code>jacobian_adjustment</code>.</p>
+</section>
+<section id="method-specific-options" class="level2">
+<h2 class="anchored" data-anchor-id="method-specific-options">Method-specific options</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Options</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sample()</code></td>
+<td><code>threads_per_chain</code>, <code>save_latent_dynamics</code>, <code>show_progress_bar</code>, <code>chains</code> (default 4), <code>parallel_chains</code> (default: the <code>mc.cores</code> option, else 1), <code>chain_ids</code>, <code>iter_warmup</code>, <code>iter_sampling</code>, <code>save_warmup</code>, <code>thin</code>, <code>max_treedepth</code>, <code>adapt_engaged</code>, <code>adapt_delta</code>, <code>step_size</code>, <code>metric</code>, <code>metric_file</code>, <code>inv_metric</code>, <code>init_buffer</code>, <code>term_buffer</code>, <code>window</code>, <code>fixed_param</code>, <code>save_metric</code>, <code>diagnostics</code>. See <a href="phpstats://cmdstanphp/docs/mcmc">MCMC sampling</a>.</td>
+</tr>
+<tr class="even">
+<td><code>optimize()</code></td>
+<td><code>threads</code>, <code>algorithm</code>, <code>jacobian</code>, <code>init_alpha</code>, <code>iter</code>, <code>tol_obj</code>, <code>tol_rel_obj</code>, <code>tol_grad</code>, <code>tol_rel_grad</code>, <code>tol_param</code>, <code>history_size</code>, <code>save_iterations</code></td>
+</tr>
+<tr class="odd">
+<td><code>variational()</code></td>
+<td><code>threads</code>, <code>save_latent_dynamics</code>, <code>algorithm</code>, <code>iter</code>, <code>grad_samples</code>, <code>elbo_samples</code>, <code>eta</code>, <code>adapt_engaged</code>, <code>adapt_iter</code>, <code>tol_rel_obj</code>, <code>eval_elbo</code>, <code>draws</code> (CmdStan’s <code>output_samples</code>)</td>
+</tr>
+<tr class="even">
+<td><code>pathfinder()</code></td>
+<td><code>threads</code>, <code>init_alpha</code>, <code>tol_obj</code>, <code>tol_rel_obj</code>, <code>tol_grad</code>, <code>tol_rel_grad</code>, <code>tol_param</code>, <code>history_size</code>, <code>single_path_draws</code>, <code>draws</code>, <code>num_paths</code>, <code>max_lbfgs_iters</code>, <code>num_elbo_draws</code>, <code>save_single_paths</code>, <code>psis_resample</code>, <code>calculate_lp</code></td>
+</tr>
+<tr class="odd">
+<td><code>laplace()</code></td>
+<td><code>threads</code>, <code>mode</code>, <code>opt_args</code>, <code>jacobian</code> (default true), <code>draws</code>, <code>calculate_lp</code></td>
+</tr>
+<tr class="even">
+<td><code>generateQuantities()</code></td>
+<td><code>fittedParams</code> (required: a fit, a CSV file name, or a list of them), <code>threads_per_chain</code>, <code>parallel_chains</code></td>
+</tr>
+<tr class="odd">
+<td><code>diagnose()</code></td>
+<td><code>epsilon</code> and <code>error</code>, for the finite-difference gradient check</td>
+</tr>
+<tr class="even">
+<td><code>logProb()</code></td>
+<td>Exactly one of <code>unconstrained_params</code> and <code>constrained_params</code>, and <code>jacobian</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>save_latent_dynamics</code> writes auxiliary diagnostic CSV files.</p>
+<p><code>sampleMpi(mpiCmd: 'mpiexec', mpiArgs: [], ...options)</code> takes the sampling options, defaults to one chain, and runs chains one after another. An associative argument such as <code>['n' =&gt; 4]</code> becomes <code>-n 4</code>, and a list is passed as literal arguments. Compile with <code>['STAN_MPI' =&gt; true, 'CXX' =&gt; 'mpicxx', 'TBB_CXX_TYPE' =&gt; 'gcc']</code> and install an MPI runtime. The launch command is unit-tested, but no run on a real MPI cluster has been tested.</p>
+
+
+</section>

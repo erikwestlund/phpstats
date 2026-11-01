@@ -1,0 +1,159 @@
+<p>Standalone functions in the <code>CmdStan</code> namespace, which keep CmdStanR’s snake_case names.</p>
+<section id="models-and-stan-files" class="level2">
+<h2 class="anchored" data-anchor-id="models-and-stan-files">Models and Stan files</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cmdstan_model(stanFile: null, exeFile: null, quiet: true, dir: null, pedantic: false, includePaths: null, userHeader: null, cppOptions: null, stancOptions: null, forceRecompile: null)</code></td>
+<td>A <code>CmdStanModel</code>, compiled or reusing an up-to-date executable</td>
+</tr>
+<tr class="even">
+<td><code>compile_stan_file(stanFile, ...)</code></td>
+<td>The executable path, compiled with <code>cmdstan_model()</code>’s build arguments but without a model object</td>
+</tr>
+<tr class="odd">
+<td><code>check_syntax_stan_file(stanFile, includePaths: null, pedantic: false, stancOptions: [], quiet: false)</code></td>
+<td><code>true</code>, or an exception for invalid Stan</td>
+</tr>
+<tr class="even">
+<td><code>format_stan_file(stanFile, includePaths: null, overwriteFile: false, canonicalize: false, backup: true, maxLineLength: null, quiet: false)</code></td>
+<td>The formatted program. <code>overwriteFile</code> rewrites the file and keeps a <code>.bak-YYYYMMDDHHMMSS</code> copy unless <code>backup: false</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>variables_stan_file(stanFile, includePaths: null)</code></td>
+<td>The program’s declarations, without compiling</td>
+</tr>
+<tr class="even">
+<td><code>print_stan_file(stanFile, lineNumbers: null)</code></td>
+<td>Prints the program</td>
+</tr>
+<tr class="odd">
+<td><code>stan_build_info(exeFile)</code></td>
+<td>How an executable was built, from its build record and what it reports about itself</td>
+</tr>
+<tr class="even">
+<td><code>write_stan_file(code, file: null, dir: null, basename: null, forceOverwrite: false, hashSalt: '')</code></td>
+<td>The path of <code>model_&lt;hash&gt;.stan</code>, or of <code>basename</code>. An identical existing file is left untouched.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cmdstan-installation" class="level2">
+<h2 class="anchored" data-anchor-id="cmdstan-installation">CmdStan installation</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>install_cmdstan(version: null, dir: null, cores: null, timeout: null, overwrite: false, releaseUrl: null, releaseFile: null, cppOptions: [], checkToolchain: true, copyMakeLocal: null)</code></td>
+<td>Downloads or unpacks a release, builds it, and selects it. See <a href="phpstats://cmdstanphp/docs/installation#install-cmdstan">Installation</a>.</td>
+</tr>
+<tr class="even">
+<td><code>set_cmdstan_path(path)</code>, <code>cmdstan_path()</code></td>
+<td>Selects or returns the CmdStan installation</td>
+</tr>
+<tr class="odd">
+<td><code>cmdstan_version()</code></td>
+<td>The selected CmdStan’s version</td>
+</tr>
+<tr class="even">
+<td><code>check_cmdstan_toolchain()</code></td>
+<td>Paths and versions of make, CmdStan’s C++ compiler, and stanc. Throws when make or the compiler is missing. A successful check does not prove that a compilation will succeed.</td>
+</tr>
+<tr class="odd">
+<td><code>cmdstan_make_local(dir: null, cppOptions: [], append: true)</code></td>
+<td>Reads or writes CmdStan’s <code>make/local</code></td>
+</tr>
+<tr class="even">
+<td><code>rebuild_cmdstan(cores: null, timeout: null)</code></td>
+<td>Cleans and rebuilds the selected CmdStan</td>
+</tr>
+</tbody>
+</table>
+<p>CmdStan 2.37 is the oldest supported release, as in CmdStanR 1.0. <code>set_cmdstan_path()</code> refuses an older installation, discovery skips one, and <code>install_cmdstan()</code> rejects older versions. CI tests 2.37 and 2.40. Options added in newer CmdStan releases fail on older ones with CmdStan’s error message.</p>
+</section>
+<section id="data-and-csv-files" class="level2">
+<h2 class="anchored" data-anchor-id="data-and-csv-files">Data and CSV files</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>write_stan_json(data, file, alwaysDecimal: false, variables: null)</code></td>
+<td>Writes data, initial values, or a metric as JSON. <code>data</code> may be an array, a <code>StanData</code>, or a table. With <code>variables</code> (stanc’s declarations, such as <code>$model-&gt;variables()['data']</code>), <code>int</code> variables are written as integers and tuples as Stan’s <code>{"1": ..., "2": ...}</code> objects.</td>
+</tr>
+<tr class="even">
+<td><code>read_cmdstan_csv(files)</code></td>
+<td>A fit from one or more CmdStan CSV files (<code>.csv</code>, <code>.csv.gz</code>, or <code>.csv.bz2</code>)</td>
+</tr>
+<tr class="odd">
+<td><code>as_cmdstan_fit(files, variables: null, checkDiagnostics: true, format: null)</code></td>
+<td>The same, reading only <code>variables</code> and with <code>format</code> as the fit’s default draws format</td>
+</tr>
+<tr class="even">
+<td><code>read_cmdstan_csv_list(files, variables: null, samplerDiagnostics: null, format: null)</code></td>
+<td>CmdStanR’s <code>read_cmdstan_csv()</code> list shape</td>
+</tr>
+<tr class="odd">
+<td><code>draws_to_csv(chains, dir)</code></td>
+<td>Writes <code>[chain][iteration][variable]</code> draw rows to one CSV file per chain</td>
+</tr>
+</tbody>
+</table>
+<p>Data arrays are named PHP arrays at the top level, with lists for Stan arrays, vectors, and matrices:</p>
+<ul>
+<li>Matrices are lists of rows, with no column-major conversion. Booleans become 0 and 1, complex numbers are <code>[re, im]</code> pairs, and a tuple is a list of its elements. Empty top-level data becomes <code>{}</code>.</li>
+<li>Missing values, strings, objects, nonfinite numbers, sparse indices, invalid variable names, and ragged arrays are rejected, and the error names the variable.</li>
+<li>The fitting methods write data with the model’s declarations. Every declared data variable is required, <code>int</code> variables are written as integers (a non-integer is truncated with a warning), and a single value for a one-dimensional array becomes a one-element array.</li>
+</ul>
+</section>
+<section id="figures-and-examples" class="level2">
+<h2 class="anchored" data-anchor-id="figures-and-examples">Figures and examples</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>mcmc_trace</code>, <code>mcmc_hist</code>, <code>mcmc_dens</code>, <code>mcmc_dens_overlay</code>, <code>mcmc_intervals</code>, <code>mcmc_rank_hist</code>, <code>mcmc_scatter</code>, <code>mcmc_acf</code>, <code>pareto_k_plot</code></td>
+<td>A <code>Figure</code>, named after its bayesplot or loo counterpart. See <a href="phpstats://cmdstanphp/docs/figures">Figures</a>.</td>
+</tr>
+<tr class="even">
+<td><code>cmdstanr_example(example: 'logistic', method: 'sample', ...options)</code></td>
+<td>A fit of the <code>logistic</code>, <code>schools</code>, or <code>schools_ncp</code> example</td>
+</tr>
+<tr class="odd">
+<td><code>print_example_program(example)</code></td>
+<td>Prints an example’s Stan program</td>
+</tr>
+</tbody>
+</table>
+<p><code>num_threads()</code> remains as a deprecated CmdStanR name. CmdStanR 1.0 removed <code>read_sample_csv()</code> and <code>write_stan_tempfile()</code>, and this package does not have them.</p>
+
+
+</section>

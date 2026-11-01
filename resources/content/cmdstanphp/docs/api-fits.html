@@ -1,0 +1,290 @@
+<p>Every fitting method returns a fit object. These methods read its draws, summaries, diagnostics, and files.</p>
+<p><a href="phpstats://cmdstanphp/docs/draws">Draws, summaries, and saving fits</a> explains formats, summaries, and saving.</p>
+<section id="draws-and-summaries" class="level2">
+<h2 class="anchored" data-anchor-id="draws-and-summaries">Draws and summaries</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>draws(variables: null, format: null, incWarmup: false)</code></td>
+<td>Draws in <code>draws_array</code>, <code>draws_matrix</code>, <code>draws_df</code>, <code>draws_list</code>, or <code>draws_rvars</code> format</td>
+</tr>
+<tr class="even">
+<td><code>samplerDiagnostics(format: null, incWarmup: false)</code></td>
+<td>Sampler columns ending in <code>__</code>, except <code>lp__</code></td>
+</tr>
+<tr class="odd">
+<td><code>summary(variables: null, probs: [0.05, 0.95], measures: [])</code></td>
+<td>One row per variable</td>
+</tr>
+<tr class="even">
+<td><code>drawsColumns(variables: null, incWarmup: false)</code>, <code>summaryColumns(...)</code></td>
+<td>The same as column arrays. See <a href="phpstats://cmdstanphp/docs/api-data-frames#draws-and-summaries-out">data frames</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>drawsTable(...)</code>, <code>summaryTable(...)</code></td>
+<td>The same as a <code>Phibble\DataFrame</code></td>
+</tr>
+<tr class="even">
+<td><code>print(variables: null, maxRows: null)</code></td>
+<td>Prints summary JSON for at most <code>cmdstanr_max_rows</code> variables</td>
+</tr>
+<tr class="odd">
+<td><code>lp()</code></td>
+<td><code>lp__</code> by iteration and chain</td>
+</tr>
+<tr class="even">
+<td><code>cmdstanSummary()</code></td>
+<td>CmdStan’s <code>stansummary</code> text</td>
+</tr>
+</tbody>
+</table>
+<p>A fit reads its CSV metadata and checks every row when it is created, then reads only the columns that <code>draws()</code>, <code>summary()</code>, and the diagnostics use, as packed doubles. Each read of new columns passes over the files again, so request variables together. Until <code>materialize()</code>, the fit needs its CSV files.</p>
+</section>
+<section id="diagnostics-and-run-information" class="level2">
+<h2 class="anchored" data-anchor-id="diagnostics-and-run-information">Diagnostics and run information</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>diagnosticSummary()</code></td>
+<td>Per-chain <code>num_divergent</code>, <code>num_max_treedepth</code>, and <code>ebfmi</code></td>
+</tr>
+<tr class="even">
+<td><code>checkDiagnostics(checks: ['divergences', 'treedepth', 'ebfmi'])</code>, <code>diagnosticWarnings()</code></td>
+<td>Runs the checks, or returns their messages</td>
+</tr>
+<tr class="odd">
+<td><code>cmdstanDiagnose()</code></td>
+<td>The text from CmdStan’s <code>diagnose</code> utility</td>
+</tr>
+<tr class="even">
+<td><code>metadata()</code>, <code>chainMetadata()</code></td>
+<td>CSV metadata, merged or per chain</td>
+</tr>
+<tr class="odd">
+<td><code>variables()</code>, <code>numChains()</code>, <code>numDrawsSampling()</code>, <code>numDrawsWarmup()</code>, <code>numProcs()</code></td>
+<td>Counts and names from the CSV files</td>
+</tr>
+<tr class="even">
+<td><code>stepSize()</code>, <code>invMetric(matrix: true)</code></td>
+<td>Adaptation results, one per chain</td>
+</tr>
+<tr class="odd">
+<td><code>time()</code></td>
+<td>Warmup, sampling, and total time per chain, when available</td>
+</tr>
+<tr class="even">
+<td><code>init()</code></td>
+<td>The initial values each process used</td>
+</tr>
+<tr class="odd">
+<td><code>output()</code>, <code>returnCodes()</code>, <code>command()</code></td>
+<td>Console output, exit status, and command line of each process. Imported fits have none of these. <code>command()</code> leaves out <code>STAN_NUM_THREADS</code> and an MPI launcher.</td>
+</tr>
+<tr class="even">
+<td><code>code()</code></td>
+<td>The Stan program. Imported fits have none.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="files-and-saving" class="level2">
+<h2 class="anchored" data-anchor-id="files-and-saving">Files and saving</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>outputFiles()</code>, <code>latentDynamicsFiles()</code>, <code>profileFiles()</code></td>
+<td>File paths. The latent-dynamics and profile accessors throw when there are no such files. <code>includeFailed</code> is accepted for CmdStanR compatibility.</td>
+</tr>
+<tr class="even">
+<td><code>profiles()</code></td>
+<td>Parsed profiling data</td>
+</tr>
+<tr class="odd">
+<td><code>dataFile()</code>, <code>configFiles()</code>, <code>metricFiles()</code></td>
+<td>Paths. An imported fit uses the data file recorded in the CSV when it still exists.</td>
+</tr>
+<tr class="even">
+<td><code>cmdstanConfig()</code>, <code>metric()</code></td>
+<td>The decoded configuration and metric JSON</td>
+</tr>
+<tr class="odd">
+<td><code>saveOutputFiles()</code>, <code>saveLatentDynamicsFiles()</code>, <code>saveProfileFiles()</code>, <code>saveDataFile()</code>, <code>saveConfigFiles()</code>, <code>saveMetricFiles()</code></td>
+<td>Saved paths. Each takes <code>dir: '.', basename: null, timestamp: true, random: true</code>, and the first two also take <code>compress</code>.</td>
+</tr>
+<tr class="even">
+<td><code>materialize()</code></td>
+<td>Reads the draws, initial values, and profiles into memory</td>
+</tr>
+<tr class="odd">
+<td><code>saveObject(file)</code></td>
+<td>Materializes and serializes the fit, with MCMC summary statistics</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="model-methods-1" class="level2">
+<h2 class="anchored" data-anchor-id="model-methods-1">Model methods</h2>
+<p>These need PHP’s FFI extension. The first call compiles a shared library for the fit’s model and data, and <code>initModelMethods(data: null, seed: 1, verbose: false, quiet: false, model: null)</code> does this explicitly. <code>data</code> binds other data, for example when a reloaded fit’s data file is gone, and <code>dataFile()</code> then points to it. Imported CSV fits must pass <code>model:</code>, and a model from <code>exeFile</code> alone has no program to build them from. See <a href="phpstats://cmdstanphp/docs/log-density">Log density and model methods</a>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>logProb(unconstrainedVariables, jacobian: true)</code></td>
+<td>The log density, with constants dropped</td>
+</tr>
+<tr class="even">
+<td><code>gradLogProb(...)</code></td>
+<td><code>['log_prob' =&gt; float, 'gradient' =&gt; list]</code></td>
+</tr>
+<tr class="odd">
+<td><code>hessian(...)</code></td>
+<td><code>['log_prob' =&gt; float, 'grad_log_prob' =&gt; list, 'hessian' =&gt; rows]</code></td>
+</tr>
+<tr class="even">
+<td><code>unconstrainVariables(variables)</code></td>
+<td>A flat unconstrained list from parameter values keyed by name, shaped as <code>constrainVariables()</code> returns them</td>
+</tr>
+<tr class="odd">
+<td><code>unconstrainDraws(files: null, draws: null, format: null, incWarmup: false)</code></td>
+<td>The fit’s draws, other CSV files, or <code>draws_df</code> rows on the unconstrained scale</td>
+</tr>
+<tr class="even">
+<td><code>constrainVariables(unconstrainedVariables, transformedParameters: true, generatedQuantities: true)</code></td>
+<td>Variables keyed by name as nested arrays, with tuples as lists and complex values as <code>[re, im]</code></td>
+</tr>
+<tr class="odd">
+<td><code>exposeFunctions(timeout: null)</code>, <code>functions()</code></td>
+<td>The model’s user-defined functions</td>
+</tr>
+</tbody>
+</table>
+<p><code>CmdStan\ModelMethods</code> and <code>CmdStan\StanFunctions</code> can also be used directly with a Stan file.</p>
+</section>
+<section id="methods-of-specific-fit-types" class="level2">
+<h2 class="anchored" data-anchor-id="methods-of-specific-fit-types">Methods of specific fit types</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Fit</th>
+<th>Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>CmdStanMCMC</code></td>
+<td><code>loo(variables: 'log_lik', rEff: false, momentMatch: false, maxIters: 30, kThreshold: null, split: true, cov: true)</code> and <code>waic(variables: 'log_lik')</code>. See <a href="phpstats://cmdstanphp/docs/loo">LOO and WAIC</a>.</td>
+</tr>
+<tr class="even">
+<td><code>CmdStanMLE</code></td>
+<td><code>mle()</code> and <code>optimizedParams()</code> (the estimates without <code>lp__</code>), and <code>lp()</code>. Its <code>summary()</code> returns <code>variable</code> and <code>estimate</code> rows.</td>
+</tr>
+<tr class="odd">
+<td><code>CmdStanVB</code></td>
+<td><code>variationalMean()</code>, and <code>lpApprox()</code>, the approximation’s log density at each draw</td>
+</tr>
+<tr class="even">
+<td><code>CmdStanLaplace</code></td>
+<td><code>mode()</code> and <code>lpApprox()</code></td>
+</tr>
+<tr class="odd">
+<td><code>CmdStanPathfinder</code></td>
+<td><code>lpApprox()</code>, and <code>singlePathFiles()</code>, <code>singlePathJsonFiles()</code>, <code>singlePathFits()</code>, and <code>singlePathDiagnostics()</code> with <code>save_single_paths: true</code>. Its variables include <code>lp_approx__</code> and <code>path__</code>.</td>
+</tr>
+<tr class="even">
+<td><code>CmdStanGQ</code></td>
+<td><code>fittedParamsFiles()</code></td>
+</tr>
+<tr class="odd">
+<td><code>CmdStanDiagnose</code></td>
+<td><code>gradients()</code>, the gradient check’s console output</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="statistics-helpers" class="level2">
+<h2 class="anchored" data-anchor-id="statistics-helpers">Statistics helpers</h2>
+<p>These classes work on plain draws arrays, and their docblocks describe the shapes.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Methods</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Figure</code></td>
+<td><code>ascii()</code>, <code>vegaLite()</code>, <code>json()</code>, <code>html()</code>, <code>svg()</code>, <code>png()</code>. Casting to a string gives the ASCII form.</td>
+</tr>
+<tr class="even">
+<td><code>Plot</code></td>
+<td>The figures, plus <code>bandwidth()</code>, <code>density()</code>, <code>autocorrelation()</code>, and <code>ranks()</code></td>
+</tr>
+<tr class="odd">
+<td><code>Psis</code></td>
+<td><code>paretoSmooth()</code>, <code>paretoKhat()</code>, <code>psis()</code>, <code>gpdfit()</code></td>
+</tr>
+<tr class="even">
+<td><code>Loo</code></td>
+<td><code>loo()</code>, <code>waic()</code>, <code>relativeEff()</code></td>
+</tr>
+<tr class="odd">
+<td><code>MomentMatch</code></td>
+<td><code>loo()</code> on unconstrained draws with log-density and log-likelihood callbacks, and <code>fromFit()</code></td>
+</tr>
+<tr class="even">
+<td><code>DrawKernels</code></td>
+<td>Detection of and wrappers for the phit draw kernels</td>
+</tr>
+<tr class="odd">
+<td><code>Summary</code></td>
+<td><code>summarise()</code> and each posterior measure</td>
+</tr>
+<tr class="even">
+<td><code>Rvars</code>, <code>Inits</code></td>
+<td><code>draws_rvars</code> helpers, and <code>fromFit()</code>, <code>fromDraws()</code>, <code>nest()</code>, and <code>validate()</code> for initial values</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>

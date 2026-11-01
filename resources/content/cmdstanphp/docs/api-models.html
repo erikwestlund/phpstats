@@ -1,0 +1,133 @@
+<p><code>CmdStanModel</code> compiles a Stan program and runs it.</p>
+<section id="model-methods" class="level2">
+<h2 class="anchored" data-anchor-id="model-methods">Creating a model</h2>
+<p><code>cmdstan_model()</code> and <code>new CmdStanModel()</code> take the same arguments and compile the model, or reuse an up-to-date executable, before they return.</p>
+<ul>
+<li>Give <code>stanFile</code>, whose executable goes beside it or in <code>dir</code>, or <code>exeFile</code> alone to use an existing executable. A model from <code>exeFile</code> alone refuses the build arguments, because there is nothing to build.</li>
+<li><code>cppOptions</code> are named make variables, such as <code>['STAN_THREADS' =&gt; true]</code>. Names are uppercased, and <code>false</code> turns an option off even when <code>make/local</code> turns it on. Unnamed entries and values containing command expansions or shell metacharacters are rejected. Use <code>cmdstan_make_local()</code> for other make lines.</li>
+<li><code>stancOptions</code> take flags and values, such as <code>['O1', 'canonicalize' =&gt; 'deprecations', 'max-line-length' =&gt; 78]</code>. Flags with their own argument are rejected: use <code>includePaths</code>, <code>pedantic</code>, <code>userHeader</code>, or <code>cppOptions: ['STAN_OPENCL' =&gt; true]</code>.</li>
+<li><code>quiet: false</code>, or the <code>cmdstanr_verbose</code> option, reports whether and why the model compiles. <code>forceRecompile: true</code> rebuilds anyway.</li>
+</ul>
+<p><a href="phpstats://cmdstanphp/docs/compiling">Compiling models</a> covers when a model is rebuilt, <code>StaleExecutableException</code>, and concurrent builds.</p>
+</section>
+<section id="inspecting-a-model" class="level2">
+<h2 class="anchored" data-anchor-id="inspecting-a-model">Inspecting a model</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>stanFile()</code>, <code>exeFile()</code>, <code>hppFile()</code></td>
+<td>Paths. <code>hppFile()</code> writes the generated C++ to a temporary file on first use.</td>
+</tr>
+<tr class="even">
+<td><code>code()</code></td>
+<td>The program as it was when the model was created</td>
+</tr>
+<tr class="odd">
+<td><code>variables()</code></td>
+<td>The <code>data</code>, <code>parameters</code>, <code>transformed_parameters</code>, and <code>generated_quantities</code> declarations, from stanc</td>
+</tr>
+<tr class="even">
+<td><code>modelName()</code>, <code>hasStanFile()</code>, <code>includePaths()</code>, <code>userHeader()</code>, <code>stancOptions()</code></td>
+<td>The model’s identity and recorded build settings</td>
+</tr>
+<tr class="odd">
+<td><code>cppOptions()</code></td>
+<td>Make variables and values, so <code>['stan_threads' =&gt; true]</code> comes back as <code>['STAN_THREADS' =&gt; 'true']</code></td>
+</tr>
+<tr class="even">
+<td><code>cmdstanVersion()</code></td>
+<td>The CmdStan version that built the executable</td>
+</tr>
+<tr class="odd">
+<td><code>reportedFeatures()</code></td>
+<td>What the executable reports: <code>stan_threads</code>, <code>stan_mpi</code>, <code>stan_opencl</code>, <code>stan_no_range_checks</code>, and <code>stan_version</code></td>
+</tr>
+<tr class="even">
+<td><code>buildInfo()</code></td>
+<td>The build record and the reported features, as <code>stan_build_info()</code> returns them</td>
+</tr>
+<tr class="odd">
+<td><code>isCurrent()</code></td>
+<td><code>false</code> when the executable is out of date</td>
+</tr>
+<tr class="even">
+<td><code>cmdstanDefaults(method: 'sample')</code></td>
+<td>CmdStan’s default values for <code>sample</code>, <code>optimize</code>, <code>variational</code>, <code>pathfinder</code>, or <code>laplace</code>, under this package’s option names</td>
+</tr>
+<tr class="odd">
+<td><code>print(lineNumbers: null)</code>, <code>saveHppFile(dir)</code></td>
+<td>Prints the program, or copies the generated header</td>
+</tr>
+<tr class="even">
+<td><code>format(overwriteFile: false, canonicalize: false, backup: true, maxLineLength: null, quiet: false)</code></td>
+<td>The formatted program. Create the model again to use a rewritten file.</td>
+</tr>
+<tr class="odd">
+<td><code>checkSyntax(pedantic: false, includePaths: null, stancOptions: [], quiet: false)</code></td>
+<td><code>true</code>, or an exception for invalid Stan</td>
+</tr>
+<tr class="even">
+<td><code>exposeFunctions(timeout: null, quiet: false)</code>, <code>functions()</code></td>
+<td>The model’s user-defined functions as a <code>StanFunctions</code> object</td>
+</tr>
+</tbody>
+</table>
+<p><code>code()</code> and <code>hppFile()</code> are <code>null</code> for a model from <code>exeFile</code> alone.</p>
+</section>
+<section id="running-a-model" class="level2">
+<h2 class="anchored" data-anchor-id="running-a-model">Running a model</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sample()</code>, <code>sampleMpi()</code></td>
+<td><code>CmdStanMCMC</code></td>
+</tr>
+<tr class="even">
+<td><code>optimize()</code></td>
+<td><code>CmdStanMLE</code></td>
+</tr>
+<tr class="odd">
+<td><code>variational()</code></td>
+<td><code>CmdStanVB</code></td>
+</tr>
+<tr class="even">
+<td><code>pathfinder()</code></td>
+<td><code>CmdStanPathfinder</code></td>
+</tr>
+<tr class="odd">
+<td><code>laplace()</code></td>
+<td><code>CmdStanLaplace</code></td>
+</tr>
+<tr class="even">
+<td><code>generateQuantities(fittedParams, ...)</code></td>
+<td><code>CmdStanGQ</code></td>
+</tr>
+<tr class="odd">
+<td><code>diagnose()</code></td>
+<td><code>CmdStanDiagnose</code></td>
+</tr>
+<tr class="even">
+<td><code>logProb()</code></td>
+<td><code>CmdStanFit</code></td>
+</tr>
+</tbody>
+</table>
+
+
+</section>

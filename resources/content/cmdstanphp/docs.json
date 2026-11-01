@@ -65,6 +65,36 @@
             "section": "Reference"
         },
         {
+            "title": "API: functions",
+            "path": "api-functions",
+            "section": "Reference"
+        },
+        {
+            "title": "API: options",
+            "path": "api-options",
+            "section": "Reference"
+        },
+        {
+            "title": "API: models",
+            "path": "api-models",
+            "section": "Reference"
+        },
+        {
+            "title": "API: fits",
+            "path": "api-fits",
+            "section": "Reference"
+        },
+        {
+            "title": "API: data frames and the phpstats family",
+            "path": "api-data-frames",
+            "section": "Reference"
+        },
+        {
+            "title": "API: errors",
+            "path": "api-errors",
+            "section": "Reference"
+        },
+        {
             "title": "Fit a Stan model with MCMC",
             "path": "examples/sample",
             "section": "Examples"
@@ -95,123 +125,143 @@
             "title": "API reference",
             "headings": [
                 {
-                    "id": "functions",
-                    "text": "Functions",
+                    "id": "sections",
+                    "text": "Sections",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "api-data-frames": {
+            "title": "API: data frames and the phpstats family",
+            "headings": [
+                {
+                    "id": "data-in",
+                    "text": "Data in",
                     "level": 2
                 },
                 {
+                    "id": "regression-data",
+                    "text": "Regression data",
+                    "level": 2
+                },
+                {
+                    "id": "draws-and-summaries-out",
+                    "text": "Draws and summaries out",
+                    "level": 2
+                },
+                {
+                    "id": "part-of-the-phpstats-family",
+                    "text": "Part of the phpstats family",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "api-errors": {
+            "title": "API: errors",
+            "headings": [],
+            "math": false
+        },
+        "api-fits": {
+            "title": "API: fits",
+            "headings": [
+                {
+                    "id": "draws-and-summaries",
+                    "text": "Draws and summaries",
+                    "level": 2
+                },
+                {
+                    "id": "diagnostics-and-run-information",
+                    "text": "Diagnostics and run information",
+                    "level": 2
+                },
+                {
+                    "id": "files-and-saving",
+                    "text": "Files and saving",
+                    "level": 2
+                },
+                {
+                    "id": "model-methods-1",
+                    "text": "Model methods",
+                    "level": 2
+                },
+                {
+                    "id": "methods-of-specific-fit-types",
+                    "text": "Methods of specific fit types",
+                    "level": 2
+                },
+                {
+                    "id": "statistics-helpers",
+                    "text": "Statistics helpers",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "api-functions": {
+            "title": "API: functions",
+            "headings": [
+                {
                     "id": "models-and-stan-files",
                     "text": "Models and Stan files",
-                    "level": 3
+                    "level": 2
                 },
                 {
                     "id": "cmdstan-installation",
                     "text": "CmdStan installation",
-                    "level": 3
+                    "level": 2
                 },
                 {
                     "id": "data-and-csv-files",
                     "text": "Data and CSV files",
-                    "level": 3
+                    "level": 2
                 },
                 {
                     "id": "figures-and-examples",
                     "text": "Figures and examples",
-                    "level": 3
-                },
-                {
-                    "id": "global-options",
-                    "text": "Global options",
-                    "level": 3
-                },
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "api-models": {
+            "title": "API: models",
+            "headings": [
                 {
                     "id": "model-methods",
-                    "text": "Models",
+                    "text": "Creating a model",
                     "level": 2
                 },
                 {
                     "id": "inspecting-a-model",
                     "text": "Inspecting a model",
-                    "level": 3
+                    "level": 2
                 },
                 {
                     "id": "running-a-model",
                     "text": "Running a model",
-                    "level": 3
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "api-options": {
+            "title": "API: options",
+            "headings": [
+                {
+                    "id": "global-options",
+                    "text": "Global options",
+                    "level": 2
                 },
                 {
                     "id": "shared-options",
                     "text": "Shared options",
-                    "level": 3
+                    "level": 2
                 },
                 {
                     "id": "method-specific-options",
                     "text": "Method-specific options",
-                    "level": 3
-                },
-                {
-                    "id": "fit-methods",
-                    "text": "Fits",
-                    "level": 2
-                },
-                {
-                    "id": "draws-and-summaries",
-                    "text": "Draws and summaries",
-                    "level": 3
-                },
-                {
-                    "id": "diagnostics-and-run-information",
-                    "text": "Diagnostics and run information",
-                    "level": 3
-                },
-                {
-                    "id": "files-and-saving",
-                    "text": "Files and saving",
-                    "level": 3
-                },
-                {
-                    "id": "model-methods-1",
-                    "text": "Model methods",
-                    "level": 3
-                },
-                {
-                    "id": "methods-of-specific-fit-types",
-                    "text": "Methods of specific fit types",
-                    "level": 3
-                },
-                {
-                    "id": "statistics-helpers",
-                    "text": "Statistics helpers",
-                    "level": 3
-                },
-                {
-                    "id": "data-frames-and-the-phpstats-family",
-                    "text": "Data frames and the phpstats family",
-                    "level": 2
-                },
-                {
-                    "id": "data-in",
-                    "text": "Data in",
-                    "level": 3
-                },
-                {
-                    "id": "regression-data",
-                    "text": "Regression data",
-                    "level": 3
-                },
-                {
-                    "id": "draws-and-summaries-out",
-                    "text": "Draws and summaries out",
-                    "level": 3
-                },
-                {
-                    "id": "part-of-the-phpstats-family",
-                    "text": "Part of the phpstats family",
-                    "level": 3
-                },
-                {
-                    "id": "errors",
-                    "text": "Errors",
                     "level": 2
                 }
             ],
