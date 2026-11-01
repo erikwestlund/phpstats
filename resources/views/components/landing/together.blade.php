@@ -31,7 +31,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 id="together-heading" class="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Designed to work together</h2>
         <p class="mx-auto mt-4 max-w-2xl text-center text-lg leading-snug text-zinc-600 dark:text-zinc-400">
-            Read data with Polars, fit a Gaussian mixed model, and visualize the results with phiz—all from PHP.
+            Read data with <span class="font-mono">phpolars</span>, fit a Gaussian mixed model with <span class="font-mono">phit</span>, and visualize the results with <span class="font-mono">phiz</span>. All from PHP.
         </p>
 
         <p class="mt-10 text-sm text-zinc-500 sm:mt-12 dark:text-zinc-400">The example reads one CSV file of test scores: 250 students in 12 schools.</p>
