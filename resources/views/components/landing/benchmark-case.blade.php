@@ -42,9 +42,7 @@
             @endforeach
         </div>
     @endif
-        <details class="group mt-4 text-xs text-zinc-500 dark:text-zinc-400">
-            <summary class="cursor-pointer select-none font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white">How this was measured</summary>
-        <div class="mt-2 space-y-2 leading-snug">
+        <div class="mt-4 space-y-2 text-xs leading-snug text-zinc-500 dark:text-zinc-400">
             <p>Medians of {{ $env['repeats'] }} runs, each in a fresh process.</p>
             <p>{{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.</p>
             @if ($footprint)
@@ -54,7 +52,6 @@
             @endif
             <p>The full record gives versions, thread settings, and where timing starts and stops.</p>
         </div>
-        </details>
         <a href="{{ $w['url'] }}" aria-label="View the complete {{ strtolower($w['label']) }} benchmark on {{ $w['name'] }}'s Benchmarks page" class="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
             View the complete benchmark <x-heroicon-m-arrow-right class="size-4" />
         </a>
