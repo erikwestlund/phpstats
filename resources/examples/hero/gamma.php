@@ -14,12 +14,8 @@ foreach ([1.0, 2.0, 4.0] as $k) {
 }
 $gamma = DataFrame::fromRows($rows);
 
-$chart = \Phiz\Plot::of($gamma)
+echo \Phiz\Plot::of($gamma)
     ->aes(x: 'x', y: 'density', color: 'k')
     ->line()
-    ->labs(x: 'x', y: 'Density', color: 'Shape');
-
-echo $gamma;
-echo $chart->embed();
-
-return ['gamma' => $gamma, 'chart' => $chart];
+    ->labs(x: 'x', y: 'Density', color: 'Shape')
+    ->embed();

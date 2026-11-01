@@ -1,17 +1,18 @@
 {{--
     The landing hero's examples: a carousel of short scripts across what
     PHPstats does, each resources/examples/hero/{name}.php (with .chain.php
-    where a method chain exists). Each script returns what it echoes, keyed as
-    in $examples, and a slide shows its code and, under tabs a visitor opens,
-    those results. The carousel moves to the next example every five seconds
+    where a method chain exists). A script that echoes one result is shown as
+    it printed; one that echoes several returns them, keyed as in $examples. A
+    slide shows the code and, under tabs a visitor opens, those results. The
+    panel is as tall as the introduction beside it on wide screens. The carousel moves to the next example every five seconds
     until a visitor uses it. An example this server can't run is left out.
 --}}
 @php
     $examples = [
         'temperatures' => ['title' => 'Summarize and chart data', 'outputs' => ['monthly' => 'Data frame', 'chart' => 'Chart'], 'files' => ['daily-temperatures.csv']],
-        'polars' => ['title' => 'Query a CSV file with Polars', 'outputs' => ['cities' => 'Table'], 'files' => ['daily-temperatures.csv']],
-        'model' => ['title' => 'Fit a logistic regression', 'outputs' => ['coefficients' => 'Coefficients'], 'files' => []],
-        'gamma' => ['title' => 'Work with probability distributions', 'outputs' => ['gamma' => 'Data frame', 'chart' => 'Chart'], 'files' => []],
+        'polars' => ['title' => 'Query a CSV file with Polars', 'outputs' => ['printed' => 'Table'], 'files' => ['daily-temperatures.csv']],
+        'model' => ['title' => 'Fit a logistic regression', 'outputs' => ['printed' => 'Coefficients'], 'files' => []],
+        'gamma' => ['title' => 'Work with probability distributions', 'outputs' => ['printed' => 'Chart'], 'files' => []],
     ];
     $slides = [];
     foreach ($examples as $name => $example) {
@@ -21,7 +22,7 @@
                 $outputs[$key] = \App\Content\Example::output(
                     "hero/{$name}",
                     "hero|{$key}",
-                    fn (array $value) => view('components.package-output', ['value' => $value[$key]])->render(),
+                    fn (mixed $value) => view('components.package-output', ['value' => is_array($value) ? $value[$key] : $value])->render(),
                     files: array_map(fn (string $file) => database_path("data/{$file}"), $example['files']),
                 );
             }
@@ -35,9 +36,9 @@
 @endphp
 @if ($slides !== [])
 <div x-data="heroCarousel({{ count($slides) }})" x-on:mouseenter="paused = true" x-on:mouseleave="paused = false" x-on:focusin="paused = true" x-on:focusout="paused = false"
-     role="region" aria-roledescription="carousel" aria-label="Examples" class="code-ink overflow-hidden rounded-xl shadow-2xl shadow-black/40 ring-1 ring-white/10">
+     role="region" aria-roledescription="carousel" aria-label="Examples" class="code-ink flex h-full flex-col overflow-hidden rounded-xl shadow-2xl shadow-black/40 ring-1 ring-white/10">
     {{-- The slides share one grid cell, so the panel keeps the height of the tallest. --}}
-    <div class="grid">
+    <div class="grid flex-1">
         @foreach ($slides as $name => $slide)
             @php $index = $loop->index; @endphp
             <div role="group" aria-roledescription="slide" aria-label="{{ $slide['title'] }}"
@@ -73,10 +74,10 @@
                         <div role="tabpanel" id="hero-{{ $name }}-code" aria-labelledby="hero-{{ $name }}-tab-code"
                              x-bind:class="{ invisible: tab !== 'code' }" class="min-w-0 [grid-area:1/1]">
                             @if ($slide['code']['chain'] === null)
-                                <pre class="p-4 font-mono text-[0.8125rem] leading-6"><code>{!! $render($slide['code']['pipe']) !!}</code></pre>
+                                <pre class="px-4 py-3 font-mono text-[0.8125rem] leading-[1.6]"><code>{!! $render($slide['code']['pipe']) !!}</code></pre>
                             @else
                                 @foreach ($syntaxes as $syntax => $label)
-                                    <pre @if ($syntax !== 'pipe') x-cloak @endif x-show="syntax === '{{ $syntax }}'" class="p-4 font-mono text-[0.8125rem] leading-6"><code>{!! $render($slide['code'][$syntax]) !!}</code></pre>
+                                    <pre @if ($syntax !== 'pipe') x-cloak @endif x-show="syntax === '{{ $syntax }}'" class="px-4 py-3 font-mono text-[0.8125rem] leading-[1.6]"><code>{!! $render($slide['code'][$syntax]) !!}</code></pre>
                                 @endforeach
                             @endif
                         </div>

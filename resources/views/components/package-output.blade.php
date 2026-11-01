@@ -52,5 +52,6 @@
         @endif
     </div>
 @else
-    <pre class="overflow-x-auto px-5 pb-6 {{ $top }} font-mono sm:px-7 text-[0.8125rem] leading-relaxed text-zinc-800 dark:text-zinc-200">{{ $text }}</pre>
+    {{-- Polars draws its tables with box characters, which join up only at a tight line height. --}}
+    <pre @class(['overflow-x-auto px-5 pb-6 font-mono sm:px-7 text-[0.8125rem] text-zinc-800 dark:text-zinc-200', $top, str_contains($text, '┌') ? 'leading-[1.2]' : 'leading-relaxed'])>{{ $text }}</pre>
 @endif
