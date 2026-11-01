@@ -56,6 +56,18 @@ return [
     ],
 
     /*
+     * The landing page's benchmark workloads, in selector order: the package
+     * whose synced benchmark record holds the saved results, the record's
+     * id, the selector label, the task when the record does not describe
+     * its workload, and a note on the trade-off those results show. A workload whose record has not synced is left out.
+     */
+    'benchmarks' => [
+        ['package' => 'phpolars', 'id' => 'csv-pipeline', 'label' => 'CSV processing', 'task' => 'Keep the completed orders, then total them by region and month.', 'note' => null],
+        ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS regression', 'note' => null],
+        ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Gaussian mixed model', 'note' => null],
+    ],
+
+    /*
      * The landing page's package explorer: the title of its example, the label for its output, the docs path of
      * the fuller example its "View full example" link opens, with a
      * #fragment when it is one section of a page (the docs index when

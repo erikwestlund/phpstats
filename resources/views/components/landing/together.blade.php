@@ -31,10 +31,11 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 id="together-heading" class="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Designed to work together</h2>
         <p class="mx-auto mt-4 max-w-2xl text-center text-lg leading-snug text-zinc-600 dark:text-zinc-400">
-            A Polars table, a mixed model, and a chart, from one CSV file of 250 students in 12 schools.
+            Read data with Polars, fit a Gaussian mixed model, and visualize the results with phiz—all from PHP.
         </p>
 
-        <div class="mt-10 grid gap-8 sm:mt-12 lg:grid-cols-2 lg:items-start">
+        <p class="mt-10 text-sm text-zinc-500 sm:mt-12 dark:text-zinc-400">The example reads one CSV file of test scores: 250 students in 12 schools.</p>
+        <div class="mt-4 grid gap-8 lg:grid-cols-2 lg:items-start">
             <ol class="min-w-0 space-y-6">
                 @foreach ($steps as $i => $code)
                     <li>
