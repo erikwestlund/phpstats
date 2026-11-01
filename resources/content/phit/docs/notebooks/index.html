@@ -1,61 +1,56 @@
-<p>Each walkthrough derives one estimator step by step on a small data set: the objective, the matrices, the solution, the uncertainty and, where it applies, the likelihood. Each shows the intermediate quantities, and the comparison notebooks fit the same models in R, statsmodels and phit. The pages show saved outputs, so reading them needs no Python or R.</p>
-<section id="ols" class="level2">
-<h2 class="anchored" data-anchor-id="ols">OLS</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/ols-math">OLS mathematics</a>: derives the estimator and evaluates each intermediate quantity on the PHP example data.</li>
-<li><a href="phpstats://phit/docs/notebooks/ols-verification">OLS verification</a>: estimates identical models in R, Python statsmodels and the PHP extension, displays results and checks agreement.</li>
-</ul>
-</section>
-<section id="binary-logistic-regression" class="level2">
-<h2 class="anchored" data-anchor-id="binary-logistic-regression">Binary logistic regression</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/logistic-math">Math walkthrough</a>: likelihood, matrix calculations, Newton/IRLS and Wald inference.</li>
-<li><a href="phpstats://phit/docs/notebooks/logistic-verification">Executed comparison</a>: identical models in R, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/verifications/logistic">Verification record</a>: fixtures, edge cases and tolerances.</li>
-<li><a href="phpstats://phit/docs/benchmarks/logistic">Scale and performance</a>: standard release benchmarks.</li>
-</ul>
-</section>
-<section id="probit-regression" class="level2">
-<h2 class="anchored" data-anchor-id="probit-regression">Probit regression</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/probit-math">Math walkthrough</a>: likelihood, scoring, matrices and inference.</li>
-<li><a href="phpstats://phit/docs/notebooks/probit-verification">Executed comparison</a>: identical fits in R, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/verifications/probit">Verification record</a>: conventions and failure cases.</li>
-<li><a href="phpstats://phit/docs/benchmarks/probit">Scale and performance</a>: standard release benchmarks.</li>
-</ul>
-</section>
-<section id="poisson-regression" class="level2">
-<h2 class="anchored" data-anchor-id="poisson-regression">Poisson regression</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/poisson-math">Math walkthrough</a>: likelihood, scoring, matrices and inference.</li>
-<li><a href="phpstats://phit/docs/notebooks/poisson-verification">Executed comparison</a>: identical fits in R, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/verifications/poisson">Verification record</a>: conventions and failure cases.</li>
-<li><a href="phpstats://phit/docs/benchmarks/poisson">Scale and performance</a>: standard release benchmarks.</li>
-</ul>
-</section>
-<section id="gaussian-random-intercept-mixed-model" class="level2">
-<h2 class="anchored" data-anchor-id="gaussian-random-intercept-mixed-model">Gaussian random-intercept mixed model</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/lmm-math">Math walkthrough</a>: covariance, marginal likelihood and shrinkage.</li>
-<li><a href="phpstats://phit/docs/notebooks/lmm-verification">Synthetic reference comparison</a>: lme4 ML, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/notebooks/lmm-public-verification">Published dataset comparison</a>: four studies, lme4, nlme, statsmodels and PHP.</li>
-<li><a href="phpstats://phit/docs/verifications/lmm">Verification record</a>: conventions, boundary fits and limits.</li>
-<li><a href="phpstats://phit/docs/benchmarks/lmm">Scale and performance</a>: release API benchmarks and charts.</li>
-</ul>
-</section>
-<section id="expanded-mixed-designs-and-r-compatibility" class="level2">
-<h2 class="anchored" data-anchor-id="expanded-mixed-designs-and-r-compatibility">Expanded mixed designs and R compatibility</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/lmm-general-math">Random slopes, penalized least squares and REML</a>: observed matrices, covariance dot products, QR elimination, ML/REML determinant terms and plug-in fixed-effect covariance on published sleepstudy data.</li>
-<li><a href="phpstats://phit/docs/notebooks/r-compatibility">Expanded R and optimizer audit</a>: weighted/offset fits, grouped binomial trials, both native optimizers and all four actual lme4 wrappers.</li>
-</ul>
-</section>
-<section id="binomial-random-intercept-likelihoods" class="level2">
-<h2 class="anchored" data-anchor-id="binomial-random-intercept-likelihoods">Binomial random-intercept likelihoods</h2>
-<ul>
-<li><a href="phpstats://phit/docs/notebooks/logistic-mixed-math">Likelihood and integration</a>: observed cattle counts, log-odds dot products, posterior modes, Laplace/AGQ and joint information.</li>
-<li><a href="phpstats://phit/docs/notebooks/logistic-mixed-verification">R and independent Python verification</a>: normalized likelihoods, zero-variance reduction and measured approximation error.</li>
-</ul>
-
-
-</section>
+<p>Each walkthrough derives one estimator step by step on a small data set: the objective, the matrices, the solution, the uncertainty, and, where it applies, the likelihood. The pages show saved outputs, so reading them needs no Python or R. Agreement with R and the other references is reported on the <a href="phpstats://phit/verification">Verification</a> pages, and speed on the <a href="phpstats://phit/benchmarks">Benchmarks</a> pages.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Estimator</th>
+<th>Walkthrough</th>
+<th>Verification</th>
+<th>Benchmark</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>OLS</td>
+<td><a href="phpstats://phit/docs/notebooks/ols-math">Mathematics</a> · <a href="phpstats://phit/docs/ols-math">Rust implementation</a></td>
+<td><a href="phpstats://phit/verification/ols">OLS</a></td>
+<td><a href="phpstats://phit/benchmarks/ols">OLS</a></td>
+</tr>
+<tr class="even">
+<td>Logistic regression</td>
+<td><a href="phpstats://phit/docs/notebooks/logistic-math">Likelihood, IRLS, and Wald inference</a></td>
+<td><a href="phpstats://phit/verification/logistic">Logistic</a></td>
+<td><a href="phpstats://phit/benchmarks/logistic">Logistic</a></td>
+</tr>
+<tr class="odd">
+<td>Probit regression</td>
+<td><a href="phpstats://phit/docs/notebooks/probit-math">Likelihood, scoring, and inference</a></td>
+<td><a href="phpstats://phit/verification/probit">Probit</a></td>
+<td><a href="phpstats://phit/benchmarks/probit">Probit</a></td>
+</tr>
+<tr class="even">
+<td>Poisson regression</td>
+<td><a href="phpstats://phit/docs/notebooks/poisson-math">Likelihood, scoring, and inference</a></td>
+<td><a href="phpstats://phit/verification/poisson">Poisson</a></td>
+<td><a href="phpstats://phit/benchmarks/poisson">Poisson</a></td>
+</tr>
+<tr class="odd">
+<td>Gaussian random intercept</td>
+<td><a href="phpstats://phit/docs/notebooks/lmm-math">Covariance, marginal likelihood, and shrinkage</a></td>
+<td><a href="phpstats://phit/verification/lmm">Random intercept</a> · <a href="phpstats://phit/verification/lmm-public">Published data</a></td>
+<td><a href="phpstats://phit/benchmarks/lmm">Random intercept</a></td>
+</tr>
+<tr class="even">
+<td>Random slopes and REML</td>
+<td><a href="phpstats://phit/docs/notebooks/lmm-general-math">Penalized least squares, QR elimination, and ML/REML terms</a></td>
+<td><a href="phpstats://phit/verification/r-compatibility">R compatibility</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Binomial random intercept</td>
+<td><a href="phpstats://phit/docs/notebooks/logistic-mixed-math">Likelihood and integration</a></td>
+<td><a href="phpstats://phit/verification/logistic-mixed">Binomial mixed</a></td>
+<td><a href="phpstats://phit/benchmarks/logistic-mixed">Binomial mixed</a></td>
+</tr>
+</tbody>
+</table>
+<p>The published data sets used by the mixed-model pages, with their provenance and licenses, are described in <a href="phpstats://phit/docs/data/lmm/index">Published data sets</a>.</p>

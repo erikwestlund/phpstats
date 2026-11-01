@@ -119,7 +119,7 @@ R-squared 0.997359, log-likelihood 2.516218</code></pre>
 <li>Zero RSS gives a positive infinite log-likelihood, since the Gaussian likelihood is unbounded as the variance approaches zero.</li>
 <li>A mathematically perfect fit often keeps tiny residuals from the decomposition, and phit does not round them to zero. Its t statistics and likelihood can then differ greatly from R’s while the coefficients agree to machine precision.</li>
 </ul>
-<p><code>examples/ols.php</code> in the repository prints formatted inference, and the <a href="phpstats://phit/docs/notebooks/ols-verification">comparison walkthrough</a> shows result tables.</p>
+<p><code>examples/ols.php</code> in the repository prints formatted inference, and the <a href="phpstats://phit/verification/ols">comparison walkthrough</a> shows result tables.</p>
 </section>
 <section id="binary-logistic-regression" class="level2">
 <h2 class="anchored" data-anchor-id="binary-logistic-regression">Binary logistic regression</h2>
@@ -203,7 +203,7 @@ R-squared 0.997359, log-likelihood 2.516218</code></pre>
 <li>Convergence requires each scaled coefficient step to be at most 1e-8 × (1 + |next scaled coefficient|) and the likelihood change to be at most 1e-10 × (1 + |likelihood|). These settings are not configurable.</li>
 <li>Overflowing inference raises an exception.</li>
 </ul>
-<p>See the <a href="phpstats://phit/docs/notebooks/logistic-math">derivation</a> and the <a href="phpstats://phit/docs/verifications/logistic">verification record</a>.</p>
+<p>See the <a href="phpstats://phit/docs/notebooks/logistic-math">derivation</a> and the <a href="phpstats://phit/verification/logistic">verification record</a>.</p>
 </section>
 <section id="probit-regression" class="level2">
 <h2 class="anchored" data-anchor-id="probit-regression">Probit regression</h2>
@@ -675,7 +675,7 @@ fitted[0] 1.3462</code></pre>
 <li><code>neg2_log_likelihood</code> is not lme4’s conditional deviance.</li>
 <li>For grouped data with <code>nAGQ &gt; 1</code>, lme4 reports a likelihood with a different additive constant. The verification adds the saturated binomial log-likelihood to lme4’s value before comparing.</li>
 </ul>
-<p>See the <a href="phpstats://phit/docs/notebooks/logistic-mixed-verification">verification</a> and the <a href="phpstats://phit/docs/notebooks/logistic-mixed-math">walkthrough</a>.</p>
+<p>See the <a href="phpstats://phit/verification/logistic-mixed">verification</a> and the <a href="phpstats://phit/docs/notebooks/logistic-mixed-math">walkthrough</a>.</p>
 </section>
 <section id="implementation-notes" class="level2">
 <h2 class="anchored" data-anchor-id="implementation-notes">Implementation notes</h2>

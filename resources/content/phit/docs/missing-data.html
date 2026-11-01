@@ -25,7 +25,7 @@ dropped:  2, 3
 <section id="interpreting-a-complete-case-fit" class="level2">
 <h2 class="anchored" data-anchor-id="interpreting-a-complete-case-fit">Interpreting a complete-case fit</h2>
 <p>Dropping incomplete rows changes the sample the model describes. Estimates can be biased when missingness is related to the outcome or the predictors. Report how many rows were dropped and why values are missing. phit offers no imputation or missing-data model.</p>
-<p>R’s explicit <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/lm.html"><code>na.action = na.omit</code></a> and statsmodels’ explicit <a href="https://www.statsmodels.org/stable/missing.html"><code>missing='drop'</code></a> fit the same complete-case sample. They do not all warn by default. The warning and the row accounting are phit’s own contract. The <a href="phpstats://phit/docs/verifications/ols">three-implementation verification</a> checks that phit, R, and statsmodels retain the same rows and give the same results.</p>
+<p>R’s explicit <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/lm.html"><code>na.action = na.omit</code></a> and statsmodels’ explicit <a href="https://www.statsmodels.org/stable/missing.html"><code>missing='drop'</code></a> fit the same complete-case sample. They do not all warn by default. The warning and the row accounting are phit’s own contract. The <a href="phpstats://phit/verification/ols">three-implementation verification</a> checks that phit, R, and statsmodels retain the same rows and give the same results.</p>
 </section>
 <section id="validation" class="level2">
 <h2 class="anchored" data-anchor-id="validation">Validation</h2>

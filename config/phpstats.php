@@ -34,10 +34,10 @@ return [
      * without an entry show the overview from config/projects.php only.
      */
     'content' => [
-        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => 'baacc9bf5e07c830c8caf0ae80716da036512ddc'],
+        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '7d3b3c3722fb3d1ff7fdeda7981379ee91ea74e1'],
         'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'ddedb432504f181a770e379d155eecaa57891e51'],
         'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'ce2060733deb09b52123edb4f4571374a38bf83e'],
-        'phit' => ['repo' => 'phpstats/phit', 'ref' => 'd1b4ac0fe57e6f47cda3028759e8aef98dc39ffc'],
+        'phit' => ['repo' => 'phpstats/phit', 'ref' => '04e87ee67a973859efe4c86ee78aa904b85efa35'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => '1392b79836ff8a98e09df70f62dd9f589cf216dc'],
         'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => 'ccadda9507d638744f9ce1c12c3a94fb07e5a2c0'],
         'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => 'd506bea7630145ed217c0ded68e4592326fd6984'],

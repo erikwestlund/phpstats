@@ -42,7 +42,7 @@
 <li>Update the contracts and reference tests when behavior changes.</li>
 <li>Do not add abstractions for hypothetical models.</li>
 </ul>
-<p><code>./scripts/check</code> runs the offline checks: Rust tests and clippy, every PHP suite and example, the stub and signature checks, the reference manifest, and the site export. Run it before pushing. <a href="phpstats://phit/docs/verification">Verification</a> lists the further checks for each kind of change, and <a href="phpstats://phit/docs/r-compatibility">R compatibility</a> covers regenerating R references.</p>
+<p><code>./scripts/check</code> runs the offline checks: Rust tests and clippy, every PHP suite and example, the stub and signature checks, the reference manifest, and the site export. Run it before pushing. <a href="phpstats://phit/verification">Verification</a> lists the further checks for each kind of change, and <a href="phpstats://phit/docs/r-compatibility">R compatibility</a> covers regenerating R references.</p>
 <p>CI runs the checks on macOS and Ubuntu, with fail-fast disabled so one platform’s failure does not cancel the other’s. The packaging workflow tests Linux x86_64 and aarch64 at PHP 8.3, 8.4, and 8.5.</p>
 
 

@@ -195,7 +195,7 @@
 <li>The output is a packed list in input iteration order. Keys are not kept.</li>
 <li>Empty input returns <code>[]</code>, but the parameters are still validated.</li>
 <li>One invalid element rejects the whole call. No elements are dropped.</li>
-<li>The distribution is constructed once per call. The <a href="phpstats://phit/docs/benchmarks/distributions">benchmarks</a> show when batching saves PHP call overhead.</li>
+<li>The distribution is constructed once per call. The <a href="phpstats://phit/benchmarks/distributions">benchmarks</a> show when batching saves PHP call overhead.</li>
 </ul>
 </section>
 <section id="tails-and-likelihoods" class="level2">
@@ -273,8 +273,8 @@
 <section id="evidence" class="level2">
 <h2 class="anchored" data-anchor-id="evidence">Evidence</h2>
 <ul>
-<li><a href="phpstats://phit/docs/verifications/distributions">Distributions: verification</a> compares phit with R, SciPy, and 60-digit mpmath references, with tolerances for each quantity and the documented boundary differences.</li>
-<li><a href="phpstats://phit/docs/benchmarks/distributions">Distributions: performance</a> covers 1,000, 100,000, and one million values, including peak memory.</li>
+<li><a href="phpstats://phit/verification/distributions">Distributions: verification</a> compares phit with R, SciPy, and 60-digit mpmath references, with tolerances for each quantity and the documented boundary differences.</li>
+<li><a href="phpstats://phit/benchmarks/distributions">Distributions: performance</a> covers 1,000, 100,000, and one million values, including peak memory.</li>
 </ul>
 </section>
 <section id="implementation-notes" class="level2">

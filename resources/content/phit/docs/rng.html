@@ -179,7 +179,7 @@
 <ul>
 <li>One uniform per sample, including point masses.</li>
 <li>The open interval excludes infinite support endpoints. The smallest and largest representable tail probabilities are 2^-53 and 1 − 2^-53.</li>
-<li>Inverse-CDF sampling keeps one numerical path for all 13 parameterizations, at some cost against family-specific samplers. The <a href="phpstats://phit/docs/benchmarks/rng">sampling benchmarks</a> measure normal, beta, and Poisson batches.</li>
+<li>Inverse-CDF sampling keeps one numerical path for all 13 parameterizations, at some cost against family-specific samplers. The <a href="phpstats://phit/benchmarks/rng">sampling benchmarks</a> measure normal, beta, and Poisson batches.</li>
 <li>The pinned rand_core <code>seed_from_u64</code> expands the integer seed into the 256-bit ChaCha key with its documented PCG32 mapping.</li>
 <li>Dependencies: <code>rand 0.9.5</code> and <code>rand_chacha 0.9.0</code>, pinned in the lock file. Their MIT license notices are under <code>third-party/</code>. A change to either, or to a quantile algorithm, is reviewed as a reproducibility change.</li>
 </ul>
