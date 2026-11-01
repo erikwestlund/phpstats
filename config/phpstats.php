@@ -56,9 +56,7 @@ return [
     ],
 
     /*
-     * The landing page's package explorer: an introduction of two sentences
-     * (what the code does, then what its output shows, as inline Markdown),
-     * the title of its example, the label for its output, the docs path of
+     * The landing page's package explorer: the title of its example, the label for its output, the docs path of
      * the fuller example its "View full example" link opens, with a
      * #fragment when it is one section of a page (the docs index when
      * that page has not synced), and, for examples pages can't run, a stored
@@ -71,25 +69,21 @@ return [
      */
     'explorer' => [
         'phibble' => [
-            'intro' => 'Loads the orders table from an Eloquent query into a data frame, with `channel` read as a factor and `coupon` and `returned` as logical columns. The glimpse lists every column with its type and first values.',
             'example' => 'Example: Load an Eloquent query with typed columns',
             'output' => 'Data frame glimpse',
             'link' => 'io#databases',
         ],
         'phpolars' => [
-            'intro' => 'Reads three columns of the orders table into Polars, drops returned orders, and counts the orders and sums the revenue of each channel. The result is a Polars table sorted by revenue, highest first.',
             'example' => 'Example: Aggregate database rows with expressions',
             'output' => 'Polars table',
             'link' => 'examples/expressions',
         ],
         'phplyr' => [
-            'intro' => 'Keeps the orders that were not returned, groups them by channel, and computes each channel\'s order count, total revenue, and average order value. The result is a data frame with one row per channel.',
             'example' => 'Example: Filter, group, and summarize orders',
             'output' => 'Data frame preview',
             'link' => 'examples/group-and-summarize',
         ],
         'juphyter' => [
-            'intro' => 'A Quarto document runs a PHP cell that summarizes the orders by channel with phplyr. The kernel displays the cell\'s final value, a data frame, as the HTML table shown.',
             'example' => 'Example: A PHP cell in a Quarto document',
             'output' => 'Rendered notebook cell',
             'link' => 'examples/notebook',
@@ -100,19 +94,16 @@ return [
             ],
         ],
         'phiz' => [
-            'intro' => 'Plots streams against playlist adds for each track, colored by label, and adds a least-squares line with its confidence band for each label. `embed()` renders the chart as HTML.',
             'example' => 'Example: Points with a fitted line per group',
             'output' => 'Chart',
             'link' => 'examples/layers',
         ],
         'phit' => [
-            'intro' => 'Fits a linear model of streams on playlist adds and record label with `fit_lm()`, which returns the fit as an array. The table lists each coefficient\'s estimate, standard error, and p-value.',
             'example' => 'Example: Fit a linear model',
             'output' => 'Coefficients',
             'link' => 'examples/linear-model',
         ],
         'cmdstanphp' => [
-            'intro' => 'Builds Stan data from a formula with a random intercept per school and samples four chains from the posterior. The table summarizes the coefficients (`beta`), the residual SD (`sigma`), and the between-school SD (`tau`), with R-hat and bulk effective sample size.',
             'example' => 'Example: Sample a hierarchical model and summarize it',
             'output' => 'Posterior summary',
             'link' => 'examples/sample',

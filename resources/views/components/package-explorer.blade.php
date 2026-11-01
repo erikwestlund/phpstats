@@ -1,8 +1,7 @@
 {{--
     The landing page's package explorer: the packages by category on the
     left, each with its one-line summary, and for the selected one, its
-    two-sentence introduction (what the code does, then what its output
-    shows), its example code, the example's output, and a footer row linking
+    example code, the example's output, and a footer row linking
     the fuller example in its docs, on the right. Code is resources/examples/packages/{key}.php,
     run when the page renders, and its result is the output. An entry in
     config/phpstats.php explorer may instead name a source file and the
@@ -81,7 +80,6 @@
                 }
             @endphp
             <div role="tabpanel" id="package-code-{{ $key }}" aria-labelledby="package-tab-{{ $key }}" x-show="open === '{{ $key }}'" @unless ($key === 'phibble') x-cloak @endunless class="flex h-full flex-col">
-                <p class="border-b border-zinc-200 px-5 py-4 text-[0.9375rem] leading-relaxed text-zinc-700 sm:px-7 dark:border-white/10 dark:text-zinc-300">{!! \App\Content\Markdown::inline($explorer[$key]['intro']) !!}</p>
                 <x-code-tabs :pipe="$code['pipe']" :chain="$code['chain']" :language="$source['language'] ?? 'php'" :label="$explorer[$key]['example']" :spacious="true" class="rounded-none! shadow-none! ring-0!" />
                 <section class="flex flex-1 flex-col bg-zinc-50/70 dark:bg-white/[0.02]">
                     <h4 class="flex min-h-14 items-center border-b border-zinc-200 px-5 py-3 text-base font-semibold sm:px-7 text-zinc-950 dark:border-white/10 dark:text-white">Example output</h4>
