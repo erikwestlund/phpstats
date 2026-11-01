@@ -62,7 +62,7 @@ return [
      * its workload, and a note on the trade-off those results show. A workload whose record has not synced is left out.
      */
     'benchmarks' => [
-        ['package' => 'phpolars', 'id' => 'csv-pipeline', 'label' => 'CSV processing', 'task' => 'Keep the completed orders, then total them by region and month.', 'note' => null],
+        ['package' => 'phpolars', 'id' => 'csv-pipeline', 'label' => 'CSV processing', 'task' => 'Keep the completed orders, then total them by region and month.', 'note' => 'phibble and plain PHP read the file in pieces, so their memory stays small. For files too large to hold as PHP arrays, phpolars keeps the data in Polars and returns only the result.'],
         ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS regression', 'note' => null],
         ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Gaussian mixed model', 'note' => null],
     ],
