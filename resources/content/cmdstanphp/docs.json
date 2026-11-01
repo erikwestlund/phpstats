@@ -110,11 +110,6 @@
             "section": "Compatibility and limitations"
         },
         {
-            "title": "Verification",
-            "path": "verification",
-            "section": "Benchmarks and verification"
-        },
-        {
             "title": "Contributing",
             "path": "contributing",
             "section": "Contributing"
@@ -380,6 +375,11 @@
                 {
                     "id": "run-the-tests",
                     "text": "Run the tests",
+                    "level": 2
+                },
+                {
+                    "id": "what-the-suites-cover",
+                    "text": "What the suites cover",
                     "level": 2
                 },
                 {
@@ -711,37 +711,6 @@
                 {
                     "id": "results",
                     "text": "Results",
-                    "level": 2
-                }
-            ],
-            "math": false
-        },
-        "verification": {
-            "title": "Verification",
-            "headings": [
-                {
-                    "id": "what-ci-runs",
-                    "text": "What CI runs",
-                    "level": 2
-                },
-                {
-                    "id": "comparisons-with-r",
-                    "text": "Comparisons with R",
-                    "level": 2
-                },
-                {
-                    "id": "other-interfaces",
-                    "text": "Other interfaces",
-                    "level": 3
-                },
-                {
-                    "id": "unit-and-integration-tests",
-                    "text": "Unit and integration tests",
-                    "level": 2
-                },
-                {
-                    "id": "limits",
-                    "text": "Limits",
                     "level": 2
                 }
             ],
