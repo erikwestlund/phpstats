@@ -42,7 +42,12 @@ class BenchmarkChart
             ->scaleY(domain: [0, 1.28 * max(array_column($rows, 'value'))], nice: false)
             ->labs(x: null, y: $title, fill: null)
             // Axes with tick marks, and no gridlines or frame.
-            ->theme(legendPosition: 'none', grid: false, axisLine: true, ticks: true, config: ['view' => ['stroke' => null]])
+            // Axes with tick marks and no gridlines or frame. The bars start where
+            // the category axis would be drawn, so that axis has labels only.
+            ->theme(legendPosition: 'none', grid: false, axisLine: true, ticks: true, config: [
+                'view' => ['stroke' => null],
+                'axisY' => ['domain' => false, 'ticks' => false, 'labelPadding' => 6],
+            ])
             ->width('container')
             ->height(max(96, 34 * count($rows)));
     }
