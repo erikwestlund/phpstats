@@ -35,7 +35,7 @@ return [
      */
     'content' => [
         'phibble' => ['repo' => 'phpstats/phibble', 'ref' => 'baacc9bf5e07c830c8caf0ae80716da036512ddc'],
-        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => '2761211cfa1577dc0fea6ceb4a4d6ae4e3a2ca24'],
+        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => '161daf244c23eeaf5bd1917b09626523cf877c05'],
         'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => '42b2ae0c10ab615fec2964311622775e504283d8'],
         'phit' => ['repo' => 'phpstats/phit', 'ref' => '085181752c445a887cdc7d11a16fbb1c28142a66'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => '4231df4bab9aa9d427f6d52513276f8f0edf251d'],
