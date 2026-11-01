@@ -77,10 +77,11 @@ These committed files are generated, not hand-edited:
   `php artisan examples:clear`.
 - `database/data/verification/references.json`: R's and Python's results for
   the landing page's verification section, on the same public Rdatasets CSVs
-  the section's phit code reads. Rebuild with
-  `PYTHON=/path/to/python scripts/verification/build` (R with lme4 and
-  jsonlite, Python with statsmodels and scipy). phit's own values come from
-  running `resources/examples/verified/*.php`.
+  the section's phit code reads (github.com/phpstats/datasets). Rebuild with
+  `PYTHON=/path/to/python scripts/verification/build`: R with lme4 and
+  jsonlite, and a Python with `scripts/verification/requirements.txt`
+  (statsmodels, SciPy, and GPBoost for the mixed logistic model). phit's own
+  values come from running `resources/examples/verified/*.php`.
 - `resources/content/{package}/` and `public/content/{package}/`: each
   package's `site/` folder (site.json, benchmarks, verifications, vignettes,
   and data) and its rendered Quarto docs, at the commit pinned in

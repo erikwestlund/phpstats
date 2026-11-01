@@ -54,9 +54,6 @@
                 @else
                     {!! $chart !!}
                 @endif
-                <p class="border-t border-zinc-200 px-5 py-4 text-[0.9375rem] leading-relaxed text-zinc-700 sm:px-7 dark:border-white/10 dark:text-zinc-300">
-                    <code class="font-mono text-[0.875em]">toColumns()</code> copies the three columns out of Polars once, and phit and phiz both read those arrays. Each line is a school's intercept from the model, with the slope the schools share.
-                </p>
                 @if ($path)
                     <div class="border-t border-zinc-200 px-5 py-3 sm:px-7 dark:border-white/10">
                         <a href="{{ $phit->url('docs', ['path' => $path]) }}" aria-label="View the complete example in phit's docs" class="inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">

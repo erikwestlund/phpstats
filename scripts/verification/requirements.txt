@@ -1,0 +1,5 @@
+gpboost==1.8.0
+numpy
+pandas
+scipy
+statsmodels==0.15.0

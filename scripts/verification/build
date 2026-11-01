@@ -1,8 +1,10 @@
 #!/bin/sh
 # Rebuild database/data/verification/references.json: R's and Python's
 # results on the public datasets the landing page's verification examples
-# read. Needs R with lme4 and jsonlite, and a Python with statsmodels and
-# scipy: PYTHON=/path/to/python scripts/verification/build
+# read. Needs R with lme4 and jsonlite, and a Python with the packages in
+# scripts/verification/requirements.txt:
+#   uv venv .verification && uv pip install -p .verification -r scripts/verification/requirements.txt
+#   PYTHON=.verification/bin/python scripts/verification/build
 set -e
 cd "$(dirname "$0")/../.."
 tmp=$(mktemp -d)
