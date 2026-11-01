@@ -35,9 +35,9 @@ class LandingPageTest extends TestCase
             ->assertDontSee('<!--blade:', false)
             ->content();
 
-        // The hero is one workflow: load, summarize, chart. No model fit.
-        preg_match('#id="hero-panel-code".*?</section>#s', $html, $hero);
-        $this->assertStringNotContainsString('lm(', strip_tags($hero[0]));
+        // The hero's carousel opens on summarizing and charting data, with its code first.
+        $this->assertStringContainsString('aria-roledescription="carousel"', $html);
+        $this->assertStringContainsString('id="hero-temperatures-code"', $html);
 
         // The hero offers the packages and a start, and charts monthly mean temperatures.
         $this->assertStringContainsString('href="#packages"', $html);

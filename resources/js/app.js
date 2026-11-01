@@ -89,11 +89,11 @@ Alpine.data('syntaxTabs', () => ({
     },
 }));
 
-// The landing hero's example: its code, the data frame it computes, and its
-// chart, shown one at a time. It moves to the next every five seconds until a
-// visitor picks one, and not at all for visitors who ask for reduced motion.
-Alpine.data('heroCarousel', (slides) => ({
-    slides,
+// The landing hero's examples, shown one at a time. The carousel moves to the
+// next every five seconds until a visitor uses it, and not at all for visitors
+// who ask for reduced motion.
+Alpine.data('heroCarousel', (count) => ({
+    count,
     current: 0,
     timer: null,
     paused: false,
@@ -103,7 +103,7 @@ Alpine.data('heroCarousel', (slides) => ({
         }
         this.timer = setInterval(() => {
             if (!this.paused) {
-                this.current = (this.current + 1) % this.slides.length;
+                this.current = (this.current + 1) % this.count;
             }
         }, 5000);
     },
@@ -113,7 +113,7 @@ Alpine.data('heroCarousel', (slides) => ({
     },
     show(index) {
         this.stop();
-        this.current = (index + this.slides.length) % this.slides.length;
+        this.current = (index + this.count) % this.count;
     },
 }));
 
