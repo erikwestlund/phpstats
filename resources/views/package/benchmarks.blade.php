@@ -30,12 +30,13 @@
         <x-sidebar-page title="Benchmarks" :sidebar="$sidebar" :wide="true" menu="Workloads">
             @foreach ($groups as $group => $members)
                 @if ($group !== '')
-                    <p @class(['text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400', 'mt-16' => ! $loop->first, 'mt-8' => $loop->first])>{{ $group }}</p>
+                    <p @class(['text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400', 'mt-24' => ! $loop->first, 'mt-8' => $loop->first])>{{ $group }}</p>
                 @endif
                 @foreach ($members as $record)
+                    {{-- Workloads are set well apart, more than the parts within one. --}}
                     <div @class([
-                        'border-t border-zinc-200 pt-10 dark:border-white/10' => ! ($loop->first && $loop->parent->first),
-                        'mt-12' => ! $loop->first,
+                        'border-t border-zinc-200 pt-16 sm:pt-20 dark:border-white/10' => ! ($loop->first && $loop->parent->first),
+                        'mt-20 sm:mt-24' => ! $loop->first,
                         'mt-4' => $loop->first && $group !== '',
                         'mt-8' => $loop->first && $group === '',
                     ])>
@@ -45,7 +46,7 @@
             @endforeach
 
             @if ($gap)
-                <div class="mt-12 border-t border-zinc-200 pt-10 dark:border-white/10">
+                <div class="mt-20 border-t border-zinc-200 pt-16 sm:mt-24 sm:pt-20 dark:border-white/10">
                     <h2 id="not-measured" class="scroll-mt-10 text-xl font-semibold tracking-tight lg:scroll-mt-0">Not measured</h2>
                     <p class="mt-3 max-w-3xl text-zinc-700 dark:text-zinc-300">{{ $gap }}</p>
                 </div>

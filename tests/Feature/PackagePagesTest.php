@@ -484,6 +484,49 @@ class PackagePagesTest extends TestCase
         $this->assertSame(2, substr_count($html, 'href="#'.$h3['id'].'"'));
     }
 
+    public function test_output_checks_never_print_joined_keys(): void
+    {
+        $entries = Results::checkEntries(['max_abs_difference_vs_R_statsmodels' => 3.5e-6, 'max_abs_difference_vs_R_phit' => 3.4e-6, 'tolerance' => '1e-09 + 1e-07·|R|', 'posterior_mean_mu' => ['CmdStanPHP' => 4.25, 'CmdStanR' => 4.25], 'draws_identical' => true]);
+        $this->assertSame([
+            ['label' => 'Largest absolute difference from R', 'value' => null, 'lines' => ['statsmodels: 3.5e-6', 'phit: 3.4e-6']],
+            ['label' => 'Tolerance', 'value' => '1e-09 + 1e-07·|R|', 'lines' => []],
+            ['label' => 'Posterior mean μ', 'value' => null, 'lines' => ['CmdStanPHP: 4.25', 'CmdStanR: 4.25']],
+            ['label' => 'Draws identical', 'value' => 'yes', 'lines' => []],
+        ], $entries);
+
+        // No page prints a record's raw check key.
+        foreach (Package::all() as $key => $package) {
+            if ($package->benchmarks() === []) {
+                continue;
+            }
+            $text = html_entity_decode(strip_tags($this->get($package->url('benchmarks'))->assertOk()->getContent()));
+            foreach ($package->benchmarks() as $record) {
+                // A key that is one plain word, such as dplyr, is also its label.
+                foreach (array_filter(array_keys($record['check'] ?? []), fn ($field) => str_contains((string) $field, '_')) as $field) {
+                    $this->assertStringNotContainsString((string) $field, $text, "{$key}/{$record['id']}");
+                }
+            }
+        }
+    }
+
+    public function test_phit_overview_lists_its_capabilities(): void
+    {
+        $phit = Package::find('phit');
+        $capabilities = $phit->capabilities();
+        $this->assertSame(['Supported models', 'Probability distributions'], array_column($capabilities['columns'], 'heading'));
+        $this->assertSame('Other functions', $capabilities['other']['heading']);
+        $html = $this->get($phit->url())->assertOk()->getContent();
+        $this->assertStringContainsString('<code>fit_mixed_gaussian()</code>', $html);
+        $this->assertStringContainsString('md:grid-cols-2', $html);
+        $this->assertStringNotContainsString('Every function is in the Phit namespace', $html);
+        foreach (array_merge($capabilities['columns'], [$capabilities['other']]) as $list) {
+            $this->assertNotNull($list['url'], $list['heading']);
+            $this->assertStringContainsString('href="'.e($list['url']).'"', $html);
+        }
+        // A package without the key shows no such lists.
+        $this->assertNull(Package::find('phibble')->capabilities());
+    }
+
     public function test_benchmarks_are_one_page_with_tabs_per_workload(): void
     {
         $phit = Package::find('phit');

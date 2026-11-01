@@ -41,7 +41,8 @@
 
         return Results::duration(Results::milliseconds(min($reps), $unit)).' – '.Results::duration(Results::milliseconds(max($reps), $unit));
     };
-    $dataFacts = array_intersect_key($facts, array_flip(['Workload', 'Dataset', 'Output check']));
+    $dataFacts = array_intersect_key($facts, array_flip(['Workload', 'Dataset']));
+    $checks = Results::checkEntries($record['check'] ?? null);
     $methodFacts = array_diff_key($facts, $dataFacts);
     // Each runtime's memory with its libraries loaded and no data, in the record's memory metric.
     if (is_array($record['baseline_memory_mib'] ?? null) && $record['baseline_memory_mib'] !== []) {
@@ -79,17 +80,37 @@
 
     <div role="tabpanel" id="{{ $id }}-results" aria-labelledby="{{ $id }}-tab-results" x-show="tab === 'results'" tabindex="0" class="space-y-8 pt-6 focus:outline-none">
         <h3 class="tab-heading text-lg font-semibold text-zinc-950 dark:text-white">Results</h3>
-        @if (! empty($record['description']) || $dataFacts !== [])
+        @if (! empty($record['description']) || $dataFacts !== [] || $checks !== [])
             <div class="space-y-4">
                 @if (! empty($record['description']))
                     <p class="max-w-3xl leading-relaxed text-zinc-700 dark:text-zinc-300">{!! $mono($record['description']) !!}</p>
                 @endif
-                @if ($dataFacts !== [])
+                @if ($dataFacts !== [] || $checks !== [])
                     <dl class="{{ $dl }}">
                         @foreach ($dataFacts as $label => $value)
                             <dt class="{{ $dt }}">{{ $label }}</dt>
                             <dd class="{{ $dd }}">{!! $mono($value) !!}</dd>
                         @endforeach
+                        @if ($checks !== [])
+                            {{-- One entry per check, and one line per implementation within one. --}}
+                            <dt class="{{ $dt }}">Output check</dt>
+                            <dd class="{{ $dd }}">
+                                <ul class="space-y-1.5">
+                                    @foreach ($checks as $check)
+                                        <li>
+                                            {{ $check['label'] }}@if ($check['value'] !== null): {!! $mono($check['value']) !!}@endif
+                                            @if ($check['lines'] !== [])
+                                                <ul class="mt-0.5 pl-4 tabular-nums">
+                                                    @foreach ($check['lines'] as $line)
+                                                        <li>{!! $mono($line) !!}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </dd>
+                        @endif
                     </dl>
                 @endif
             </div>

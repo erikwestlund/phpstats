@@ -417,12 +417,6 @@ class Results
         $repeats = $env['repeats'] ?? null;
         $warmups = $env['warmups'] ?? null;
 
-        $check = $benchmark['check'] ?? null;
-        if (is_array($check)) {
-            $check = implode('; ', array_filter(array_map(fn ($key, $value) => is_scalar($value)
-                ? Str::ucfirst(str_replace('_', ' ', $key)).': '.(is_bool($value) ? ($value ? 'yes' : 'no') : (is_float($value) ? self::error($value) : $value))
-                : null, array_keys($check), $check)));
-        }
         $implementations = $benchmark['implementations'] ?? null;
         if (is_array($implementations)) {
             $implementations = implode('; ', array_map(fn ($name, $what) => "{$name}: {$what}", array_keys($implementations), $implementations));
@@ -433,7 +427,6 @@ class Results
         return array_filter([
             'Workload' => $methods['Workload'] ?? null,
             'Dataset' => $methods['Dataset'] ?? null,
-            'Output check' => $check ?: null,
             'Implementations' => $implementations ?: null,
             'Machine' => self::machine($env) ?: null,
             'Software' => $methods['Software'] ?? null,
@@ -500,6 +493,67 @@ class Results
         }
 
         return array_values($groups);
+    }
+
+    /**
+     * A benchmark's output check as labeled entries, so a record's keys
+     * never print joined: a key such as max_abs_difference_vs_R_phit is
+     * grouped under "Largest absolute difference from R" with one line per
+     * implementation, a nested map under its own label with one line per
+     * key, and scalars and sentences each on their own line.
+     *
+     * @return list<array{label: string, value: ?string, lines: list<string>}>
+     */
+    public static function checkEntries(mixed $check): array
+    {
+        if (! is_array($check)) {
+            return [];
+        }
+        $entries = [];
+        foreach ($check as $key => $value) {
+            $key = (string) $key;
+            if (preg_match('/^(.+?)_vs_([A-Za-z0-9]+)_(.+)$/', $key, $m) && is_scalar($value)) {
+                $label = self::checkLabel($m[1]).' from '.$m[2];
+                $entries[$label] ??= ['label' => $label, 'value' => null, 'lines' => []];
+                $entries[$label]['lines'][] = $m[3].': '.self::checkValue($value);
+            } elseif (is_array($value)) {
+                $entries[$key] = ['label' => self::checkLabel($key), 'value' => null, 'lines' => array_map(
+                    fn ($k, $v) => $k.': '.(is_scalar($v) ? self::checkValue($v) : json_encode($v)),
+                    array_keys($value), $value,
+                )];
+            } elseif ($value !== null) {
+                $entries[$key] = ['label' => self::checkLabel($key), 'value' => self::checkValue($value), 'lines' => []];
+            }
+        }
+
+        return array_values($entries);
+    }
+
+    /** A check key in words: max_abs_coefficient_difference reads "Largest absolute coefficient difference". */
+    private static function checkLabel(string $key): string
+    {
+        $words = array_map(fn (string $w) => match ($w) {
+            'max' => 'largest', 'min' => 'smallest', 'abs' => 'absolute', 'rel' => 'relative', 'php' => 'PHP', 'mu' => 'μ',
+            'scipy' => 'SciPy', 'r' => 'R', 'statsmodels' => 'statsmodels',
+            default => $w,
+        }, explode('_', $key));
+        $label = implode(' ', $words);
+
+        // A library or package name keeps its own case, as dplyr does.
+        return preg_match('/^(?:dplyr|tidyr|phit|phibble|phplyr|phpolars|phiz|juphyter|statsmodels|pandas)\b/', $label) ? $label : Str::ucfirst($label);
+    }
+
+    /** A check value as printed: yes or no, a grouped integer, a short number, or the text. */
+    private static function checkValue(mixed $value): string
+    {
+        return match (true) {
+            is_bool($value) => $value ? 'yes' : 'no',
+            is_int($value) => number_format($value),
+            is_float($value) && $value == 0.0 => '0',
+            is_float($value) && (abs($value) < 1e-3 || abs($value) >= 1e6) => self::tolerance(abs($value)) === '0' ? '0' : ($value < 0 ? '−' : '').self::tolerance(abs($value)),
+            is_float($value) => rtrim(rtrim(sprintf('%.6g', $value), '0'), '.'),
+            default => (string) $value,
+        };
     }
 
     public static function error(mixed $value): string
