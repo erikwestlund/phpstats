@@ -226,12 +226,13 @@ pre,
     max-width: 100%;
 }
 /* Inline math cannot wrap, and a notebook prints matrices as inline
-   \displaystyle math, so a paragraph that holds math scrolls inside its own
-   box when the math is wider than the column. The padding keeps tall
-   brackets clear of the scroll box's edge. */
-.docs-content p:has(> .math.inline) {
+   \displaystyle math, so a paragraph that holds a matrix scrolls inside its
+   own box when it is wider than the column. The padding holds the tall
+   brackets, which hang below the line, so nothing scrolls vertically. */
+.docs-content p:has(> .math.inline mjx-mtable) {
     overflow-x: auto;
-    padding-block: 0.125em;
+    overflow-y: hidden;
+    padding-block: 0.75em;
 }
 .docs-content .vega-embed svg {
     max-width: 100%;
