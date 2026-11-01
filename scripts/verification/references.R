@@ -29,7 +29,11 @@ gaussian <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy, REML = TRUE
 
 cbpp <- read("lme4/cbpp.csv")
 cbpp$period <- factor(cbpp$period)
-binomial <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd), family = binomial, data = cbpp)
+# glmer's default inner PIRLS tolerance (tolPwrss = 1e-7) stops the
+# conditional modes early and perturbs the Laplace log-likelihood by about
+# 3e-4 on these data; at 1e-10 it evaluates the Laplace approximation fully.
+binomial <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd), family = binomial, data = cbpp,
+  control = glmerControl(tolPwrss = 1e-10))
 
 variance <- function(fit, group) as.numeric(VarCorr(fit)[[group]][1, 1])
 
@@ -39,7 +43,7 @@ out <- list(
     logistic = "glm, epsilon 1e-14",
     probit = "glm, epsilon 1e-14",
     mixed_gaussian = "lmer, REML, default optimizer",
-    mixed_logistic = "glmer, Laplace, default optimizer"
+    mixed_logistic = "glmer, Laplace, tolPwrss 1e-10"
   ),
   distributions = list(
     normal_cdf = pnorm(-8),

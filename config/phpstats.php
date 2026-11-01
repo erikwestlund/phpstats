@@ -37,7 +37,7 @@ return [
         'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '348e1d4ac54f02099bb24a6a6dba760f3a230cc4'],
         'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => '067cae1634004ecb5502e24e4689c2f00066f53a'],
         'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => '0c2d613ac44a62dd750e810ae7b5cd4cc7acafc8'],
-        'phit' => ['repo' => 'phpstats/phit', 'ref' => '618e1241d371cbcb42bc10c70dc9c453724ffbf6'],
+        'phit' => ['repo' => 'phpstats/phit', 'ref' => '82b31e5ab393dfefbf8804a9a089fb6563a84462'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => '3956fe5a9ec2fff248b97b28d69c451074e33107'],
         'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '4b89c39283f78133431f1d4981f9e97229c08d68'],
         'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '82e8fbee5f0b4680491d169596697f1ed0b74af7'],
@@ -58,13 +58,15 @@ return [
     /*
      * The landing page's benchmark workloads, in selector order: the package
      * whose synced benchmark record holds the saved results, the record's
-     * id, the selector label, the task when the record does not describe
-     * its workload, and a note on the trade-off those results show. A workload whose record has not synced is left out.
+     * id, the selector label, display names for the record's
+     * implementations where its own are terse, the task when the record does
+     * not describe its workload, and a note on the trade-off those results
+     * show. A workload whose record has not synced is left out.
      */
     'benchmarks' => [
         ['package' => 'phpolars', 'id' => 'csv-pipeline', 'label' => 'CSV processing', 'task' => 'Keep the completed orders, then total them by region and month.', 'note' => 'phibble and plain PHP read the file in pieces, so their memory stays small. For files too large to hold as PHP arrays, phpolars keeps the data in Polars and returns only the result.'],
-        ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS regression', 'note' => null],
-        ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Gaussian mixed model', 'note' => null],
+        ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS regression', 'names' => ['R' => 'lm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'statsmodels is fastest on this workload, and phit takes about twice as long. phit-polyfill, in plain PHP with no extension, takes about 15 times as long. Memory is similar for all four, because the data take most of it.'],
+        ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Gaussian mixed model', 'names' => ['R' => 'lme4 (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'lme4 is fastest on this workload. phit takes about three times as long and uses the least memory. phit-polyfill runs wherever PHP does, with no extension, in about 9 seconds.'],
     ],
 
     /*

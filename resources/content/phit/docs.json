@@ -584,6 +584,11 @@
             "title": "API overview",
             "headings": [
                 {
+                    "id": "names-in-phit-0.4",
+                    "text": "Names in phit 0.4",
+                    "level": 2
+                },
+                {
                     "id": "php-entry-points",
                     "text": "PHP entry points",
                     "level": 2
@@ -1094,13 +1099,13 @@
                     "level": 2
                 },
                 {
-                    "id": "fit_lm-and-fit_glm",
-                    "text": "fit_lm and fit_glm",
+                    "id": "fit_ols-and-fit_generalized_linear",
+                    "text": "fit_ols and fit_generalized_linear",
                     "level": 2
                 },
                 {
-                    "id": "fit_lmer-and-fit_glmer",
-                    "text": "fit_lmer and fit_glmer",
+                    "id": "fit_mixed_gaussian-and-fit_mixed_logistic",
+                    "text": "fit_mixed_gaussian and fit_mixed_logistic",
                     "level": 2
                 },
                 {
@@ -1335,8 +1340,8 @@
                     "level": 2
                 },
                 {
-                    "id": "reading-a-fit_lmer-result",
-                    "text": "Reading a fit_lmer result",
+                    "id": "reading-a-fit_mixed_gaussian-result",
+                    "text": "Reading a fit_mixed_gaussian result",
                     "level": 2
                 },
                 {

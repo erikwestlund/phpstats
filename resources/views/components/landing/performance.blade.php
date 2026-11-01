@@ -17,6 +17,16 @@
     })->filter()->values();
     $time = fn (float $ms) => $ms < 1000 ? number_format($ms, $ms < 10 ? 1 : 0).' ms' : number_format($ms / 1000, 1).' s';
     $memory = fn (float $mib) => $mib >= 1024 ? number_format($mib / 1024, 1).' GiB' : number_format($mib).' MiB';
+    // A record's code is shown without its common indentation. Some records
+    // keep a snippet's indentation on every line but the first, so the
+    // indentation is measured on the lines after it.
+    $dedent = function (string $code): string {
+        $lines = explode("\n", trim(preg_replace('/^<\?php\s*/', '', $code), "\n"));
+        $rest = array_filter(array_slice($lines, 1), fn ($l) => trim($l) !== '');
+        $indent = $rest === [] ? 0 : min(array_map(fn ($l) => strlen($l) - strlen(ltrim($l)), $rest));
+
+        return implode("\n", array_map(fn ($l) => preg_replace('/^ {0,'.$indent.'}/', '', $l), $lines));
+    };
     $mono = fn (string $implementation) => (bool) preg_match('/^(phpolars|phibble|phit|phplyr)\b/', $implementation);
 @endphp
 @if ($workloads->isNotEmpty())
@@ -67,7 +77,7 @@
                         <tbody class="divide-y divide-zinc-100 tabular-nums dark:divide-white/5">
                             @foreach ($rows as $row)
                                 <tr>
-                                    <th scope="row" @class(['py-3 pr-4 align-top font-medium', 'font-mono text-[0.875rem]' => $mono($row['implementation'])])>{{ $row['implementation'] }}</th>
+                                    <th scope="row" @class(['py-3 pr-4 align-top font-medium', 'font-mono text-[0.875rem]' => $mono($row['implementation'])])>{{ $w['names'][$row['implementation']] ?? $row['implementation'] }}</th>
                                     <td class="py-3 pr-4 align-top">
                                         {{ $time($row['value']) }}
                                         <span class="mt-1.5 block h-1.5 rounded-full bg-php-500/70 dark:bg-php-400/70" style="width: {{ max(1.5, round(100 * $row['value'] / $maxTime, 1)) }}%" aria-hidden="true"></span>
@@ -92,13 +102,13 @@
                                     @php $slug = $w['id'].'-'.\Illuminate\Support\Str::slug($impl); @endphp
                                     <button type="button" role="tab" id="code-tab-{{ $slug }}" aria-controls="code-{{ $slug }}"
                                             x-on:click="impl = @js($impl)" x-bind:aria-selected="(impl === @js($impl)).toString()" aria-selected="{{ $impl === $first ? 'true' : 'false' }}"
-                                            @class(['rounded-md px-2.5 py-1 text-zinc-400 transition hover:text-white aria-selected:bg-php-500/30 aria-selected:text-white', 'font-mono' => $mono($impl)])>{{ $impl }}</button>
+                                            @class(['rounded-md px-2.5 py-1 text-zinc-400 transition hover:text-white aria-selected:bg-php-500/30 aria-selected:text-white', 'font-mono' => $mono($impl)])>{{ $w['names'][$impl] ?? $impl }}</button>
                                 @endforeach
                             </div>
                             @foreach ($code as $impl => $source)
                                 @php $slug = $w['id'].'-'.\Illuminate\Support\Str::slug($impl); @endphp
                                 <div role="tabpanel" id="code-{{ $slug }}" aria-labelledby="code-tab-{{ $slug }}" x-show="impl === @js($impl)" @unless ($impl === $first) x-cloak @endunless>
-                                    <pre class="max-h-[30rem] overflow-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::highlight(trim(preg_replace('/^<\?php\s*/', '', $source)), $languages[$impl] ?? 'php') !!}</code></pre>
+                                    <pre class="max-h-[30rem] overflow-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::highlight($dedent($source), $languages[$impl] ?? 'php') !!}</code></pre>
                                 </div>
                             @endforeach
                         </div>

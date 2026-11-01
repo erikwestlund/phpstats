@@ -10,7 +10,7 @@
       "logistic": "glm, epsilon 1e-14",
       "probit": "glm, epsilon 1e-14",
       "mixed_gaussian": "lmer, REML, default optimizer",
-      "mixed_logistic": "glmer, Laplace, default optimizer"
+      "mixed_logistic": "glmer, Laplace, tolPwrss 1e-10"
     },
     "distributions": {
       "normal_cdf": 6.22096057427178e-16,
@@ -128,19 +128,19 @@
         "period4"
       ],
       "coefficients": [
-        -1.39834286423342,
-        -0.991924975185999,
-        -1.12821621614742,
-        -1.57974541388942
+        -1.39853204366372,
+        -0.992315880345669,
+        -1.12866414696968,
+        -1.58031559792004
       ],
       "std_errors": [
-        0.231214009237425,
-        0.3031505867841,
-        0.322830019992475,
-        0.422048947560124
+        0.232473366557774,
+        0.306641434772098,
+        0.326637440626521,
+        0.427437424892067
       ],
-      "group_variance": 0.412253790589051,
-      "log_likelihood": -92.0265663895368
+      "group_variance": 0.412510609795071,
+      "log_likelihood": -92.0262818745091
     }
   },
   "Python": {
