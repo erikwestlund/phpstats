@@ -120,7 +120,7 @@ class DocsTest extends TestCase
         }
 
         $this->assertSame([], $outside);
-        $this->assertCount(65, Package::find('phit')->docsNav());
+        $this->assertCount(63, Package::find('phit')->docsNav());
     }
 
     public function test_a_docs_page_named_as_html_redirects_to_its_clean_url(): void

@@ -225,7 +225,7 @@ class LandingPageTest extends TestCase
         // Its own page carries its synced overview and links its docs.
         $this->get($juphyter->url())->assertOk()
             ->assertSee($juphyter->tagline())
-            ->assertSee('IRkernel')
+            ->assertSee('Run PHP in Jupyter notebooks and Quarto documents')
             ->assertDontSee('has not published its site content yet')
             ->assertSee($juphyter->repository(), false)
             ->assertSee($juphyter->url('docs'), false);

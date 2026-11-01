@@ -160,10 +160,10 @@ class PackagePagesTest extends TestCase
         $this->assertSame('Working', $package->status());
 
         // How it is actually installed, from its own site.json: the global
-        // install, the kernel registration, and the check.
+        // install and the kernel registration. The check, doctor, is on the
+        // installation page.
         $this->assertStringContainsString('composer global require phpstats/juphyter', $text);
-        $this->assertStringContainsString('juphyter install', $text);
-        $this->assertStringContainsString('juphyter doctor', $text);
+        $this->assertStringContainsString('juphyter -- install', $text);
     }
 
     // Overview content (task 11a): summary lists, pipe-only examples, the

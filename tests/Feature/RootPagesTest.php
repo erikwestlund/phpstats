@@ -209,9 +209,9 @@ class RootPagesTest extends TestCase
             }
         }
 
-        // juphyter doctor is the check, so it leaves the install block.
+        // juphyter's doctor command is the check, so it leaves the install block.
         preg_match('#<section id="juphyter".*?</section>#s', $html, $juphyter);
-        $this->assertSame(1, substr_count(strip_tags($juphyter[0]), 'juphyter doctor'));
+        $this->assertSame(1, substr_count(strip_tags($juphyter[0]), 'juphyter -- doctor'));
         $this->assertStringContainsString('Copy verify command for juphyter', $juphyter[0]);
     }
 
