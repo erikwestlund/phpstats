@@ -286,10 +286,6 @@
             @foreach ($panels as $key => $panel)
                 <div role="tabpanel" id="check-{{ $key }}" aria-labelledby="check-tab-{{ $key }}" x-show="check === '{{ $key }}'" @unless ($key === $first) x-cloak @endunless
                      class="mt-8">
-                    <div class="mb-6 text-center">
-                        <h3 class="text-xl font-semibold tracking-tight text-zinc-950 dark:text-white">{{ $panel['title'] }}</h3>
-                        <p class="mt-1 text-[0.9375rem] text-zinc-600 dark:text-zinc-400">{!! $panel['model'] !!}</p>
-                    </div>
                     <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
                     @if (is_array($panel['code']))
                         @php $firstCode = array_key_first($panel['code']); @endphp
@@ -312,6 +308,8 @@
                     @endif
 
                     <div class="min-w-0">
+                        <h3 class="text-base font-semibold text-zinc-950 dark:text-white">{{ $panel['title'] }}</h3>
+                        <p class="mb-3 mt-0.5 text-sm text-zinc-600 dark:text-zinc-400">{!! $panel['model'] !!}</p>
                         {!! $panel['table'] !!}
                         <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
                             {!! \App\Content\Libraries::mono($panel['note']) !!}
