@@ -63,12 +63,12 @@
         $hasLimitations ? ['id' => 'limitations', 'label' => 'Limitations'] : null,
         ['id' => 'reproduction', 'label' => 'Reproduction'],
     ]));
-    $section = 'mt-10 scroll-mt-28 lg:scroll-mt-20';
+    $section = 'mt-8 scroll-mt-28 lg:scroll-mt-20';
     $alias = 'block scroll-mt-28 lg:scroll-mt-20';
     $h2 = 'text-xl font-semibold tracking-tight text-zinc-950 dark:text-white';
-    $dl = 'mt-3 grid max-w-4xl gap-x-6 gap-y-1.5 text-sm sm:grid-cols-[9rem_minmax(0,1fr)]';
+    $dl = 'mt-3 grid max-w-4xl items-start gap-x-6 gap-y-1 text-sm leading-6 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-y-2';
     $dt = 'font-medium text-zinc-500 dark:text-zinc-400';
-    $dd = 'mb-1.5 text-zinc-800 sm:mb-0 dark:text-zinc-200';
+    $dd = 'mb-2 text-zinc-800 sm:mb-0 dark:text-zinc-200';
     $link = 'break-all font-mono text-xs underline decoration-zinc-300 underline-offset-2 hover:text-zinc-950 dark:decoration-zinc-600 dark:hover:text-white';
     $mono = fn (?string $text) => \App\Content\Libraries::mono(e((string) $text));
 @endphp

@@ -371,9 +371,17 @@ pre,
     overflow-wrap: anywhere;
 }
 /* Code split by App\Content\Code::hanging(): one block per line, so a wrapped
-   line continues under its own indentation instead of at the left edge. */
-.landing .code-line {
+   line continues under its own indentation instead of at the left edge.
+   .code-wrap gives any other code block the same wrapping, as the benchmark
+   code tabs do. */
+.landing .code-line,
+.code-wrap .code-line {
     display: block;
+    min-height: 1lh;
+}
+pre.code-wrap {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 @media (max-width: 639px) {
     .landing pre {

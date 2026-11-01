@@ -363,7 +363,7 @@ class PackagePagesTest extends TestCase
         $text = html_entity_decode(strip_tags($this->get(Package::find('phiz')->url('benchmark', ['id' => 'bare']))->assertOk()->getContent()));
         $this->assertStringContainsString('5 timed runs', $text);
         $this->assertStringNotContainsString('Median', $text);
-        $this->assertStringContainsString('Memory was not measured.', $text);
+        $this->assertStringContainsString('Memory not measured.', $text);
     }
 
     public function test_each_memory_metric_is_labeled_by_its_own_name(): void

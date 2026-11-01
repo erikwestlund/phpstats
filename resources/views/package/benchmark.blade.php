@@ -47,9 +47,19 @@
         ['id' => 'results', 'label' => 'Results'],
         ['id' => 'reproduction', 'label' => 'Reproduction'],
     ]));
-    $section = 'mt-10 scroll-mt-28 lg:scroll-mt-20';
+    $what = $record['workload'] ?? (count($cases) === 1 ? array_key_first($cases) : null);
+    // Lowercase a label's first letter unless it starts an acronym, as PHP does.
+    $lower = fn (string $label) => preg_match('/^[A-Z]{2}/', $label) ? $label : Str::lcfirst($label);
+    $named = [$lower($timeLabel), ...array_map(fn ($m) => $lower($m['label']), $metrics)];
+    $measures = count($named) < 3 ? implode(' and ', $named) : implode(', ', array_slice($named, 0, -1)).', and '.end($named);
+    $over = implode(' ', array_filter([
+        $statistic && ! str_contains(strtolower($timeLabel), strtolower($statistic)) ? $statistic : null,
+        isset($env['repeats']) ? ($statistic ? 'of ' : '').$env['repeats'].' '.Str::plural('run', $env['repeats']) : null,
+    ]));
+    $lead = ($what ? rtrim($what, '.').': ' : '').($what ? $measures : Str::ucfirst($measures)).' per implementation'.(count($cases) > 1 ? ' and case' : '').($over !== '' ? ", {$over}" : '').'.'.($metrics === [] ? ' Memory not measured.' : '');
+    $section = 'mt-8 scroll-mt-28 lg:scroll-mt-20';
     $h2 = 'text-xl font-semibold tracking-tight text-zinc-950 dark:text-white';
-    $dl = 'mt-3 grid max-w-4xl gap-x-6 gap-y-1.5 text-sm sm:grid-cols-[10rem_minmax(0,1fr)]';
+    $dl = 'mt-3 grid max-w-4xl items-start gap-x-6 gap-y-1 text-sm leading-6 sm:grid-cols-[10rem_minmax(0,1fr)] sm:gap-y-2';
 @endphp
 <x-layout :title="Results::label($record).' benchmark'" :wide="true">
     <x-sidebar-page :title="Results::label($record)" :sidebar="Results::sidebar($package, 'benchmarks', $record['id'], $children)" :wide="true" menu="Benchmarks">
@@ -66,7 +76,7 @@
                 <dl class="{{ $dl }}">
                     @foreach ($dataFacts as $label => $value)
                         <dt class="font-medium text-zinc-500 dark:text-zinc-400">{{ $label }}</dt>
-                        <dd class="mb-1.5 text-zinc-800 sm:mb-0 dark:text-zinc-200">{!! \App\Content\Libraries::mono(e($value)) !!}</dd>
+                        <dd class="mb-2 text-zinc-800 sm:mb-0 dark:text-zinc-200">{!! \App\Content\Libraries::mono(e($value)) !!}</dd>
                     @endforeach
                 </dl>
             </section>
@@ -78,11 +88,11 @@
             <dl class="{{ $dl }}">
                 @foreach ($methodFacts as $label => $value)
                     <dt class="font-medium text-zinc-500 dark:text-zinc-400">{{ $label }}</dt>
-                    <dd class="mb-1.5 text-zinc-800 sm:mb-0 dark:text-zinc-200">{!! \App\Content\Libraries::mono(e($value)) !!}</dd>
+                    <dd class="mb-2 text-zinc-800 sm:mb-0 dark:text-zinc-200">{!! \App\Content\Libraries::mono(e($value)) !!}</dd>
                 @endforeach
             </dl>
             @if ($code !== [])
-                <h3 id="code" class="mt-6 scroll-mt-28 text-base font-semibold text-zinc-950 lg:scroll-mt-20 dark:text-white">Code</h3>
+                <h3 id="code" class="mt-5 scroll-mt-28 text-base font-semibold text-zinc-950 lg:scroll-mt-20 dark:text-white">Code</h3>
                 @if ($nested)
                     @foreach ($code as $case => $caseCode)
                         <h4 class="mt-4 text-sm font-semibold text-zinc-800 dark:text-zinc-200">{{ $case }}</h4>
@@ -96,14 +106,8 @@
 
         <section id="results" class="{{ $section }}" aria-labelledby="results-heading">
             <h2 id="results-heading" class="{{ $h2 }}">Results</h2>
-            <p class="mt-1.5 text-sm text-zinc-600 dark:text-zinc-400">
-                {{ $timeLabel }}{{ $statistic && ! str_contains(strtolower($timeLabel), strtolower($statistic)) ? ', '.$statistic : '' }}{{ isset($env['repeats']) ? ' of '.$env['repeats'].' '.Str::plural('run', $env['repeats']) : '' }}.
-                @if ($metrics === [])
-                    Memory was not measured.
-                @else
-                    Memory: {{ implode('; ', array_map(fn ($m) => strtolower($m['label']), $metrics)) }}.
-                @endif
-            </p>
+            {{-- One sentence on what was run and measured: the workload, the measures, and the statistic. --}}
+            <p class="mt-2 max-w-3xl text-zinc-700 dark:text-zinc-300">{!! \App\Content\Libraries::mono(e($lead)) !!}</p>
 
             @if ($charted)
                 @foreach ($cases as $case => $caseRows)

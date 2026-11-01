@@ -446,7 +446,12 @@ class Results
             'Time measure' => isset($benchmark['measure']) ? Str::ucfirst($benchmark['measure']).(isset($benchmark['unit']) ? ", in {$benchmark['unit']}" : '') : null,
             'Timing boundaries' => $benchmark['method'] ?? $benchmark['timing'] ?? null,
             'Time spent in' => $benchmark['time_spent_in'] ?? null,
-            'Cache' => isset($env['cache']) ? Str::ucfirst((string) $env['cache']) : null,
+            // One state, or one per group of cases, as {"warm cases": "warm", "cold cases": "cold"}.
+            'Cache' => match (true) {
+                is_array($env['cache'] ?? null) => implode('; ', array_map(fn ($k, $v) => Str::ucfirst((string) $k).': '.$v, array_keys($env['cache']), $env['cache'])),
+                is_scalar($env['cache'] ?? null) => Str::ucfirst((string) $env['cache']),
+                default => null,
+            },
             ...array_diff_key($methods, array_flip(['Workload', 'Dataset', 'Runs', 'Threads', 'Software', 'Memory', 'Recorded'])),
             'Memory metric' => $memory === '' ? 'Not measured' : $memory.($memoryMethod ? ". {$memoryMethod}" : ''),
             'Recorded' => $methods['Recorded'] ?? null,
