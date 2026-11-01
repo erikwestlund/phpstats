@@ -20,6 +20,11 @@
             "section": "Getting started"
         },
         {
+            "title": "Licensing",
+            "path": "licensing",
+            "section": "Getting started"
+        },
+        {
             "title": "Model formulas",
             "path": "formulas",
             "section": "Guides"
@@ -70,6 +75,66 @@
             "section": "Guides"
         },
         {
+            "title": "R compatibility",
+            "path": "r-compatibility",
+            "section": "Guides"
+        },
+        {
+            "title": "All functions",
+            "path": "functions/index",
+            "section": "Functions"
+        },
+        {
+            "title": "Models",
+            "path": "functions/models",
+            "section": "Functions"
+        },
+        {
+            "title": "Mixed models",
+            "path": "functions/mixed-models",
+            "section": "Functions"
+        },
+        {
+            "title": "Distributions",
+            "path": "functions/distributions",
+            "section": "Functions"
+        },
+        {
+            "title": "Sampling",
+            "path": "functions/sampling",
+            "section": "Functions"
+        },
+        {
+            "title": "Statistics and optimization",
+            "path": "functions/statistics",
+            "section": "Functions"
+        },
+        {
+            "title": "Posterior draws",
+            "path": "functions/draws",
+            "section": "Functions"
+        },
+        {
+            "title": "CSV",
+            "path": "functions/csv",
+            "section": "Functions"
+        },
+        {
+            "title": "API conventions",
+            "path": "contracts",
+            "section": "Functions"
+        },
+        {
+            "title": "Model contracts",
+            "path": "reference-models",
+            "section": "Functions"
+        },
+        {
+            "title": "Shared rules",
+            "path": "reference-utilities",
+            "section": "Functions"
+        },
+        {
             "title": "Fit a linear model and predict",
             "path": "examples/linear-model",
             "section": "Examples"
@@ -93,31 +158,6 @@
             "title": "Fit a mixed model to a Polars table and chart it",
             "path": "examples/polars-mixed-model",
             "section": "Examples"
-        },
-        {
-            "title": "API overview",
-            "path": "contracts",
-            "section": "Reference"
-        },
-        {
-            "title": "Matrix model functions",
-            "path": "reference-models",
-            "section": "Reference"
-        },
-        {
-            "title": "Distributions, statistics, draws, optimization and CSV",
-            "path": "reference-utilities",
-            "section": "Reference"
-        },
-        {
-            "title": "Licensing",
-            "path": "licensing",
-            "section": "Reference"
-        },
-        {
-            "title": "R compatibility",
-            "path": "r-compatibility",
-            "section": "Compatibility and limitations"
         },
         {
             "title": "Walkthroughs",
@@ -197,7 +237,7 @@
     ],
     "pages": {
         "contracts": {
-            "title": "API overview",
+            "title": "API conventions",
             "headings": [
                 {
                     "id": "deprecated-aliases",
@@ -738,6 +778,409 @@
                     "id": "verification",
                     "text": "Verification",
                     "level": 2
+                }
+            ],
+            "math": false
+        },
+        "functions/csv": {
+            "title": "CSV functions",
+            "headings": [
+                {
+                    "id": "reading-a-file",
+                    "text": "Reading a file",
+                    "level": 2
+                },
+                {
+                    "id": "read_csv",
+                    "text": "read_csv()",
+                    "level": 3
+                },
+                {
+                    "id": "reading-in-chunks",
+                    "text": "Reading in chunks",
+                    "level": 2
+                },
+                {
+                    "id": "CsvReader",
+                    "text": "CsvReader",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "functions/distributions": {
+            "title": "Distribution functions",
+            "headings": [
+                {
+                    "id": "normal",
+                    "text": "Normal",
+                    "level": 2
+                },
+                {
+                    "id": "t",
+                    "text": "Student’s t",
+                    "level": 2
+                },
+                {
+                    "id": "chisquare",
+                    "text": "Chi-square",
+                    "level": 2
+                },
+                {
+                    "id": "f",
+                    "text": "F",
+                    "level": 2
+                },
+                {
+                    "id": "beta",
+                    "text": "Beta",
+                    "level": 2
+                },
+                {
+                    "id": "gamma",
+                    "text": "Gamma",
+                    "level": 2
+                },
+                {
+                    "id": "exponential",
+                    "text": "Exponential",
+                    "level": 2
+                },
+                {
+                    "id": "lognormal",
+                    "text": "Log-normal",
+                    "level": 2
+                },
+                {
+                    "id": "logistic",
+                    "text": "Logistic",
+                    "level": 2
+                },
+                {
+                    "id": "binomial",
+                    "text": "Binomial",
+                    "level": 2
+                },
+                {
+                    "id": "poisson",
+                    "text": "Poisson",
+                    "level": 2
+                },
+                {
+                    "id": "nbinom",
+                    "text": "Negative binomial (size, prob)",
+                    "level": 2
+                },
+                {
+                    "id": "nbinom_mu",
+                    "text": "Negative binomial (size, mu)",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "functions/draws": {
+            "title": "Posterior-draw functions",
+            "headings": [
+                {
+                    "id": "kernels",
+                    "text": "Kernels",
+                    "level": 2
+                },
+                {
+                    "id": "draws_moments",
+                    "text": "draws_moments()",
+                    "level": 3
+                },
+                {
+                    "id": "draws_covariance_map",
+                    "text": "draws_covariance_map()",
+                    "level": 3
+                },
+                {
+                    "id": "draws_affine",
+                    "text": "draws_affine()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "functions/index": {
+            "title": "Functions",
+            "headings": [
+                {
+                    "id": "models",
+                    "text": "Models",
+                    "level": 2
+                },
+                {
+                    "id": "mixed-models",
+                    "text": "Mixed models",
+                    "level": 2
+                },
+                {
+                    "id": "descriptive-statistics-and-optimization",
+                    "text": "Descriptive statistics and optimization",
+                    "level": 2
+                },
+                {
+                    "id": "posterior-draws",
+                    "text": "Posterior draws",
+                    "level": 2
+                },
+                {
+                    "id": "sampling",
+                    "text": "Sampling",
+                    "level": 2
+                },
+                {
+                    "id": "csv-input",
+                    "text": "CSV input",
+                    "level": 2
+                },
+                {
+                    "id": "distributions",
+                    "text": "Distributions",
+                    "level": 2
+                },
+                {
+                    "id": "deprecated-aliases",
+                    "text": "Deprecated aliases",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "functions/mixed-models": {
+            "title": "Mixed-model functions",
+            "headings": [
+                {
+                    "id": "formula-models",
+                    "text": "Formula models",
+                    "level": 2
+                },
+                {
+                    "id": "fit_mixed_gaussian",
+                    "text": "fit_mixed_gaussian()",
+                    "level": 3
+                },
+                {
+                    "id": "fit_mixed_logistic",
+                    "text": "fit_mixed_logistic()",
+                    "level": 3
+                },
+                {
+                    "id": "matrix-models",
+                    "text": "Matrix models",
+                    "level": 2
+                },
+                {
+                    "id": "fit_mixed_gaussian_matrix",
+                    "text": "fit_mixed_gaussian_matrix()",
+                    "level": 3
+                },
+                {
+                    "id": "fit_mixed_gaussian_intercept_matrix",
+                    "text": "fit_mixed_gaussian_intercept_matrix()",
+                    "level": 3
+                },
+                {
+                    "id": "fit_mixed_logistic_matrix",
+                    "text": "fit_mixed_logistic_matrix()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "functions/models": {
+            "title": "Model functions",
+            "headings": [
+                {
+                    "id": "formula-models",
+                    "text": "Formula models",
+                    "level": 2
+                },
+                {
+                    "id": "fit_ols",
+                    "text": "fit_ols()",
+                    "level": 3
+                },
+                {
+                    "id": "fit_generalized_linear",
+                    "text": "fit_generalized_linear()",
+                    "level": 3
+                },
+                {
+                    "id": "model_matrix",
+                    "text": "model_matrix()",
+                    "level": 3
+                },
+                {
+                    "id": "predict",
+                    "text": "predict()",
+                    "level": 3
+                },
+                {
+                    "id": "matrix-models",
+                    "text": "Matrix models",
+                    "level": 2
+                },
+                {
+                    "id": "fit_ols_matrix",
+                    "text": "fit_ols_matrix()",
+                    "level": 3
+                },
+                {
+                    "id": "fit_logistic_matrix",
+                    "text": "fit_logistic_matrix()",
+                    "level": 3
+                },
+                {
+                    "id": "fit_probit_matrix",
+                    "text": "fit_probit_matrix()",
+                    "level": 3
+                },
+                {
+                    "id": "fit_poisson_matrix",
+                    "text": "fit_poisson_matrix()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "functions/sampling": {
+            "title": "Sampling functions",
+            "headings": [
+                {
+                    "id": "uniform-categorical-and-permutations",
+                    "text": "Uniform, categorical, and permutations",
+                    "level": 2
+                },
+                {
+                    "id": "dist_uniform_rng",
+                    "text": "dist_uniform_rng()",
+                    "level": 3
+                },
+                {
+                    "id": "dist_categorical_rng",
+                    "text": "dist_categorical_rng()",
+                    "level": 3
+                },
+                {
+                    "id": "dist_categorical_rows_rng",
+                    "text": "dist_categorical_rows_rng()",
+                    "level": 3
+                },
+                {
+                    "id": "permutation_rng",
+                    "text": "permutation_rng()",
+                    "level": 3
+                }
+            ],
+            "math": false
+        },
+        "functions/statistics": {
+            "title": "Statistics and optimization functions",
+            "headings": [
+                {
+                    "id": "summaries",
+                    "text": "Summaries",
+                    "level": 2
+                },
+                {
+                    "id": "stat_mean",
+                    "text": "stat_mean()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_median",
+                    "text": "stat_median()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_var",
+                    "text": "stat_var()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_sd",
+                    "text": "stat_sd()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_quantile",
+                    "text": "stat_quantile()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_quantile_array",
+                    "text": "stat_quantile_array()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_weighted_mean",
+                    "text": "stat_weighted_mean()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_weighted_var",
+                    "text": "stat_weighted_var()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_cov",
+                    "text": "stat_cov()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_cor",
+                    "text": "stat_cor()",
+                    "level": 3
+                },
+                {
+                    "id": "smoothing-and-interpolation",
+                    "text": "Smoothing and interpolation",
+                    "level": 2
+                },
+                {
+                    "id": "stat_density",
+                    "text": "stat_density()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_bw_nrd0",
+                    "text": "stat_bw_nrd0()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_bw_nrd",
+                    "text": "stat_bw_nrd()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_approx",
+                    "text": "stat_approx()",
+                    "level": 3
+                },
+                {
+                    "id": "stat_ecdf",
+                    "text": "stat_ecdf()",
+                    "level": 3
+                },
+                {
+                    "id": "optimization-and-root-finding",
+                    "text": "Optimization and root finding",
+                    "level": 2
+                },
+                {
+                    "id": "optimize",
+                    "text": "optimize()",
+                    "level": 3
+                },
+                {
+                    "id": "uniroot",
+                    "text": "uniroot()",
+                    "level": 3
                 }
             ],
             "math": false
@@ -1474,7 +1917,7 @@
             "math": false
         },
         "reference-models": {
-            "title": "Matrix model functions",
+            "title": "Model contracts",
             "headings": [
                 {
                     "id": "ols-input-and-output",
@@ -1530,7 +1973,7 @@
             "math": false
         },
         "reference-utilities": {
-            "title": "Distributions, statistics, draws, optimization and CSV",
+            "title": "Shared rules",
             "headings": [
                 {
                     "id": "probability-distributions-and-descriptive-statistics",

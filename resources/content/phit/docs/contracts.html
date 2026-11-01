@@ -4,52 +4,53 @@
 <tr class="header">
 <th>Prefix or name</th>
 <th>Purpose</th>
-<th>Reference</th>
+<th>Functions</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>fit_ols</code>, <code>fit_generalized_linear</code>, <code>fit_mixed_gaussian</code>, <code>fit_mixed_logistic</code>, <code>model_matrix</code>, <code>predict</code></td>
+<td><code>fit_ols</code>, <code>fit_generalized_linear</code>, <code>model_matrix</code>, <code>predict</code></td>
 <td>Formula models and prediction</td>
-<td><a href="phpstats://phit/docs/formulas">Model formulas</a></td>
+<td><a href="phpstats://phit/docs/functions/models">Models</a></td>
 </tr>
 <tr class="even">
-<td><code>fit_ols_matrix</code>, <code>fit_logistic_matrix</code>, <code>fit_probit_matrix</code>, <code>fit_poisson_matrix</code>, <code>fit_mixed_gaussian_intercept_matrix</code>, <code>fit_mixed_gaussian_matrix</code>, <code>fit_mixed_logistic_matrix</code></td>
+<td><code>fit_ols_matrix</code>, <code>fit_logistic_matrix</code>, <code>fit_probit_matrix</code>, <code>fit_poisson_matrix</code></td>
 <td>Models on numeric matrices</td>
-<td><a href="phpstats://phit/docs/reference-models">Matrix model functions</a></td>
+<td><a href="phpstats://phit/docs/functions/models#matrix-models">Models</a></td>
 </tr>
 <tr class="odd">
-<td><code>dist_*</code></td>
-<td>Densities, CDFs, quantiles and seeded samples</td>
-<td><a href="phpstats://phit/docs/reference-utilities">Distributions and utilities</a></td>
+<td><code>fit_mixed_gaussian</code>, <code>fit_mixed_logistic</code>, <code>fit_mixed_*_matrix</code></td>
+<td>Mixed models</td>
+<td><a href="phpstats://phit/docs/functions/mixed-models">Mixed models</a></td>
 </tr>
 <tr class="even">
-<td><code>stat_*</code></td>
-<td>Descriptive statistics, kernel density, interpolation and the ECDF</td>
-<td><a href="phpstats://phit/docs/reference-utilities">Distributions and utilities</a></td>
+<td><code>dist_*</code></td>
+<td>Densities, CDFs, quantiles, and seeded samples</td>
+<td><a href="phpstats://phit/docs/functions/distributions">Distributions</a> · <a href="phpstats://phit/docs/functions/sampling">Sampling</a></td>
 </tr>
 <tr class="odd">
+<td><code>stat_*</code>, <code>optimize</code>, <code>uniroot</code></td>
+<td>Descriptive statistics, density estimation, interpolation, the ECDF, optimization, and root finding</td>
+<td><a href="phpstats://phit/docs/functions/statistics">Statistics and optimization</a></td>
+</tr>
+<tr class="even">
 <td><code>draws_*</code></td>
 <td>Weighted posterior-draw summaries and transforms</td>
-<td><a href="phpstats://phit/docs/reference-utilities#posterior-draw-numerical-kernels">Distributions and utilities</a></td>
-</tr>
-<tr class="even">
-<td><code>optimize</code>, <code>uniroot</code></td>
-<td>One-dimensional minimization and root finding</td>
-<td><a href="phpstats://phit/docs/reference-utilities#one-dimensional-optimization-and-root-finding">Distributions and utilities</a></td>
+<td><a href="phpstats://phit/docs/functions/draws">Posterior draws</a></td>
 </tr>
 <tr class="odd">
 <td><code>permutation_rng</code></td>
 <td>Seeded permutations and samples without replacement</td>
-<td><a href="phpstats://phit/docs/rng">Seeded sampling</a></td>
+<td><a href="phpstats://phit/docs/functions/sampling#permutation_rng">Sampling</a></td>
 </tr>
 <tr class="even">
 <td><code>read_csv</code>, <code>CsvReader</code></td>
 <td>Reading delimited text files</td>
-<td><a href="phpstats://phit/docs/io">Reading CSV files</a></td>
+<td><a href="phpstats://phit/docs/functions/csv">CSV</a></td>
 </tr>
 </tbody>
 </table>
+<p><a href="phpstats://phit/docs/functions/index">All functions</a> lists every function with its purpose.</p>
 <p>Import the functions you use:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="kw">function</span> Phit\{fit_ols<span class="ot">,</span> predict<span class="ot">,</span> dist_normal_quantile}<span class="ot">;</span></span></code></pre></div></div>
 <p><code>stubs/phit.php</code> in the repository declares every signature with PHPDoc array shapes for IDEs and static analysis. Do not load it at runtime.</p>
@@ -61,7 +62,7 @@
 <h2 class="anchored" data-anchor-id="signatures">Signatures</h2>
 <p>The formula functions are listed in <a href="phpstats://phit/docs/formulas">Model formulas</a>. The four fixed-effect matrix functions share one signature:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// fit_ols_matrix, fit_logistic_matrix,</span></span><span id="cb2-2" class="code-line" style="--indent: 0ch"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">// fit_probit_matrix, fit_poisson_matrix</span></span><span id="cb2-3" class="code-line" style="--indent: 0ch"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Phit\fit_ols_matrix(</span><span id="cb2-4" class="code-line" style="--indent: 4ch"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$x</span><span class="ot">,</span></span><span id="cb2-5" class="code-line" style="--indent: 4ch"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> <span class="va">$y</span><span class="ot">,</span></span><span id="cb2-6" class="code-line" style="--indent: 4ch"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">string</span> <span class="va">$missing</span> <span class="op">=</span> <span class="st">'drop'</span><span class="ot">,</span></span><span id="cb2-7" class="code-line" style="--indent: 4ch"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">array</span> <span class="va">$weights</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb2-8" class="code-line" style="--indent: 4ch"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="ot">?</span><span class="dt">array</span> <span class="va">$offset</span> <span class="op">=</span> <span class="kw">null</span><span class="ot">,</span></span><span id="cb2-9" class="code-line" style="--indent: 4ch"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bool</span> <span class="va">$intercept</span> <span class="op">=</span> <span class="kw">true</span><span class="ot">,</span></span><span id="cb2-10" class="code-line" style="--indent: 0ch"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)<span class="ot">:</span> <span class="dt">array</span><span class="ot">;</span></span></code></pre></div></div>
-<p><a href="phpstats://phit/docs/reference-models">Matrix model functions</a> lists the mixed-model matrix signatures.</p>
+<p><a href="phpstats://phit/docs/reference-models">Model contracts</a> lists the mixed-model matrix signatures.</p>
 <p>Every estimator is synchronous and stateless:</p>
 <ul>
 <li>It returns a complete fit and keeps no model handle, input data, or configuration.</li>
@@ -110,7 +111,7 @@
 </section>
 <section id="matrix-model-contracts" class="level2">
 <h2 class="anchored" data-anchor-id="matrix-model-contracts">Matrix model contracts</h2>
-<p><a href="phpstats://phit/docs/reference-models">Matrix model functions</a> defines the inputs, results, convergence rules, and failure cases of each matrix function:</p>
+<p><a href="phpstats://phit/docs/reference-models">Model contracts</a> defines the inputs, results, convergence rules, and failure cases of each matrix function:</p>
 <ul>
 <li><a href="phpstats://phit/docs/reference-models#ols-input-and-output">OLS</a></li>
 <li><span id="binary-logistic-regression"></span><a href="phpstats://phit/docs/reference-models#binary-logistic-regression">Binary logistic regression</a></li>
