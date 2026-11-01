@@ -1,11 +1,11 @@
 {{-- One verification panel's table: phit's values and each library's, rounded alike, with a signed difference only where the rounded values differ, and a dash where a library has no equivalent. Rendered by landing.verified and cached with the example. --}}
 <div class="overflow-x-auto">
     <table class="w-full text-left text-[0.9375rem]">
-        <caption class="sr-only">{{ $panel['label'] }}: phit's values and each library's values</caption>
+        <caption class="sr-only">{{ $panel['label'] }}: {{ $panel['primary'] ?? 'phit' }}'s values and each library's values</caption>
         <thead class="border-b border-zinc-200 text-sm text-zinc-600 dark:border-white/10 dark:text-zinc-400">
             <tr>
                 <th scope="col" class="py-2 pr-4 font-medium"><span class="sr-only">Quantity</span></th>
-                <th scope="col" class="py-2 pr-4 text-right font-mono font-medium">phit</th>
+                <th scope="col" class="py-2 pr-4 text-right font-mono font-medium">{{ $panel['primary'] ?? 'phit' }}</th>
                 @foreach ($panel['libraries'] as $library)
                     <th scope="col" class="whitespace-nowrap py-2 pl-4 text-right font-medium">{!! \App\Content\Libraries::mono(e($library)) !!}</th>
                 @endforeach

@@ -10,7 +10,7 @@ namespace App\Content;
  */
 class Libraries
 {
-    private const NAMES = ['statsmodels', 'GPBoost', 'lme4', 'SciPy', 'glm', 'lm', 'mpmath', 'phit-polyfill', 'phit', 'phpolars', 'phibble', 'phplyr', 'phiz'];
+    private const NAMES = ['statsmodels', 'GPBoost', 'lme4', 'SciPy', 'glm', 'lm', 'mpmath', 'phit-polyfill', 'phit', 'CmdStanPHP', 'CmdStanR', 'CmdStanPy', 'phpolars', 'phibble', 'phplyr', 'phiz'];
 
     /** HTML with each library name outside <code> wrapped in a font-mono span. */
     public static function mono(string $html): string

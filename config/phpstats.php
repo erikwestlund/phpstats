@@ -39,7 +39,7 @@ return [
         'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => '0c2d613ac44a62dd750e810ae7b5cd4cc7acafc8'],
         'phit' => ['repo' => 'phpstats/phit', 'ref' => '82b31e5ab393dfefbf8804a9a089fb6563a84462'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => '3956fe5a9ec2fff248b97b28d69c451074e33107'],
-        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '4b89c39283f78133431f1d4981f9e97229c08d68'],
+        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '7ddacf7ea905fb5e4ae10f2e917ce26b016edb34'],
         'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '82e8fbee5f0b4680491d169596697f1ed0b74af7'],
     ],
 

@@ -141,12 +141,47 @@
             'anchor' => 'logistic-mixed',
             'rows' => $model([['Herd variance', $groupVariance, 'group_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
+        'bayesian' => [
+            'dataset' => null,
+            'record' => 'Bayesian interfaces',
+            'label' => 'Bayesian (Stan)',
+            'primary' => 'CmdStanPHP',
+            'stored' => 'interfaces',
+            'libraries' => ['R' => 'CmdStanR (R)', 'Python' => 'CmdStanPy (Python)'],
+            'relative' => false,
+            'note' => 'Posterior means for the eight schools model (Rubin 1981), run through the same CmdStan with the same seed and arguments. The 4,000 draws are identical in all three.',
+            'anchor' => 'interfaces',
+        ],
     ];
 
     // phit's values come from running each example, and the table is cached
     // like the other landing examples, keyed by the example and the stored
     // references it is compared with.
     foreach ($panels as $key => &$panel) {
+        if (isset($panel['stored'])) {
+            // A Stan fit the page cannot run: CmdStanPHP's saved comparison
+            // record holds its code and each interface's summary.
+            $cmdstan = \App\Content\Package::find('cmdstanphp');
+            $saved = collect($cmdstan->verifications())->firstWhere('id', $panel['stored']);
+            $panel['link'] = $cmdstan->url('verification').'#'.$panel['anchor'];
+            if ($saved === null) {
+                $panel['code'] = '';
+                $panel['table'] = '<p class="text-sm text-zinc-500">The saved comparison has not synced yet.</p>';
+                continue;
+            }
+            $panel['code'] = trim(preg_replace(['/^<\?php\s*/', "/^require 'vendor\/autoload.php';\n+/m", '/\n+print_r\(.*\);\s*$/s'], '', $saved['code']))."\n";
+            $means = fn (string $interface) => array_column($saved['summaries'][$interface], 'mean', 'variable');
+            [$php, $r, $py] = [$means('CmdStanPHP'), $means('cmdstanr'), $means('CmdStanPy')];
+            $panel['table'] = view('components.landing.verified-table', [
+                'panel' => $panel,
+                'key' => $key,
+                'rows' => array_map(fn (string $v) => [$v, $php[$v], ['R' => $r[$v], 'Python' => $py[$v]], false], array_keys($php)),
+                'value' => $value,
+                'diff' => $diff,
+            ])->render();
+            continue;
+        }
+        $panel['link'] = $record.'#'.$panel['anchor'];
         $panel['code'] = \App\Content\Example::code($panel['example'])['pipe'];
         try {
             $panel['table'] = \App\Content\Example::output(
@@ -176,7 +211,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 id="verified-heading" class="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Verified against established libraries</h2>
         <p class="mx-auto mt-4 max-w-2xl text-center text-lg leading-snug text-zinc-600 dark:text-zinc-400">
-            <span class="font-mono">phit</span>'s results next to R and Python on the same data.
+            PHPstats results next to R and Python on the same data.
         </p>
 
         <div x-data="{ check: @js($first) }" class="mt-10 sm:mt-12">
@@ -203,7 +238,7 @@
                                 <a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">Data source</a>.
                             @endif
                         </p>
-                        <a href="{{ $record }}#{{ $panel['anchor'] }}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
+                        <a href="{{ $panel['link'] }}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
                             {{ $panel['record'] }} verification record <x-heroicon-m-arrow-right class="size-4" />
                         </a>
                     </div>
