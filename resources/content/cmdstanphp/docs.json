@@ -196,6 +196,11 @@
                     "level": 2
                 },
                 {
+                    "id": "moment-matching-and-loo",
+                    "text": "Moment matching and loo (as of 2026-10-31)",
+                    "level": 3
+                },
+                {
                     "id": "not-implemented",
                     "text": "Not implemented",
                     "level": 2
@@ -383,13 +388,13 @@
             "title": "CmdStanPHP",
             "headings": [
                 {
-                    "id": "an-example",
-                    "text": "An example",
+                    "id": "example",
+                    "text": "Example",
                     "level": 2
                 },
                 {
-                    "id": "what-it-does",
-                    "text": "What it does",
+                    "id": "features",
+                    "text": "Features",
                     "level": 2
                 }
             ],
@@ -491,6 +496,11 @@
             "title": "LOO and WAIC",
             "headings": [
                 {
+                    "id": "the-log-likelihood-variable",
+                    "text": "The log-likelihood variable",
+                    "level": 2
+                },
+                {
                     "id": "psis-loo",
                     "text": "PSIS-LOO",
                     "level": 2
@@ -498,6 +508,11 @@
                 {
                     "id": "moment-matching",
                     "text": "Moment matching",
+                    "level": 2
+                },
+                {
+                    "id": "algorithm-details",
+                    "text": "Algorithm details",
                     "level": 3
                 }
             ],
