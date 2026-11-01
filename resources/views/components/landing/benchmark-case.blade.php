@@ -25,28 +25,14 @@
         ? "{$env['cpu']} ({$env['cores']} cores, {$env['memory_gb']} GB), {$env['os']}"
         : "{$env['cores']} {$cores} cores, {$env['memory_gb']} GB RAM, ".strtok($env['os'], ',');
     $timeChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['value'] / 1000, 'shown' => $time($r['value'])], $rows), 'Elapsed time (s)');
-    $memoryChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['peak_memory_mib'], 'shown' => $memory($r['peak_memory_mib'])], $rows), $footprint ? 'Peak memory (MiB)' : 'Peak resident memory (MiB)');
-    $first = array_key_first($code);
+    // The chart is labeled by the exact metric the record names.
+    $metric = \Illuminate\Support\Str::ucfirst(\App\Content\Results::memoryMeasure($record) ?? 'peak resident set size');
+    $memoryChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['peak_memory_mib'], 'shown' => $memory($r['peak_memory_mib'])], $rows), "{$metric} (MiB)");
 @endphp
 <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
     <div class="min-w-0">
     @if ($code !== [])
-        <div x-data="{ impl: @js($first) }" class="code-ink min-w-0 overflow-hidden rounded-xl shadow-lg shadow-php-950/10 ring-1 ring-black/5 dark:ring-(--color-ink-line)">
-            <div role="tablist" aria-label="{{ $w['label'] }} code" class="flex flex-wrap gap-1 border-b border-white/5 px-3 py-2 text-xs">
-                @foreach ($code as $impl => $source)
-                    @php $slug = $id.'-'.\Illuminate\Support\Str::slug($impl); @endphp
-                    <button type="button" role="tab" id="code-tab-{{ $slug }}" aria-controls="code-{{ $slug }}"
-                            x-on:click="impl = @js($impl)" x-bind:aria-selected="(impl === @js($impl)).toString()" aria-selected="{{ $impl === $first ? 'true' : 'false' }}"
-                            class="rounded-md px-2.5 py-1 text-zinc-400 transition hover:text-white aria-selected:bg-php-500/30 aria-selected:text-white">{!! \App\Content\Libraries::mono(e($w['names'][$impl] ?? $impl)) !!}</button>
-                @endforeach
-            </div>
-            @foreach ($code as $impl => $source)
-                @php $slug = $id.'-'.\Illuminate\Support\Str::slug($impl); @endphp
-                <div role="tabpanel" id="code-{{ $slug }}" aria-labelledby="code-tab-{{ $slug }}" x-show="impl === @js($impl)" @unless ($impl === $first) x-cloak @endunless>
-                    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::hanging(\App\Content\Code::highlight($dedent($source), $languages[$impl] ?? 'php')) !!}</code></pre>
-                </div>
-            @endforeach
-        </div>
+        <x-implementation-code :code="$code" :id="$id" :label="$w['label']" :languages="$languages" :names="$w['names'] ?? []" />
     @endif
         <div class="mt-4 space-y-2 text-xs leading-snug text-zinc-500 dark:text-zinc-400">
             <p>Medians of {{ $env['repeats'] }} runs, each in a fresh process.</p>
@@ -72,8 +58,8 @@
             <x-phiz :plot="$memoryChart" class="min-w-0 overflow-hidden" />
         </div>
         <div class="sr-only"><table>
-            <caption>{{ $w['label'] }}: median elapsed time and peak memory of {{ $env['repeats'] }} runs</caption>
-            <thead><tr><th scope="col">Implementation</th><th scope="col">Elapsed time</th><th scope="col">Memory</th></tr></thead>
+            <caption>{{ $w['label'] }}: median elapsed time and {{ strtolower($metric) }} of {{ $env['repeats'] }} runs</caption>
+            <thead><tr><th scope="col">Implementation</th><th scope="col">Elapsed time</th><th scope="col">{{ $metric }}</th></tr></thead>
             <tbody>
                 @foreach ($rows as $row)
                     <tr><th scope="row">{{ $name($row) }}</th><td>{{ $time($row['value']) }}</td><td>{{ $memory($row['peak_memory_mib']) }}</td></tr>

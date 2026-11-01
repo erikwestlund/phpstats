@@ -386,6 +386,10 @@ class Package
             $target = self::find($m[1]);
             $page = $m[2];
             $fragment = $m[3] ?? '';
+            // A report that left the docs for the evidence pages.
+            if ($target && ($evidence = $target->evidenceRedirect($page))) {
+                return e($evidence).$fragment;
+            }
             if ($target?->hasDocs() && isset($target->docs['pages'][$page])) {
                 return e(route('package.docs', ['package' => $target->key, 'path' => $page === 'index' ? null : $page])).$fragment;
             }
@@ -412,6 +416,124 @@ class Package
     public function verifications(): array
     {
         return $this->results('verifications');
+    }
+
+    /** The benchmark record with this id. */
+    public function benchmark(string $id): ?array
+    {
+        return Arr::first($this->benchmarks(), fn (array $record) => $record['id'] === $id);
+    }
+
+    /** The verification record with this id. */
+    public function verificationTopic(string $id): ?array
+    {
+        return Arr::first($this->verifications(), fn (array $record) => $record['id'] === $id);
+    }
+
+    /**
+     * Renamed or merged records of a section, as old id => current id, from
+     * config/evidence.php and site.json's evidence_redirects. An entry whose
+     * target is not a current record is left out.
+     *
+     * @param  'benchmarks'|'verification'  $section
+     * @return array<string, string>
+     */
+    public function renamedTopics(string $section): array
+    {
+        $map = [...(array) ($this->site['evidence_redirects'][$section] ?? []), ...(array) config("evidence.renamed.{$this->key}.{$section}", [])];
+        $find = $section === 'benchmarks' ? $this->benchmark(...) : $this->verificationTopic(...);
+
+        return array_filter($map, fn ($target, $old) => is_string($target) && is_string($old) && $find($target) !== null && $find($old) === null, ARRAY_FILTER_USE_BOTH);
+    }
+
+    /**
+     * The sentence site.json's evidence_gaps gives for a section, naming what
+     * is not measured or checked yet.
+     *
+     * @param  'benchmarks'|'verification'  $section
+     */
+    public function evidenceGap(string $section): ?string
+    {
+        $gap = $this->site['evidence_gaps'][$section] ?? null;
+
+        return is_string($gap) && trim($gap) !== '' ? trim($gap) : null;
+    }
+
+    /**
+     * The URL of a raw record on GitHub at the pinned commit, or null for a
+     * local sync, which has no commit to link.
+     *
+     * @param  'benchmarks'|'verifications'  $kind
+     */
+    public function recordUrl(string $kind, string $id): ?string
+    {
+        return $this->sourceUrl("site/{$kind}/{$id}.json");
+    }
+
+    /** A repository path at the pinned commit on GitHub, or a URL as given. */
+    public function sourceUrl(?string $path): ?string
+    {
+        // Only a single path or URL is linked; prose such as "a.php and a.R" is shown as text.
+        if ($path === null || $path === '' || preg_match('/\s/', $path)) {
+            return null;
+        }
+        if (preg_match('#^https?://#', $path)) {
+            return $path;
+        }
+        $sync = $this->sync();
+        if ($sync === null || ($sync['local'] ?? false) || empty($sync['repo']) || empty($sync['commit'])) {
+            return null;
+        }
+
+        return "https://github.com/{$sync['repo']}/blob/{$sync['commit']}/".ltrim($path, '/');
+    }
+
+    /**
+     * The evidence page that replaced a docs report: benchmarks/{id} goes to
+     * the benchmark topic, verifications/{id} and notebooks/{id}-verification
+     * to the verification topic, and verification to the Verification
+     * section. It applies only once the package has taken the page out of
+     * its docs nav, so a report the package still lists keeps its page.
+     */
+    public function evidenceRedirect(string $path): ?string
+    {
+        if (in_array($path, array_column($this->docsNav(), 'path'), true)) {
+            return null;
+        }
+
+        return $this->evidenceUrlFor($path);
+    }
+
+    /**
+     * Sections of a docs page that moved to an evidence page, as fragment =>
+     * URL, from config/evidence.php. A target whose record is gone is left out.
+     *
+     * @return array<string, string>
+     */
+    public function movedFragments(string $path): array
+    {
+        $urls = [];
+        foreach (config("evidence.fragments.{$this->key}.{$path}", []) as $fragment => [$key, $route, $id]) {
+            $target = self::find($key);
+            $found = $target === null ? null : ($route === 'benchmark' ? $target->benchmark($id) : $target->verificationTopic($id));
+            if ($found !== null) {
+                $urls[$fragment] = $target->url($route, ['id' => $id]);
+            }
+        }
+
+        return $urls;
+    }
+
+    /** The evidence page that covers a docs path, whether or not the page is still in the docs. */
+    private function evidenceUrlFor(string $path): ?string
+    {
+        return match (true) {
+            $path === 'verification' || $path === 'verifications' || $path === 'verifications/index' => $this->url('verification'),
+            $path === 'benchmarks' || $path === 'benchmarks/index' => $this->url('benchmarks'),
+            (bool) preg_match('#^benchmarks/([a-z0-9-]+)$#', $path, $m) => $this->benchmark($m[1]) ? $this->url('benchmark', ['id' => $m[1]]) : null,
+            (bool) preg_match('#^(?:verifications/([a-z0-9-]+)|notebooks/([a-z0-9-]+)-verification)$#', $path, $m) => ($id = ($m[1] ?? '') ?: ($m[2] ?? '')) && $this->verificationTopic($id) ? $this->url('verification.topic', ['id' => $id]) : null,
+            default => null,
+        };
     }
 
     private function results(string $kind): array

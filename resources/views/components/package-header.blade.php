@@ -6,19 +6,21 @@
 @props(['package'])
 
 @php
-    // A section the package has nothing for is left out, rather than linking an empty page.
+    // Every package has Benchmarks and Verification, which say so when
+    // nothing is published yet. Docs and Examples are left out when the
+    // package has nothing for them.
     $sections = array_filter([
         'overview' => 'Overview',
         'docs' => $package->hasDocs() || $package->externalDocs() ? 'Docs' : null,
         'examples' => $package->listedExamples() || $package->vignettes() ? 'Examples' : null,
-        'benchmarks' => $package->benchmarks() ? 'Benchmarks' : null,
-        'verification' => $package->verifications() ? 'Verification' : null,
+        'benchmarks' => 'Benchmarks',
+        'verification' => 'Verification',
     ]);
     $active = match (true) {
         request()->routeIs('package.docs') => 'docs',
         request()->routeIs('package.examples', 'package.vignette') || request()->is('livewire*') => 'examples',
-        request()->routeIs('package.benchmarks') => 'benchmarks',
-        request()->routeIs('package.verification') => 'verification',
+        request()->routeIs('package.benchmarks', 'package.benchmark') => 'benchmarks',
+        request()->routeIs('package.verification', 'package.verification.topic') => 'verification',
         default => 'overview',
     };
     $layer = $package->layer();

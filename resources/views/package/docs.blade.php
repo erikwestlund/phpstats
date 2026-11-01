@@ -100,6 +100,17 @@
             @endif
         </article>
 
+        @if ($moved = $package->movedFragments($path))
+            <script>
+                // Sections of this page that moved to the Benchmarks and Verification pages.
+                (function () {
+                    var moved = @js($moved);
+                    var id = decodeURIComponent(location.hash.slice(1));
+                    if (Object.prototype.hasOwnProperty.call(moved, id) && !document.getElementById(id)) location.replace(moved[id]);
+                })();
+            </script>
+        @endif
+
         {{-- On this page --}}
         @if (count($page['headings']) > 1)
             <nav aria-label="On this page" x-data="tocSpy" class="hidden text-sm xl:sticky xl:top-14 xl:block xl:max-h-[calc(100vh-3.5rem)] xl:self-start xl:overflow-y-auto xl:py-10">

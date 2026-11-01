@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Content\Package;
+use App\Content\Results;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
@@ -64,23 +65,26 @@ class DocsTest extends TestCase
             }
             $shipping[] = $key;
 
+            // The section lists each record by its short label, and each
+            // record has its own page under its full title.
             if ($package->benchmarks() !== []) {
                 $benchmarks = $this->get($package->url('benchmarks'))->assertOk();
                 foreach ($package->benchmarks() as $benchmark) {
-                    $benchmarks->assertSee($benchmark['title']);
+                    $benchmarks->assertSee(Results::label($benchmark))->assertSee('id="'.$benchmark['id'].'"', false);
+                    $this->get($package->url('benchmark', ['id' => $benchmark['id']]))->assertOk()->assertSee($benchmark['title']);
                 }
             }
             if ($package->verifications() !== []) {
                 $verification = $this->get($package->url('verification'))->assertOk();
                 foreach ($package->verifications() as $report) {
-                    $verification->assertSee($report['title']);
+                    $verification->assertSee(Results::label($report))->assertSee('id="'.$report['id'].'"', false);
+                    $this->get($package->url('verification.topic', ['id' => $report['id']]))->assertOk()->assertSee($report['title']);
                 }
             }
         }
 
-        // phibble, phiz, and cmdstanphp ship docs and nothing else: their
-        // site/ folders hold no benchmark or verification reports, which is
-        // why neither section appears in their bars.
+        // phibble, phiz, and juphyter publish no benchmark or verification
+        // records yet; their sections say so.
         $this->assertEqualsCanonicalizing(['cmdstanphp', 'phit', 'phplyr', 'phpolars'], $shipping);
     }
 

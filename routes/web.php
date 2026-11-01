@@ -53,8 +53,14 @@ Route::domain($paths ? null : config('phpstats.package_host'))
         // The Examples tab was /vignettes until the 2026-10-31 curation.
         Route::get('/vignettes', fn (string $package) => redirect()->to(Package::find($package)->url('examples'), 301));
         Route::get('/vignettes/{slug}', 'vignette')->where('slug', '[a-z0-9-]+')->name('vignette');
+        // One page per benchmark workload and per verification topic, named
+        // by the record's file. The section pages list them, and send an old
+        // /benchmarks#{id} or /verification#{id} link on to its topic.
         Route::get('/benchmarks', 'benchmarks')->name('benchmarks');
+        Route::get('/benchmarks/{id}', 'benchmark')->where('id', '[a-z0-9-]+')->name('benchmark');
         Route::get('/verification', 'verification')->name('verification');
+        Route::get('/verification/{id}', 'verificationTopic')->where('id', '[a-z0-9-]+')->name('verification.topic');
+        Route::get('/verifications/{id?}', fn (string $package, ?string $id = null) => redirect()->to(Package::find($package)->url($id === null ? 'verification' : 'verification.topic', $id === null ? [] : ['id' => $id]), 301))->where('id', '[a-z0-9-]+');
     });
 
 Route::domain($paths ? null : config('phpstats.root_host'))->group(function () use ($paths) {

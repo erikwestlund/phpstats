@@ -61,11 +61,17 @@ class LandingPageTest extends TestCase
         $this->assertStringContainsString('id="together"', $html);
 
         // Verification compares the values its code gives with the stored
-        // references, and links each record.
+        // references, and links each record's topic page.
         $phit = Package::find('phit');
-        foreach (['distributions', 'ols', 'logistic', 'probit', 'lmm', 'logistic-mixed'] as $record) {
-            $this->assertStringContainsString('href="'.e($phit->url('verification')).'#'.$record.'"', $html);
+        foreach (['distributions', 'ols', 'logistic', 'probit', 'lmm-public', 'logistic-mixed'] as $record) {
+            $this->assertStringContainsString('href="'.e($phit->url('verification.topic', ['id' => $record])).'"', $html);
         }
+        $this->assertStringContainsString('href="'.e(Package::find('cmdstanphp')->url('verification.topic', ['id' => 'interfaces'])).'"', $html);
+
+        // Each benchmark workload links its topic page, and its memory chart
+        // is labeled by the record's own metric.
+        $this->assertStringContainsString('href="'.e($phit->url('benchmark', ['id' => 'ols-workload'])).'"', $html);
+        $this->assertStringContainsString('Peak anonymous memory (MiB)', $html);
 
         // The benchmark appears only with phpolars' saved record.
         $record = collect(Package::find('phpolars')->benchmarks())->firstWhere('id', 'csv-pipeline');

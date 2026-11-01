@@ -17,7 +17,6 @@
 @php
     $references = \App\Data\VerificationReferences::load();
     $phit = \App\Content\Package::find('phit');
-    $record = $phit->url('verification');
 
     // A signed difference: "+2.5 × 10⁻¹⁶", or "0" when the values are identical.
     $diff = function (float $d): array {
@@ -168,7 +167,7 @@
             'libraries' => ['R' => 'lme4 (R)', 'Python' => $python],
             'relative' => false,
             'note' => 'R: <code>lmer()</code>. Python: <code>mixedlm()</code>.',
-            'anchor' => 'lmm',
+            'anchor' => 'lmm-public',
             'rows' => $model([['Subject variance', $groupVariance, 'group_variance'], ['Residual variance', 'residual_variance', 'residual_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-logistic' => [
@@ -211,7 +210,7 @@
             // record holds its code and each interface's summary.
             $cmdstan = \App\Content\Package::find('cmdstanphp');
             $saved = collect($cmdstan->verifications())->firstWhere('id', $panel['stored']);
-            $panel['link'] = $cmdstan->url('verification').'#'.$panel['anchor'];
+            $panel['link'] = $cmdstan->url('verification.topic', ['id' => $panel['anchor']]);
             if ($saved === null) {
                 $panel['code'] = '';
                 $panel['table'] = '<p class="text-sm text-zinc-500">The saved comparison has not synced yet.</p>';
@@ -229,7 +228,7 @@
             ])->render();
             continue;
         }
-        $panel['link'] = $panel['anchor'] === null ? null : $record.'#'.$panel['anchor'];
+        $panel['link'] = $panel['anchor'] === null ? null : $phit->url('verification.topic', ['id' => $panel['anchor']]);
         $panel['code'] = isset($panel['also'])
             ? [$panel['primary'] => \App\Content\Example::code($panel['example'])['pipe'], ...array_map(fn (string $e) => \App\Content\Example::code($e)['pipe'], $panel['also'])]
             : \App\Content\Example::code($panel['example'])['pipe'];

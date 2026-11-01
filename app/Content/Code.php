@@ -44,6 +44,20 @@ class Code
     }
 
     /**
+     * A record's code without its opening tag and its common indentation.
+     * Some records keep a snippet's indentation on every line but the first,
+     * so the indentation is measured on the lines after it.
+     */
+    public static function dedent(string $code): string
+    {
+        $lines = explode("\n", trim(preg_replace('/^<\?php\s*/', '', $code), "\n"));
+        $rest = array_filter(array_slice($lines, 1), fn ($l) => trim($l) !== '');
+        $indent = $rest === [] ? 0 : min(array_map(fn ($l) => strlen($l) - strlen(ltrim($l)), $rest));
+
+        return implode("\n", array_map(fn ($l) => preg_replace('/^ {0,'.$indent.'}/', '', $l), $lines));
+    }
+
+    /**
      * Highlighted HTML for $code, with hl-* classes styled in app.css.
      * The language "quarto" highlights a .qmd document in parts; see quarto().
      */

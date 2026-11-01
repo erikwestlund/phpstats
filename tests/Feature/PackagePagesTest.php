@@ -59,32 +59,43 @@ class PackagePagesTest extends TestCase
         }
     }
 
-    public function test_the_package_bar_hides_sections_with_no_content(): void
+    public function test_the_package_bar_lists_the_sections_in_order(): void
     {
-        $sections = ['docs', 'examples', 'benchmarks', 'verification'];
-
-        // juphyter has docs, but no benchmarks or verification.
-        $juphyter = Package::find('juphyter');
-        $bar = $this->get($juphyter->url())->assertOk()->assertSee($juphyter->url('docs'), false);
-        foreach (['benchmarks', 'verification'] as $section) {
-            $bar->assertDontSee($juphyter->url($section), false);
+        // Every package has Benchmarks and Verification, after Overview, Docs,
+        // and Examples where it has them.
+        foreach (Package::all() as $key => $package) {
+            $html = $this->get($package->url())->assertOk()->getContent();
+            preg_match('#<nav class="ml-6[^"]*"[^>]*>(.*?)</nav>#s', $html, $bar);
+            preg_match_all('#>\s*(Overview|Docs|Examples|Benchmarks|Verification)\b#', $bar[1], $labels);
+            $expected = array_values(array_filter(['Overview', $package->hasDocs() || $package->externalDocs() ? 'Docs' : null, $package->listedExamples() || $package->vignettes() ? 'Examples' : null, 'Benchmarks', 'Verification']));
+            $this->assertSame($expected, $labels[1], $key);
+            $this->assertStringContainsString('href="'.e($package->url('benchmarks')).'"', $bar[1], $key);
+            $this->assertStringContainsString('href="'.e($package->url('verification')).'"', $bar[1], $key);
         }
 
-        // phibble has docs and examples, but it ships neither benchmarks nor
-        // verification.
-        $phibble = Package::find('phibble');
-        $this->get($phibble->url())->assertOk()
-            ->assertSee($phibble->url('examples'), false)
-            ->assertSee($phibble->url('docs'), false)
-            ->assertDontSee($phibble->url('benchmarks'), false)
-            ->assertDontSee($phibble->url('verification'), false);
-
-        // phit has all four.
+        // A topic page marks its section as current.
         $phit = Package::find('phit');
-        $all = $this->get($phit->url())->assertOk();
-        foreach ($sections as $section) {
-            $all->assertSee($phit->url($section), false);
-        }
+        $html = $this->get($phit->url('benchmark', ['id' => 'ols-workload']))->assertOk()->getContent();
+        $this->assertMatchesRegularExpression('#href="'.preg_quote(e($phit->url('benchmarks')), '#').'"\s+aria-current="page"#', $html);
+    }
+
+    public function test_a_package_with_no_records_says_so_without_charts(): void
+    {
+        $phibble = Package::find('phibble');
+        $this->assertSame([], $phibble->benchmarks());
+        $this->get($phibble->url('benchmarks'))->assertOk()
+            ->assertSee('No benchmark measurements are published for')
+            ->assertDontSee('data-phiz="', false)
+            ->assertDontSee('<table', false);
+        $this->get($phibble->url('verification'))->assertOk()
+            ->assertSee('No verification checks are published for')
+            ->assertDontSee('<table', false);
+
+        // A gap the package names is shown with the empty state.
+        $this->fixtureSite('phiz', ['evidence_gaps' => ['benchmarks' => 'No benchmark covers chart export yet.']]);
+        $this->get(Package::find('phiz')->url('benchmarks'))->assertOk()
+            ->assertSee('No benchmark measurements are published for')
+            ->assertSee('No benchmark covers chart export yet.');
     }
 
     public function test_unknown_hosts_and_paths_are_not_found(): void
@@ -333,24 +344,152 @@ class PackagePagesTest extends TestCase
 
     public function test_benchmark_methods_come_from_each_record(): void
     {
-        $page = $this->get(Package::find('cmdstanphp')->url('benchmarks'))->assertOk();
-        // One machine is named once, and the record's own statistic and timing method show.
-        $page->assertSee('Machine:')
-            ->assertSee('Median of 7 runs')
-            ->assertSee('What the time includes')
-            ->assertDontSee('faster');
+        $cmdstan = Package::find('cmdstanphp');
+        $text = html_entity_decode(strip_tags($this->get($cmdstan->url('benchmark', ['id' => 'interfaces-workload']))->assertOk()->getContent()));
+        foreach (['Timing boundaries', 'Median over the timed runs', '7 timed runs', '2 AMD Zen 5 cores', 'Memory metric', 'Raw record', 'site/benchmarks/interfaces-workload.json'] as $fact) {
+            $this->assertStringContainsString($fact, $text);
+        }
+        $this->assertStringNotContainsString('faster', $text);
 
-        $text = html_entity_decode(strip_tags($this->get(Package::find('phit')->url('benchmarks'))->getContent()));
         // phit's older records give no statistic, so none is invented for them.
-        $this->assertStringContainsString('3 runs', $text);
-        $this->assertStringNotContainsString('Median of 3 runs', $text);
+        $text = html_entity_decode(strip_tags($this->get(Package::find('phit')->url('benchmark', ['id' => 'ols']))->getContent()));
+        $this->assertStringContainsString('5 timed runs', $text);
+        $this->assertStringNotContainsString('Median over the timed runs', $text);
+        $this->assertStringContainsString('Memory was not measured.', $text);
+    }
+
+    public function test_each_memory_metric_is_labeled_by_its_own_name(): void
+    {
+        $html = $this->get(Package::find('phpolars')->url('benchmark', ['id' => 'csv-pipeline']))->assertOk()->getContent();
+        $this->assertStringContainsString('>Peak anonymous memory</th>', $html);
+        $this->assertStringContainsString('>Peak resident set size</th>', $html);
+        $this->assertStringContainsString('Peak anonymous memory (MiB)', $html);
+        $this->assertStringContainsString('Peak resident set size (MiB)', $html);
+        $this->assertStringNotContainsString('>Memory</th>', $html);
+    }
+
+    public function test_a_missing_measurement_reads_not_measured_and_is_not_charted(): void
+    {
+        $this->fixtureRecord('phiz', 'benchmarks', 'export', [
+            'title' => 'Export: one chart',
+            'measure' => 'Elapsed time',
+            'unit' => 'ms',
+            'memory_measure' => 'peak anonymous memory',
+            'rows' => [
+                ['case' => 'One chart', 'implementation' => 'phiz', 'value' => 12.5, 'peak_memory_mib' => 30.0],
+                ['case' => 'One chart', 'implementation' => 'ggplot2', 'value' => null, 'peak_memory_mib' => null],
+            ],
+        ]);
+        $html = $this->get(Package::find('phiz')->url('benchmark', ['id' => 'export']))->assertOk()->getContent();
+        $this->assertSame(2, substr_count($html, 'not measured'));
+        // The charts hold phiz's bar only, and no zero for ggplot2.
+        preg_match_all('/data-phiz="([^"]*)"/', $html, $charts);
+        $this->assertCount(2, $charts[1]);
+        foreach ($charts[1] as $chart) {
+            $this->assertStringNotContainsString('ggplot2', html_entity_decode($chart));
+        }
+    }
+
+    public function test_verification_topics_show_every_status_in_plain_text(): void
+    {
+        $phpolars = Package::find('phpolars');
+        $text = html_entity_decode(strip_tags($this->get($phpolars->url('verification.topic', ['id' => 'integration']))->assertOk()->getContent()));
+        $this->assertMatchesRegularExpression('/PHP-FPM.*skipped.*php-fpm or cgi-fcgi is not installed/s', $text);
+        $this->assertStringContainsString('0 fail, 1 skipped', $text);
+        $this->assertStringNotContainsString('No comparison failed, and none was skipped.', $text);
+
+        // Cases with a category are summarized by it.
+        $this->get($phpolars->url('verification.topic', ['id' => 'py-polars-fixtures']))->assertOk()->assertSee('By category');
+
+        // The section summary counts skipped checks on their own.
+        $this->get($phpolars->url('verification'))->assertOk()->assertSee('>Skipped</th>', false);
+
+        // A relative error left null at a zero reference is undefined, not
+        // zero, and a case with no status is never counted as a pass.
+        $this->fixtureRecord('phiz', 'verifications', 'export', [
+            'title' => 'Export: agreement with Vega-Lite',
+            'cases' => [
+                ['name' => 'zero', 'quantity' => 'value', 'max_abs_error' => 0.0, 'max_rel_error' => null, 'status' => 'pass'],
+                ['name' => 'unknown', 'quantity' => 'value', 'max_abs_error' => 1e-3],
+            ],
+        ]);
+        $text = html_entity_decode(strip_tags($this->get(Package::find('phiz')->url('verification.topic', ['id' => 'export']))->assertOk()->getContent()));
+        $this->assertStringContainsString('undefined at r = 0', $text);
+        $this->assertStringContainsString('1 pass, 0 fail, 0 skipped, 1 not reported', $text);
     }
 
     public function test_a_note_every_verification_report_shares_is_shown_once(): void
     {
-        $text = html_entity_decode(strip_tags($this->get(Package::find('phplyr')->url('verification'))->assertOk()->getContent()));
+        $phplyr = Package::find('phplyr');
+        $text = html_entity_decode(strip_tags($this->get($phplyr->url('verification.topic', ['id' => 'dplyr']))->assertOk()->getContent()));
         $this->assertSame(1, substr_count($text, 'n_compared counts the assertions in each test.'));
-        $this->assertStringContainsString('Max abs. error is the largest absolute difference', $text);
+        $this->assertStringContainsString('Absolute error is |x − r|', $text);
+        $this->assertStringContainsString('Relative error is |x − r| divided by', $text);
+    }
+
+    public function test_old_evidence_urls_redirect_to_their_topics(): void
+    {
+        $phpolars = Package::find('phpolars');
+        $this->get('http://phpolars.phpstats.test/benchmarks/py-polars')->assertStatus(301)->assertRedirect($phpolars->url('benchmark', ['id' => 'read-group-join']));
+        $this->get('http://phpolars.phpstats.test/benchmarks/php-arrays')->assertStatus(301)->assertRedirect($phpolars->url('benchmark', ['id' => 'read-group-join']));
+        $this->get('http://phit.phpstats.test/verifications/ols')->assertStatus(301)->assertRedirect('http://phit.phpstats.test/verification/ols');
+        $this->get('http://phit.phpstats.test/benchmarks/not-a-workload')->assertNotFound();
+        $this->get('http://phit.phpstats.test/verification/not-a-topic')->assertNotFound();
+
+        // Old #fragments go on to the topic pages, including renamed ones.
+        $this->get($phpolars->url('benchmarks'))->assertOk()
+            ->assertSee('\\u0022py-polars\\u0022', false);
+
+        // A docs report the package still lists keeps its page; once it
+        // leaves the docs nav, it redirects to the matching evidence page.
+        $phit = Package::find('phit');
+        $this->get($phit->url('docs', ['path' => 'benchmarks/ols']))->assertOk();
+        $root = $this->copyContent();
+        $docs = json_decode(File::get("{$root}/phit/docs.json"), true);
+        $docs['nav'] = array_values(array_filter($docs['nav'], fn ($item) => ! preg_match('#^(benchmarks/|verifications/|notebooks/.*-verification$|verification$)#', $item['path'])));
+        File::put("{$root}/phit/docs.json", json_encode($docs));
+        Package::flush();
+        $phit = Package::find('phit');
+        $this->get($phit->url('docs', ['path' => 'benchmarks/ols']))->assertStatus(301)->assertRedirect($phit->url('benchmark', ['id' => 'ols']));
+        $this->get($phit->url('docs', ['path' => 'benchmarks/ols.html']))->assertStatus(301)->assertRedirect($phit->url('benchmark', ['id' => 'ols']));
+        $this->get($phit->url('docs', ['path' => 'verifications/lmm']))->assertRedirect($phit->url('verification.topic', ['id' => 'lmm']));
+        $this->get($phit->url('docs', ['path' => 'notebooks/lmm-public-verification']))->assertRedirect($phit->url('verification.topic', ['id' => 'lmm-public']));
+        $this->get($phit->url('docs', ['path' => 'verification']))->assertRedirect($phit->url('verification'));
+        $this->assertSame($phit->url('benchmark', ['id' => 'ols']), Package::resolveLinks('phpstats://phit/docs/benchmarks/ols'));
+    }
+
+    public function test_moved_docs_sections_send_their_fragments_on(): void
+    {
+        $phplyr = Package::find('phplyr');
+        $moved = $phplyr->movedFragments('performance');
+        $this->assertSame($phplyr->url('benchmark', ['id' => 'workloads']), $moved['methods']);
+        $this->assertSame($phplyr->url('benchmark', ['id' => 'backends']), $moved['backend-pipelines']);
+        $this->get($phplyr->url('docs', ['path' => 'performance']))->assertOk()->assertSee('var moved = ', false);
+        $this->get($phplyr->url('docs'))->assertOk()->assertDontSee('var moved = ', false);
+    }
+
+    /** A copy of the synced content for this test to change, as the content path. */
+    private function copyContent(): string
+    {
+        $root = base_path('storage/framework/testing/content-'.uniqid());
+        File::copyDirectory(config('phpstats.content_path'), $root);
+        config(['phpstats.content_path' => $root]);
+        Package::flush();
+        $this->beforeApplicationDestroyed(fn () => File::deleteDirectory($root));
+
+        return $root;
+    }
+
+    /** One more record for a package, listed in its site.json. */
+    private function fixtureRecord(string $key, string $kind, string $id, array $record): void
+    {
+        $root = $this->copyContent();
+        File::ensureDirectoryExists("{$root}/{$key}/{$kind}");
+        File::put("{$root}/{$key}/{$kind}/{$id}.json", json_encode($record));
+        $site = json_decode(File::get("{$root}/{$key}/site.json"), true);
+        $site[$kind] = [...($site[$kind] ?? []), "site/{$kind}/{$id}.json"];
+        File::put("{$root}/{$key}/site.json", json_encode($site));
+        Package::flush();
     }
 
     /**

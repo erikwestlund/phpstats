@@ -19,6 +19,10 @@ class PackageController extends Controller
         if (! $item->hasDocs()) {
             return $item->externalDocs() ? redirect()->away($item->externalDocs()) : abort(404);
         }
+        // A benchmark or verification report that moved to the evidence pages.
+        if ($path !== null && ($evidence = $item->evidenceRedirect(preg_replace('/\.html$/', '', $path)))) {
+            return redirect()->to($evidence, 301);
+        }
         // Quarto's sitemaps and the GitHub Pages redirects name a page x.html.
         if ($path !== null && str_ends_with($path, '.html')) {
             $bare = substr($path, 0, -5);
@@ -65,9 +69,33 @@ class PackageController extends Controller
         return $this->page($package, 'benchmarks');
     }
 
+    public function benchmark(string $package, string $id)
+    {
+        $item = $this->package($package);
+        if (($record = $item->benchmark($id)) === null) {
+            $target = $item->renamedTopics('benchmarks')[$id] ?? abort(404);
+
+            return redirect()->to($item->url('benchmark', ['id' => $target]), 301);
+        }
+
+        return $this->page($package, 'benchmark', ['record' => $record]);
+    }
+
     public function verification(string $package): View
     {
         return $this->page($package, 'verification');
+    }
+
+    public function verificationTopic(string $package, string $id)
+    {
+        $item = $this->package($package);
+        if (($record = $item->verificationTopic($id)) === null) {
+            $target = $item->renamedTopics('verification')[$id] ?? abort(404);
+
+            return redirect()->to($item->url('verification.topic', ['id' => $target]), 301);
+        }
+
+        return $this->page($package, 'verification-topic', ['record' => $record]);
     }
 
     private function package(string $key): Package

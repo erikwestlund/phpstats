@@ -70,12 +70,20 @@ class SitemapController extends Controller
                 }
             }
 
+            // The sections and their topic pages, where there are records:
+            // a section with none only says so.
             if ($package->benchmarks() !== []) {
                 $urls[] = $package->url('benchmarks');
+                foreach ($package->benchmarks() as $record) {
+                    $urls[] = $package->url('benchmark', ['id' => $record['id']]);
+                }
             }
 
             if ($package->verifications() !== []) {
                 $urls[] = $package->url('verification');
+                foreach ($package->verifications() as $record) {
+                    $urls[] = $package->url('verification.topic', ['id' => $record['id']]);
+                }
             }
         }
 

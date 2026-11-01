@@ -14,20 +14,11 @@
         $package = \App\Content\Package::find($workload['package']);
         $record = $package ? collect($package->benchmarks())->firstWhere('id', $workload['id']) : null;
 
-        return $record ? [...$workload, 'record' => $record, 'url' => $package->url('benchmarks').'#'.$workload['id'], 'name' => $package->name()] : null;
+        return $record ? [...$workload, 'record' => $record, 'url' => $package->url('benchmark', ['id' => $workload['id']]), 'name' => $package->name()] : null;
     })->filter()->values();
     $time = fn (float $ms) => $ms < 1000 ? number_format($ms, $ms < 10 ? 1 : 0).' ms' : number_format($ms / 1000, 1).' s';
     $memory = fn (float $mib) => $mib >= 1024 ? number_format($mib / 1024, 1).' GiB' : number_format($mib).' MiB';
-    // A record's code is shown without its common indentation. Some records
-    // keep a snippet's indentation on every line but the first, so the
-    // indentation is measured on the lines after it.
-    $dedent = function (string $code): string {
-        $lines = explode("\n", trim(preg_replace('/^<\?php\s*/', '', $code), "\n"));
-        $rest = array_filter(array_slice($lines, 1), fn ($l) => trim($l) !== '');
-        $indent = $rest === [] ? 0 : min(array_map(fn ($l) => strlen($l) - strlen(ltrim($l)), $rest));
-
-        return implode("\n", array_map(fn ($l) => preg_replace('/^ {0,'.$indent.'}/', '', $l), $lines));
-    };
+    $dedent = \App\Content\Code::dedent(...);
 @endphp
 @if ($workloads->isNotEmpty())
 <section id="performance" aria-labelledby="performance-heading" class="scroll-mt-16 border-t border-zinc-200 py-16 sm:py-20 dark:border-white/10">
