@@ -317,17 +317,12 @@
                 },
                 {
                     "id": "moment-matching-and-loo",
-                    "text": "Moment matching and loo (as of 2026-10-31)",
+                    "text": "Moment matching and loo",
                     "level": 3
                 },
                 {
                     "id": "not-implemented",
                     "text": "Not implemented",
-                    "level": 2
-                },
-                {
-                    "id": "cmdstanr-1-0",
-                    "text": "Code written before CmdStanR 1.0 (2026-10)",
                     "level": 2
                 }
             ],
@@ -748,21 +743,6 @@
                     "id": "limits",
                     "text": "Limits",
                     "level": 2
-                },
-                {
-                    "id": "technical-notes",
-                    "text": "Technical notes",
-                    "level": 2
-                },
-                {
-                    "id": "rs-csv-parsing",
-                    "text": "R’s CSV parsing",
-                    "level": 3
-                },
-                {
-                    "id": "moment-matching-references-2026-10",
-                    "text": "Moment-matching references (2026-10)",
-                    "level": 3
                 }
             ],
             "math": false
