@@ -23,11 +23,11 @@
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span><span id="cb2-2" class="code-line" style="--indent: 2ch"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"autoload"</span><span class="fu">:</span> <span class="st">"../app/vendor/autoload.php"</span></span><span id="cb2-3" class="code-line" style="--indent: 0ch"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div></div>
 <p><a href="phpstats://juphyter/docs/install#which-classes-a-notebook-sees">Which classes a notebook sees</a> lists every way to set it.</p>
 </section>
-<section id="tables" class="level2">
-<h2 class="anchored" data-anchor-id="tables">Tables</h2>
-<p>A phibble data frame appears as an HTML table with its dimensions and column types. The table’s styles use JupyterLab’s theme variables, so it follows the light and dark themes.</p>
-<div id="5e2d6113" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DataFrame::fromRows([</span><span id="cb3-2" class="code-line" style="--indent: 4ch"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'front end'</span> =&gt; <span class="st">'JupyterLab'</span><span class="ot">,</span> <span class="st">'plot from'</span> =&gt; <span class="st">'the Vega-Lite spec'</span><span class="ot">,</span> <span class="st">'table from'</span> =&gt; <span class="st">'text/html'</span>]<span class="ot">,</span></span><span id="cb3-3" class="code-line" style="--indent: 4ch"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'front end'</span> =&gt; <span class="st">'Quarto HTML'</span><span class="ot">,</span> <span class="st">'plot from'</span> =&gt; <span class="st">'the HTML embed'</span><span class="ot">,</span> <span class="st">'table from'</span> =&gt; <span class="st">'text/html'</span>]<span class="ot">,</span></span><span id="cb3-4" class="code-line" style="--indent: 4ch"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'front end'</span> =&gt; <span class="st">'Quarto PDF'</span><span class="ot">,</span> <span class="st">'plot from'</span> =&gt; <span class="st">'the static SVG'</span><span class="ot">,</span> <span class="st">'table from'</span> =&gt; <span class="st">'the parsed table'</span>]<span class="ot">,</span></span><span id="cb3-5" class="code-line" style="--indent: 0ch"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>])<span class="ot">;</span></span></code></pre></div></div>
+<section id="tables-and-plots" class="level2">
+<h2 class="anchored" data-anchor-id="tables-and-plots">Tables and plots</h2>
+<p>A phibble data frame appears as an HTML table with its dimensions and column types. The table follows JupyterLab’s light and dark themes.</p>
+<div id="f29c9f8a" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DataFrame::fromRows([</span><span id="cb3-2" class="code-line" style="--indent: 4ch"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'city'</span> =&gt; <span class="st">'Oslo'</span><span class="ot">,</span> <span class="st">'month'</span> =&gt; <span class="st">'Jan'</span><span class="ot">,</span> <span class="st">'temp'</span> =&gt; <span class="op">-</span><span class="fl">4.3</span>]<span class="ot">,</span></span><span id="cb3-3" class="code-line" style="--indent: 4ch"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'city'</span> =&gt; <span class="st">'Oslo'</span><span class="ot">,</span> <span class="st">'month'</span> =&gt; <span class="st">'Jul'</span><span class="ot">,</span> <span class="st">'temp'</span> =&gt; <span class="fl">16.4</span>]<span class="ot">,</span></span><span id="cb3-4" class="code-line" style="--indent: 4ch"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'city'</span> =&gt; <span class="st">'Lisbon'</span><span class="ot">,</span> <span class="st">'month'</span> =&gt; <span class="st">'Jan'</span><span class="ot">,</span> <span class="st">'temp'</span> =&gt; <span class="fl">11.6</span>]<span class="ot">,</span></span><span id="cb3-5" class="code-line" style="--indent: 0ch"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>])<span class="ot">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
 <div class="juphyter-table">
 <style>.juphyter-table{font-family:var(--jp-code-font-family,ui-monospace,SFMono-Regular,Menlo,monospace);font-size:var(--jp-code-font-size,0.85em);color:var(--jp-content-font-color1,#111827)}.juphyter-table .juphyter-note{color:var(--jp-content-font-color2,#6b7280);margin:0.15em 0}.juphyter-table table{border-collapse:collapse;margin:0.3em 0}.juphyter-table th,.juphyter-table td{padding:0.1em 0.75em 0.1em 0;text-align:left;white-space:nowrap}.juphyter-table thead th{border-bottom:1px solid var(--jp-border-color2,#d1d5db)}.juphyter-table .juphyter-num{text-align:right}.juphyter-table .juphyter-rowid{color:var(--jp-content-font-color3,#9ca3af);font-weight:normal;text-align:right}.juphyter-table .juphyter-type{color:var(--jp-content-font-color2,#6b7280);font-weight:normal}.juphyter-table .juphyter-na{color:var(--jp-content-font-color3,#9ca3af)}</style>
@@ -37,29 +37,29 @@
 <thead>
 <tr class="header">
 <th class="juphyter-rowid" data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">front end <span class="juphyter-type">&lt;chr&gt;</span></th>
-<th data-quarto-table-cell-role="th">plot from <span class="juphyter-type">&lt;chr&gt;</span></th>
-<th data-quarto-table-cell-role="th">table from <span class="juphyter-type">&lt;chr&gt;</span></th>
+<th data-quarto-table-cell-role="th">city <span class="juphyter-type">&lt;chr&gt;</span></th>
+<th data-quarto-table-cell-role="th">month <span class="juphyter-type">&lt;chr&gt;</span></th>
+<th class="juphyter-num" data-quarto-table-cell-role="th">temp <span class="juphyter-type">&lt;dbl&gt;</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <th class="juphyter-rowid" data-quarto-table-cell-role="th">1</th>
-<td>JupyterLab</td>
-<td>the Vega-Lite spec</td>
-<td>text/html</td>
+<td>Oslo</td>
+<td>Jan</td>
+<td class="juphyter-num">-4.3</td>
 </tr>
 <tr class="even">
 <th class="juphyter-rowid" data-quarto-table-cell-role="th">2</th>
-<td>Quarto HTML</td>
-<td>the HTML embed</td>
-<td>text/html</td>
+<td>Oslo</td>
+<td>Jul</td>
+<td class="juphyter-num">16.4</td>
 </tr>
 <tr class="odd">
 <th class="juphyter-rowid" data-quarto-table-cell-role="th">3</th>
-<td>Quarto PDF</td>
-<td>the static SVG</td>
-<td>the parsed table</td>
+<td>Lisbon</td>
+<td>Jan</td>
+<td class="juphyter-num">11.6</td>
 </tr>
 </tbody>
 </table>
@@ -67,11 +67,8 @@
 </div>
 </div>
 </div>
-</section>
-<section id="plots" class="level2">
-<h2 class="anchored" data-anchor-id="plots">Plots</h2>
-<p>JupyterLab draws a phiz plot from its Vega-Lite specification and needs no extension for it. phiz writes Vega-Lite 6 specifications, and juphyter publishes them under <code>application/vnd.vegalite.v5+json</code>, the newest Vega-Lite type JupyterLab’s built-in renderer accepts. On 2026-10-19, with phiz 0.3, JupyterLab’s bundled Vega-Lite 5.6.1 compiled all sixteen phiz specifications tested.</p>
-<p>juphyter also publishes a static SVG and an HTML version of each plot. JupyterLab uses neither. It does not run scripts in HTML output, and the HTML version is a container with a script that draws the chart, so it would show as an empty box. The SVG serves Quarto’s PDF and Word output, front ends without JavaScript, and any Vega-Lite 6 construct that the version 5 renderer rejects.</p>
+<p>A phiz plot appears as a chart. JupyterLab draws it from its Vega-Lite specification and needs no extension.</p>
+<p>Compatibility note: phiz writes Vega-Lite 6 specifications, and juphyter publishes them under <code>application/vnd.vegalite.v5+json</code>, the newest Vega-Lite type JupyterLab’s built-in renderer accepts. On 2026-10-19, with phiz 0.3, JupyterLab’s bundled Vega-Lite 5.6.1 compiled all sixteen phiz specifications tested. A plot also carries a static SVG, which JupyterLab does not use, for Quarto’s PDF and Word output and for anything the version 5 renderer rejects.</p>
 </section>
 <section id="converting-a-notebook" class="level2">
 <h2 class="anchored" data-anchor-id="converting-a-notebook">Converting a notebook</h2>

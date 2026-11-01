@@ -40,7 +40,7 @@ return [
         'phit' => ['repo' => 'phpstats/phit', 'ref' => 'ded53a2b4707f6653bba528d4cd8cb71315cc6e7'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => '87cb7e013ba15dd1fa345cfb543d3d844bc5c101'],
         'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '66709d675ae297cfaa7bc327ca98bd1a07ef8236'],
-        'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '2e1ee97c03ae7b4c70e276cb8524b4804f54b286'],
+        'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '8521e942ab731888f66f405e9e942180aee8c76d'],
     ],
 
     /*

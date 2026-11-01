@@ -29,6 +29,10 @@
             "path": "limitations"
         },
         {
+            "title": "Troubleshooting",
+            "path": "troubleshooting"
+        },
+        {
             "title": "Contributing",
             "path": "development"
         },
@@ -142,14 +146,14 @@
                     "level": 2
                 },
                 {
-                    "id": "install",
-                    "text": "Install",
+                    "id": "install-juphyter",
+                    "text": "Install juphyter",
                     "level": 2
                 },
                 {
-                    "id": "keeping-the-path-entries",
-                    "text": "Keeping the PATH entries",
-                    "level": 3
+                    "id": "register-the-kernel",
+                    "text": "Register the kernel",
+                    "level": 2
                 },
                 {
                     "id": "check-the-installation",
@@ -157,14 +161,9 @@
                     "level": 2
                 },
                 {
-                    "id": "the-kernel",
-                    "text": "The kernel",
-                    "level": 3
-                },
-                {
-                    "id": "quarto",
-                    "text": "Quarto",
-                    "level": 3
+                    "id": "keeping-the-path-entries",
+                    "text": "Keeping the PATH entries",
+                    "level": 2
                 },
                 {
                     "id": "the-phpstats-packages",
@@ -218,13 +217,8 @@
                     "level": 2
                 },
                 {
-                    "id": "tables",
-                    "text": "Tables",
-                    "level": 2
-                },
-                {
-                    "id": "plots",
-                    "text": "Plots",
+                    "id": "tables-and-plots",
+                    "text": "Tables and plots",
                     "level": 2
                 },
                 {
@@ -254,8 +248,8 @@
                     "level": 2
                 },
                 {
-                    "id": "references-and-this-do-not-survive-between-cells",
-                    "text": "References and $this do not survive between cells",
+                    "id": "references-and-this-do-not-carry-between-cells",
+                    "text": "References and $this do not carry between cells",
                     "level": 2
                 },
                 {
@@ -269,18 +263,18 @@
                     "level": 2
                 },
                 {
-                    "id": "a-cell-that-calls-exit-or-die-ends-the-kernel",
-                    "text": "A cell that calls exit or die ends the kernel",
+                    "id": "exit-and-die-end-the-kernel",
+                    "text": "exit and die end the kernel",
                     "level": 2
                 },
                 {
-                    "id": "interrupting-needs-pcntl-and-a-cell-can-still-swallow-it",
-                    "text": "Interrupting needs pcntl, and a cell can still swallow it",
+                    "id": "interrupting-needs-pcntl",
+                    "text": "Interrupting needs pcntl",
                     "level": 2
                 },
                 {
-                    "id": "a-data-frames-numbers-in-an-html-table-are-not-pillars",
-                    "text": "A data frame’s numbers in an HTML table are not pillar’s",
+                    "id": "html-tables-format-numbers-differently-from-the-text-output",
+                    "text": "HTML tables format numbers differently from the text output",
                     "level": 2
                 },
                 {
@@ -289,8 +283,8 @@
                     "level": 2
                 },
                 {
-                    "id": "not-yet-implemented",
-                    "text": "Not yet implemented",
+                    "id": "not-supported",
+                    "text": "Not supported",
                     "level": 2
                 }
             ],
@@ -299,11 +293,6 @@
         "python": {
             "title": "Python interpreters and editors",
             "headings": [
-                {
-                    "id": "when-quarto-cannot-find-the-kernel",
-                    "text": "When Quarto cannot find the kernel",
-                    "level": 2
-                },
                 {
                     "id": "how-quarto-chooses-an-interpreter",
                     "text": "How Quarto chooses an interpreter",
@@ -328,11 +317,6 @@
                     "id": "other-editors",
                     "text": "Other editors",
                     "level": 2
-                },
-                {
-                    "id": "when-no-python-can-host-the-kernel",
-                    "text": "When no Python can host the kernel",
-                    "level": 2
                 }
             ],
             "math": false
@@ -341,8 +325,13 @@
             "title": "Quarto",
             "headings": [
                 {
-                    "id": "naming-the-kernel",
-                    "text": "Naming the kernel",
+                    "id": "a-minimal-document",
+                    "text": "A minimal document",
+                    "level": 2
+                },
+                {
+                    "id": "output-formats",
+                    "text": "Output formats",
                     "level": 2
                 },
                 {
@@ -351,29 +340,70 @@
                     "level": 2
                 },
                 {
-                    "id": "what-each-format-carries",
-                    "text": "What each format carries",
-                    "level": 2
-                },
-                {
-                    "id": "pdf-output",
-                    "text": "PDF output",
-                    "level": 2
-                },
-                {
-                    "id": "the-kernel-daemon",
-                    "text": "The kernel daemon",
+                    "id": "projects-and-autoloading",
+                    "text": "Projects and autoloading",
                     "level": 2
                 },
                 {
                     "id": "freeze",
                     "text": "Freeze",
                     "level": 2
+                }
+            ],
+            "math": false
+        },
+        "troubleshooting": {
+            "title": "Troubleshooting",
+            "headings": [
+                {
+                    "id": "a-kernel-stopped-working",
+                    "text": "A kernel stopped working",
+                    "level": 2
                 },
                 {
-                    "id": "projects",
-                    "text": "Projects",
+                    "id": "homebrew-php-and-juphyter-0.1.0",
+                    "text": "Homebrew PHP and juphyter 0.1.0",
+                    "level": 3
+                },
+                {
+                    "id": "no-python-can-host-the-kernel",
+                    "text": "No Python can host the kernel",
                     "level": 2
+                },
+                {
+                    "id": "the-stop-button-does-nothing",
+                    "text": "The stop button does nothing",
+                    "level": 2
+                },
+                {
+                    "id": "quarto",
+                    "text": "Quarto",
+                    "level": 2
+                },
+                {
+                    "id": "quarto-cannot-find-the-kernel",
+                    "text": "Quarto cannot find the kernel",
+                    "level": 3
+                },
+                {
+                    "id": "keyerror-path-with-a-kernelspec-block",
+                    "text": "KeyError: 'path' with a kernelspec block",
+                    "level": 3
+                },
+                {
+                    "id": "unknown-message-type-comm_open",
+                    "text": "Unknown message type: 'comm_open'",
+                    "level": 3
+                },
+                {
+                    "id": "a-new-php-session-on-every-render",
+                    "text": "A new PHP session on every render",
+                    "level": 3
+                },
+                {
+                    "id": "rendering-frozen-documents",
+                    "text": "Rendering frozen documents",
+                    "level": 3
                 }
             ],
             "math": false

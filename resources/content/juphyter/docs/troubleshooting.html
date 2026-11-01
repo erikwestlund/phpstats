@@ -1,0 +1,58 @@
+<p>Start with <code>juphyter doctor</code>. It names the failing part, and for a Python on the wrong <code>PATH</code> it prints the <code>export</code> line that fixes it.</p>
+<section id="a-kernel-stopped-working" class="level2">
+<h2 class="anchored" data-anchor-id="a-kernel-stopped-working">A kernel stopped working</h2>
+<p>The kernel records absolute paths to a PHP binary, a Python interpreter, and juphyter itself. Upgrading or removing any of them breaks the kernel, and <code>juphyter doctor</code> marks it <code>fail</code>.</p>
+<ul>
+<li>Run <code>juphyter install</code> again with the same <code>--name</code> to record the current paths.</li>
+<li>A kernel installed into a project breaks when the project’s <code>vendor</code> directory is deleted. Run <code>composer install</code> in the project, or uninstall the kernel.</li>
+</ul>
+<section id="homebrew-php-and-juphyter-0.1.0" class="level3">
+<h3 class="anchored" data-anchor-id="homebrew-php-and-juphyter-0.1.0">Homebrew PHP and juphyter 0.1.0</h3>
+<p>juphyter 0.1.0 recorded Homebrew’s versioned path, such as <code>/opt/homebrew/Cellar/php/8.5.10/bin/php</code>, which <code>brew upgrade</code> removes. juphyter 0.1.1 and later record the path on <code>PATH</code>, such as <code>/opt/homebrew/bin/php</code>. Upgrade juphyter and run <code>juphyter install</code> again, or pass the stable path to 0.1.0:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">juphyter</span> install <span class="at">--php</span> /opt/homebrew/bin/php</span></code></pre></div></div>
+</section>
+</section>
+<section id="no-python-can-host-the-kernel" class="level2">
+<h2 class="anchored" data-anchor-id="no-python-can-host-the-kernel">No Python can host the kernel</h2>
+<p><code>juphyter install</code> looks for an interpreter in this order: the one named by <code>--python</code>, then the one that owns the <code>jupyter</code> command on <code>PATH</code>. When that interpreter has no ipykernel 7, it builds a virtual environment with JupyterLab instead of installing into it.</p>
+<ul>
+<li>System and Homebrew Python builds are externally managed, and <code>pip install</code> into them refuses. The virtual environment avoids that.</li>
+<li>An environment that already exists at the <code>--create-venv</code> path is reused, and its packages are installed again, so a second run finishes an interrupted one.</li>
+<li>A directory at that path that holds something other than an environment is refused.</li>
+<li>With <code>--python</code>, the command builds nothing. When the named interpreter has no ipykernel, it prints the <code>pip install</code> command for that interpreter and writes no kernel.</li>
+</ul>
+</section>
+<section id="the-stop-button-does-nothing" class="level2">
+<h2 class="anchored" data-anchor-id="the-stop-button-does-nothing">The stop button does nothing</h2>
+<p>The PHP binary that runs the cells lacks <code>pcntl</code>, or lists its functions in <code>disable_functions</code>. <code>juphyter doctor</code> reports it as a warning. Enable <code>pcntl</code> for that binary, or run <code>juphyter install --php</code> with a binary that has it. <a href="phpstats://juphyter/docs/limitations#interrupting-needs-pcntl">Limitations</a> covers what an interrupt can and cannot stop.</p>
+</section>
+<section id="quarto" class="level2">
+<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
+<section id="quarto-cannot-find-the-kernel" class="level3">
+<h3 class="anchored" data-anchor-id="quarto-cannot-find-the-kernel">Quarto cannot find the kernel</h3>
+<pre><code>ERROR: Jupyter kernel 'php' not found. Known kernels: python3</code></pre>
+<p>Quarto’s interpreter has no Jupyter in it, so it can list no kernels. <code>juphyter doctor</code> reports this as <code>Quarto: not ready.</code> and prints the fix. <a href="phpstats://juphyter/docs/python">Python interpreters and editors</a> covers how to point Quarto at an interpreter that has Jupyter.</p>
+</section>
+<section id="keyerror-path-with-a-kernelspec-block" class="level3">
+<h3 class="anchored" data-anchor-id="keyerror-path-with-a-kernelspec-block"><code>KeyError: 'path'</code> with a <code>kernelspec</code> block</h3>
+<p>Quarto accepts the fuller front matter that Jupyter writes into a notebook, but for juphyter it also needs <code>path</code>, the directory that holds <code>kernel.json</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span><span id="cb3-2" class="code-line" style="--indent: 0ch"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">jupyter</span><span class="kw">:</span></span><span id="cb3-3" class="code-line" style="--indent: 2ch"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">kernelspec</span><span class="kw">:</span></span><span id="cb3-4" class="code-line" style="--indent: 4ch"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> php85</span></span><span id="cb3-5" class="code-line" style="--indent: 4ch"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">language</span><span class="kw">:</span><span class="at"> php</span></span><span id="cb3-6" class="code-line" style="--indent: 4ch"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">display_name</span><span class="kw">:</span><span class="at"> </span><span class="st">"PHP 8.5"</span></span><span id="cb3-7" class="code-line" style="--indent: 4ch"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">path</span><span class="kw">:</span><span class="at"> /Users/you/Library/Jupyter/kernels/php85</span></span><span id="cb3-8" class="code-line" style="--indent: 0ch"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div></div>
+<p>Quarto reads <code>path</code> to look for a setup cell beside the kernelspec, which it does for any language it has no built-in support for. <code>jupyter: php85</code> fills it in, so name the kernel instead of describing it.</p>
+</section>
+<section id="unknown-message-type-comm_open" class="level3">
+<h3 class="anchored" data-anchor-id="unknown-message-type-comm_open"><code>Unknown message type: 'comm_open'</code></h3>
+<p>Every render prints this once. It comes from ipykernel, because the kernel installs no comm manager, and it has no effect on the rendered document. The same absence is why ipywidgets are unsupported.</p>
+</section>
+<section id="a-new-php-session-on-every-render" class="level3">
+<h3 class="anchored" data-anchor-id="a-new-php-session-on-every-render">A new PHP session on every render</h3>
+<p>Quarto keeps a kernel alive between renders only for languages it can write a setup or cleanup cell for. It has none for PHP, and <code>juphyter install</code> writes none, so each render starts a new PHP session even with <code>--execute-daemon</code>. To keep that behavior if a later Quarto release changes it, set:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span><span id="cb4-2" class="code-line" style="--indent: 2ch"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">daemon</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div></div>
+<p>A document that declares a class or a function depends on it, because PHP cannot redeclare either in a kept-alive session.</p>
+</section>
+<section id="rendering-frozen-documents" class="level3">
+<h3 class="anchored" data-anchor-id="rendering-frozen-documents">Rendering frozen documents</h3>
+<p>Quarto looks up a document’s kernel by name before it reads frozen output, so a kernel with that name has to be registered on the rendering machine even when no cell runs. <a href="phpstats://juphyter/docs/development#documentation">Contributing</a> shows how this repository renders its own site that way.</p>
+
+
+</section>
+</section>
