@@ -65,8 +65,8 @@
     $panels = [
         'distributions' => [
             'dataset' => null,
-            'record' => 'Probability distributions',
-            'label' => 'Probability distributions',
+            'record' => 'Distributions',
+            'label' => 'Distributions',
             'example' => 'verified/distributions',
             'reference' => 'distributions',
             'libraries' => ['R' => 'R', 'Python' => 'SciPy (Python)'],
@@ -168,14 +168,14 @@
             'rows' => $model([['Herd variance', $groupVariance, 'group_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'bayesian' => [
-            'dataset' => null,
+            'dataset' => 'schools',
             'record' => 'Bayesian interfaces',
-            'label' => 'Bayesian (Stan)',
+            'label' => 'Mixed Gaussian (Bayesian)',
             'primary' => 'CmdStanPHP',
             'stored' => 'interfaces',
             'libraries' => ['R' => 'CmdStanR (R)', 'Python' => 'CmdStanPy (Python)'],
             'relative' => false,
-            'note' => 'Posterior means for the eight schools model (Rubin 1981), run through the same CmdStan with the same seed and arguments. The 4,000 draws are identical in all three.',
+            'note' => 'A hierarchical Gaussian model of coaching effects in eight schools (Rubin 1981), sampled by Stan. CmdStanPHP, CmdStanR, and CmdStanPy run the same CmdStan executable with the same data, seed, and arguments, and their 4,000 draws are identical. The table compares each interface\'s posterior means.',
             'anchor' => 'interfaces',
         ],
     ];
