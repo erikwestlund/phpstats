@@ -233,6 +233,14 @@ pre,
 .docs-content .vega-embed {
     max-width: 100%;
 }
+/* Display math is a block that scrolls inside its own box when it is wider
+   than the column, before MathJax typesets it and after. MathJax's own
+   container, inside it, is left to MathJax. */
+.docs-content .math.display {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+}
 /* Inline math cannot wrap, and a notebook prints matrices as inline
    \displaystyle math, so a paragraph that holds a matrix scrolls inside its
    own box when it is wider than the column. The padding holds the tall
