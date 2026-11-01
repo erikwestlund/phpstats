@@ -290,16 +290,6 @@
             "section": "Mathematics"
         },
         {
-            "title": "v0.1 stabilization and release assessment",
-            "path": "v0.1",
-            "section": "History"
-        },
-        {
-            "title": "v0.2 numerical API assessment (historical)",
-            "path": "v0.2",
-            "section": "History"
-        },
-        {
             "title": "Development",
             "path": "development",
             "section": "Contributing"
@@ -327,7 +317,7 @@
     ],
     "pages": {
         "benchmarks/distributions": {
-            "title": "Distribution performance and regression preservation",
+            "title": "Distribution performance",
             "headings": [
                 {
                     "id": "methods",
@@ -342,11 +332,6 @@
                 {
                     "id": "timing-boundaries-and-interpretation",
                     "text": "Timing boundaries and interpretation",
-                    "level": 2
-                },
-                {
-                    "id": "seven-model-preservation-v0.2-release-check",
-                    "text": "Seven-model preservation (v0.2 release check)",
                     "level": 2
                 },
                 {
@@ -387,6 +372,11 @@
             "title": "Random-intercept Gaussian ML scale validation and performance",
             "headings": [
                 {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
                     "id": "recorded-results",
                     "text": "Recorded results",
                     "level": 2
@@ -398,7 +388,7 @@
                 },
                 {
                     "id": "native-rust-optimization",
-                    "text": "Native Rust optimization",
+                    "text": "Algorithm",
                     "level": 2
                 },
                 {
@@ -412,8 +402,8 @@
                     "level": 2
                 },
                 {
-                    "id": "reproduce",
-                    "text": "Reproduce",
+                    "id": "reproduction",
+                    "text": "Reproduction",
                     "level": 2
                 }
             ],
@@ -423,57 +413,10 @@
             "title": "Logistic regression scale validation and performance",
             "headings": [
                 {
-                    "id": "recorded-results",
-                    "text": "Recorded results",
+                    "id": "methods",
+                    "text": "Methods",
                     "level": 2
                 },
-                {
-                    "id": "visual-comparison",
-                    "text": "Visual comparison",
-                    "level": 2
-                },
-                {
-                    "id": "what-is-timed",
-                    "text": "What is timed?",
-                    "level": 2
-                },
-                {
-                    "id": "simulation-and-agreement",
-                    "text": "Simulation and agreement",
-                    "level": 2
-                },
-                {
-                    "id": "reproduce",
-                    "text": "Reproduce",
-                    "level": 2
-                }
-            ],
-            "math": true
-        },
-        "benchmarks/logistic-mixed": {
-            "title": "Binomial random-intercept scale checks and performance",
-            "headings": [
-                {
-                    "id": "timing-boundaries-and-correctness",
-                    "text": "Timing boundaries and correctness",
-                    "level": 2
-                },
-                {
-                    "id": "results",
-                    "text": "Results",
-                    "level": 2
-                },
-                {
-                    "id": "reproduce",
-                    "text": "Reproduce",
-                    "level": 2
-                }
-            ],
-            "math": false
-        },
-        "benchmarks/ols": {
-            "title": "OLS scale validation and performance",
-            "headings": [
                 {
                     "id": "recorded-results",
                     "text": "Recorded results",
@@ -490,18 +433,80 @@
                     "level": 2
                 },
                 {
+                    "id": "simulation-and-agreement",
+                    "text": "Simulation and agreement",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
+                    "level": 2
+                }
+            ],
+            "math": true
+        },
+        "benchmarks/logistic-mixed": {
+            "title": "Binomial random-intercept scale checks and performance",
+            "headings": [
+                {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
+                    "id": "timing-boundaries-and-correctness",
+                    "text": "Timing boundaries and correctness",
+                    "level": 2
+                },
+                {
+                    "id": "results",
+                    "text": "Results",
+                    "level": 2
+                },
+                {
+                    "id": "reproduction",
+                    "text": "Reproduction",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "benchmarks/ols": {
+            "title": "OLS scale validation and performance",
+            "headings": [
+                {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
+                    "id": "recorded-results",
+                    "text": "Recorded results",
+                    "level": 2
+                },
+                {
+                    "id": "visual-comparison",
+                    "text": "Visual comparison",
+                    "level": 2
+                },
+                {
+                    "id": "timing-boundaries",
+                    "text": "Timing boundaries",
+                    "level": 2
+                },
+                {
+                    "id": "memory-and-whole-process-time",
+                    "text": "Memory and whole-process time",
+                    "level": 2
+                },
+                {
                     "id": "simulation-and-numerical-agreement",
                     "text": "Simulation and numerical agreement",
                     "level": 2
                 },
                 {
-                    "id": "reproduce-and-maintain",
-                    "text": "Reproduce and maintain",
-                    "level": 2
-                },
-                {
-                    "id": "apple-accelerate-experiment",
-                    "text": "Apple Accelerate experiment",
+                    "id": "reproduction",
+                    "text": "Reproduction",
                     "level": 2
                 }
             ],
@@ -511,6 +516,11 @@
             "title": "Poisson regression scale validation and performance",
             "headings": [
                 {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
                     "id": "recorded-results",
                     "text": "Recorded results",
                     "level": 2
@@ -521,8 +531,8 @@
                     "level": 2
                 },
                 {
-                    "id": "what-is-timed",
-                    "text": "What is timed?",
+                    "id": "timing-boundaries",
+                    "text": "Timing boundaries",
                     "level": 2
                 },
                 {
@@ -531,8 +541,8 @@
                     "level": 2
                 },
                 {
-                    "id": "reproduce",
-                    "text": "Reproduce",
+                    "id": "reproduction",
+                    "text": "Reproduction",
                     "level": 2
                 }
             ],
@@ -542,6 +552,11 @@
             "title": "Probit regression scale validation and performance",
             "headings": [
                 {
+                    "id": "methods",
+                    "text": "Methods",
+                    "level": 2
+                },
+                {
                     "id": "recorded-results",
                     "text": "Recorded results",
                     "level": 2
@@ -552,8 +567,8 @@
                     "level": 2
                 },
                 {
-                    "id": "what-is-timed",
-                    "text": "What is timed?",
+                    "id": "timing-boundaries",
+                    "text": "Timing boundaries",
                     "level": 2
                 },
                 {
@@ -562,8 +577,8 @@
                     "level": 2
                 },
                 {
-                    "id": "reproduce",
-                    "text": "Reproduce",
+                    "id": "reproduction",
+                    "text": "Reproduction",
                     "level": 2
                 }
             ],
@@ -599,8 +614,8 @@
             "title": "API overview",
             "headings": [
                 {
-                    "id": "names-in-phit-0.4",
-                    "text": "Names in phit 0.4",
+                    "id": "deprecated-aliases",
+                    "text": "Deprecated aliases",
                     "level": 2
                 },
                 {
@@ -1235,11 +1250,6 @@
                     "id": "upgrade",
                     "text": "Upgrade",
                     "level": 2
-                },
-                {
-                    "id": "release-history",
-                    "text": "Release history",
-                    "level": 2
                 }
             ],
             "math": false
@@ -1364,8 +1374,8 @@
                     "level": 2
                 },
                 {
-                    "id": "implementation-and-history",
-                    "text": "Implementation and history",
+                    "id": "implementation",
+                    "text": "Implementation",
                     "level": 2
                 }
             ],
@@ -1754,8 +1764,8 @@
                     "level": 2
                 },
                 {
-                    "id": "reproduce",
-                    "text": "Reproduce",
+                    "id": "reproduction",
+                    "text": "Reproduction",
                     "level": 2
                 }
             ],
@@ -1877,8 +1887,8 @@
                     "level": 2
                 },
                 {
-                    "id": "read-the-limits-of-this-evidence",
-                    "text": "Read the limits of this evidence",
+                    "id": "limits",
+                    "text": "Limits",
                     "level": 2
                 }
             ],
@@ -1888,8 +1898,8 @@
             "title": "Poisson: count likelihood, log link and IRLS",
             "headings": [
                 {
-                    "id": "meaningful-simulated-observations",
-                    "text": "1. Meaningful simulated observations",
+                    "id": "simulated-observations",
+                    "text": "1. Simulated observations",
                     "level": 2
                 },
                 {
@@ -1926,7 +1936,7 @@
             "math": true
         },
         "notebooks/poisson-verification": {
-            "title": "The same poisson models in R, statsmodels and PHP",
+            "title": "The same Poisson models in R, statsmodels and PHP",
             "headings": [
                 {
                     "id": "equivalent-calls",
@@ -1945,8 +1955,8 @@
             "title": "Probit: a normal latent variable and Fisher scoring",
             "headings": [
                 {
-                    "id": "meaningful-simulated-observations",
-                    "text": "1. Meaningful simulated observations",
+                    "id": "simulated-observations",
+                    "text": "1. Simulated observations",
                     "level": 2
                 },
                 {
@@ -2225,11 +2235,6 @@
                     "id": "deployment-verification",
                     "text": "Deployment verification",
                     "level": 2
-                },
-                {
-                    "id": "history-packaging-record-of-2026-10-12",
-                    "text": "History: packaging record of 2026-10-12",
-                    "level": 2
                 }
             ],
             "math": false
@@ -2266,78 +2271,6 @@
                     "id": "independent-verification",
                     "text": "Independent verification",
                     "level": 3
-                }
-            ],
-            "math": false
-        },
-        "v0.1": {
-            "title": "v0.1 stabilization and release assessment",
-            "headings": [
-                {
-                    "id": "what-the-release-gate-establishes",
-                    "text": "What the release gate establishes",
-                    "level": 2
-                },
-                {
-                    "id": "correctness-fixes-and-compatibility-notes",
-                    "text": "Correctness fixes and compatibility notes",
-                    "level": 2
-                },
-                {
-                    "id": "stress-tests-and-numerical-limits",
-                    "text": "Stress tests and numerical limits",
-                    "level": 2
-                },
-                {
-                    "id": "php-contract-gate",
-                    "text": "PHP contract gate",
-                    "level": 2
-                },
-                {
-                    "id": "performance-preservation",
-                    "text": "Performance preservation",
-                    "level": 2
-                },
-                {
-                    "id": "release-readiness-and-remaining-gates",
-                    "text": "Release readiness and remaining gates",
-                    "level": 2
-                },
-                {
-                    "id": "review-follow-up",
-                    "text": "Review follow-up",
-                    "level": 2
-                }
-            ],
-            "math": false
-        },
-        "v0.2": {
-            "title": "v0.2 numerical API assessment (historical)",
-            "headings": [
-                {
-                    "id": "delivered-scope",
-                    "text": "Delivered scope",
-                    "level": 2
-                },
-                {
-                    "id": "numerical-findings-and-fixes",
-                    "text": "Numerical findings and fixes",
-                    "level": 2
-                },
-                {
-                    "id": "reuse-and-rng-decisions",
-                    "text": "Reuse and RNG decisions",
-                    "level": 2
-                },
-                {
-                    "id": "verification-and-maintenance",
-                    "text": "Verification and maintenance",
-                    "level": 2
-                },
-                {
-                    "id": "release-and-platform-limits",
-                    "text": "Release and platform limits",
-                    "level": 2
                 }
             ],
             "math": false
@@ -2422,8 +2355,8 @@
                     "level": 2
                 },
                 {
-                    "id": "implementation-history-backend-and-model-path-audit",
-                    "text": "Implementation history: backend and model-path audit",
+                    "id": "implementation-notes",
+                    "text": "Implementation notes",
                     "level": 2
                 }
             ],

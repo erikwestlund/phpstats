@@ -6,7 +6,7 @@
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
 <!-- BEGIN REFERENCE EVIDENCE -->
-<p>Native refresh: <strong>2026-10-12T15:18:49.923101+00:00</strong>. PHP 8.5.10; R version 4.6.1 (2026-06-24); SciPy 1.18.1; mpmath 1.4.1 at 60 digits.</p>
+<p>Native refresh: <strong>2026-11-01T19:23:00.594834+00:00</strong>. PHP 8.5.10; R version 4.6.1 (2026-06-24); SciPy 1.18.1; mpmath 1.4.1 at 60 digits.</p>
 <p>553 cases, 8,661 points, 27 unavailable independent reference points.</p>
 <table class="caption-top table">
 <thead>
@@ -159,11 +159,13 @@
 <h2 class="anchored" data-anchor-id="reproduction">Reproduction</h2>
 <p>See the commands under <a href="#inputs-and-references">Inputs and references</a> and run <code>./scripts/check</code> with a matching PHP for the full suite.</p>
 </section>
-<section id="implementation-history-backend-and-model-path-audit" class="level2">
-<h2 class="anchored" data-anchor-id="implementation-history-backend-and-model-path-audit">Implementation history: backend and model-path audit</h2>
-<p>The <a href="/content/phit/docs/verifications/distributions-audit.json">raw statrs report</a> and executable <code>crates/stats-core/examples/statrs_audit.rs</code> document why statrs alone is not used for the new distribution API. The <a href="/content/phit/docs/verifications/distributions-reuse.json">reuse experiment</a> compares the public Normal log-CDF and Student-t quantile with the existing probit and OLS formulas. Candidate t quantiles improve large-df reference error, but all six tested critical values and 17 tested normal log-CDF values differ in rounding, so the regression code keeps its existing paths.</p>
+<section id="implementation-notes" class="level2">
+<h2 class="anchored" data-anchor-id="implementation-notes">Implementation notes</h2>
+<ul>
+<li>statrs alone is not used for the distribution functions. The <a href="/content/phit/docs/verifications/distributions-audit.json">statrs report</a> and <code>crates/stats-core/examples/statrs_audit.rs</code> record the cases it fails.</li>
+<li>The regression code keeps its own normal log-CDF and Student-t quantile paths. The <a href="/content/phit/docs/verifications/distributions-reuse.json">reuse comparison</a> shows that the distribution functions’ versions differ from them in rounding on all six tested critical values and 17 tested log-CDF values.</li>
+</ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> run <span class="at">-p</span> stats-core <span class="at">--release</span> <span class="at">--locked</span> <span class="at">--example</span> statrs_audit</span><span id="cb2-2" class="code-line" style="--indent: 0ch"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> run <span class="at">-p</span> stats-core <span class="at">--release</span> <span class="at">--locked</span> <span class="at">--example</span> distribution_reuse_audit</span><span id="cb2-3" class="code-line" style="--indent: 0ch"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="va">PHP_CONFIG</span><span class="op">=</span>/path/to/php-config <span class="ex">./scripts/check</span></span></code></pre></div></div>
-<p>The <a href="phpstats://phit/docs/v0.2">v0.2 assessment</a> is the historical record of that release’s scope.</p>
 
 
 </section>

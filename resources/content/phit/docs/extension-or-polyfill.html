@@ -47,38 +47,7 @@
 </table>
 <section id="versions" class="level2">
 <h2 class="anchored" data-anchor-id="versions">Versions</h2>
-<p>Each polyfill release reproduces one phit release:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Polyfill</th>
-<th>phit</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>0.4.1</td>
-<td>v0.4.3</td>
-</tr>
-<tr class="even">
-<td>0.4.0</td>
-<td>v0.4.0</td>
-</tr>
-<tr class="odd">
-<td>0.3.0</td>
-<td>v0.3.0</td>
-</tr>
-<tr class="even">
-<td>0.2.0</td>
-<td>v0.2.0</td>
-</tr>
-<tr class="odd">
-<td>0.1.0</td>
-<td>v0.1.1</td>
-</tr>
-</tbody>
-</table>
-<p>phit v0.4.1 and v0.4.2 change only the CSV reader, which the polyfill does not provide. Polyfill 0.4.1 provides 242 of phit 0.4.3’s 243 functions, including the ten deprecated 0.3 model names.</p>
+<p>Each polyfill release reproduces one phit release. Polyfill 0.4.1 reproduces phit v0.4.3 and provides 242 of its 243 functions, including the deprecated aliases.</p>
 </section>
 <section id="how-they-coexist" class="level2">
 <h2 class="anchored" data-anchor-id="how-they-coexist">How they coexist</h2>
@@ -142,49 +111,7 @@
 </section>
 <section id="speed" class="level2">
 <h2 class="anchored" data-anchor-id="speed">Speed</h2>
-<p>These timings were recorded on an Apple M5 Ultra with PHP 8.5.10, OPcache on, and the JIT off.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Fit</th>
-<th>Recorded</th>
-<th>Polyfill</th>
-<th>Extension</th>
-<th>Ratio</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>fit_ols_matrix</code>, n = 100,000, 10 predictors</td>
-<td>2026-10-28, polyfill ab803fd, phit 3861d77</td>
-<td>262 ms</td>
-<td>29 ms</td>
-<td>9.1×</td>
-</tr>
-<tr class="even">
-<td><code>fit_logistic_matrix</code>, same design</td>
-<td>2026-10-28, polyfill ab803fd, phit 3861d77</td>
-<td>1.60 s</td>
-<td>72 ms</td>
-<td>22×</td>
-</tr>
-<tr class="odd">
-<td>Mixed model with 120 random coefficients</td>
-<td>2026-10-16</td>
-<td>8.0 s</td>
-<td>103 ms</td>
-<td>78×</td>
-</tr>
-</tbody>
-</table>
-<p>The mixed-model row predates polyfill 0.4.1. Since phit v0.4.3 and polyfill 0.4.1, a Gaussian mixed model with one grouping term or nested terms is factored block by block. Its cost no longer grows with the cube of the number of random coefficients. Crossed terms still use the dense calculation.</p>
+<p>The <a href="phpstats://phit/benchmarks">benchmarks</a> time each workload with the extension and with the polyfill.</p>
 <p>The polyfill’s own documentation is in the <a href="https://github.com/phpstats/phit-polyfill">phit-polyfill repository</a>.</p>
 
 

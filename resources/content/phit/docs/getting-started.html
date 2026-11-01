@@ -93,7 +93,7 @@ districtsouth    232.16  119.64  0.1004</code></pre>
 <section id="missing-values" class="level2">
 <h2 class="anchored" data-anchor-id="missing-values">Missing values</h2>
 <p><code>null</code> and <code>NAN</code> are missing. By default, a row with a missing value in any column the formula uses is dropped, and the fit emits one <code>E_WARNING</code>. With <code>rent</code> set to <code>null</code> in the third row, the warning reads:</p>
-<pre><code>Phit\fit_ols(): Phit\fit_ols dropped 1 of 10 observations with missing values (listwise deletion)</code></pre>
+<pre><code>Phit\fit_ols(): dropped 1 of 10 observations with missing values (listwise deletion)</code></pre>
 <ul>
 <li>The result reports <code>n_observations</code> 9, <code>n_input</code> 10, and <code>dropped_rows</code> <code>[2]</code>.</li>
 <li><code>diagnostics.warnings</code> records <code>listwise deletion removed 1 of 10 original rows</code>.</li>

@@ -1,14 +1,62 @@
-<p>This benchmark fits the same <strong>Laplace marginal ML</strong> model in R lme4, an independent Python/SciPy reference implementation, and the native PHP extension. It uses shared deterministic binary data, correlated study/practice predictors, three fixed coefficients and 50 groups at 1,000, 10,000 and 100,000 observations.</p>
-<p>The Python worker is our likelihood/optimizer reference, <strong>not</strong> statsmodels’ Bayesian mixed-model estimator and not an optimized Python GLMM package. These measurements compare the named implementations; they do not establish a general Rust-versus-Python speed ranking.</p>
+<p>phit’s <code>fit_mixed_logistic_matrix()</code>, R lme4 <code>glmer()</code>, and an independent Python/SciPy implementation fit the same Laplace marginal ML model. The Python worker is phit’s likelihood and optimizer reference. It is not statsmodels’ Bayesian mixed-model estimator or an optimized Python GLMM package.</p>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>Setting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Workloads</td>
+<td>1,000, 10,000, and 100,000 rows; 50 groups; 3 fixed coefficients; one random intercept; Laplace approximation</td>
+</tr>
+<tr class="even">
+<td>Data</td>
+<td>Shared deterministic binary outcomes with correlated study and practice predictors</td>
+</tr>
+<tr class="odd">
+<td>Machine</td>
+<td>Apple M5 Ultra, macOS 27, recorded 2026-10-11</td>
+</tr>
+<tr class="even">
+<td>Threads</td>
+<td>Pinned to 1</td>
+</tr>
+<tr class="odd">
+<td>Repetitions</td>
+<td>One warm-up, then three timed fits per worker</td>
+</tr>
+<tr class="even">
+<td>Timed</td>
+<td>One complete fit with inference and observation-length outputs</td>
+</tr>
+<tr class="odd">
+<td>Excluded</td>
+<td>Compact output sampling and JSON serialization</td>
+</tr>
+<tr class="even">
+<td>Memory</td>
+<td>Peak RSS of the whole worker process</td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="timing-boundaries-and-correctness" class="level2">
 <h2 class="anchored" data-anchor-id="timing-boundaries-and-correctness">Timing boundaries and correctness</h2>
-<p>Each worker loads the same CSV, performs one warm-up fit, then runs three timed fits. PHP times the complete native call, including conversion and all returned inference/observation arrays. R/Python materialize covariance, standard errors, conditional modes and full fixed/conditional fitted values and residuals. Compact sample output and JSON serialization happen outside the timed fit. Process time includes startup, CSV load, warm-up and all timed fits; peak RSS covers the whole worker process. Threads are pinned to one.</p>
-<p>Every report is published only after coefficients, covariance/standard errors, group SD/modes, normalized likelihood and common observation samples agree. Likelihood tolerance is absolute 1e-6 plus relative 1e-8; inference uses absolute 2e-5 plus relative 2e-3; estimates use absolute 2e-5 plus relative 2e-4. Group modes use absolute 5e-5 because large-sample flat-profile optimization produced shifts around 2e-5 in modes near zero; relative error there is not informative.</p>
+<p>PHP times the complete native call, including conversion and all returned inference/observation arrays. R/Python materialize covariance, standard errors, conditional modes and full fixed/conditional fitted values and residuals. Process time includes startup, CSV load, warm-up and all timed fits.</p>
+<p>A report is written only after coefficients, covariance/standard errors, group SD/modes, normalized likelihood and common observation samples agree. Likelihood tolerance is absolute 1e-6 plus relative 1e-8; inference uses absolute 2e-5 plus relative 2e-3; estimates use absolute 2e-5 plus relative 2e-4. Group modes use absolute 5e-5 because large-sample flat-profile optimization produced shifts around 2e-5 in modes near zero; relative error there is not informative.</p>
 <p>The installed lme4 version disables derivative checks automatically at large n. The benchmark explicitly enables the final joint Hessian. Its initial BOBYQA run also stopped short on the 10,000-row case; an R-only restart from that fit, with rhobeg=0.001 and nAGQ0initStep=FALSE, resolved it. <strong>Both R stages are included in its fit time.</strong> The report records these controls, versions and data/binary hashes. Native estimates never seed the R worker.</p>
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
-<div id="0223113d" class="cell" data-execution_count="1">
+<div id="ab75c9c2" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span><span id="cb1-2" class="code-line" style="--indent: 0ch"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span><span id="cb1-3" class="code-line" style="--indent: 0ch"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span><span id="cb1-4" class="code-line" style="--indent: 0ch"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span><span id="cb1-5" class="code-line" style="--indent: 0ch"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span><span id="cb1-6" class="code-line" style="--indent: 0ch"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ROOT<span class="op">=</span><span class="bu">next</span>(p <span class="cf">for</span> p <span class="kw">in</span> [Path.cwd(),<span class="op">*</span>Path.cwd().parents] <span class="cf">if</span> (p<span class="op">/</span><span class="st">'Cargo.toml'</span>).exists())</span><span id="cb1-7" class="code-line" style="--indent: 0ch"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>report<span class="op">=</span>json.loads((ROOT<span class="op">/</span><span class="st">'docs/benchmarks/logistic-mixed-results.json'</span>).read_text())</span><span id="cb1-8" class="code-line" style="--indent: 0ch"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>ORDER<span class="op">=</span>[<span class="st">'R'</span>,<span class="st">'SciPy reference'</span>,<span class="st">'PHP'</span>]</span><span id="cb1-9" class="code-line" style="--indent: 0ch"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>rows<span class="op">=</span>[]</span><span id="cb1-10" class="code-line" style="--indent: 0ch"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> case <span class="kw">in</span> report[<span class="st">'cases'</span>]:</span><span id="cb1-11" class="code-line" style="--indent: 4ch"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> label <span class="kw">in</span> ORDER:</span><span id="cb1-12" class="code-line" style="--indent: 8ch"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        r<span class="op">=</span>case[<span class="st">'implementations'</span>][label]</span><span id="cb1-13" class="code-line" style="--indent: 8ch"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        rows.append(<span class="bu">dict</span>(observations<span class="op">=</span>case[<span class="st">'n'</span>],groups<span class="op">=</span>case[<span class="st">'n_groups'</span>],implementation<span class="op">=</span>label,</span><span id="cb1-14" class="code-line" style="--indent: 25ch"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                         median_fit_seconds<span class="op">=</span>r[<span class="st">'median_fit_seconds'</span>],CSV_load_seconds<span class="op">=</span>r[<span class="st">'load_seconds'</span>],</span><span id="cb1-15" class="code-line" style="--indent: 25ch"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                         whole_process_seconds<span class="op">=</span>r[<span class="st">'process_seconds'</span>],</span><span id="cb1-16" class="code-line" style="--indent: 25ch"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                         peak_process_RSS_MiB<span class="op">=</span>r[<span class="st">'peak_rss_bytes'</span>]<span class="op">/</span><span class="dv">2</span><span class="op">**</span><span class="dv">20</span> <span class="cf">if</span> r[<span class="st">'peak_rss_bytes'</span>] <span class="cf">else</span> <span class="va">None</span>,</span><span id="cb1-17" class="code-line" style="--indent: 25ch"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                         numerical_agreement<span class="op">=</span>case[<span class="st">'agreement_passed'</span>]))</span><span id="cb1-18" class="code-line" style="--indent: 0ch"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>table<span class="op">=</span>pd.DataFrame(rows)<span class="op">;</span>display(table)</span><span id="cb1-19" class="code-line" style="--indent: 0ch"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Machine:'</span>,report.get(<span class="st">'cpu'</span>),report[<span class="st">'platform'</span>])</span><span id="cb1-20" class="code-line" style="--indent: 0ch"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Threads:'</span>,report[<span class="st">'thread_environment'</span>])</span><span id="cb1-21" class="code-line" style="--indent: 0ch"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Versions:'</span>,{name:report[<span class="st">'cases'</span>][<span class="dv">0</span>][<span class="st">'implementations'</span>][name][<span class="st">'version'</span>] <span class="cf">for</span> name <span class="kw">in</span> ORDER})</span><span id="cb1-22" class="code-line" style="--indent: 0ch"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess,os</span><span id="cb1-23" class="code-line" style="--indent: 0ch"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>subprocess.run([os.environ.get(<span class="st">'RSCRIPT'</span>,<span class="st">'Rscript'</span>),<span class="bu">str</span>(ROOT<span class="op">/</span><span class="st">'docs/figures/render.R'</span>),<span class="st">'logistic-mixed'</span>],check<span class="op">=</span><span class="va">True</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -141,7 +189,7 @@ benchmarks/figures/logistic-mixed-fit-time.svg
 benchmarks/figures/logistic-mixed-memory.svg </code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
-<pre><code>CompletedProcess(args=['Rscript', '/Users/erik/.polyscope/clones/ac9532b1/serene-whale/docs/figures/render.R', 'logistic-mixed'], returncode=0)</code></pre>
+<pre><code>CompletedProcess(args=['Rscript', '/Users/erik/Projects/phit/docs/figures/render.R', 'logistic-mixed'], returncode=0)</code></pre>
 </div>
 </div>
 <div class="quarto-figure quarto-figure-center">
@@ -156,12 +204,12 @@ benchmarks/figures/logistic-mixed-memory.svg </code></pre>
 <figcaption>Peak whole-process memory, in fixed R/Python/PHP order.</figcaption>
 </figure>
 </div>
-<p>These are 50-group, three-coefficient, one-intercept models using the one-node approximation. They do not benchmark 61-node integration, random slopes or multiple grouping terms. A larger dataset does not by itself establish approximation accuracy; see the <a href="phpstats://phit/docs/notebooks/logistic-mixed-verification">independent integration checks</a>. The full measurements and errors are in the <a href="/content/phit/docs/benchmarks/logistic-mixed-results.json">saved report</a>.</p>
+<p>These models use the one-node approximation. They do not benchmark 61-node integration, random slopes or multiple grouping terms. A larger dataset does not by itself establish approximation accuracy; see the <a href="phpstats://phit/docs/notebooks/logistic-mixed-verification">independent integration checks</a>. The full measurements and errors are in the <a href="/content/phit/docs/benchmarks/logistic-mixed-results.json">saved report</a>.</p>
 </section>
-<section id="reproduce" class="level2">
-<h2 class="anchored" data-anchor-id="reproduce">Reproduce</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> php-stats <span class="at">--release</span> <span class="at">--locked</span></span><span id="cb4-2" class="code-line" style="--indent: 0ch"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/opt/homebrew/bin/php <span class="ex">.context/notebooks-venv/bin/python</span> <span class="dt">\</span></span><span id="cb4-3" class="code-line" style="--indent: 2ch"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  tests/benchmarks/run-logistic-mixed.py <span class="at">--sizes</span> 1000,10000,100000 <span class="at">--repeats</span> 3</span></code></pre></div></div>
-<p>Use a matching PHP/php-config installation and <code>.so</code> on Linux. This is a developer command; unit tests do not execute performance benchmarks.</p>
+<section id="reproduction" class="level2">
+<h2 class="anchored" data-anchor-id="reproduction">Reproduction</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> phit <span class="at">--release</span> <span class="at">--locked</span></span><span id="cb4-2" class="code-line" style="--indent: 0ch"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/opt/homebrew/bin/php <span class="ex">.context/notebooks-venv/bin/python</span> <span class="dt">\</span></span><span id="cb4-3" class="code-line" style="--indent: 2ch"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  tests/benchmarks/run-logistic-mixed.py <span class="at">--sizes</span> 1000,10000,100000 <span class="at">--repeats</span> 3</span></code></pre></div></div>
+<p>Use a matching PHP and php-config, and <code>.so</code> on Linux.</p>
 
 
 </section>

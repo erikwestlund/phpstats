@@ -335,81 +335,10 @@
 <p>JSON I/O, startup and output summaries are outside timed calls. PHP input/output conversion and native validation are included. R/SciPy start with native numeric vectors. Runtime reclamation/garbage collection of prior results contributes to the observed API cost. Peak RSS is the <strong>whole worker process</strong>, including imports, JSON parsing, inputs, outputs and summaries, not isolated kernel memory. Process elapsed time and input loading time are recorded separately.</p>
 <p>R’s timer has millisecond resolution. Small distribution cases batch 100 calls; mean/variance batch enough calls to process at least ten million input values per measurement, with a minimum of ten calls. Per-call times divide by the batch count. All raw timings must be positive. The thread settings do not make different numerical implementations equivalent. PHP scalar and batch worker order alternates by case. Machine load, timer precision, and garbage collection affect the measurements, which describe these workloads only.</p>
 </section>
-<section id="seven-model-preservation-v0.2-release-check" class="level2">
-<h2 class="anchored" data-anchor-id="seven-model-preservation-v0.2-release-check">Seven-model preservation (v0.2 release check)</h2>
-<p>This check was recorded for the v0.2 release. The <a href="/content/phit/docs/benchmarks/v02-preservation-results.json">preservation report</a> compares the current extension with a rebuilt pre-v0.2 baseline at <code>6342562</code>, using the same PHP 8.5 headers/compiler. Both receive identical complete designs with intercept insertion disabled where supported. It exercises all seven existing fitters. Reference tolerance is <code>1e-7 + 1e-6*abs(reference)</code> for the compared inference/scalar outputs, group effects and ten sampled observation outputs. Fits materialize their complete public results before summarization.</p>
-<!-- BEGIN PRESERVATION EVIDENCE -->
-<p>Recorded: <strong>2026-10-12T15:18:25.373311+00:00</strong>; baseline revision <code>6342562</code>. All seven model comparisons passed.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Fitter</th>
-<th>Rows</th>
-<th>Largest compared absolute difference</th>
-<th>Current/baseline median time</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ols</td>
-<td>100,000</td>
-<td>0</td>
-<td>1.024×</td>
-</tr>
-<tr class="even">
-<td>logistic</td>
-<td>100,000</td>
-<td>0</td>
-<td>1.024×</td>
-</tr>
-<tr class="odd">
-<td>probit</td>
-<td>100,000</td>
-<td>0</td>
-<td>0.974×</td>
-</tr>
-<tr class="even">
-<td>poisson</td>
-<td>100,000</td>
-<td>0</td>
-<td>0.970×</td>
-</tr>
-<tr class="odd">
-<td>lmm</td>
-<td>100,000</td>
-<td>0</td>
-<td>0.967×</td>
-</tr>
-<tr class="even">
-<td>lmm_fit</td>
-<td>1,000</td>
-<td>0</td>
-<td>1.006×</td>
-</tr>
-<tr class="odd">
-<td>logistic_mixed</td>
-<td>100,000</td>
-<td>0</td>
-<td>0.996×</td>
-</tr>
-</tbody>
-</table>
-<!-- END PRESERVATION EVIDENCE -->
-<p>This check does not establish bitwise agreement for every observation output or a performance bound on every future workload. Retained regression paths are also covered by the existing Rust/PHP reference and intercept/offset suites.</p>
-</section>
 <section id="reproduction" class="level2">
 <h2 class="anchored" data-anchor-id="reproduction">Reproduction</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .context/v02/python</span><span id="cb1-2" class="code-line" style="--indent: 0ch"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/v02/python/bin/pip</span> install <span class="at">-r</span> tests/benchmarks/distribution-requirements.txt</span><span id="cb1-3" class="code-line" style="--indent: 0ch"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># R with jsonlite is a development-only reference dependency.</span></span><span id="cb1-4" class="code-line" style="--indent: 0ch"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> phit <span class="at">--release</span> <span class="at">--locked</span></span><span id="cb1-5" class="code-line" style="--indent: 0ch"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> stats-core <span class="at">--release</span> <span class="at">--locked</span> <span class="at">--example</span> distribution_bench</span><span id="cb1-6" class="code-line" style="--indent: 0ch"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="ex">.context/v02/python/bin/python</span> tests/benchmarks/run-distributions.py</span><span id="cb1-7" class="code-line" style="--indent: 0ch"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/distribution-docs.py</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .context/distributions-venv</span><span id="cb1-2" class="code-line" style="--indent: 0ch"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/distributions-venv/bin/pip</span> install <span class="at">-r</span> tests/benchmarks/distribution-requirements.txt</span><span id="cb1-3" class="code-line" style="--indent: 0ch"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># R with jsonlite is a development-only reference dependency.</span></span><span id="cb1-4" class="code-line" style="--indent: 0ch"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> phit <span class="at">--release</span> <span class="at">--locked</span></span><span id="cb1-5" class="code-line" style="--indent: 0ch"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> stats-core <span class="at">--release</span> <span class="at">--locked</span> <span class="at">--example</span> distribution_bench</span><span id="cb1-6" class="code-line" style="--indent: 0ch"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="ex">.context/distributions-venv/bin/python</span> tests/benchmarks/run-distributions.py</span><span id="cb1-7" class="code-line" style="--indent: 0ch"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/distribution-docs.py</span></code></pre></div></div>
 <p>The runner accepts <code>--sizes</code>, <code>--operations</code>, <code>--repeats</code>, <code>--output</code> and <code>--resume</code>. A partial report is marked <code>complete: false</code>; resume requires matching binary hashes, seed, repetitions, thread settings and input hashes. It keeps completed verification/timings and recomputes any changed input. Use a new output file for a different build. Fixed seed 20261012 and saved NumPy/Python versions specify input generation; SHA-256 records the exact JSON values actually used.</p>
-<p>Rebuild the preservation baseline in an isolated source/target directory, using the same <a href="phpstats://phit/docs/development">PHP/Clang environment</a>, then run:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> .context/v02/baseline-src</span><span id="cb2-2" class="code-line" style="--indent: 0ch"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> archive 6342562 <span class="kw">|</span> <span class="fu">tar</span> <span class="at">-x</span> <span class="at">-C</span> .context/v02/baseline-src</span><span id="cb2-3" class="code-line" style="--indent: 0ch"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">CARGO_TARGET_DIR</span><span class="op">=</span><span class="st">"</span><span class="va">$PWD</span><span class="st">/.context/v02/baseline-target"</span> <span class="ex">cargo</span> build <span class="dt">\</span></span><span id="cb2-4" class="code-line" style="--indent: 2ch"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--manifest-path</span> .context/v02/baseline-src/Cargo.toml <span class="at">-p</span> phit <span class="at">--release</span> <span class="at">--locked</span></span><span id="cb2-5" class="code-line" style="--indent: 0ch"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS; use libphit.so on Linux.</span></span><span id="cb2-6" class="code-line" style="--indent: 0ch"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="va">PHP</span><span class="op">=</span>/path/to/matching/php <span class="ex">.context/v02/python/bin/python</span> tests/benchmarks/run-v01.py <span class="dt">\</span></span><span id="cb2-7" class="code-line" style="--indent: 2ch"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--baseline</span> .context/v02/baseline-target/release/libphit.dylib <span class="dt">\</span></span><span id="cb2-8" class="code-line" style="--indent: 2ch"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--baseline-revision</span> 6342562 <span class="at">--output</span> docs/benchmarks/v02-preservation-results.json</span><span id="cb2-9" class="code-line" style="--indent: 0ch"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/distribution-docs.py</span></code></pre></div></div>
-<p>The worker reflects function parameters, so the older module name and API load without the current stubs.</p>
 
 
 </section>

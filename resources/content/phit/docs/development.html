@@ -30,7 +30,7 @@
 <ul>
 <li>Linear algebra uses nalgebra’s Rust-native SVD, QR, Cholesky, triangular solves, and pivoted LU. There is one numerical path, with no BLAS or LAPACK dependency and no backend selection.</li>
 <li>The general mixed fitter uses the pinned Rust-native <code>bobyqa</code> and <code>argmin</code> (Nelder–Mead) crates, which add no C, Fortran, BLAS, or LAPACK requirement.</li>
-<li>An external numerical backend needs a concrete requirement that justifies the extra build and deployment work. An earlier Apple Accelerate trial was removed; its results are kept as <a href="phpstats://phit/docs/benchmarks/ols#apple-accelerate-experiment">historical benchmark evidence</a>.</li>
+<li>An external numerical backend needs a concrete requirement that justifies the extra build and deployment work.</li>
 </ul>
 </section>
 <section id="changing-the-implementation" class="level2">

@@ -1,18 +1,23 @@
-<p>This notebook executes the <strong>installed PHP extension</strong> on saved R reference inputs. R generated the checked-in expected values using <code>lm</code>, <code>glm</code>, and <code>lmer</code> with each of its four optimizer wrappers. The two native algorithms are BOBYQA and Nelder–Mead. See the <a href="phpstats://phit/docs/r-compatibility">compatibility ledger</a> for supported features and the work still needed for full parity.</p>
+<p>This notebook runs the installed PHP extension on saved R reference inputs and compares the results with R’s <code>lm()</code>, <code>glm()</code>, and <code>lmer()</code> under each of lme4’s four optimizer wrappers. phit’s two optimizers are BOBYQA and Nelder–Mead. <a href="phpstats://phit/docs/r-compatibility">R compatibility</a> lists what is supported, what differs, and what is not supported.</p>
 <section id="run-the-audit" class="level2">
 <h2 class="anchored" data-anchor-id="run-the-audit">Run the audit</h2>
-<div id="2d003406" class="cell" data-execution_count="1">
+<div id="f8e09b40" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span><span id="cb1-2" class="code-line" style="--indent: 0ch"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json,sys</span><span id="cb1-3" class="code-line" style="--indent: 0ch"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span><span id="cb1-4" class="code-line" style="--indent: 0ch"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span><span id="cb1-5" class="code-line" style="--indent: 0ch"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span><span id="cb1-6" class="code-line" style="--indent: 0ch"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span><span id="cb1-7" class="code-line" style="--indent: 0ch"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>ROOT<span class="op">=</span><span class="bu">next</span>(p <span class="cf">for</span> p <span class="kw">in</span> [Path.cwd(),<span class="op">*</span>Path.cwd().parents] <span class="cf">if</span> (p<span class="op">/</span><span class="st">'Cargo.toml'</span>).exists())</span><span id="cb1-8" class="code-line" style="--indent: 0ch"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span><span id="cb1-9" class="code-line" style="--indent: 0ch"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>,<span class="bu">str</span>(ROOT<span class="op">/</span><span class="st">'docs/figures'</span>))</span><span id="cb1-10" class="code-line" style="--indent: 0ch"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bridge <span class="im">import</span> render_figure</span><span id="cb1-11" class="code-line" style="--indent: 0ch"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>sys.path.insert(<span class="dv">0</span>,<span class="bu">str</span>(ROOT<span class="op">/</span><span class="st">'docs/verifications'</span>))</span><span id="cb1-12" class="code-line" style="--indent: 0ch"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> compare_r_compatibility <span class="im">import</span> run</span><span id="cb1-13" class="code-line" style="--indent: 0ch"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>report<span class="op">=</span>run()</span><span id="cb1-14" class="code-line" style="--indent: 0ch"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(report[<span class="st">'versions'</span>])</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Passed 12 fixed-model cases and 15 mixed-model cases × 2 native × 4 lme4 optimizers; sleepstudy ML/REML also passed statsmodels.
 {'R': 'R version 4.6.1 (2026-06-24)', 'lme4': '2.0.6', 'PHP': '8.5.10', 'python': '3.14.7', 'numpy': '2.5.4', 'scipy': '1.18.1', 'statsmodels': '0.15.0'}</code></pre>
 </div>
 </div>
-<p>The audit checks every coefficient, inference quantity, fitted value and residual; for mixed models it also checks every random effect and covariance entry, variance scale, likelihood, AIC/BIC and singular flag. It refuses nonzero R optimizer codes or R warnings in the saved reference runs. Reference controls and checksums are recorded alongside the actual PHP outputs in the <a href="/content/phit/docs/verifications/r-compatibility-results.json">downloadable audit</a>.</p>
+<ul>
+<li>The audit checks every coefficient, inference quantity, fitted value, and residual.</li>
+<li>For mixed models it also checks every random effect and covariance entry, the variance scale, likelihood, AIC, BIC, and the singular flag.</li>
+<li>It rejects saved R runs with a nonzero optimizer code or a warning.</li>
+<li>The <a href="/content/phit/docs/verifications/r-compatibility-results.json">downloadable audit</a> records the reference controls and checksums with the PHP outputs.</li>
+</ul>
 </section>
 <section id="fixed-estimators-weights-offsets-and-binomial-trials" class="level2">
 <h2 class="anchored" data-anchor-id="fixed-estimators-weights-offsets-and-binomial-trials">Fixed estimators: weights, offsets and binomial trials</h2>
-<div id="c493720c" class="cell" data-execution_count="2">
+<div id="f2e9fd7d" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame([<span class="bu">dict</span>(case<span class="op">=</span>r[<span class="st">'name'</span>],estimator<span class="op">=</span>r[<span class="st">'model'</span>],</span><span id="cb3-2" class="code-line" style="--indent: 26ch"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                          largest_absolute_error<span class="op">=</span>r[<span class="st">'max_absolute_error'</span>],passed<span class="op">=</span><span class="va">True</span>)</span><span id="cb3-3" class="code-line" style="--indent: 21ch"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                     <span class="cf">for</span> r <span class="kw">in</span> report[<span class="st">'fixed'</span>]]))</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -33,14 +38,14 @@
 <th data-quarto-table-cell-role="th">0</th>
 <td>ols_intercept_individual</td>
 <td>ols</td>
-<td>4.547474e-13</td>
+<td>5.684342e-13</td>
 <td>True</td>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
 <td>ols_no_intercept_individual</td>
 <td>ols</td>
-<td>1.091394e-11</td>
+<td>1.455192e-11</td>
 <td>True</td>
 </tr>
 <tr class="odd">
@@ -54,7 +59,7 @@
 <th data-quarto-table-cell-role="th">3</th>
 <td>logistic_intercept_grouped</td>
 <td>logistic</td>
-<td>2.086686e-11</td>
+<td>2.086509e-11</td>
 <td>True</td>
 </tr>
 <tr class="odd">
@@ -119,7 +124,11 @@
 </div>
 </div>
 </div>
-<p>Each estimator is fitted with an intercept and without one. Binary estimators include both individual binary responses and grouped success proportions. Weights and offsets affect the fit, covariance, null model and likelihood. We check those quantities rather than testing only unweighted coefficients.</p>
+<ul>
+<li>Each estimator is fitted with and without an intercept.</li>
+<li>Binary estimators cover individual binary responses and grouped success proportions.</li>
+<li>Weights and offsets change the fit, covariance, null model, and likelihood, and all of those are compared.</li>
+</ul>
 <p>For grouped binomial rows with s successes out of m trials, supply y=s/m and weight=m. R’s equivalent calls are:</p>
 <pre class="{r}"><code>#| eval: false
 fit &lt;- glm(proportion ~ study + practice,
@@ -131,11 +140,15 @@ vcov(fit)
 logLik(fit)
 fit$deviance
 fit$null.deviance</code></pre>
-<p>A Poisson exposure e contributes <code>log(e)</code> to the linear predictor; a prior weight instead multiplies that observation’s likelihood. Those are different operations. For weighted OLS, residual variance is <code>sigma²/w_i</code> and likelihood includes the weight determinant. Full generator code is in <code>tests/generate-r-compatibility-fixtures.R</code>.</p>
+<ul>
+<li>A Poisson exposure e contributes <code>log(e)</code> to the linear predictor. A prior weight instead multiplies that observation’s log-likelihood.</li>
+<li>For weighted OLS, the residual variance is <code>sigma²/w_i</code>, and the likelihood includes the weight determinant.</li>
+</ul>
+<p>The generator is <code>tests/generate-r-compatibility-fixtures.R</code>.</p>
 </section>
 <section id="mixed-models-and-optimizer-agreement" class="level2">
 <h2 class="anchored" data-anchor-id="mixed-models-and-optimizer-agreement">Mixed models and optimizer agreement</h2>
-<div id="2508b31f" class="cell" data-execution_count="3">
+<div id="c256532a" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>R_ORDER<span class="op">=</span>[<span class="st">'bobyqa'</span>,<span class="st">'Nelder_Mead'</span>,<span class="st">'nlminbwrap'</span>,<span class="st">'nloptwrap'</span>]</span><span id="cb5-2" class="code-line" style="--indent: 0ch"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>rows<span class="op">=</span>[]</span><span id="cb5-3" class="code-line" style="--indent: 0ch"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> case <span class="kw">in</span> report[<span class="st">'mixed'</span>]:</span><span id="cb5-4" class="code-line" style="--indent: 4ch"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> optimizer <span class="kw">in</span> R_ORDER:</span><span id="cb5-5" class="code-line" style="--indent: 8ch"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        ref<span class="op">=</span>case[<span class="st">'R'</span>][optimizer]</span><span id="cb5-6" class="code-line" style="--indent: 8ch"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> comparison <span class="kw">in</span> case[<span class="st">'comparisons'</span>]:</span><span id="cb5-7" class="code-line" style="--indent: 12ch"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> comparison[<span class="st">'R_optimizer'</span>]<span class="op">==</span>optimizer:</span><span id="cb5-8" class="code-line" style="--indent: 16ch"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                rows.append(<span class="bu">dict</span>(model<span class="op">=</span>case[<span class="st">'name'</span>],method<span class="op">=</span>case[<span class="st">'method'</span>],</span><span id="cb5-9" class="code-line" style="--indent: 33ch"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                                 R_optimizer<span class="op">=</span>optimizer,native_optimizer<span class="op">=</span>comparison[<span class="st">'native_optimizer'</span>],</span><span id="cb5-10" class="code-line" style="--indent: 33ch"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                                 log_likelihood_difference<span class="op">=</span>comparison[<span class="st">'log_likelihood_difference'</span>],</span><span id="cb5-11" class="code-line" style="--indent: 33ch"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                                 max_fitted_difference<span class="op">=</span>comparison[<span class="st">'max_fitted_difference'</span>],</span><span id="cb5-12" class="code-line" style="--indent: 33ch"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                                 optimizer_code<span class="op">=</span>ref[<span class="st">'optimizer_code'</span>][<span class="dv">0</span>]))</span><span id="cb5-13" class="code-line" style="--indent: 0ch"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(rows))</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -161,8 +174,8 @@ fit$null.deviance</code></pre>
 <td>ML</td>
 <td>bobyqa</td>
 <td>bobyqa</td>
-<td>-5.684342e-14</td>
-<td>3.769021e-08</td>
+<td>-8.526513e-14</td>
+<td>3.806680e-08</td>
 <td>0</td>
 </tr>
 <tr class="even">
@@ -171,7 +184,7 @@ fit$null.deviance</code></pre>
 <td>ML</td>
 <td>bobyqa</td>
 <td>nelder_mead</td>
-<td>-1.278977e-12</td>
+<td>-1.307399e-12</td>
 <td>3.057257e-07</td>
 <td>0</td>
 </tr>
@@ -181,8 +194,8 @@ fit$null.deviance</code></pre>
 <td>ML</td>
 <td>Nelder_Mead</td>
 <td>bobyqa</td>
-<td>1.550973e-10</td>
-<td>5.379521e-06</td>
+<td>1.550688e-10</td>
+<td>5.379897e-06</td>
 <td>0</td>
 </tr>
 <tr class="even">
@@ -191,7 +204,7 @@ fit$null.deviance</code></pre>
 <td>ML</td>
 <td>Nelder_Mead</td>
 <td>nelder_mead</td>
-<td>1.538751e-10</td>
+<td>1.538467e-10</td>
 <td>5.036105e-06</td>
 <td>0</td>
 </tr>
@@ -201,8 +214,8 @@ fit$null.deviance</code></pre>
 <td>ML</td>
 <td>nlminbwrap</td>
 <td>bobyqa</td>
-<td>3.979039e-12</td>
-<td>5.997995e-07</td>
+<td>3.950618e-12</td>
+<td>5.994229e-07</td>
 <td>0</td>
 </tr>
 <tr class="even">
@@ -221,8 +234,8 @@ fit$null.deviance</code></pre>
 <td>REML</td>
 <td>Nelder_Mead</td>
 <td>nelder_mead</td>
-<td>8.526513e-12</td>
-<td>3.506349e-08</td>
+<td>8.469669e-12</td>
+<td>8.763573e-08</td>
 <td>0</td>
 </tr>
 <tr class="even">
@@ -231,8 +244,8 @@ fit$null.deviance</code></pre>
 <td>REML</td>
 <td>nlminbwrap</td>
 <td>bobyqa</td>
-<td>1.631975e-10</td>
-<td>4.570311e-07</td>
+<td>1.622880e-10</td>
+<td>4.773336e-07</td>
 <td>0</td>
 </tr>
 <tr class="odd">
@@ -241,8 +254,8 @@ fit$null.deviance</code></pre>
 <td>REML</td>
 <td>nlminbwrap</td>
 <td>nelder_mead</td>
-<td>1.623448e-10</td>
-<td>4.190508e-07</td>
+<td>1.622880e-10</td>
+<td>4.715983e-07</td>
 <td>0</td>
 </tr>
 <tr class="even">
@@ -251,8 +264,8 @@ fit$null.deviance</code></pre>
 <td>REML</td>
 <td>nloptwrap</td>
 <td>bobyqa</td>
-<td>3.802256e-10</td>
-<td>8.428250e-07</td>
+<td>3.793161e-10</td>
+<td>8.261161e-07</td>
 <td>0</td>
 </tr>
 <tr class="odd">
@@ -261,8 +274,8 @@ fit$null.deviance</code></pre>
 <td>REML</td>
 <td>nloptwrap</td>
 <td>nelder_mead</td>
-<td>3.793730e-10</td>
-<td>8.844325e-07</td>
+<td>3.793161e-10</td>
+<td>8.359576e-07</td>
 <td>0</td>
 </tr>
 </tbody>
@@ -272,14 +285,49 @@ fit$null.deviance</code></pre>
 </div>
 </div>
 </div>
-<p>The model suite contains correlated/independent random slopes, crossed and nested terms, a random slope without a random intercept, no fixed intercept, weights and offsets, and an exact zero-variance boundary. The published sleepstudy model is <code>Reaction ~ Days + (Days | Subject)</code>, under both ML and REML.</p>
-<p>The R generator explicitly selects all four wrappers, tightened stopping controls and <code>boundary.tol=1e-3</code>. The exact per-wrapper settings are recorded in each fixture. Multi-level BOBYQA references also restart from their first R fit with rhobeg=0.001 and rhoend=1e-9: this improved random-effect agreement on a flat likelihood while keeping the comparison tolerances unchanged. Native estimates never seed the R references. At a smaller default boundary tolerance, one wrapper stopped just above a singular boundary; overly strict nlminb settings also produced convergence warnings. The saved audit does <strong>not</strong> claim identical behavior under every package default.</p>
-<p>Likelihoods use <code>5e-6 + 1e-9 * abs(reference)</code> tolerance. Native/R BOBYQA estimates use <code>1e-5 + 1e-5 * abs(reference)</code>; other optimizer comparisons use <code>1e-3 + 3e-4 * abs(reference)</code>. These admit the observed spread in parameters on a flat likelihood. Shapes, grouping/sample metadata and parameter counts are exact. All rows and raw outputs remain available for inspection.</p>
+<p>The models include correlated and independent random slopes, crossed and nested terms, a random slope without a random intercept, no fixed intercept, weights and offsets, and an exact zero-variance boundary. The published sleepstudy model is <code>Reaction ~ Days + (Days | Subject)</code>, under ML and REML.</p>
+<p><strong>R settings.</strong></p>
+<ul>
+<li>The generator selects each of the four wrappers explicitly, with tightened stopping controls and <code>boundary.tol = 1e-3</code>. Each fixture records the exact settings.</li>
+<li>Multi-level BOBYQA references restart from their first R fit with <code>rhobeg = 0.001</code> and <code>rhoend = 1e-9</code>, which improves agreement of the random effects on a flat likelihood. The comparison tolerances are unchanged, and phit estimates never seed R.</li>
+<li>At the default boundary tolerance, one wrapper stopped just above a singular boundary. Overly strict <code>nlminb</code> settings produced convergence warnings.</li>
+<li>The audit does not claim identical behavior under every package default.</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Comparison</th>
+<th>Tolerance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Likelihood</td>
+<td><code>5e-6 + 1e-9 * abs(reference)</code></td>
+</tr>
+<tr class="even">
+<td>phit BOBYQA against R BOBYQA</td>
+<td><code>1e-5 + 1e-5 * abs(reference)</code></td>
+</tr>
+<tr class="odd">
+<td>Other optimizer pairs</td>
+<td><code>1e-3 + 3e-4 * abs(reference)</code>, for the spread of parameters on a flat likelihood</td>
+</tr>
+<tr class="even">
+<td>Shapes, grouping and sample metadata, parameter counts</td>
+<td>Exact</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="more-than-two-grouping-levels" class="level2">
 <h2 class="anchored" data-anchor-id="more-than-two-grouping-levels">More than two grouping levels</h2>
-<p>The fitter accepts a list of random terms; there is no two-level cap. The new synthetic cases use <strong>256 repeated assessments</strong>, with 8 districts, 16 schools, 32 classes and 64 students. They fit three grouping levels (district/school/class) and four grouping levels (district/school/class/student), each under ML and REML. The four-level simulation includes independent Gaussian intercepts at all four grouping levels; the three-level simulation omits the student effect. Study hours and practice scores are correlated observed predictors, not initial parameter guesses.</p>
-<div id="1e70e99d" class="cell" data-execution_count="4">
+<p>The fitter accepts any number of random terms. The synthetic cases use 256 repeated assessments of 64 students in 32 classes, 16 schools, and 8 districts. They fit three grouping levels (district/school/class) and four (district/school/class/student), each under ML and REML. The four-level simulation has independent Gaussian intercepts at all four levels; the three-level simulation omits the student effect. Study hours and practice scores are correlated observed predictors.</p>
+<div id="6cc8f025" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fixture<span class="op">=</span>json.loads((ROOT<span class="op">/</span><span class="st">'tests/fixtures/lmm-expanded-r.json'</span>).read_text())</span><span id="cb6-2" class="code-line" style="--indent: 0ch"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>nested_inputs<span class="op">=</span>{c[<span class="st">'name'</span>]:c <span class="cf">for</span> c <span class="kw">in</span> fixture[<span class="st">'cases'</span>] <span class="cf">if</span> <span class="st">'_grouping_levels_'</span> <span class="kw">in</span> c[<span class="st">'name'</span>]}</span><span id="cb6-3" class="code-line" style="--indent: 0ch"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>summary<span class="op">=</span>[]</span><span id="cb6-4" class="code-line" style="--indent: 0ch"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> report[<span class="st">'mixed'</span>]:</span><span id="cb6-5" class="code-line" style="--indent: 4ch"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> c[<span class="st">'name'</span>] <span class="kw">not</span> <span class="kw">in</span> nested_inputs:<span class="cf">continue</span></span><span id="cb6-6" class="code-line" style="--indent: 4ch"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    input_case<span class="op">=</span>nested_inputs[c[<span class="st">'name'</span>]]</span><span id="cb6-7" class="code-line" style="--indent: 4ch"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> optimizer <span class="kw">in</span> [<span class="st">'bobyqa'</span>,<span class="st">'nelder_mead'</span>]:</span><span id="cb6-8" class="code-line" style="--indent: 8ch"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        fit<span class="op">=</span>c[<span class="st">'PHP'</span>][optimizer]</span><span id="cb6-9" class="code-line" style="--indent: 8ch"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        summary.append(<span class="bu">dict</span>(model<span class="op">=</span>c[<span class="st">'name'</span>],optimizer<span class="op">=</span>optimizer,</span><span id="cb6-10" class="code-line" style="--indent: 28ch"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                            groups_per_term<span class="op">=</span>[<span class="bu">len</span>(t[<span class="st">'group_labels'</span>]) <span class="cf">for</span> t <span class="kw">in</span> fit[<span class="st">'random'</span>]],</span><span id="cb6-11" class="code-line" style="--indent: 28ch"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                            estimated_variances<span class="op">=</span>[t[<span class="st">'covariance'</span>][<span class="dv">0</span>][<span class="dv">0</span>] <span class="cf">for</span> t <span class="kw">in</span> fit[<span class="st">'random'</span>]],</span><span id="cb6-12" class="code-line" style="--indent: 28ch"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                            residual_variance<span class="op">=</span>fit[<span class="st">'residual_variance'</span>],log_likelihood<span class="op">=</span>fit[<span class="st">'log_likelihood'</span>],</span><span id="cb6-13" class="code-line" style="--indent: 28ch"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                            all_four_R_comparisons_passed<span class="op">=</span><span class="va">True</span>))</span><span id="cb6-14" class="code-line" style="--indent: 0ch"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>display(pd.DataFrame(summary))</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -304,7 +352,7 @@ fit$null.deviance</code></pre>
 <td>nested_3_grouping_levels_ml</td>
 <td>bobyqa</td>
 <td>[8, 16, 32]</td>
-<td>[16.406634248298126, 16.180811188648576, 3.232...</td>
+<td>[16.40663396216075, 16.180811218474712, 3.2326...</td>
 <td>0.668762</td>
 <td>-393.820120</td>
 <td>True</td>
@@ -314,7 +362,7 @@ fit$null.deviance</code></pre>
 <td>nested_3_grouping_levels_ml</td>
 <td>nelder_mead</td>
 <td>[8, 16, 32]</td>
-<td>[16.406643287549933, 16.180817986835635, 3.232...</td>
+<td>[16.406643891126517, 16.180815924567074, 3.232...</td>
 <td>0.668762</td>
 <td>-393.820120</td>
 <td>True</td>
@@ -324,7 +372,7 @@ fit$null.deviance</code></pre>
 <td>nested_4_grouping_levels_ml</td>
 <td>bobyqa</td>
 <td>[8, 16, 32, 64]</td>
-<td>[14.645325034032776, 20.01780199062988, 2.9880...</td>
+<td>[14.645324217040956, 20.017806359239316, 2.988...</td>
 <td>0.586857</td>
 <td>-428.742955</td>
 <td>True</td>
@@ -334,7 +382,7 @@ fit$null.deviance</code></pre>
 <td>nested_4_grouping_levels_ml</td>
 <td>nelder_mead</td>
 <td>[8, 16, 32, 64]</td>
-<td>[14.645311637577024, 20.01781266197396, 2.9880...</td>
+<td>[14.64531163757702, 20.017812661973952, 2.9880...</td>
 <td>0.586857</td>
 <td>-428.742955</td>
 <td>True</td>
@@ -344,7 +392,7 @@ fit$null.deviance</code></pre>
 <td>nested_3_grouping_levels_reml</td>
 <td>bobyqa</td>
 <td>[8, 16, 32]</td>
-<td>[20.02458308947715, 16.18081330026649, 3.23263...</td>
+<td>[20.024587435462024, 16.180812245741517, 3.232...</td>
 <td>0.674776</td>
 <td>-398.151464</td>
 <td>True</td>
@@ -354,7 +402,7 @@ fit$null.deviance</code></pre>
 <td>nested_3_grouping_levels_reml</td>
 <td>nelder_mead</td>
 <td>[8, 16, 32]</td>
-<td>[20.024612174592686, 16.18080276961506, 3.2326...</td>
+<td>[20.024612174592733, 16.1808027696151, 3.23263...</td>
 <td>0.674776</td>
 <td>-398.151464</td>
 <td>True</td>
@@ -364,7 +412,7 @@ fit$null.deviance</code></pre>
 <td>nested_4_grouping_levels_reml</td>
 <td>bobyqa</td>
 <td>[8, 16, 32, 64]</td>
-<td>[18.321805711935404, 20.017853427099, 2.988051...</td>
+<td>[18.321782447600587, 20.01785533476453, 2.9880...</td>
 <td>0.592969</td>
 <td>-433.049254</td>
 <td>True</td>
@@ -374,7 +422,7 @@ fit$null.deviance</code></pre>
 <td>nested_4_grouping_levels_reml</td>
 <td>nelder_mead</td>
 <td>[8, 16, 32, 64]</td>
-<td>[18.321807255448686, 20.017860206184494, 2.988...</td>
+<td>[18.32178093991148, 20.017859911657673, 2.9880...</td>
 <td>0.592969</td>
 <td>-433.049254</td>
 <td>True</td>
@@ -385,14 +433,22 @@ fit$null.deviance</code></pre>
 </div>
 </div>
 </div>
-<p>Each random term is independent of the other terms. Dependence between observations arises because they share some group effects. For two observations in the same class but different students, the district, school and class effects are shared; the student effects and observation noise are not.</p>
-<p>Provide globally unique nested IDs: the native interface does not infer that a class label belongs to a school. Reusing local class number 1 across schools without a parent-aware key instead specifies a crossed/shared group effect. Three grouping levels plus the observation level are often called a <strong>four-level model</strong>; we count grouping terms explicitly here to avoid that ambiguity.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1" class="code-line" style="--indent: 0ch"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$result</span> <span class="op">=</span> stats_lmm_fit(</span><span id="cb7-2" class="code-line" style="--indent: 4ch"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    x<span class="ot">:</span> <span class="va">$fixedDesign</span><span class="ot">,</span></span><span id="cb7-3" class="code-line" style="--indent: 4ch"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    y<span class="ot">:</span> <span class="va">$scores</span><span class="ot">,</span></span><span id="cb7-4" class="code-line" style="--indent: 4ch"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    random<span class="ot">:</span> [</span><span id="cb7-5" class="code-line" style="--indent: 8ch"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'z'</span> =&gt; <span class="va">$ones</span><span class="ot">,</span> <span class="st">'groups'</span> =&gt; <span class="va">$districtIds</span>]<span class="ot">,</span></span><span id="cb7-6" class="code-line" style="--indent: 8ch"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'z'</span> =&gt; <span class="va">$ones</span><span class="ot">,</span> <span class="st">'groups'</span> =&gt; <span class="va">$districtSchoolKeys</span>]<span class="ot">,</span></span><span id="cb7-7" class="code-line" style="--indent: 8ch"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'z'</span> =&gt; <span class="va">$ones</span><span class="ot">,</span> <span class="st">'groups'</span> =&gt; <span class="va">$districtSchoolClassKeys</span>]<span class="ot">,</span></span><span id="cb7-8" class="code-line" style="--indent: 8ch"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'z'</span> =&gt; <span class="va">$ones</span><span class="ot">,</span> <span class="st">'groups'</span> =&gt; <span class="va">$districtSchoolClassStudentKeys</span>]<span class="ot">,</span></span><span id="cb7-9" class="code-line" style="--indent: 4ch"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ]<span class="ot">,</span></span><span id="cb7-10" class="code-line" style="--indent: 4ch"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    reml<span class="ot">:</span> <span class="kw">true</span><span class="ot">,</span></span><span id="cb7-11" class="code-line" style="--indent: 0ch"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span></code></pre></div></div>
-<p>The equivalent R random-intercept specification is <code>(1 | district/school/class/student)</code>. Nesting does not introduce a correlation parameter between the levels; each term has its own variance. Random slopes can also be supplied through each term’s z columns, subject to identifiability and size limits. The current dense implementation supports at most 512 total random coefficients and 50,000,000 initial augmented matrix entries.</p>
+<ul>
+<li>Random terms are independent of one another. Observations are dependent because they share group effects: two observations in the same class but of different students share the district, school, and class effects, but not the student effect or the observation noise.</li>
+<li>Nested IDs must be globally unique. The matrix interface does not infer that a class belongs to a school, so reusing class number 1 across schools without a parent-aware key specifies a crossed effect. The formula interface’s <code>(1 | g1/g2)</code> builds these keys.</li>
+<li>Three grouping levels plus the observation level are often called a four-level model. This page counts grouping terms to avoid the ambiguity.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb7-1" class="code-line" style="--indent: 0ch"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="va">$result</span> <span class="op">=</span> Phit\fit_mixed_gaussian_matrix(</span><span id="cb7-2" class="code-line" style="--indent: 4ch"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    x<span class="ot">:</span> <span class="va">$fixedDesign</span><span class="ot">,</span></span><span id="cb7-3" class="code-line" style="--indent: 4ch"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    y<span class="ot">:</span> <span class="va">$scores</span><span class="ot">,</span></span><span id="cb7-4" class="code-line" style="--indent: 4ch"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    random<span class="ot">:</span> [</span><span id="cb7-5" class="code-line" style="--indent: 8ch"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'z'</span> =&gt; <span class="va">$ones</span><span class="ot">,</span> <span class="st">'groups'</span> =&gt; <span class="va">$districtIds</span>]<span class="ot">,</span></span><span id="cb7-6" class="code-line" style="--indent: 8ch"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'z'</span> =&gt; <span class="va">$ones</span><span class="ot">,</span> <span class="st">'groups'</span> =&gt; <span class="va">$districtSchoolKeys</span>]<span class="ot">,</span></span><span id="cb7-7" class="code-line" style="--indent: 8ch"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'z'</span> =&gt; <span class="va">$ones</span><span class="ot">,</span> <span class="st">'groups'</span> =&gt; <span class="va">$classKeys</span>]<span class="ot">,</span></span><span id="cb7-8" class="code-line" style="--indent: 8ch"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'z'</span> =&gt; <span class="va">$ones</span><span class="ot">,</span> <span class="st">'groups'</span> =&gt; <span class="va">$studentKeys</span>]<span class="ot">,</span></span><span id="cb7-9" class="code-line" style="--indent: 4ch"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ]<span class="ot">,</span></span><span id="cb7-10" class="code-line" style="--indent: 4ch"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    reml<span class="ot">:</span> <span class="kw">true</span><span class="ot">,</span></span><span id="cb7-11" class="code-line" style="--indent: 4ch"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    intercept<span class="ot">:</span> <span class="kw">false</span><span class="ot">,</span></span><span id="cb7-12" class="code-line" style="--indent: 0ch"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>)<span class="ot">;</span></span></code></pre></div></div>
+<ul>
+<li>The R equivalent is <code>(1 | district/school/class/student)</code>.</li>
+<li>Nesting adds no correlation parameter between levels; each term has its own variance.</li>
+<li>Random slopes can be supplied through each term’s <code>z</code> columns, subject to identifiability.</li>
+<li>Nested terms are factored block by block, one block per district here. The dense limits of 512 random coefficients and 50,000,000 initial matrix entries apply only to crossed designs, which connect all the random columns into one block.</li>
+</ul>
 </section>
 <section id="published-sleepstudy-r-statsmodels-and-php" class="level2">
 <h2 class="anchored" data-anchor-id="published-sleepstudy-r-statsmodels-and-php">Published sleepstudy: R, statsmodels and PHP</h2>
-<div id="cb226e04" class="cell" data-execution_count="5">
+<div id="bbf440a3" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1" class="code-line" style="--indent: 0ch"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> case <span class="kw">in</span> [r <span class="cf">for</span> r <span class="kw">in</span> report[<span class="st">'mixed'</span>] <span class="cf">if</span> r[<span class="st">'name'</span>].startswith(<span class="st">'sleepstudy_'</span>)]:</span><span id="cb8-2" class="code-line" style="--indent: 4ch"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    fits<span class="op">=</span>[(<span class="st">'R: '</span><span class="op">+</span>o,case[<span class="st">'R'</span>][o][<span class="st">'result'</span>]) <span class="cf">for</span> o <span class="kw">in</span> R_ORDER]</span><span id="cb8-3" class="code-line" style="--indent: 4ch"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    fits<span class="op">+=</span>[(<span class="st">'statsmodels'</span>,case[<span class="st">'statsmodels'</span>])]</span><span id="cb8-4" class="code-line" style="--indent: 4ch"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    fits<span class="op">+=</span>[(<span class="st">'PHP: '</span><span class="op">+</span>o,case[<span class="st">'PHP'</span>][o]) <span class="cf">for</span> o <span class="kw">in</span> [<span class="st">'bobyqa'</span>,<span class="st">'nelder_mead'</span>]]</span><span id="cb8-5" class="code-line" style="--indent: 4ch"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(case[<span class="st">'name'</span>])</span><span id="cb8-6" class="code-line" style="--indent: 4ch"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    display(pd.DataFrame([<span class="bu">dict</span>(implementation<span class="op">=</span>label,intercept<span class="op">=</span>fit[<span class="st">'coefficients'</span>][<span class="dv">0</span>],</span><span id="cb8-7" class="code-line" style="--indent: 30ch"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                              days<span class="op">=</span>fit[<span class="st">'coefficients'</span>][<span class="dv">1</span>],residual_variance<span class="op">=</span>fit[<span class="st">'residual_variance'</span>],</span><span id="cb8-8" class="code-line" style="--indent: 30ch"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                              intercept_variance<span class="op">=</span>fit[<span class="st">'terms'</span>][<span class="dv">0</span>][<span class="st">'covariance'</span>][<span class="dv">0</span>][<span class="dv">0</span>],</span><span id="cb8-9" class="code-line" style="--indent: 30ch"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                              slope_variance<span class="op">=</span>fit[<span class="st">'terms'</span>][<span class="dv">0</span>][<span class="st">'covariance'</span>][<span class="dv">1</span>][<span class="dv">1</span>],</span><span id="cb8-10" class="code-line" style="--indent: 30ch"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                              intercept_slope_covariance<span class="op">=</span>fit[<span class="st">'terms'</span>][<span class="dv">0</span>][<span class="st">'covariance'</span>][<span class="dv">0</span>][<span class="dv">1</span>],</span><span id="cb8-11" class="code-line" style="--indent: 30ch"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                              log_likelihood<span class="op">=</span>fit[<span class="st">'log_likelihood'</span>]) <span class="cf">for</span> label,fit <span class="kw">in</span> fits]))</span><span id="cb8-12" class="code-line" style="--indent: 4ch"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'statsmodels warnings:'</span>,case[<span class="st">'statsmodels_warnings'</span>])</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>sleepstudy_ml</code></pre>
@@ -476,10 +532,10 @@ fit$null.deviance</code></pre>
 <td>PHP: bobyqa</td>
 <td>251.405105</td>
 <td>10.467286</td>
-<td>654.941027</td>
-<td>565.515356</td>
-<td>32.682198</td>
-<td>11.055429</td>
+<td>654.941025</td>
+<td>565.515385</td>
+<td>32.682197</td>
+<td>11.055425</td>
 <td>-875.969672</td>
 </tr>
 <tr class="odd">
@@ -582,9 +638,9 @@ sleepstudy_reml</code></pre>
 <td>251.405105</td>
 <td>10.467286</td>
 <td>654.941016</td>
-<td>612.090017</td>
+<td>612.090018</td>
 <td>35.071662</td>
-<td>9.604341</td>
+<td>9.604340</td>
 <td>-871.814136</td>
 </tr>
 <tr class="odd">
@@ -607,11 +663,16 @@ sleepstudy_reml</code></pre>
 <pre><code>statsmodels warnings: []</code></pre>
 </div>
 </div>
-<p>statsmodels independently estimates ML/REML fixed effects and variance components. For fixed-effect inference we calculate plug-in GLS covariance from its estimates, matching lme4 and our contract; its default joint-Hessian standard errors differ. We require convergence and retain Python warnings. BFGS uses gtol=1e-8; at 1e-10 the REML fit reached the same likelihood but failed its convergence flag, so that failed run was not accepted. Its public MixedLM interface does not provide prior weights, so this Python comparison covers sleepstudy, not the weighted case or every general grouping specification.</p>
+<ul>
+<li>statsmodels estimates the ML and REML fixed effects and variance components independently.</li>
+<li>Fixed-effect standard errors are the plug-in GLS covariance computed from statsmodels’ estimates, as lme4 and phit report it. statsmodels’ default joint-Hessian standard errors differ.</li>
+<li>Convergence is required and Python warnings are kept. BFGS uses <code>gtol = 1e-8</code>; at 1e-10 the REML fit reached the same likelihood but reported nonconvergence, so it is not used.</li>
+<li>statsmodels’ MixedLM has no prior weights, so this comparison covers sleepstudy only.</li>
+</ul>
 </section>
 <section id="what-the-random-slopes-mean" class="level2">
 <h2 class="anchored" data-anchor-id="what-the-random-slopes-mean">What the random slopes mean</h2>
-<div id="d80a786c" class="cell" data-execution_count="6">
+<div id="ce451d22" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1" class="code-line" style="--indent: 0ch"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data<span class="op">=</span>pd.read_csv(ROOT<span class="op">/</span><span class="st">'docs/data/lmm/sleepstudy.csv'</span>)</span><span id="cb12-2" class="code-line" style="--indent: 0ch"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>case<span class="op">=</span><span class="bu">next</span>(r <span class="cf">for</span> r <span class="kw">in</span> report[<span class="st">'mixed'</span>] <span class="cf">if</span> r[<span class="st">'name'</span>]<span class="op">==</span><span class="st">'sleepstudy_reml'</span>)</span><span id="cb12-3" class="code-line" style="--indent: 0ch"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>fit<span class="op">=</span>case[<span class="st">'PHP'</span>][<span class="st">'bobyqa'</span>]<span class="op">;</span>labels<span class="op">=</span>fit[<span class="st">'random'</span>][<span class="dv">0</span>][<span class="st">'group_labels'</span>]</span><span id="cb12-4" class="code-line" style="--indent: 0ch"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>fixture<span class="op">=</span><span class="bu">next</span>(c <span class="cf">for</span> c <span class="kw">in</span> json.loads((ROOT<span class="op">/</span><span class="st">'tests/fixtures/lmm-expanded-r.json'</span>).read_text())[<span class="st">'cases'</span>] <span class="cf">if</span> c[<span class="st">'name'</span>]<span class="op">==</span><span class="st">'sleepstudy_reml'</span>)</span><span id="cb12-5" class="code-line" style="--indent: 0ch"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>subject_group<span class="op">=</span><span class="bu">dict</span>(<span class="bu">zip</span>(data.Subject,fixture[<span class="st">'terms'</span>][<span class="dv">0</span>][<span class="st">'groups'</span>]))</span><span id="cb12-6" class="code-line" style="--indent: 0ch"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Fixture IDs are factor-coded by the R generator; original subject ordering is</span></span><span id="cb12-7" class="code-line" style="--indent: 0ch"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># retained in the CSV. Map the groups explicitly rather than guessing labels.</span></span><span id="cb12-8" class="code-line" style="--indent: 0ch"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>subjects<span class="op">=</span><span class="bu">sorted</span>(data.Subject.unique())</span><span id="cb12-9" class="code-line" style="--indent: 0ch"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>render_figure(<span class="st">'sleepstudy'</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>figures/sleepstudy-slopes.svg </code></pre>
@@ -624,7 +685,7 @@ sleepstudy_reml</code></pre>
 </div>
 </div>
 </div>
-<p>The observed predictor is <strong>days of sleep deprivation</strong>; it is not a trial coefficient. Each person’s intercept shifts the line, and their random slope changes its rate of increase. The population line averages over the zero-mean random effects. This model captures individual differences; numerical agreement alone does not establish that the Gaussian assumptions explain the study.</p>
+<p>The predictor is days of sleep deprivation. Each person’s random intercept shifts their line, and their random slope changes its rate of increase. The population line is the fixed-effect line, where the zero-mean random effects are zero. Numerical agreement with R does not show that the Gaussian assumptions fit the study.</p>
 </section>
 <section id="reproduce-or-refresh" class="level2">
 <h2 class="anchored" data-anchor-id="reproduce-or-refresh">Reproduce or refresh</h2>

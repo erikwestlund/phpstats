@@ -1,7 +1,61 @@
-<p>The standard benchmark compares the release PHP extension, R <code>glm(poisson)</code> and statsmodels <code>GLM</code> on identical synthetic observations. The <a href="/content/phit/docs/benchmarks/poisson-results.json">raw report</a> preserves all timing samples, machine and runtime versions, input hashes, numerical outputs and differences from R.</p>
+<p>phit’s <code>fit_poisson_matrix()</code>, R <code>glm(poisson)</code>, and statsmodels <code>GLM</code> with the Poisson family fit identical simulated observations at four sizes. The <a href="/content/phit/docs/benchmarks/poisson-results.json">raw report</a> keeps every timing sample, machine and runtime versions, input hashes, numerical outputs, and differences from R.</p>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Item</th>
+<th>Setting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Workloads</td>
+<td>1,000, 100,000, and 1,000,000 rows with 3 coefficients; 100,000 rows with 11 coefficients (counts include the intercept)</td>
+</tr>
+<tr class="even">
+<td>Data</td>
+<td>Simulated with NumPy seed <code>20261011</code> (see <a href="#simulation-and-agreement">Simulation and agreement</a>); all runtimes read the same 17-significant-digit CSV</td>
+</tr>
+<tr class="odd">
+<td>Machine</td>
+<td>Apple M5 Ultra, macOS 27, recorded 2026-10-16</td>
+</tr>
+<tr class="even">
+<td>Builds</td>
+<td>phit release build; runtime versions are printed below</td>
+</tr>
+<tr class="odd">
+<td>Threads</td>
+<td>Common BLAS and OpenMP thread variables set to 1</td>
+</tr>
+<tr class="even">
+<td>Repetitions</td>
+<td>One untimed warm-up, then five timed fits per worker; workers run separately and alternate order between cases</td>
+</tr>
+<tr class="odd">
+<td>Statistic</td>
+<td>Median and minimum in-process wall-clock time</td>
+</tr>
+<tr class="even">
+<td>Timed</td>
+<td>One complete fit with every output materialized, including PHP input and output conversion</td>
+</tr>
+<tr class="odd">
+<td>Excluded</td>
+<td>Startup, CSV loading, data generation, and JSON serialization</td>
+</tr>
+<tr class="even">
+<td>Memory</td>
+<td>Peak RSS of the whole worker process</td>
+</tr>
+</tbody>
+</table>
+<p>The harness is shared with the <a href="phpstats://phit/docs/benchmarks/ols#timing-boundaries">OLS benchmark</a>, which describes the boundaries in more detail.</p>
+</section>
 <section id="recorded-results" class="level2">
 <h2 class="anchored" data-anchor-id="recorded-results">Recorded results</h2>
-<div id="a2e1a5c4" class="cell" data-execution_count="1">
+<div id="d3c9afde" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span><span id="cb1-2" class="code-line" style="--indent: 0ch"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span><span id="cb1-3" class="code-line" style="--indent: 0ch"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span><span id="cb1-4" class="code-line" style="--indent: 0ch"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span><span id="cb1-5" class="code-line" style="--indent: 0ch"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep display order independent of the benchmark worker execution order.</span></span><span id="cb1-6" class="code-line" style="--indent: 0ch"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ordered_table(rows):</span><span id="cb1-7" class="code-line" style="--indent: 4ch"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    table <span class="op">=</span> pd.DataFrame(rows)</span><span id="cb1-8" class="code-line" style="--indent: 4ch"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    table[<span class="st">"implementation"</span>] <span class="op">=</span> pd.Categorical(</span><span id="cb1-9" class="code-line" style="--indent: 8ch"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        table[<span class="st">"implementation"</span>], categories<span class="op">=</span>[<span class="st">"R"</span>, <span class="st">"statsmodels"</span>, <span class="st">"PHP"</span>], ordered<span class="op">=</span><span class="va">True</span>)</span><span id="cb1-10" class="code-line" style="--indent: 4ch"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> table.sort_values([<span class="st">"observations"</span>, <span class="st">"coefficients"</span>, <span class="st">"implementation"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span><span id="cb1-11" class="code-line" style="--indent: 0ch"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span><span id="cb1-12" class="code-line" style="--indent: 0ch"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ROOT <span class="op">=</span> <span class="bu">next</span>(p <span class="cf">for</span> p <span class="kw">in</span> [Path.cwd(), <span class="op">*</span>Path.cwd().parents] <span class="cf">if</span> (p <span class="op">/</span> <span class="st">"Cargo.toml"</span>).exists())</span><span id="cb1-13" class="code-line" style="--indent: 0ch"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>report <span class="op">=</span> json.loads((ROOT <span class="op">/</span> <span class="st">"docs/benchmarks/poisson-results.json"</span>).read_text())</span><span id="cb1-14" class="code-line" style="--indent: 0ch"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> report[<span class="st">"model"</span>] <span class="op">==</span> <span class="st">"poisson"</span></span><span id="cb1-15" class="code-line" style="--indent: 0ch"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Recorded:"</span>, report[<span class="st">"recorded_at"</span>])</span><span id="cb1-16" class="code-line" style="--indent: 0ch"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Machine:"</span>, report[<span class="st">"cpu"</span>], report[<span class="st">"platform"</span>])</span><span id="cb1-17" class="code-line" style="--indent: 0ch"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Rust:"</span>, report[<span class="st">"rust"</span>])</span><span id="cb1-18" class="code-line" style="--indent: 0ch"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Repeats:"</span>, report[<span class="st">"repeats"</span>], <span class="st">"Warm-ups:"</span>, report[<span class="st">"warmups"</span>])</span><span id="cb1-19" class="code-line" style="--indent: 0ch"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>rows, memory <span class="op">=</span> [], []</span><span id="cb1-20" class="code-line" style="--indent: 0ch"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> case <span class="kw">in</span> report[<span class="st">"cases"</span>]:</span><span id="cb1-21" class="code-line" style="--indent: 4ch"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> case[<span class="st">"agreement_passed"</span>]</span><span id="cb1-22" class="code-line" style="--indent: 4ch"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, fit <span class="kw">in</span> case[<span class="st">"implementations"</span>].items():</span><span id="cb1-23" class="code-line" style="--indent: 8ch"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        rows.append({<span class="st">"observations"</span>: case[<span class="st">"n"</span>], <span class="st">"coefficients"</span>: case[<span class="st">"p"</span>],</span><span id="cb1-24" class="code-line" style="--indent: 21ch"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"implementation"</span>: name, <span class="st">"version"</span>: fit[<span class="st">"version"</span>],</span><span id="cb1-25" class="code-line" style="--indent: 21ch"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"median full fit (ms)"</span>: <span class="dv">1000</span><span class="op">*</span>fit[<span class="st">"median_fit_seconds"</span>],</span><span id="cb1-26" class="code-line" style="--indent: 21ch"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"minimum full fit (ms)"</span>: <span class="dv">1000</span><span class="op">*</span>fit[<span class="st">"min_fit_seconds"</span>]})</span><span id="cb1-27" class="code-line" style="--indent: 8ch"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        memory.append({<span class="st">"observations"</span>: case[<span class="st">"n"</span>], <span class="st">"coefficients"</span>: case[<span class="st">"p"</span>],</span><span id="cb1-28" class="code-line" style="--indent: 23ch"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"implementation"</span>: name, <span class="st">"CSV load (s)"</span>: fit[<span class="st">"load_seconds"</span>],</span><span id="cb1-29" class="code-line" style="--indent: 23ch"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"whole process (s)"</span>: fit[<span class="st">"process_seconds"</span>],</span><span id="cb1-30" class="code-line" style="--indent: 23ch"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"peak process RSS (MiB)"</span>: fit[<span class="st">"peak_rss_bytes"</span>]<span class="op">/</span><span class="dv">2</span><span class="op">**</span><span class="dv">20</span> <span class="cf">if</span> fit[<span class="st">"peak_rss_bytes"</span>] <span class="cf">else</span> <span class="va">None</span>})</span><span id="cb1-31" class="code-line" style="--indent: 0ch"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>display(ordered_table(rows))</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Recorded: 2026-10-16T07:51:11.086697+00:00
@@ -140,11 +194,11 @@ Repeats: 5 Warm-ups: 1</code></pre>
 </div>
 </div>
 </div>
-<p>The cases include 1,000, 100,000 and one million observations with three coefficients, and 100,000 observations with eleven coefficients. Counts include the intercept. These measurements describe this workload and environment, not a universal ranking. The raw report preserves each repetition.</p>
+<p>R’s elapsed timer has millisecond resolution, so the smallest fits are coarse. These measurements describe this workload on this machine.</p>
 </section>
 <section id="visual-comparison" class="level2">
 <h2 class="anchored" data-anchor-id="visual-comparison">Visual comparison</h2>
-<div id="8a8a570a" class="cell" data-execution_count="2">
+<div id="8f685baf" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>benchmarks/figures/poisson-fit-time.svg 
 benchmarks/figures/poisson-memory.svg </code></pre>
@@ -162,14 +216,39 @@ benchmarks/figures/poisson-memory.svg </code></pre>
 <figcaption>Peak whole-process memory for R, statsmodels and PHP in four workloads.</figcaption>
 </figure>
 </div>
-<p>R, statsmodels and PHP use the same order and colors throughout. Each panel has its own linear scale so small workloads remain readable; compare labeled values across panels. Memory covers the entire worker process. It is not the solver’s allocation count. All workloads passed the numerical checks described below.</p>
-<p>Download the timing <a href="/content/phit/docs/benchmarks/figures/poisson-fit-time.svg">SVG</a> or <a href="/content/phit/docs/benchmarks/figures/poisson-fit-time.png">PNG</a>, and memory <a href="/content/phit/docs/benchmarks/figures/poisson-memory.svg">SVG</a> or <a href="/content/phit/docs/benchmarks/figures/poisson-memory.png">PNG</a>. Charts refresh from saved measurements when this page is executed; they do not rerun the benchmarks.</p>
+<p>Each panel has its own linear scale, so compare labeled values across panels. Download the timing <a href="/content/phit/docs/benchmarks/figures/poisson-fit-time.svg">SVG</a> or <a href="/content/phit/docs/benchmarks/figures/poisson-fit-time.png">PNG</a> and memory <a href="/content/phit/docs/benchmarks/figures/poisson-memory.svg">SVG</a> or <a href="/content/phit/docs/benchmarks/figures/poisson-memory.png">PNG</a>.</p>
 </section>
-<section id="what-is-timed" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-timed">What is timed?</h2>
-<p>Workers load the same CSV once, perform one untimed warm-up, and measure five full fits. Each timed fit materializes coefficients, covariance, standard errors, normal z tests, p-values, Wald intervals, every fitted mean count and response residual, likelihood, deviance, null deviance, AIC and residual degrees of freedom. PHP also converts inputs and all outputs and constructs row metadata within the timer. Startup, CSV loading, data generation and final JSON serialization are excluded.</p>
-<p>R uses formula/model construction and QR-based IRLS, with epsilon 1e-16 to stabilize covariance agreement. Python uses GLM IRLS with parameter tolerance 1e-11; PHP uses weighted SVD Newton updates and its documented convergence rules. Starting values, linear solves and stopping criteria differ. This is a comparison of complete public API calls, not equal iteration counts or isolated decomposition speeds. Common numerical-library thread variables are set to one; installed backends and requested settings are recorded. Workers run separately with order alternated between cases. Other machine activity can affect measurements. R’s elapsed timer has coarse millisecond resolution for small cases.</p>
-<div id="0efe88c6" class="cell" data-execution_count="3">
+<section id="timing-boundaries" class="level2">
+<h2 class="anchored" data-anchor-id="timing-boundaries">Timing boundaries</h2>
+<p>Each timed fit materializes coefficients, covariance, standard errors, normal z tests, p-values, Wald intervals, every fitted mean count and response residual, likelihood, deviance, null deviance, AIC, and residual df.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Implementation</th>
+<th>Fitting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>phit</td>
+<td>Weighted SVD Newton updates, with phit’s convergence rules</td>
+</tr>
+<tr class="even">
+<td>R</td>
+<td>Formula and model construction, then QR-based IRLS with epsilon 1e-16</td>
+</tr>
+<tr class="odd">
+<td>statsmodels</td>
+<td>IRLS with parameter tolerance 1e-11</td>
+</tr>
+</tbody>
+</table>
+<p>Starting values, linear solves, and stopping criteria differ, so iteration counts differ too. This compares complete public API calls, not decomposition speed.</p>
+<div id="6e29112b" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>display(ordered_table(memory))</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -302,15 +381,16 @@ benchmarks/figures/poisson-memory.svg </code></pre>
 </div>
 </div>
 </div>
-<p>Whole-process time includes loading, imports, warm-up and every measured fit. Peak resident memory covers the entire worker, not just the numerical solver. PHP memory_limit is disabled for this experiment because large nested PHP arrays can exceed typical application limits. See the <a href="phpstats://phit/docs/benchmarks/ols">OLS benchmark</a> for the shared harness and further interpretation of these boundaries.</p>
+<p>Whole-process time includes loading, imports, the warm-up, and every timed fit. Peak RSS covers the whole worker, not only the solver. PHP’s <code>memory_limit</code> is disabled, because large nested PHP arrays can exceed typical application limits.</p>
 </section>
 <section id="simulation-and-agreement" class="level2">
 <h2 class="anchored" data-anchor-id="simulation-and-agreement">Simulation and agreement</h2>
-<p>NumPy RNG seed 20261011 first draws the common benchmark setup, then generates integer visitor counts uniformly from 80 to 300 and staffing as clipped visitors/50 plus normal noise with standard deviation 0.8. Wider models add independent standard-normal scores. Count outcomes are draws from</p>
+<p>After the common benchmark setup, visitor counts are integers uniform from 80 to 300, and staffing is visitors/50 plus normal noise with standard deviation 0.8, clipped. The wider case adds independent standard-normal scores. Outcomes are draws from</p>
 <p><span class="math display">\[\mu_i=\exp(0.1+0.005\,\mathrm{visitors}_i-0.12\,\mathrm{staff}_i
 +0.1\sum_j\mathrm{extra}_{ij}),\qquad y_i\sim\operatorname{Poisson}(\mu_i).\]</span></p>
-<p>This simulation is separate from the small R-generated teaching sample; its scores are unrounded and its seed is different. Every runtime reads identical 17-significant-digit CSV values. Data hashes, generating coefficients and sample correlations are recorded. All coefficient-level quantities and scalar statistics are compared with R at tolerance 1e-9 + 1e-7 × abs(reference). Full fitted/residual vectors are materialized; cross-runtime comparison samples ten evenly spaced rows, while small fixtures check complete vectors. PHP convergence must be true and its update count must be between one and 100. Wald intervals use R confint.default(), and the null baseline follows the documented intercept convention. Poisson deviance uses the saturated count likelihood, not -2 log-likelihood.</p>
-<div id="2a004909" class="cell" data-execution_count="4">
+<p>This simulation is separate from the small teaching sample. Data hashes, generating coefficients, and sample correlations are recorded.</p>
+<p>Coefficient-level quantities and scalar statistics are compared with R at <code>1e-9 + 1e-7 * abs(reference)</code>. Fitted values and residuals are computed in full and compared at ten evenly spaced rows; the small fixtures compare full vectors. phit must report convergence within 1 to 100 updates. Wald intervals follow R <code>confint.default()</code>, and the null baseline follows the documented intercept convention. Poisson deviance uses the saturated count likelihood, not −2 log-likelihood.</p>
+<div id="8bac1b11" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1" class="code-line" style="--indent: 0ch"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>display(ordered_table([{ <span class="st">"observations"</span>: case[<span class="st">"n"</span>], <span class="st">"coefficients"</span>: case[<span class="st">"p"</span>],</span><span id="cb5-2" class="code-line" style="--indent: 24ch"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"implementation"</span>: name, <span class="st">"largest absolute difference vs R"</span>: <span class="bu">max</span>(errors.values())}</span><span id="cb5-3" class="code-line" style="--indent: 23ch"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                       <span class="cf">for</span> case <span class="kw">in</span> report[<span class="st">"cases"</span>]</span><span id="cb5-4" class="code-line" style="--indent: 23ch"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                       <span class="cf">for</span> name, errors <span class="kw">in</span> case[<span class="st">"max_absolute_errors_vs_R"</span>].items()]))</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -390,10 +470,10 @@ benchmarks/figures/poisson-memory.svg </code></pre>
 </div>
 </div>
 </section>
-<section id="reproduce" class="level2">
-<h2 class="anchored" data-anchor-id="reproduce">Reproduce</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PHP</span><span class="op">=</span>/opt/homebrew/bin/php</span><span id="cb6-2" class="code-line" style="--indent: 0ch"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">PHP_CONFIG</span><span class="op">=</span>/opt/homebrew/bin/php-config</span><span id="cb6-3" class="code-line" style="--indent: 0ch"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> php-stats <span class="at">--release</span> <span class="at">--locked</span></span><span id="cb6-4" class="code-line" style="--indent: 0ch"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/notebooks-venv/bin/python</span> tests/benchmarks/run.py <span class="at">--model</span> poisson</span><span id="cb6-5" class="code-line" style="--indent: 0ch"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="va">QUARTO_PYTHON</span><span class="op">=</span><span class="st">"</span><span class="va">$PWD</span><span class="st">/.context/notebooks-venv/bin/python"</span> <span class="ex">quarto</span> render docs/benchmarks/poisson.qmd</span><span id="cb6-6" class="code-line" style="--indent: 0ch"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs</span></code></pre></div></div>
-<p>Select matching PHP tools and <code>.so</code> on Linux. Use <code>--cases 1000:3 --repeats 2 --output .context/poisson-smoke.json</code> for a quick check that preserves the published report. Numerical failures abort without publishing results. Benchmarks are explicit development commands; ordinary renders and tests read saved evidence. Optimization or additional numerical dependencies should answer a demonstrated need.</p>
+<section id="reproduction" class="level2">
+<h2 class="anchored" data-anchor-id="reproduction">Reproduction</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> build <span class="at">-p</span> phit <span class="at">--release</span> <span class="at">--locked</span></span><span id="cb6-2" class="code-line" style="--indent: 0ch"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">.context/notebooks-venv/bin/python</span> tests/benchmarks/run.py <span class="at">--model</span> poisson</span><span id="cb6-3" class="code-line" style="--indent: 0ch"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="va">QUARTO_PYTHON</span><span class="op">=</span><span class="st">"</span><span class="va">$PWD</span><span class="st">/.context/notebooks-venv/bin/python"</span> <span class="dt">\</span></span><span id="cb6-4" class="code-line" style="--indent: 2ch"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">quarto</span> render docs/benchmarks/poisson.qmd</span></code></pre></div></div>
+<p>Set matching <code>PHP</code> and <code>PHP_CONFIG</code>, and use <code>.so</code> on Linux. For a quick check that leaves the published report unchanged, add <code>--cases 1000:3 --repeats 2 --output .context/poisson-smoke.json</code>. A numerical failure aborts the run without writing results.</p>
 
 
 </section>
