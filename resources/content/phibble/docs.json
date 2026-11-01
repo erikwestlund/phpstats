@@ -430,6 +430,11 @@
                     "id": "using-the-result",
                     "text": "Using the result",
                     "level": 2
+                },
+                {
+                    "id": "running-the-examples",
+                    "text": "Running the examples",
+                    "level": 2
                 }
             ],
             "math": false

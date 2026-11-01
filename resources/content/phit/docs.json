@@ -1264,8 +1264,23 @@
             "title": "Missing values and sample accounting",
             "headings": [
                 {
-                    "id": "what-counts-as-missing",
-                    "text": "What counts as missing",
+                    "id": "example",
+                    "text": "Example",
+                    "level": 2
+                },
+                {
+                    "id": "behavior",
+                    "text": "Behavior",
+                    "level": 2
+                },
+                {
+                    "id": "interpreting-a-complete-case-fit",
+                    "text": "Interpreting a complete-case fit",
+                    "level": 2
+                },
+                {
+                    "id": "validation",
+                    "text": "Validation",
                     "level": 2
                 },
                 {
@@ -1274,28 +1289,13 @@
                     "level": 2
                 },
                 {
-                    "id": "statistical-interpretation-and-reference-behavior",
-                    "text": "Statistical interpretation and reference behavior",
+                    "id": "model-specific-rules",
+                    "text": "Model-specific rules",
                     "level": 2
                 },
                 {
-                    "id": "logistic-outcomes",
-                    "text": "Logistic outcomes",
-                    "level": 2
-                },
-                {
-                    "id": "probit-and-poisson-outcomes",
-                    "text": "Probit and Poisson outcomes",
-                    "level": 2
-                },
-                {
-                    "id": "mixed-model-group-ids",
-                    "text": "Mixed-model group IDs",
-                    "level": 2
-                },
-                {
-                    "id": "expanded-inputs",
-                    "text": "Expanded inputs",
+                    "id": "implementation-and-history",
+                    "text": "Implementation and history",
                     "level": 2
                 }
             ],

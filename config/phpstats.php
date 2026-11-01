@@ -34,13 +34,13 @@ return [
      * without an entry show the overview from config/projects.php only.
      */
     'content' => [
-        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '80d1d990db9d3215f8dfe5be59ebf0acac69df37'],
-        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => '7f98e6237c318b5bae534fc5b9cbb57c9683787f'],
-        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'bd6e8ccdaf50de00b7c868a5afd643efdd4f9d7e'],
-        'phit' => ['repo' => 'phpstats/phit', 'ref' => 'e7100cbccec9dc348daf0ffc8217aed8a0372ea9'],
+        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '61131e6f6d5336b88ef8a9eeed858afd045b971a'],
+        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'e3ad71e83bfc28ec56333bc50c7b5b4232025510'],
+        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'a2946d16f86ebea5f265cd8f67065448e4f6fb87'],
+        'phit' => ['repo' => 'phpstats/phit', 'ref' => 'ded53a2b4707f6653bba528d4cd8cb71315cc6e7'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => 'aaa4c32228c562881fcc6d8846af5fb907304c03'],
-        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => 'd7a89d69e18a16905e69f3e480709574c9e7c0ba'],
-        'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '82e8fbee5f0b4680491d169596697f1ed0b74af7'],
+        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => 'adb2654a73794eba96a0aaea0f9722093901efe0'],
+        'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '2e1ee97c03ae7b4c70e276cb8524b4804f54b286'],
     ],
 
     /*
@@ -62,21 +62,21 @@ return [
      */
     'example_collections' => [
         'phibble' => [
-            ['path' => 'laravel', 'title' => 'Analyze Eloquent models', 'description' => 'Turns Eloquent builders, relations, and collections into data frames, summarizes them, and charts the result.'],
+            ['path' => 'laravel', 'title' => 'Analyze Eloquent models', 'description' => 'Turn Eloquent queries and collections into data frames, then summarize and chart them.'],
         ],
         'phplyr' => [
-            ['path' => 'port-r-script', 'title' => 'Port an R script', 'description' => 'An R analysis that cleans, reshapes, summarizes, and fits models, rewritten with phplyr and phit.'],
-            ['path' => 'gallery', 'title' => 'Analysis gallery', 'description' => 'Five short analyses that combine phplyr pipelines with model fits.'],
+            ['path' => 'port-r-script', 'title' => 'Port an R script', 'description' => 'Translate an R analysis that cleans, reshapes, and models data.'],
+            ['path' => 'gallery', 'title' => 'Analysis gallery', 'description' => 'Short analyses that combine data pipelines with model fits.'],
         ],
         'phit' => [
-            ['path' => 'missing-data', 'title' => 'Account for missing values', 'description' => 'How fits drop incomplete rows or raise instead, and report which rows they used.'],
+            ['path' => 'missing-data', 'title' => 'Account for missing values', 'description' => 'See how fits handle incomplete rows and report the rows they used.'],
         ],
         'phiz' => [
-            ['path' => 'dashboard', 'title' => 'Build a Livewire dashboard', 'description' => 'Linked charts that follow a Livewire component\'s filters, with phplyr summarizing on the server.'],
-            ['path' => 'gallery', 'title' => 'Chart gallery', 'description' => 'Charts by type, including histograms, boxplots, heatmaps, facets, themes, tooltips, and linked brushing.'],
+            ['path' => 'dashboard', 'title' => 'Build a Livewire dashboard', 'description' => 'Link several charts to the filters of one Livewire component.'],
+            ['path' => 'gallery', 'title' => 'Chart gallery', 'description' => 'Browse charts by type, from distributions and heatmaps to linked brushing.'],
         ],
         'cmdstanphp' => [
-            ['path' => 'examples', 'title' => 'Bundled Stan models', 'description' => 'The example models CmdStanPHP ships from CmdStanR, fit with cmdstanr_example().'],
+            ['path' => 'examples', 'title' => 'Bundled Stan models', 'description' => 'Fit the example models that ship with CmdStanPHP.'],
         ],
     ],
 

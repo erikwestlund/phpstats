@@ -147,7 +147,10 @@ document.addEventListener('DOMContentLoaded', () => {
         button.textContent = 'Copy';
         button.setAttribute('aria-label', 'Copy code');
         button.addEventListener('click', async () => {
-            await copyText(code.innerText.replace(/\n$/, ''));
+            // The import gives each line its own block, so the code is its lines joined.
+            const lines = code.querySelectorAll(':scope > .code-line');
+            const text = lines.length ? [...lines].map((line) => line.textContent).join('\n') : code.innerText;
+            await copyText(text.replace(/\n$/, ''));
             button.textContent = 'Copied';
             clearTimeout(button.timer);
             button.timer = setTimeout(() => (button.textContent = 'Copy'), 2000);

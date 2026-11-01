@@ -28,10 +28,9 @@ Kernels: php, python3</code></pre>
 <section id="at-a-terminal" class="level2">
 <h2 class="anchored" data-anchor-id="at-a-terminal">At a terminal</h2>
 <p>Put the environment first on <code>PATH</code> for the current shell, either with the <code>export</code> line that <code>juphyter install</code> and <code>juphyter doctor</code> print or by activating the environment:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.venvs/juphyter/bin/activate</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render notebook.qmd</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.venvs/juphyter/bin/activate</span><span id="cb3-2" class="code-line" style="--indent: 0ch"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render notebook.qmd</span></code></pre></div></div>
 <p>For a single command:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">QUARTO_PYTHON</span><span class="op">=</span>~/.venvs/juphyter/bin/python <span class="ex">quarto</span> render notebook.qmd</span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1" class="code-line" style="--indent: 0ch"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">QUARTO_PYTHON</span><span class="op">=</span>~/.venvs/juphyter/bin/python <span class="ex">quarto</span> render notebook.qmd</span></code></pre></div></div>
 <p>For every render in one Quarto project, put an <code>_environment</code> file beside <code>_quarto.yml</code>. It needs an absolute path:</p>
 <pre><code>QUARTO_PYTHON=/Users/you/.venvs/juphyter/bin/python</code></pre>
 <p>Exporting <code>QUARTO_PYTHON</code> or the environment’s <code>PATH</code> entry from a shell startup file changes the interpreter for every Quarto project on the machine, including projects that do not use PHP. juphyter writes neither to a startup file.</p>
@@ -47,7 +46,7 @@ Kernels: php, python3</code></pre>
 <p>Positron bundles the same Python extension and the same Quarto extension, so the steps are the same: open the folder, then run <strong>Python: Select Interpreter</strong>.</p>
 <p>A workspace that already has an interpreter stored keeps it. <code>python.defaultInterpreterPath</code> in <code>.vscode/settings.json</code> applies only when no interpreter has been selected, so a stored choice is replaced through the picker. A change to that setting takes effect after <strong>Developer: Reload Window</strong>.</p>
 <p>Positron opens a new terminal for each render, so the interpreter it passed to Quarto can be read there:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"QUARTO_PYTHON=[</span><span class="va">$QUARTO_PYTHON</span><span class="st">]"</span></span></code></pre></div></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1" class="code-line" style="--indent: 0ch"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"QUARTO_PYTHON=[</span><span class="va">$QUARTO_PYTHON</span><span class="st">]"</span></span></code></pre></div></div>
 <p>An empty value means no interpreter is selected for the workspace.</p>
 </section>
 <section id="other-editors" class="level2">

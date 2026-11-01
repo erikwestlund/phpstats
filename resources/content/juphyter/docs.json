@@ -74,23 +74,8 @@
                     "level": 2
                 },
                 {
-                    "id": "the-data",
-                    "text": "The data",
-                    "level": 2
-                },
-                {
-                    "id": "a-table",
-                    "text": "A table",
-                    "level": 2
-                },
-                {
-                    "id": "a-chart",
-                    "text": "A chart",
-                    "level": 2
-                },
-                {
-                    "id": "how-it-works",
-                    "text": "How it works",
+                    "id": "cells",
+                    "text": "Cells",
                     "level": 2
                 }
             ],

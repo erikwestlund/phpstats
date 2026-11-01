@@ -259,6 +259,22 @@ class SyncTest extends TestCase
         $this->assertStringNotContainsString('data-bs-toggle', $html);
     }
 
+    public function test_each_line_of_highlighted_code_becomes_a_block_with_its_indentation(): void
+    {
+        File::put("{$this->source}/docs/index.html", $this->page('Overview', implode('', [
+            '<div class="sourceCode"><pre class="sourceCode php"><code class="sourceCode php">',
+            '<span id="cb1-1"><a href="#cb1-1"></a>$x = f(</span>'."\n",
+            '<span id="cb1-2"><a href="#cb1-2"></a></span>'."\n",
+            '<span id="cb1-3"><a href="#cb1-3"></a>    1,</span>',
+            '</code></pre></div>',
+        ])));
+        $this->assertSame(0, $this->syncFromPath());
+
+        $html = File::get("{$this->content}/".self::PACKAGE.'/docs/index.html');
+        $this->assertStringContainsString('<span id="cb1-1" class="code-line" style="--indent: 0ch"><a href="#cb1-1"></a>$x = f(</span><span id="cb1-2" class="code-line" style="--indent: 0ch">', $html);
+        $this->assertStringContainsString('<span id="cb1-3" class="code-line" style="--indent: 4ch">', $html);
+    }
+
     public function test_the_nav_keeps_each_item_section(): void
     {
         // The fixture holds no docs/_quarto.yml, so this is the site.json nav.

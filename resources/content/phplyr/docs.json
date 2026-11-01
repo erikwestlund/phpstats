@@ -225,8 +225,8 @@
             "title": "Gallery",
             "headings": [
                 {
-                    "id": "school-value-added",
-                    "text": "School value added",
+                    "id": "school-residuals",
+                    "text": "School residuals",
                     "level": 2
                 },
                 {

@@ -183,6 +183,29 @@ pre,
 .docs-content pre code {
     color: inherit;
 }
+/* Code wraps instead of scrolling. For highlighted code the import makes each
+   line a block with its indentation in --indent, and a wrapped line continues
+   two characters past it. Output keeps its columns: a printed table scrolls
+   inside its box when it is wider, except one-line text such as SQL in a
+   disclosure, which wraps. */
+.docs-content div.sourceCode pre:not(.output),
+.docs-content pre[class]:not(.output, .text),
+.docs-content details pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+@media (max-width: 639px) {
+    .docs-content pre.output,
+    .docs-content .cell-output pre {
+        font-size: 0.75rem;
+    }
+}
+.docs-content pre.sourceCode > code > .code-line {
+    display: block;
+    min-height: 1lh;
+    padding-left: calc(var(--indent, 0ch) + 2ch);
+    text-indent: calc(-1 * (var(--indent, 0ch) + 2ch));
+}
 .docs-content pre code > span > a:first-child {
     /* pandoc line anchors */
     display: none;
@@ -193,6 +216,32 @@ pre,
     color: var(--color-zinc-800);
     border: 1px solid var(--color-zinc-200);
     box-shadow: none;
+}
+/* Long inline code, such as a path, may break anywhere, and a chart that
+   vega-embed drew at a fixed width scales down to fit the column. */
+.docs-content :not(pre) > code {
+    overflow-wrap: anywhere;
+}
+.docs-content .vega-embed {
+    max-width: 100%;
+}
+.docs-content .vega-embed svg {
+    max-width: 100%;
+    height: auto;
+}
+/* Quarto's ::: columns sit side by side on wide screens and stack on narrow
+   ones, where each column would be too narrow to read code in. */
+.docs-content .columns {
+    display: flex;
+    gap: 0;
+}
+@media (max-width: 767px) {
+    .docs-content .columns {
+        display: block;
+    }
+    .docs-content .column {
+        width: auto !important;
+    }
 }
 .docs-content table {
     display: block;

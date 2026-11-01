@@ -12,7 +12,8 @@ use Symfony\Component\Yaml\Yaml;
  *
  * Each page keeps the content of <main id="quarto-document-content"> with its
  * math spans, pandoc highlighting, tables, and callouts (a collapsible one
- * becomes a <details> element). Quarto's title block,
+ * becomes a <details> element). Each line of highlighted code becomes a
+ * block marked with its indentation, so a long line can wrap. Quarto's title block,
  * scripts, and copy buttons are dropped. Links between pages become
  * phpstats://{package}/docs/{path} placeholders that the site resolves for the
  * current host, and figures and other files are copied under public/content.
@@ -274,6 +275,22 @@ class DocsImporter
             $summary->textContent = trim(preg_replace('/\s+/', ' ', $header->textContent));
             $details->append($summary, ...iterator_to_array($body->childNodes));
             $callout->replaceWith($details);
+        }
+
+        // Each line of highlighted code becomes a block that records its
+        // indentation, so a long line wraps with a hanging indent instead of
+        // scrolling. The newlines between lines go, as each block ends one.
+        foreach ($main->querySelectorAll('pre.sourceCode > code') as $code) {
+            foreach (iterator_to_array($code->childNodes) as $node) {
+                if ($node instanceof \Dom\Text && trim($node->textContent) === '') {
+                    $node->remove();
+                }
+            }
+            foreach ($code->children as $line) {
+                preg_match('/^ */', $line->textContent, $indent);
+                $line->classList->add('code-line');
+                $line->setAttribute('style', '--indent: '.strlen($indent[0]).'ch');
+            }
         }
 
         $directory = str_contains($path, '/') ? dirname($path) : '';
