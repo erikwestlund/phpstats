@@ -44,7 +44,6 @@ class ProseTest extends TestCase
      */
     private const ALLOWED = [
         'phit/docs/formulas.html' => ["as in R\u{2019}s model frame."],
-        'juphyter/docs/limitations.html' => ['The kernel reports the stack frame without a location'],
     ];
 
     public function test_no_prose_writes_the_bare_noun_frame(): void
