@@ -81,7 +81,7 @@ class DocsTest extends TestCase
         // phibble, phiz, and cmdstanphp ship docs and nothing else: their
         // site/ folders hold no benchmark or verification reports, which is
         // why neither section appears in their bars.
-        $this->assertEqualsCanonicalizing(['phit', 'phplyr', 'phpolars'], $shipping);
+        $this->assertEqualsCanonicalizing(['cmdstanphp', 'phit', 'phplyr', 'phpolars'], $shipping);
     }
 
     // Task 10: the three packages that joined the site, and the audits that

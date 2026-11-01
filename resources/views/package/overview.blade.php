@@ -1,6 +1,6 @@
 @php
     $layer = $package->layer();
-    $verified = collect($package->verifications())->flatMap(fn ($v) => $v['cases']);
+    $verified = collect($package->verifications())->flatMap(fn ($v) => $v['cases'] ?? []);
     $sections = array_filter([
         'docs' => $package->hasDocs() ? ['Docs', 'book-open', count($package->docsNav()).' pages of guides and reference'] : null,
         'examples' => $package->listedExamples() ? ['Examples', 'play-circle', count($package->listedExamples()).' short, runnable examples'] : null,

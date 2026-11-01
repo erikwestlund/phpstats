@@ -211,7 +211,7 @@
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 id="verified-heading" class="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Verified against established libraries</h2>
         <p class="mx-auto mt-4 max-w-2xl text-center text-lg leading-snug text-zinc-600 dark:text-zinc-400">
-            PHPstats results next to R and Python on the same data.
+            All our libraries are verified against popular alternatives in R and Python.
         </p>
 
         <div x-data="{ check: @js($first) }" class="mt-10 sm:mt-12">

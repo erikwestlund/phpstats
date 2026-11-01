@@ -3,10 +3,25 @@
         Each report compares {{ $package->name() }} with a reference implementation on the same inputs, at a stated tolerance.
     </x-page-header>
 
-    @php $reports = $package->verifications(); @endphp
-    @if ($reports === [])
+    @php
+        // Reports with per-quantity cases get the full treatment; a record
+        // without them, such as a comparison of interfaces, shows its
+        // description so its anchor still resolves.
+        $records = $package->verifications();
+        $reports = array_values(array_filter($records, fn (array $r) => isset($r['cases'])));
+        $comparisons = array_values(array_filter($records, fn (array $r) => ! isset($r['cases'])));
+    @endphp
+    @foreach ($comparisons as $comparison)
+        <section id="{{ $comparison['id'] }}" class="mt-12 scroll-mt-24 rounded-2xl p-6 ring-1 ring-zinc-200 sm:p-8 dark:ring-white/10">
+            <h2 class="text-xl font-semibold tracking-tight">{{ $comparison['title'] }}</h2>
+            @if (! empty($comparison['description']))
+                <p class="mt-2 max-w-3xl text-sm text-zinc-700 dark:text-zinc-300">{{ $comparison['description'] }}</p>
+            @endif
+        </section>
+    @endforeach
+    @if ($reports === [] && $comparisons === [])
         <p class="mt-4 text-zinc-600 dark:text-zinc-400">{{ $package->name() }} has not published verification results yet.</p>
-    @else
+    @elseif ($reports !== [])
         @php
             $total = array_sum(array_map(fn ($report) => count($report['cases']), $reports));
             $failed = array_sum(array_map(fn ($report) => count(array_filter($report['cases'], fn ($case) => ! ($case['passed'] ?? false))), $reports));
