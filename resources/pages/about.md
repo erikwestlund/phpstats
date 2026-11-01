@@ -14,9 +14,11 @@ designed to work well together.
 
 ## Design
 
-PHPstats is influenced heavily by the [tidyverse](https://www.tidyverse.org)
-and the tidy approach to statistical computing in R, and also by R's
-statistical packages, Polars, and [Stan](https://mc-stan.org).
+PHPstats is heavily influenced by the [tidyverse](https://www.tidyverse.org/)
+and the tidy approach to statistical computing in R. It also draws on ideas
+and software from the Python community, including [Polars](https://pola.rs/)
+and [Jupyter](https://jupyter.org/), as well as from the
+[Stan](https://mc-stan.org/) ecosystem.
 
 - <x-package-link package="phibble" class="font-semibold" />: data frames modeled on <a href="https://tibble.tidyverse.org" class="font-mono">tibble</a>, file reading modeled on <a href="https://readr.tidyverse.org" class="font-mono">readr</a>, and the factor functions of <a href="https://forcats.tidyverse.org" class="font-mono">forcats</a>.
 - <x-package-link package="phplyr" class="font-semibold" />: the data manipulation features of <a href="https://dplyr.tidyverse.org" class="font-mono">dplyr</a>, <a href="https://tidyr.tidyverse.org" class="font-mono">tidyr</a>, and <a href="https://sfirke.github.io/janitor/" class="font-mono">janitor</a>.
