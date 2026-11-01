@@ -64,8 +64,8 @@
 
     $panels = [
         'distributions' => [
-            'title' => 'Probability distributions',
-            'model' => 'Normal and gamma (shape 2, scale 3) distribution functions and quantiles',
+            'title' => 'Normal and gamma probabilities and quantiles',
+            'model' => 'Distribution and quantile functions; gamma with shape 2 and scale 3',
             'dataset' => null,
             'record' => 'Distributions',
             'label' => 'Distributions',
@@ -87,8 +87,8 @@
             },
         ],
         'csv' => [
-            'title' => 'CSV processing',
-            'model' => 'Hours of readings, mean temperature, and mean humidity by airport, skipping missing values',
+            'title' => 'Weather at New York City airports in 2013',
+            'model' => 'A CSV file of 26,115 hourly readings, summarized by airport, skipping missing values',
             'dataset' => 'weather',
             'record' => 'CSV processing',
             'label' => 'CSV processing',
@@ -112,8 +112,8 @@
             },
         ],
         'ols' => [
-            'title' => 'Ordinary least squares',
-            'model' => '<code>mpg ~ wt + hp</code>',
+            'title' => 'Fuel economy of 32 cars',
+            'model' => '<code>mpg ~ wt + hp</code>, ordinary least squares',
             'dataset' => 'mtcars',
             'record' => 'OLS regression',
             'label' => 'OLS',
@@ -126,8 +126,8 @@
             'rows' => $model([['Residual SD', 'sigma', 'sigma'], ['R²', 'r_squared', 'r_squared']]),
         ],
         'logistic' => [
-            'title' => 'Logistic regression',
-            'model' => '<code>lfp ~ k5 + k618 + age + wc + hc + lwg + inc</code>, binomial with the logit link',
+            'title' => 'Labor force participation of 753 married women',
+            'model' => '<code>lfp ~ k5 + k618 + age + wc + hc + lwg + inc</code>, logistic regression',
             'dataset' => 'mroz',
             'record' => 'Logistic regression',
             'label' => 'Logistic',
@@ -140,8 +140,8 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'probit' => [
-            'title' => 'Probit regression',
-            'model' => '<code>lfp ~ k5 + k618 + age + wc + hc + lwg + inc</code>, binomial with the probit link',
+            'title' => 'Labor force participation of 753 married women',
+            'model' => '<code>lfp ~ k5 + k618 + age + wc + hc + lwg + inc</code>, probit regression',
             'dataset' => 'mroz',
             'record' => 'Probit regression',
             'label' => 'Probit',
@@ -154,8 +154,8 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-gaussian' => [
-            'title' => 'Linear mixed model',
-            'model' => '<code>Reaction ~ Days + (1 | Subject)</code>, fitted by REML',
+            'title' => 'Reaction times under sleep deprivation',
+            'model' => '<code>Reaction ~ Days + (1 | Subject)</code>, linear mixed model fitted by REML',
             'dataset' => 'sleepstudy',
             'record' => 'Gaussian mixed model',
             'label' => 'Mixed Gaussian',
@@ -168,8 +168,8 @@
             'rows' => $model([['Subject variance', $groupVariance, 'group_variance'], ['Residual variance', 'residual_variance', 'residual_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-logistic' => [
-            'title' => 'Mixed logistic regression',
-            'model' => '<code>cbind(incidence, size - incidence) ~ period + (1 | herd)</code>, Laplace approximation',
+            'title' => 'Pleuropneumonia in 15 cattle herds',
+            'model' => '<code>cbind(incidence, size - incidence) ~ period + (1 | herd)</code>, mixed logistic regression with the Laplace approximation',
             'dataset' => 'cbpp',
             'record' => 'Mixed logistic model',
             'label' => 'Mixed logistic',
@@ -182,8 +182,8 @@
             'rows' => $model([['Herd variance', $groupVariance, 'group_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'bayesian' => [
-            'title' => 'Bayesian hierarchical model',
-            'model' => '<code>y ~ normal(mu + tau * theta, sigma)</code>, sampled by NUTS in four chains',
+            'title' => 'Coaching effects in eight schools',
+            'model' => '<code>y ~ normal(mu + tau * theta, sigma)</code>, a hierarchical model sampled by NUTS in four chains',
             'dataset' => 'schools',
             'record' => 'Bayesian interfaces',
             'label' => 'Mixed Gaussian (Bayesian)',
