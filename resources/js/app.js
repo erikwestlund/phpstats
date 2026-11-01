@@ -27,6 +27,7 @@ window.vegaEmbed = (el, spec, options = {}) => {
             view: { stroke: darkAxis.gridColor, ...config.view },
             legend: { labelColor: '#cbcbd9', titleColor: '#cbcbd9', ...config.legend },
             title: { color: '#e3e3ec', ...config.title },
+            text: { color: '#cbcbd9', ...config.text },
             header: { labelColor: '#cbcbd9', titleColor: '#cbcbd9', ...config.header },
         },
     });

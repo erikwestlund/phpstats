@@ -2,8 +2,9 @@
     The landing page's benchmarks, one workload at a time: each workload in
     config/phpstats.php benchmarks names a package's synced benchmark record,
     which holds the saved results, each implementation's code, and the
-    environment. A selector chooses the workload; within it, elapsed time and
-    peak memory sit side by side with equal weight, then the code of each
+    environment. A selector chooses the workload; within it, two phiz bar
+    charts, elapsed time and memory, sit side by side with equal weight (with
+    the same numbers in a table for screen readers), then the code of each
     implementation in tabs, then a short summary of how it was measured and a
     link to the full record on the package's Benchmarks page. The page never
     runs a benchmark, and a workload whose record has not synced is left out.
@@ -51,8 +52,6 @@
                 @php
                     $record = $w['record'];
                     $rows = $record['rows'];
-                    $maxTime = max(array_column($rows, 'value'));
-                    $maxMemory = max(array_column($rows, 'peak_memory_mib'));
                     $env = $record['environment'];
                     $code = $record['code'] ?? [];
                     $languages = $record['languages'] ?? [];
@@ -64,31 +63,24 @@
                     @endphp
                     <p class="text-center text-[0.9375rem] text-zinc-600 dark:text-zinc-400">{{ trim($caption) }}</p>
 
-                    <table class="mx-auto mt-6 w-full max-w-4xl text-left text-[0.9375rem]">
-                        <caption class="sr-only">{{ $w['label'] }}: median elapsed time and peak memory of {{ $env['repeats'] }} runs</caption>
-                        <thead class="border-b border-zinc-200 text-sm text-zinc-600 dark:border-white/10 dark:text-zinc-400">
-                            <tr>
-                                <th scope="col" class="py-2 pr-4 font-medium">Implementation</th>
-                                <th scope="col" class="w-[34%] py-2 pr-4 font-medium">Elapsed time</th>
-                                <th scope="col" class="w-[34%] py-2 font-medium">Memory</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-zinc-100 tabular-nums dark:divide-white/5">
+                    @php
+                        $name = fn (array $row) => $w['names'][$row['implementation']] ?? $row['implementation'];
+                        $timeChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['value'] / 1000, 'shown' => $time($r['value'])], $rows), 'Elapsed time (s)');
+                        $memoryChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['peak_memory_mib'], 'shown' => $memory($r['peak_memory_mib'])], $rows), 'Memory (MiB)');
+                    @endphp
+                    <div class="mx-auto mt-6 grid max-w-5xl gap-8 md:grid-cols-2" aria-hidden="true">
+                        <x-phiz :plot="$timeChart" class="min-w-0 overflow-hidden" />
+                        <x-phiz :plot="$memoryChart" class="min-w-0 overflow-hidden" />
+                    </div>
+                    <div class="sr-only"><table>
+                        <caption>{{ $w['label'] }}: median elapsed time and peak memory of {{ $env['repeats'] }} runs</caption>
+                        <thead><tr><th scope="col">Implementation</th><th scope="col">Elapsed time</th><th scope="col">Memory</th></tr></thead>
+                        <tbody>
                             @foreach ($rows as $row)
-                                <tr>
-                                    <th scope="row" class="py-3 pr-4 align-top font-medium">{!! \App\Content\Libraries::mono(e($w['names'][$row['implementation']] ?? $row['implementation'])) !!}</th>
-                                    <td class="py-3 pr-4 align-top">
-                                        {{ $time($row['value']) }}
-                                        <span class="mt-1.5 block h-1.5 rounded-full bg-php-500/70 dark:bg-php-400/70" style="width: {{ max(1.5, round(100 * $row['value'] / $maxTime, 1)) }}%" aria-hidden="true"></span>
-                                    </td>
-                                    <td class="py-3 align-top">
-                                        {{ $memory($row['peak_memory_mib']) }}
-                                        <span class="mt-1.5 block h-1.5 rounded-full bg-zinc-400/80 dark:bg-zinc-500/80" style="width: {{ max(1.5, round(100 * $row['peak_memory_mib'] / $maxMemory, 1)) }}%" aria-hidden="true"></span>
-                                    </td>
-                                </tr>
+                                <tr><th scope="row">{{ $name($row) }}</th><td>{{ $time($row['value']) }}</td><td>{{ $memory($row['peak_memory_mib']) }}</td></tr>
                             @endforeach
                         </tbody>
-                    </table>
+                    </table></div>
                     @if ($w['note'])
                         <p class="mx-auto mt-4 max-w-4xl text-[0.9375rem] leading-relaxed text-zinc-700 dark:text-zinc-300">{!! \App\Content\Libraries::mono(e($w['note'])) !!}</p>
                     @endif
