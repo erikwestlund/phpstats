@@ -1,12 +1,12 @@
 <x-layout title="Rent dashboard">
     <article class="max-w-3xl">
         <h1 class="text-3xl font-semibold tracking-tight">Rent dashboard</h1>
-        <p class="mt-4 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
-            This page uses the simulated rentals data. It does not describe real rentals.
+        <p class="mt-4 text-zinc-700 dark:text-zinc-300">
+            The rentals are simulated; the listings, prices, and neighborhoods are generated for this example.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
-            This example is a small reactive dashboard in the style of a Shiny app.
-            Each input is a property of a Livewire component. When an input changes, the server filters the data with phplyr, summarises it, refits a logistic model with phit, and returns new tables and phiz charts.
+            The dashboard is small and reactive, in the style of a Shiny app.
+            Each input is a property of a Livewire component. When an input changes, the server filters the data with phplyr, summarizes it, refits a logistic model with phit, and returns new tables and phiz charts.
             The page has no JavaScript written for it.
         </p>
         <p class="mt-4 text-zinc-700 dark:text-zinc-300">
@@ -24,7 +24,7 @@
 
     public function render()
     {
-        $rentals = phplyr(DataFrame::fromQuery(SimulatedRental::query()))
+        $rentals = phplyr(\Phibble\DataFrame::fromQuery(SimulatedRental::query()))
             ->filter(col('neighborhood')->isIn($this->neighborhoods),
                      col('bedrooms')->between($this->minBedrooms, $this->maxBedrooms))
             ->mutate(over_budget: col('monthly_rent')->gt($this->budget))
@@ -32,7 +32,7 @@
 
         $summary = phplyr($rentals)
             ->groupBy('neighborhood')
-            ->summarise(rentals: n(), median_rent: median('monthly_rent'),
+            ->summarize(rentals: n(), median_rent: median('monthly_rent'),
                         share_over_budget: mean('over_budget'))
             ->get();
 
@@ -50,14 +50,14 @@
 
     public function render()
     {
-        $rentals = DataFrame::fromQuery(SimulatedRental::query()) |>
+        $rentals = \Phibble\DataFrame::fromQuery(SimulatedRental::query()) |>
             filter(col('neighborhood')->isIn($this->neighborhoods),
                       col('bedrooms')->between($this->minBedrooms, $this->maxBedrooms)) |>
             mutate(over_budget: col('monthly_rent')->gt($this->budget));
 
         $summary = $rentals |>
             group_by('neighborhood') |>
-            summarise(rentals: n(), median_rent: median('monthly_rent'),
+            summarize(rentals: n(), median_rent: median('monthly_rent'),
                          share_over_budget: mean('over_budget'));
 
         $model = $rentals |> glm('over_budget ~ area_m2 + bedrooms', family: 'binomial');

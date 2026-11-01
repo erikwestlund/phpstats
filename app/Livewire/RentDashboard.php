@@ -9,7 +9,7 @@ use Phibble\DataFrame;
 use Phiz\Plot;
 use Throwable;
 
-use function Phplyr\{arrange, col, filter, glm, group_by, lm, mean, median, mutate, n, summarise};
+use function Phplyr\{arrange, col, filter, glm, group_by, lm, mean, median, mutate, n, summarize};
 use function Phit\predict;
 
 /**
@@ -63,7 +63,7 @@ class RentDashboard extends Component
 
         $summary = $rentals |>
             group_by('neighborhood') |>
-            summarise(
+            summarize(
                 rentals: n(),
                 median_rent: median('monthly_rent'),
                 mean_area: mean('area_m2'),
