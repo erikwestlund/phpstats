@@ -371,6 +371,11 @@
                     "level": 2
                 },
                 {
+                    "id": "large-files",
+                    "text": "Large files",
+                    "level": 2
+                },
+                {
                     "id": "writing-csv",
                     "text": "Writing CSV",
                     "level": 2
