@@ -65,7 +65,7 @@
             "section": "Reference"
         },
         {
-            "title": "Compile, sample, and summarize a Stan model",
+            "title": "Fit a Stan model with MCMC",
             "path": "examples/sample",
             "section": "Examples"
         },
@@ -287,29 +287,8 @@
             "math": false
         },
         "examples/sample": {
-            "title": "Compile, sample, and summarize a Stan model",
-            "headings": [
-                {
-                    "id": "data",
-                    "text": "Data",
-                    "level": 2
-                },
-                {
-                    "id": "code",
-                    "text": "Code",
-                    "level": 2
-                },
-                {
-                    "id": "output",
-                    "text": "Output",
-                    "level": 2
-                },
-                {
-                    "id": "explanation",
-                    "text": "Explanation",
-                    "level": 2
-                }
-            ],
+            "title": "Fit a Stan model with MCMC",
+            "headings": [],
             "math": false
         },
         "figures": {

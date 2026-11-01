@@ -504,6 +504,11 @@
                     "level": 2
                 },
                 {
+                    "id": "times",
+                    "text": "Times",
+                    "level": 2
+                },
+                {
                     "id": "list-columns",
                     "text": "List-columns",
                     "level": 2

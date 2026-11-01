@@ -903,11 +903,6 @@
             "title": "Densities, quantiles, and random draws",
             "headings": [
                 {
-                    "id": "data",
-                    "text": "Data",
-                    "level": 2
-                },
-                {
                     "id": "code",
                     "text": "Code",
                     "level": 2
@@ -918,8 +913,8 @@
                     "level": 2
                 },
                 {
-                    "id": "explanation",
-                    "text": "Explanation",
+                    "id": "notes",
+                    "text": "Notes",
                     "level": 2
                 }
             ],
@@ -929,23 +924,13 @@
             "title": "Fit logistic and Poisson models",
             "headings": [
                 {
-                    "id": "data",
-                    "text": "Data",
+                    "id": "logistic-regression",
+                    "text": "Logistic regression",
                     "level": 2
                 },
                 {
-                    "id": "code",
-                    "text": "Code",
-                    "level": 2
-                },
-                {
-                    "id": "output",
-                    "text": "Output",
-                    "level": 2
-                },
-                {
-                    "id": "explanation",
-                    "text": "Explanation",
+                    "id": "poisson-regression-with-an-exposure-offset",
+                    "text": "Poisson regression with an exposure offset",
                     "level": 2
                 }
             ],
@@ -955,11 +940,6 @@
             "title": "Fit a linear model and predict",
             "headings": [
                 {
-                    "id": "data",
-                    "text": "Data",
-                    "level": 2
-                },
-                {
                     "id": "code",
                     "text": "Code",
                     "level": 2
@@ -970,8 +950,8 @@
                     "level": 2
                 },
                 {
-                    "id": "explanation",
-                    "text": "Explanation",
+                    "id": "interpretation",
+                    "text": "Interpretation",
                     "level": 2
                 }
             ],
@@ -981,11 +961,6 @@
             "title": "Fit a mixed model",
             "headings": [
                 {
-                    "id": "data",
-                    "text": "Data",
-                    "level": 2
-                },
-                {
                     "id": "code",
                     "text": "Code",
                     "level": 2
@@ -996,8 +971,8 @@
                     "level": 2
                 },
                 {
-                    "id": "explanation",
-                    "text": "Explanation",
+                    "id": "interpretation",
+                    "text": "Interpretation",
                     "level": 2
                 }
             ],
@@ -1022,8 +997,8 @@
                     "level": 2
                 },
                 {
-                    "id": "explanation",
-                    "text": "Explanation",
+                    "id": "interpretation",
+                    "text": "Interpretation",
                     "level": 2
                 }
             ],

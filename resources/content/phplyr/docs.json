@@ -84,7 +84,7 @@
             "section": "Examples"
         },
         {
-            "title": "Reshape with pivot_longer and pivot_wider",
+            "title": "Pivot between wide and long",
             "path": "examples/pivot",
             "section": "Examples"
         },
@@ -217,7 +217,7 @@
             "math": false
         },
         "examples/pivot": {
-            "title": "Reshape with pivot_longer and pivot_wider",
+            "title": "Pivot between wide and long",
             "headings": [],
             "math": false
         },

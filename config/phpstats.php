@@ -34,12 +34,12 @@ return [
      * without an entry show the overview from config/projects.php only.
      */
     'content' => [
-        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '348e1d4ac54f02099bb24a6a6dba760f3a230cc4'],
+        'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '80d1d990db9d3215f8dfe5be59ebf0acac69df37'],
         'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'bb171859d88426d8d12dbf18e893dedf95c5633e'],
-        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => '0c2d613ac44a62dd750e810ae7b5cd4cc7acafc8'],
-        'phit' => ['repo' => 'phpstats/phit', 'ref' => 'cfd4ef6e01526005c02f2ad4d24499683aaf3869'],
-        'phiz' => ['repo' => 'phpstats/phiz', 'ref' => '3956fe5a9ec2fff248b97b28d69c451074e33107'],
-        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '7ddfe1c138fe8534991e3e5956fe82e779146090'],
+        'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => 'bd6e8ccdaf50de00b7c868a5afd643efdd4f9d7e'],
+        'phit' => ['repo' => 'phpstats/phit', 'ref' => 'e7100cbccec9dc348daf0ffc8217aed8a0372ea9'],
+        'phiz' => ['repo' => 'phpstats/phiz', 'ref' => 'aaa4c32228c562881fcc6d8846af5fb907304c03'],
+        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => 'd7a89d69e18a16905e69f3e480709574c9e7c0ba'],
         'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '82e8fbee5f0b4680491d169596697f1ed0b74af7'],
     ],
 
@@ -61,11 +61,18 @@ return [
      * page that has not synced is left out.
      */
     'example_collections' => [
+        'phibble' => [
+            ['path' => 'laravel', 'title' => 'Analyze Eloquent models', 'description' => 'Turns Eloquent builders, relations, and collections into data frames, summarizes them, and charts the result.'],
+        ],
         'phplyr' => [
             ['path' => 'port-r-script', 'title' => 'Port an R script', 'description' => 'An R analysis that cleans, reshapes, summarizes, and fits models, rewritten with phplyr and phit.'],
             ['path' => 'gallery', 'title' => 'Analysis gallery', 'description' => 'Five short analyses that combine phplyr pipelines with model fits.'],
         ],
+        'phit' => [
+            ['path' => 'missing-data', 'title' => 'Account for missing values', 'description' => 'How fits drop incomplete rows or raise instead, and report which rows they used.'],
+        ],
         'phiz' => [
+            ['path' => 'dashboard', 'title' => 'Build a Livewire dashboard', 'description' => 'Linked charts that follow a Livewire component\'s filters, with phplyr summarizing on the server.'],
             ['path' => 'gallery', 'title' => 'Chart gallery', 'description' => 'Charts by type, including histograms, boxplots, heatmaps, facets, themes, tooltips, and linked brushing.'],
         ],
         'cmdstanphp' => [

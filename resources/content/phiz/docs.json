@@ -284,13 +284,8 @@
                     "level": 2
                 },
                 {
-                    "id": "output",
-                    "text": "Output",
-                    "level": 2
-                },
-                {
-                    "id": "how-it-works",
-                    "text": "How it works",
+                    "id": "result",
+                    "text": "Result",
                     "level": 2
                 }
             ],
@@ -310,13 +305,8 @@
                     "level": 2
                 },
                 {
-                    "id": "output",
-                    "text": "Output",
-                    "level": 2
-                },
-                {
-                    "id": "how-it-works",
-                    "text": "How it works",
+                    "id": "result",
+                    "text": "Result",
                     "level": 2
                 }
             ],
@@ -326,23 +316,13 @@
             "title": "Save a chart to a file",
             "headings": [
                 {
-                    "id": "data",
-                    "text": "Data",
-                    "level": 2
-                },
-                {
                     "id": "code",
                     "text": "Code",
                     "level": 2
                 },
                 {
-                    "id": "output",
-                    "text": "Output",
-                    "level": 2
-                },
-                {
-                    "id": "how-it-works",
-                    "text": "How it works",
+                    "id": "result",
+                    "text": "Result",
                     "level": 2
                 }
             ],
@@ -1603,6 +1583,11 @@
                 {
                     "id": "data-type",
                     "text": "$data->type()",
+                    "level": 3
+                },
+                {
+                    "id": "data-is-time",
+                    "text": "$data->isTime()",
                     "level": 3
                 },
                 {
