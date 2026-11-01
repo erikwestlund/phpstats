@@ -150,11 +150,6 @@
                     "level": 2
                 },
                 {
-                    "id": "what-a-release-archive-contains",
-                    "text": "What a release archive contains",
-                    "level": 3
-                },
-                {
                     "id": "ubuntu-and-laravel-forge",
                     "text": "Ubuntu and Laravel Forge",
                     "level": 2
@@ -214,6 +209,16 @@
                     "id": "documentation",
                     "text": "Documentation",
                     "level": 2
+                },
+                {
+                    "id": "release-packaging",
+                    "text": "Release packaging",
+                    "level": 2
+                },
+                {
+                    "id": "release-notes",
+                    "text": "Release notes",
+                    "level": 3
                 },
                 {
                     "id": "stubs",
@@ -309,29 +314,29 @@
             "title": "Performance",
             "headings": [
                 {
-                    "id": "how-the-benchmarks-run",
-                    "text": "How the benchmarks run",
+                    "id": "practical-guidance",
+                    "text": "Practical guidance",
                     "level": 2
                 },
                 {
-                    "id": "a-csv-pipeline",
-                    "text": "A CSV pipeline",
+                    "id": "benchmark-reports",
+                    "text": "Benchmark reports",
                     "level": 2
                 },
                 {
-                    "id": "phplyr-pipelines-on-three-backends",
-                    "text": "phplyr pipelines on three backends",
-                    "level": 2
+                    "id": "a-csv-pipeline-best-of-five",
+                    "text": "A CSV pipeline (best of five)",
+                    "level": 3
                 },
                 {
-                    "id": "where-the-time-goes",
-                    "text": "Where the time goes",
-                    "level": 2
+                    "id": "phplyr-pipelines-on-three-backends-best-of-three",
+                    "text": "phplyr pipelines on three backends (best of three)",
+                    "level": 3
                 },
                 {
                     "id": "memory-on-large-files",
                     "text": "Memory on large files",
-                    "level": 2
+                    "level": 3
                 },
                 {
                     "id": "binary-size",
