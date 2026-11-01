@@ -143,18 +143,8 @@
             "title": "Compatibility and limitations",
             "headings": [
                 {
-                    "id": "php-versions",
-                    "text": "PHP versions",
-                    "level": 2
-                },
-                {
-                    "id": "requirements",
-                    "text": "Requirements",
-                    "level": 2
-                },
-                {
-                    "id": "optional-extensions",
-                    "text": "Optional extensions",
+                    "id": "php-versions-and-extensions",
+                    "text": "PHP versions and extensions",
                     "level": 2
                 },
                 {
@@ -261,16 +251,6 @@
                     "level": 2
                 },
                 {
-                    "id": "requirements",
-                    "text": "Requirements",
-                    "level": 3
-                },
-                {
-                    "id": "optional-features",
-                    "text": "Optional features",
-                    "level": 3
-                },
-                {
                     "id": "a-first-script",
                     "text": "A first script",
                     "level": 2
@@ -333,8 +313,8 @@
             "title": "Performance",
             "headings": [
                 {
-                    "id": "method",
-                    "text": "Method",
+                    "id": "methods",
+                    "text": "Methods",
                     "level": 2
                 },
                 {
@@ -442,6 +422,11 @@
         "reference/models": {
             "title": "Models",
             "headings": [
+                {
+                    "id": "phit-0.3-and-earlier",
+                    "text": "phit 0.3 and earlier",
+                    "level": 2
+                },
                 {
                     "id": "results",
                     "text": "Results",
