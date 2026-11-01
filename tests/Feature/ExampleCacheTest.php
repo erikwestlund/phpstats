@@ -103,7 +103,7 @@ class ExampleCacheTest extends TestCase
         $paths = [];
         $names = array_keys(array_filter(config('phpstats.explorer'), fn (array $panel) => ! isset($panel['stored'])));
         // The landing page's connected example and verification examples run the same way as the panels.
-        foreach ([...array_map(fn (string $key) => "packages/{$key}", $names), 'together/schools', ...array_map(fn (string $name) => "verified/{$name}", ['distributions', 'ols', 'logistic', 'probit', 'mixed-gaussian', 'mixed-logistic'])] as $name) {
+        foreach ([...array_map(fn (string $key) => "packages/{$key}", $names), 'together/schools', ...array_map(fn (string $name) => "verified/{$name}", ['distributions', 'csv-phibble', 'ols', 'logistic', 'probit', 'mixed-gaussian', 'mixed-logistic'])] as $name) {
             Example::reset();
             try {
                 Example::run($name);

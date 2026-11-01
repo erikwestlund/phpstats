@@ -30,7 +30,10 @@
     };
     // Values as shown: model results to two decimal places, distribution
     // values to three significant figures.
-    $value = function (float $x, bool $significant): string {
+    $value = function (int|float $x, bool $significant): string {
+        if (is_int($x)) {
+            return number_format($x);
+        }
         if (! $significant) {
             return str_replace('-', '−', number_format($x, 2, '.', ','));
         }
@@ -79,6 +82,29 @@
                 ];
 
                 return array_map(fn ($p, $i) => [$p[0], $values[$i], array_map(fn ($r) => $r[$p[1]], $refs), false], $points, array_keys($points));
+            },
+        ],
+        'csv' => [
+            'dataset' => 'weather',
+            'record' => 'CSV processing',
+            'label' => 'CSV processing',
+            'primary' => 'phibble',
+            'example' => 'verified/csv-phibble',
+            'also' => ['phpolars' => 'verified/csv-phpolars'],
+            'reference' => 'csv',
+            'libraries' => ['phpolars' => 'phpolars', 'R' => 'dplyr (R)', 'Python' => 'pandas (Python)'],
+            'relative' => false,
+            'note' => 'Hours of readings and mean temperature (°F) and humidity (%) at each New York airport in 2013, leaving out missing readings. R: readr and dplyr. Python: pandas.',
+            'anchor' => null,
+            'rows' => function (array $rows, array $refs) {
+                $out = [];
+                foreach ($rows as $i => $row) {
+                    foreach (['hours' => 'hours', 'temp' => 'mean temperature', 'humid' => 'mean humidity'] as $field => $what) {
+                        $out[] = ["{$row['origin']} {$what}", $row[$field], array_map(fn ($r) => $r === null ? null : $r[$field][$i], $refs), false];
+                    }
+                }
+
+                return $out;
             },
         ],
         'ols' => [
@@ -181,8 +207,10 @@
             ])->render();
             continue;
         }
-        $panel['link'] = $record.'#'.$panel['anchor'];
-        $panel['code'] = \App\Content\Example::code($panel['example'])['pipe'];
+        $panel['link'] = $panel['anchor'] === null ? null : $record.'#'.$panel['anchor'];
+        $panel['code'] = isset($panel['also'])
+            ? [$panel['primary'] => \App\Content\Example::code($panel['example'])['pipe'], ...array_map(fn (string $e) => \App\Content\Example::code($e)['pipe'], $panel['also'])]
+            : \App\Content\Example::code($panel['example'])['pipe'];
         try {
             $panel['table'] = \App\Content\Example::output(
                 $panel['example'],
@@ -191,7 +219,21 @@
                     'panel' => $panel,
                     'key' => $key,
                     'rows' => ($panel['rows'])($result, array_map(
-                        fn (string $library) => $references[$library][$panel['reference']] ?? null,
+                        // Another PHPstats library's values come from running
+                        // its own example, turned into columns like the references.
+                        function (string $library) use ($panel, $references, $result) {
+                            if (! isset($panel['also'][$library])) {
+                                return $references[$library][$panel['reference']] ?? null;
+                            }
+                            // A library this server can't load shows a dash.
+                            try {
+                                $rows = \App\Content\Example::run($panel['also'][$library]);
+                            } catch (\Throwable) {
+                                return null;
+                            }
+
+                            return array_map(fn (string $field) => array_column($rows, $field), array_combine(array_keys($result[0]), array_keys($result[0])));
+                        },
                         array_combine(array_keys($panel['libraries']), array_keys($panel['libraries'])),
                     )),
                     'value' => $value,
@@ -228,7 +270,25 @@
             @foreach ($panels as $key => $panel)
                 <div role="tabpanel" id="check-{{ $key }}" aria-labelledby="check-tab-{{ $key }}" x-show="check === '{{ $key }}'" @unless ($key === $first) x-cloak @endunless
                      class="mt-8 grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
-                    <x-code :code="$panel['code']" class="min-w-0" />
+                    @if (is_array($panel['code']))
+                        @php $firstCode = array_key_first($panel['code']); @endphp
+                        <div x-data="{ lib: @js($firstCode) }" class="code-ink min-w-0 overflow-hidden rounded-xl shadow-lg shadow-php-950/10 ring-1 ring-black/5 dark:ring-(--color-ink-line)">
+                            <div role="tablist" aria-label="{{ $panel['label'] }} code" class="flex gap-1 border-b border-white/5 px-3 py-2 text-xs">
+                                @foreach ($panel['code'] as $lib => $source)
+                                    <button type="button" role="tab" id="check-code-tab-{{ $key }}-{{ $lib }}" aria-controls="check-code-{{ $key }}-{{ $lib }}"
+                                            x-on:click="lib = '{{ $lib }}'" x-bind:aria-selected="(lib === '{{ $lib }}').toString()" aria-selected="{{ $lib === $firstCode ? 'true' : 'false' }}"
+                                            class="rounded-md px-2.5 py-1 font-mono text-zinc-400 transition hover:text-white aria-selected:bg-php-500/30 aria-selected:text-white">{{ $lib }}</button>
+                                @endforeach
+                            </div>
+                            @foreach ($panel['code'] as $lib => $source)
+                                <div role="tabpanel" id="check-code-{{ $key }}-{{ $lib }}" aria-labelledby="check-code-tab-{{ $key }}-{{ $lib }}" x-show="lib === '{{ $lib }}'" @unless ($lib === $firstCode) x-cloak @endunless>
+                                    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::highlight($source, 'php') !!}</code></pre>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <x-code :code="$panel['code']" class="min-w-0" />
+                    @endif
 
                     <div class="min-w-0">
                         {!! $panel['table'] !!}
@@ -238,9 +298,11 @@
                                 <a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">Data source</a>.
                             @endif
                         </p>
+                        @if ($panel['link'])
                         <a href="{{ $panel['link'] }}" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
                             {{ $panel['record'] }} verification record <x-heroicon-m-arrow-right class="size-4" />
                         </a>
+                        @endif
                     </div>
                 </div>
             @endforeach

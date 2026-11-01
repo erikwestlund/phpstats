@@ -87,6 +87,14 @@ with quiet():
     glmm.fit(y=animals["y"], X=design)
 binomial_constant = sum(math.log(math.comb(int(r["size"]), int(r["incidence"]))) for _, r in cbpp.iterrows())
 
+weather = (
+    read("weather.csv")
+    .groupby("origin")
+    .agg(hours=("origin", "size"), temp=("temp", "mean"), humid=("humid", "mean"))
+    .reset_index()
+    .sort_values("origin")
+)
+
 out = {
     "versions": {
         "Python": sys.version.split()[0],
@@ -94,6 +102,7 @@ out = {
         "scipy": scipy.__version__,
         "numpy": numpy.__version__,
         "gpboost": gpboost.__version__,
+        "pandas": pandas.__version__,
     },
     "settings": {
         "logistic": "Newton, tol 1e-12",
@@ -106,6 +115,12 @@ out = {
         "normal_quantile": float(stats.norm.ppf(0.975)),
         "gamma_cdf": float(stats.gamma.cdf(12, a=2, scale=3)),
         "gamma_quantile": float(stats.gamma.ppf(0.999, a=2, scale=3)),
+    },
+    "csv": {
+        "origin": list(weather["origin"]),
+        "hours": [int(h) for h in weather["hours"]],
+        "temp": [float(t) for t in weather["temp"]],
+        "humid": [float(h) for h in weather["humid"]],
     },
     "ols": {
         **fixed(ols, ["Intercept", "wt", "hp"]),

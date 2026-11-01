@@ -107,6 +107,20 @@ class LandingPageTest extends TestCase
                 }
             }
         }
+        // CSV processing: phibble and phpolars against dplyr and pandas.
+        if (ScriptVignette::available('phpolars')) {
+            $phibble = Example::run('verified/csv-phibble');
+            $phpolars = Example::run('verified/csv-phpolars');
+            foreach (['R', 'Python'] as $library) {
+                $reference = $references[$library]['csv'];
+                foreach ([$phibble, $phpolars] as $rows) {
+                    $this->assertSame($reference['origin'], array_column($rows, 'origin'));
+                    $this->assertSame($reference['hours'], array_column($rows, 'hours'));
+                    $this->assertSame(array_map($round, $reference['temp']), array_map($round, array_column($rows, 'temp')));
+                    $this->assertSame(array_map($round, $reference['humid']), array_map($round, array_column($rows, 'humid')));
+                }
+            }
+        }
         $values = Example::run('verified/distributions');
         foreach (['R', 'Python'] as $library) {
             foreach (['normal_cdf', 'normal_quantile', 'gamma_cdf', 'gamma_quantile'] as $i => $point) {

@@ -5,6 +5,8 @@
 suppressPackageStartupMessages({
   library(lme4)
   library(jsonlite)
+  library(readr)
+  library(dplyr)
 })
 
 base <- "https://raw.githubusercontent.com/phpstats/datasets/main/csv/"
@@ -35,10 +37,18 @@ cbpp$period <- factor(cbpp$period)
 binomial <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd), family = binomial, data = cbpp,
   control = glmerControl(tolPwrss = 1e-10))
 
+# CSV processing: the mean temperature and humidity at each airport, with
+# missing readings left out, as readr and dplyr give them.
+weather <- read_csv(paste0(base, "weather.csv"), show_col_types = FALSE) |>
+  group_by(origin) |>
+  summarise(hours = n(), temp = mean(temp, na.rm = TRUE), humid = mean(humid, na.rm = TRUE)) |>
+  arrange(origin)
+
 variance <- function(fit, group) as.numeric(VarCorr(fit)[[group]][1, 1])
 
 out <- list(
-  versions = list(R = R.version.string, lme4 = as.character(packageVersion("lme4"))),
+  versions = list(R = R.version.string, lme4 = as.character(packageVersion("lme4")),
+    readr = as.character(packageVersion("readr")), dplyr = as.character(packageVersion("dplyr"))),
   settings = list(
     logistic = "glm, epsilon 1e-14",
     probit = "glm, epsilon 1e-14",
@@ -51,6 +61,7 @@ out <- list(
     gamma_cdf = pgamma(12, shape = 2, scale = 3),
     gamma_quantile = qgamma(0.999, shape = 2, scale = 3)
   ),
+  csv = list(origin = weather$origin, hours = weather$hours, temp = weather$temp, humid = weather$humid),
   ols = c(fixed(ols), list(sigma = summary(ols)$sigma, r_squared = summary(ols)$r.squared)),
   logistic = c(fixed(logit), list(log_likelihood = as.numeric(logLik(logit)))),
   probit = c(fixed(probit), list(log_likelihood = as.numeric(logLik(probit)))),
