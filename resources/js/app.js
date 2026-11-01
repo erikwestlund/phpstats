@@ -2,11 +2,33 @@ import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.e
 import embed from 'vega-embed';
 
 // phiz's <x-phiz> loader renders charts with window.vegaEmbed (config/phiz.php sets assets to 'none').
-// Charts use Vega's dark theme when the page is dark, whichever way it was chosen.
+// Charts use Vega's dark theme when the page is dark, whichever way it was chosen, on the page's
+// own background, with the theme's white axes and #888 grid toned down to the site's grays
+// (zinc-600, -800, -400, and -300).
 const isDark = () => document.documentElement.classList.contains('dark');
+const darkAxis = {
+    domainColor: '#56566d',
+    tickColor: '#56566d',
+    gridColor: '#2c2c3d',
+    labelColor: '#9c9cb2',
+    titleColor: '#cbcbd9',
+};
 window.vegaEmbed = (el, spec, options = {}) => {
     const { theme, ...rest } = options;
-    return embed(el, spec, isDark() ? { ...rest, theme: 'dark' } : rest);
+    if (!isDark()) return embed(el, spec, rest);
+    const config = rest.config ?? {};
+    return embed(el, spec, {
+        ...rest,
+        theme: 'dark',
+        config: {
+            background: 'transparent',
+            ...config,
+            axis: { ...darkAxis, ...config.axis },
+            legend: { labelColor: '#cbcbd9', titleColor: '#cbcbd9', ...config.legend },
+            title: { color: '#e3e3ec', ...config.title },
+            header: { labelColor: '#cbcbd9', titleColor: '#cbcbd9', ...config.header },
+        },
+    });
 };
 
 // The theme toggle: light or dark, stored, or the system setting until one is chosen.

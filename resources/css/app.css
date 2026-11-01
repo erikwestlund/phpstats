@@ -290,6 +290,10 @@ pre,
 }
 
 .dark {
+    /* A chart wider than its column scrolls on a dark scrollbar. */
+    [data-phiz], .phiz-figure {
+        color-scheme: dark;
+    }
     .docs-content div.sourceCode {
         box-shadow: 0 0 0 1px var(--color-ink-line);
     }

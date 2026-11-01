@@ -33,8 +33,13 @@
     <div class="overflow-x-auto px-5 pb-6 pt-3 sm:px-7">{!! $html !!}</div>
 @elseif ($text === null)
     <div class="px-5 pb-6 pt-3 sm:px-7">
-        {{-- A plot that sets its own size, such as a faceted one sized per panel, keeps it. --}}
-        <x-phiz :plot="$value->width === null ? $value->width('container')->height(300) : $value" class="w-full overflow-x-auto" />
+        {{-- A plot that sets its own size, such as a faceted one sized per panel, keeps it and
+             scrolls when it is wider than the panel. One sized to the panel never needs to. --}}
+        @if ($value->width === null)
+            <x-phiz :plot="$value->width('container')->height(300)" class="w-full overflow-hidden" />
+        @else
+            <x-phiz :plot="$value" class="w-full overflow-x-auto" />
+        @endif
     </div>
 @else
     <pre class="overflow-x-auto px-5 pb-6 pt-3 font-mono sm:px-7 text-[0.8125rem] leading-relaxed text-zinc-800 dark:text-zinc-200">{{ $text }}</pre>
