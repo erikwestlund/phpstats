@@ -123,7 +123,12 @@
                 @else
                     <x-code class="mt-4" :code="$example['chain'] ?? $example['pipe']" />
                 @endif
-                @if ($example['output'])
+                @if ($example['chart'])
+                    <div class="mt-3 overflow-hidden rounded-xl ring-1 ring-zinc-200 dark:ring-white/10">
+                        <p class="border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-xs font-medium text-zinc-500 dark:border-white/10 dark:bg-white/[0.03]">Output</p>
+                        <x-phiz :plot="$example['chart']" class="w-full p-4" />
+                    </div>
+                @elseif ($example['output'])
                     @php [$output, $size] = \App\Content\Package::splitTableHeader($example['output']); @endphp
                     <div class="mt-3 overflow-hidden rounded-xl ring-1 ring-zinc-200 dark:ring-white/10">
                         <p class="border-b border-zinc-200 bg-zinc-50 px-4 py-2 text-xs font-medium text-zinc-500 dark:border-white/10 dark:bg-white/[0.03]">{{ $size === null ? 'Output' : "Output · {$size}" }}</p>

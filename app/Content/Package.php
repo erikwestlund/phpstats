@@ -227,7 +227,32 @@ class Package
             return null;
         }
 
-        return ['chain' => ($example['chain'] ?? null) ?: null, 'pipe' => $example['pipe'] ?? null, 'output' => $example['output'] ?? null];
+        $output = $example['output'] ?? null;
+
+        return ['chain' => ($example['chain'] ?? null) ?: null, 'pipe' => $example['pipe'] ?? null, 'output' => $output, 'chart' => self::embeddedChart($output)];
+    }
+
+    /**
+     * The Vega-Lite spec of an example whose output is phiz's embed(), a div
+     * whose data-phiz attribute holds the spec, so the page draws the chart
+     * with its own phiz component instead of printing the markup.
+     */
+    public static function embeddedChart(mixed $output): ?array
+    {
+        if (! is_string($output) || ! preg_match('/\A\s*<div data-phiz="([^"]*)"/', $output, $matches)) {
+            return null;
+        }
+        $spec = json_decode(html_entity_decode($matches[1], ENT_QUOTES | ENT_HTML5), true);
+        if (! is_array($spec)) {
+            return null;
+        }
+
+        // A single chart with no width of its own fills the output column.
+        if (! isset($spec['width']) && ! isset($spec['facet']) && ! isset($spec['hconcat']) && ! isset($spec['vconcat']) && ! isset($spec['concat'])) {
+            $spec['width'] = 'container';
+        }
+
+        return $spec;
     }
 
     public function status(): string

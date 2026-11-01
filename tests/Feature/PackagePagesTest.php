@@ -208,7 +208,7 @@ class PackagePagesTest extends TestCase
         $this->fixtureSite('phibble', ['example' => ['pipe' => '$table |> pipeOnlyFixture();']]);
         $package = Package::find('phibble');
 
-        $this->assertSame(['chain' => null, 'pipe' => '$table |> pipeOnlyFixture();', 'output' => null], $package->example());
+        $this->assertSame(['chain' => null, 'pipe' => '$table |> pipeOnlyFixture();', 'output' => null, 'chart' => null], $package->example());
         $this->get($package->url())->assertOk()
             ->assertSee('pipeOnlyFixture')
             ->assertDontSee('aria-label="Code syntax"', false);
@@ -317,6 +317,18 @@ class PackagePagesTest extends TestCase
             ->assertDontSee('Models, inference, and charts');
         $this->get(Package::find('phibble')->url())->assertOk()
             ->assertDontSee('Tables, pipelines, and notebooks');
+    }
+
+    public function test_an_embedded_phiz_chart_is_drawn_instead_of_printed(): void
+    {
+        $spec = ['mark' => 'point', 'data' => ['values' => [['x' => 1, 'y' => 2]]]];
+        $output = '<div data-phiz="'.e(json_encode($spec)).'"><div data-phiz-view wire:ignore></div></div>';
+        $this->fixtureSite('phiz', ['example' => ['pipe' => 'echo $plot->embed();', 'output' => $output]]);
+
+        $this->assertSame([...$spec, 'width' => 'container'], Package::find('phiz')->example()['chart']);
+        $this->get(Package::find('phiz')->url())->assertOk()
+            ->assertSee('data-phiz=', false)
+            ->assertDontSee('&lt;div data-phiz', false);
     }
 
     public function test_benchmark_methods_come_from_each_record(): void
