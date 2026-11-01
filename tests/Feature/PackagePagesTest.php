@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Content\Package;
+use App\Content\Results;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
 use Tests\TestCase;
@@ -85,17 +86,17 @@ class PackagePagesTest extends TestCase
         $this->fixtureSite('phiz', []);
         $phiz = Package::find('phiz');
         $this->get($phiz->url('benchmarks'))->assertOk()
-            ->assertSee('No benchmark measurements are published for')
+            ->assertSee('No benchmark measurements are published yet.')
             ->assertDontSee('data-phiz="', false)
             ->assertDontSee('<table', false);
         $this->get($phiz->url('verification'))->assertOk()
-            ->assertSee('No verification checks are published for')
+            ->assertSee('No verification checks are published yet.')
             ->assertDontSee('<table', false);
 
         // A gap the package names is shown with the empty state.
         $this->fixtureSite('phiz', ['evidence_gaps' => ['benchmarks' => 'No benchmark covers chart export yet.']]);
         $this->get(Package::find('phiz')->url('benchmarks'))->assertOk()
-            ->assertSee('No benchmark measurements are published for')
+            ->assertSee('No benchmark measurements are published yet.')
             ->assertSee('No benchmark covers chart export yet.');
     }
 
@@ -430,8 +431,9 @@ class PackagePagesTest extends TestCase
         $phplyr = Package::find('phplyr');
         $text = html_entity_decode(strip_tags($this->get($phplyr->url('verification.topic', ['id' => 'dplyr']))->assertOk()->getContent()));
         $this->assertSame(1, substr_count($text, 'n_compared counts the assertions in each test.'));
-        $this->assertStringContainsString('Absolute error is |x − r|', $text);
-        $this->assertStringContainsString('Relative error is |x − r| divided by', $text);
+        $this->assertSame(1, substr_count($text, 'x: package value; r: reference value.'));
+        $this->assertStringContainsString('Absolute error: |x − r|.', $text);
+        $this->assertStringContainsString('Relative error: |x − r| /', $text);
     }
 
     public function test_old_evidence_urls_redirect_to_their_topics(): void
@@ -482,10 +484,10 @@ class PackagePagesTest extends TestCase
 
     public function test_a_floored_relative_rule_is_written_with_its_floor(): void
     {
-        $text = \App\Content\Results::ruleText(['kind' => 'tolerance', 'rtol' => 1e-8, 'rel_floor' => 1]);
-        $this->assertStringContainsString('|x − r| ≤ 1.0e-8 · max(|r|, 1.0e+0)', $text);
-        $this->assertStringNotContainsString('At r = 0', $text);
-        $this->assertStringContainsString('At r = 0 this requires x = 0 exactly.', \App\Content\Results::ruleText(['kind' => 'tolerance', 'rtol' => 1e-9]));
+        $this->assertSame('|x − r| ≤ 1e-8 × max(|r|, 1)', Results::ruleText(['kind' => 'tolerance', 'rtol' => 1e-8, 'rel_floor' => 1]));
+        $this->assertSame('|x − r| ≤ 1e-9 × |r|; at r = 0, x = 0 exactly', Results::ruleText(['kind' => 'tolerance', 'rtol' => 1e-9]));
+        $this->assertSame('|x − r| ≤ 1e-9 + 1e-7 × |r|', Results::ruleText(['kind' => 'tolerance', 'atol' => 1e-9, 'rtol' => 1e-7]));
+        $this->assertSame('exact equality', Results::ruleText(['kind' => 'exact']));
     }
 
     public function test_moved_docs_sections_send_their_fragments_on(): void

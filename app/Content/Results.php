@@ -360,33 +360,43 @@ class Results
             return [];
         }
 
-        return [['id' => null, 'applies_to' => null, 'text' => is_numeric($tolerance) ? 'Tolerance '.self::error($tolerance).', as the description defines it.' : Str::ucfirst(rtrim((string) $tolerance, '.')).'.']];
+        return [['id' => null, 'applies_to' => null, 'text' => is_numeric($tolerance) ? self::tolerance((float) $tolerance).', as defined under Method' : rtrim((string) $tolerance, '.')]];
     }
 
-    /** One comparison rule in words, with its numbers. */
+    /**
+     * One comparison rule as a compact criterion, with x the package's value
+     * and r the reference's: "exact equality", or the tolerance bound with
+     * its numbers, such as "|x − r| ≤ 1.0e-9 + 1.0e-7 × |r|". A rule with
+     * rel_floor scales with max(|r|, floor). A purely relative rule without
+     * a floor notes that a zero reference needs an exact zero.
+     */
     public static function ruleText(array $rule): string
     {
         if (($rule['kind'] ?? null) === 'exact') {
-            return 'Exact: the values must be identical.';
+            return 'exact equality';
         }
         $atol = is_numeric($rule['atol'] ?? null) ? (float) $rule['atol'] : null;
         $rtol = is_numeric($rule['rtol'] ?? null) ? (float) $rule['rtol'] : null;
         $floor = is_numeric($rule['rel_floor'] ?? null) ? (float) $rule['rel_floor'] : null;
-        // With a floor, the relative part scales with max(|r|, floor), so a
-        // zero or near-zero reference still gets a tolerance.
-        $scale = $floor === null ? '|r|' : 'max(|r|, '.self::error($floor).')';
-        $bound = match (true) {
-            $atol !== null && $rtol !== null => 'a value passes when |x − r| ≤ '.self::error($atol).' + '.self::error($rtol).' · '.$scale,
-            $atol !== null => 'a value passes when |x − r| ≤ '.self::error($atol),
-            $rtol !== null => 'a value passes when |x − r| ≤ '.self::error($rtol).' · '.$scale,
-            default => null,
-        };
-        $text = $bound === null ? (string) ($rule['text'] ?? 'Tolerance as the description states.') : "Tolerance: {$bound}, where x is the package's value and r the reference's.";
-        if ($rtol !== null && $atol === null && $floor === null) {
-            $text .= ' At r = 0 this requires x = 0 exactly.';
-        }
+        $scale = $floor === null ? '|r|' : 'max(|r|, '.self::tolerance($floor).')';
 
-        return $text;
+        return match (true) {
+            $atol !== null && $rtol !== null => '|x − r| ≤ '.self::tolerance($atol).' + '.self::tolerance($rtol).' × '.$scale,
+            $atol !== null => '|x − r| ≤ '.self::tolerance($atol),
+            $rtol !== null => '|x − r| ≤ '.self::tolerance($rtol).' × '.$scale.($floor === null ? '; at r = 0, x = 0 exactly' : ''),
+            default => (string) ($rule['text'] ?? 'as stated in the record'),
+        };
+    }
+
+    /** A tolerance as written in a criterion: 1e-9 rather than 1.0e-9, and 1 for one. */
+    public static function tolerance(float $value): string
+    {
+        if ($value >= 0.001 && $value < 1e4) {
+            return rtrim(rtrim(sprintf('%.6f', $value), '0'), '.');
+        }
+        [$mantissa, $exponent] = explode('e', sprintf('%.1e', $value));
+
+        return rtrim(rtrim($mantissa, '0'), '.').'e'.(int) $exponent;
     }
 
     /**

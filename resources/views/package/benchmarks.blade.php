@@ -16,18 +16,16 @@
 <x-layout title="Benchmarks" :wide="$records !== []">
     @if ($records === [])
         <article class="mx-auto max-w-3xl py-6">
-            <p class="font-mono text-sm font-semibold text-(--l600) dark:text-(--l300)">{{ $package->name() }}</p>
-            <h1 class="mt-2 text-4xl font-semibold tracking-tight text-zinc-950 dark:text-white">Benchmarks</h1>
-            <p class="mt-6 text-zinc-700 dark:text-zinc-300">No benchmark measurements are published for <span class="font-mono">{{ $package->name() }}</span> yet.</p>
+            <h1 class="text-4xl font-semibold tracking-tight text-zinc-950 dark:text-white">Benchmarks</h1>
+            <p class="mt-6 text-zinc-700 dark:text-zinc-300">No benchmark measurements are published yet.</p>
             @if ($gap)
                 <p class="mt-3 text-zinc-700 dark:text-zinc-300">{{ $gap }}</p>
             @endif
         </article>
     @else
-        <x-sidebar-page title="Benchmarks" :eyebrow="$package->name()" :sidebar="Results::sidebar($package, 'benchmarks', null)" :wide="true" menu="Benchmarks">
-            <p class="mt-4 max-w-3xl text-zinc-700 dark:text-zinc-300">Saved measurements from the <span class="font-mono">{{ $package->name() }}</span> repository, one page per workload. Each page gives the machine, the versions, how time and memory were measured, and the code each implementation ran.</p>
+        <x-sidebar-page title="Benchmarks" :sidebar="Results::sidebar($package, 'benchmarks', null)" :wide="true" menu="Benchmarks">
 
-            <div class="mt-8 overflow-x-auto">
+            <div class="mt-6 overflow-x-auto">
                 <table class="w-full min-w-[40rem] text-left text-sm">
                     <thead class="border-b border-zinc-200 text-zinc-600 dark:border-white/10 dark:text-zinc-400">
                         <tr>
@@ -61,7 +59,7 @@
             </div>
 
             @if ($gap)
-                <h2 id="not-measured" class="mt-12 scroll-mt-28 text-xl font-semibold tracking-tight lg:scroll-mt-20">Not measured yet</h2>
+                <h2 id="not-measured" class="mt-10 scroll-mt-28 text-xl font-semibold tracking-tight lg:scroll-mt-20">Not measured</h2>
                 <p class="mt-3 max-w-3xl text-zinc-700 dark:text-zinc-300">{{ $gap }}</p>
             @endif
         </x-sidebar-page>

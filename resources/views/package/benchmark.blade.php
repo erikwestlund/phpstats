@@ -1,9 +1,10 @@
 {{--
-    One benchmark workload, from its saved record: the task, then for each
-    case paired phiz bar charts of time and of each memory metric the record
+    One benchmark workload, from its saved record, in the evidence reports'
+    sections: Scope (the task), Data (input and output check), Method (every
+    methods fact the record carries, then each implementation's code),
+    Results (for each case paired phiz bar charts of time and of each memory metric the record
     measured (each labeled by its exact metric), and a table of the exact
-    values; then each implementation's code, every methods fact the record
-    carries, and how to reproduce it. A record with more than six cases gets
+    values), and Reproduction. The earlier ids methods and code still resolve. A record with more than six cases gets
     tables only. A value the record does not have reads "not measured" and is
     left out of the charts, never drawn as zero. Nothing runs for the reader.
 --}}
@@ -37,29 +38,70 @@
 
         return Results::duration(Results::milliseconds(min($reps), $unit)).' – '.Results::duration(Results::milliseconds(max($reps), $unit));
     };
+    $dataFacts = array_intersect_key($facts, array_flip(['Workload', 'Dataset', 'Output check']));
+    $methodFacts = array_diff_key($facts, $dataFacts);
     $children = array_values(array_filter([
+        ! empty($record['description']) ? ['id' => 'scope', 'label' => 'Scope'] : null,
+        $dataFacts !== [] ? ['id' => 'data', 'label' => 'Data'] : null,
+        ['id' => 'method', 'label' => 'Method'],
         ['id' => 'results', 'label' => 'Results'],
-        $code !== [] ? ['id' => 'code', 'label' => 'Code'] : null,
-        ['id' => 'methods', 'label' => 'Methods'],
         ['id' => 'reproduction', 'label' => 'Reproduction'],
     ]));
-    $section = 'mt-12 scroll-mt-28 lg:scroll-mt-20';
-    $h2 = 'text-2xl font-semibold tracking-tight text-zinc-950 dark:text-white';
+    $section = 'mt-10 scroll-mt-28 lg:scroll-mt-20';
+    $h2 = 'text-xl font-semibold tracking-tight text-zinc-950 dark:text-white';
+    $dl = 'mt-3 grid max-w-4xl gap-x-6 gap-y-1.5 text-sm sm:grid-cols-[10rem_minmax(0,1fr)]';
 @endphp
 <x-layout :title="Results::label($record).' benchmark'" :wide="true">
-    <x-sidebar-page :title="$record['title']" :eyebrow="$package->name().' benchmarks'" :sidebar="Results::sidebar($package, 'benchmarks', $record['id'], $children)" :wide="true" menu="Benchmarks">
+    <x-sidebar-page :title="Results::label($record)" :sidebar="Results::sidebar($package, 'benchmarks', $record['id'], $children)" :wide="true" menu="Benchmarks">
         @if (! empty($record['description']))
-            <p class="mt-4 max-w-3xl leading-relaxed text-zinc-700 dark:text-zinc-300">{!! \App\Content\Libraries::mono(e($record['description'])) !!}</p>
+            <section id="scope" class="mt-6 scroll-mt-28 lg:scroll-mt-20" aria-labelledby="scope-heading">
+                <h2 id="scope-heading" class="{{ $h2 }}">Scope</h2>
+                <p class="mt-2 max-w-3xl leading-relaxed text-zinc-700 dark:text-zinc-300">{!! \App\Content\Libraries::mono(e($record['description'])) !!}</p>
+            </section>
         @endif
+
+        @if ($dataFacts !== [])
+            <section id="data" class="{{ $section }}" aria-labelledby="data-heading">
+                <h2 id="data-heading" class="{{ $h2 }}">Data</h2>
+                <dl class="{{ $dl }}">
+                    @foreach ($dataFacts as $label => $value)
+                        <dt class="font-medium text-zinc-500 dark:text-zinc-400">{{ $label }}</dt>
+                        <dd class="mb-1.5 text-zinc-800 sm:mb-0 dark:text-zinc-200">{!! \App\Content\Libraries::mono(e($value)) !!}</dd>
+                    @endforeach
+                </dl>
+            </section>
+        @endif
+
+        <span id="methods" class="block scroll-mt-28 lg:scroll-mt-20"></span>
+        <section id="method" class="{{ $section }}" aria-labelledby="method-heading">
+            <h2 id="method-heading" class="{{ $h2 }}">Method</h2>
+            <dl class="{{ $dl }}">
+                @foreach ($methodFacts as $label => $value)
+                    <dt class="font-medium text-zinc-500 dark:text-zinc-400">{{ $label }}</dt>
+                    <dd class="mb-1.5 text-zinc-800 sm:mb-0 dark:text-zinc-200">{!! \App\Content\Libraries::mono(e($value)) !!}</dd>
+                @endforeach
+            </dl>
+            @if ($code !== [])
+                <h3 id="code" class="mt-6 scroll-mt-28 text-base font-semibold text-zinc-950 lg:scroll-mt-20 dark:text-white">Code</h3>
+                @if ($nested)
+                    @foreach ($code as $case => $caseCode)
+                        <h4 class="mt-4 text-sm font-semibold text-zinc-800 dark:text-zinc-200">{{ $case }}</h4>
+                        <x-implementation-code class="mt-2" :code="$caseCode" :id="'code-'.Str::slug($case)" :label="$case" :languages="$record['languages'] ?? []" :names="$names" />
+                    @endforeach
+                @else
+                    <x-implementation-code class="mt-3" :code="$code" id="code" :label="Results::label($record)" :languages="$record['languages'] ?? []" :names="$names" />
+                @endif
+            @endif
+        </section>
 
         <section id="results" class="{{ $section }}" aria-labelledby="results-heading">
             <h2 id="results-heading" class="{{ $h2 }}">Results</h2>
-            <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            <p class="mt-1.5 text-sm text-zinc-600 dark:text-zinc-400">
                 {{ $timeLabel }}{{ $statistic && ! str_contains(strtolower($timeLabel), strtolower($statistic)) ? ', '.$statistic : '' }}{{ isset($env['repeats']) ? ' of '.$env['repeats'].' '.Str::plural('run', $env['repeats']) : '' }}.
                 @if ($metrics === [])
                     Memory was not measured.
                 @else
-                    Memory: {{ implode('; ', array_map(fn ($m) => strtolower($m['label']), $metrics)) }}, each shown on its own.
+                    Memory: {{ implode('; ', array_map(fn ($m) => strtolower($m['label']), $metrics)) }}.
                 @endif
             </p>
 
@@ -80,7 +122,7 @@
                             }
                         }
                     @endphp
-                    <div id="{{ $slug }}" class="mt-8 scroll-mt-28 lg:scroll-mt-20">
+                    <div id="{{ $slug }}" class="mt-6 scroll-mt-28 lg:scroll-mt-20">
                         @if (count($cases) > 1)
                             <h3 class="text-base font-semibold text-zinc-950 dark:text-white">{{ $case }}</h3>
                         @endif
@@ -164,49 +206,22 @@
             @endif
         </section>
 
-        @if ($code !== [])
-            <section id="code" class="{{ $section }}" aria-labelledby="code-heading">
-                <h2 id="code-heading" class="{{ $h2 }}">Code</h2>
-                @if ($nested)
-                    @foreach ($code as $case => $caseCode)
-                        <h3 class="mt-6 text-base font-semibold text-zinc-950 dark:text-white">{{ $case }}</h3>
-                        <x-implementation-code class="mt-3" :code="$caseCode" :id="'code-'.Str::slug($case)" :label="$case" :languages="$record['languages'] ?? []" :names="$names" />
-                    @endforeach
-                @else
-                    <x-implementation-code class="mt-4" :code="$code" id="code" :label="Results::label($record)" :languages="$record['languages'] ?? []" :names="$names" />
-                @endif
-            </section>
-        @endif
-
-        <section id="methods" class="{{ $section }}" aria-labelledby="methods-heading">
-            <h2 id="methods-heading" class="{{ $h2 }}">Methods</h2>
-            <dl class="mt-4 grid max-w-4xl gap-x-6 gap-y-2 text-sm sm:grid-cols-[11rem_minmax(0,1fr)]">
-                @foreach ($facts as $label => $value)
-                    <dt class="font-medium text-zinc-500 dark:text-zinc-400">{{ $label }}</dt>
-                    <dd class="mb-2 text-zinc-800 sm:mb-0 dark:text-zinc-200">{!! \App\Content\Libraries::mono(e($value)) !!}</dd>
-                @endforeach
-            </dl>
-        </section>
-
         <section id="reproduction" class="{{ $section }}" aria-labelledby="reproduction-heading">
             <h2 id="reproduction-heading" class="{{ $h2 }}">Reproduction</h2>
             @if ($reproduce !== [])
-                <x-command class="mt-4" :code="implode(PHP_EOL, $reproduce)" label="Reproduce" :name="$package->name()" />
-                <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Run from the root of the <span class="font-mono">{{ $package->name() }}</span> repository.</p>
+                <x-command class="mt-3" :code="implode(PHP_EOL, $reproduce)" label="From the repository root" :name="$package->name()" />
             @else
-                <p class="mt-3 text-sm text-zinc-700 dark:text-zinc-300">The record gives no reproduction command.</p>
+                <p class="mt-2 text-sm text-zinc-700 dark:text-zinc-300">No reproduction command recorded.</p>
             @endif
-            <ul class="mt-4 space-y-1 text-sm text-zinc-700 dark:text-zinc-300">
-                <li>Raw record:
-                    @if ($rawUrl)<a href="{{ $rawUrl }}" class="break-all font-mono text-xs underline decoration-zinc-300 underline-offset-2 hover:text-zinc-950 dark:decoration-zinc-600 dark:hover:text-white">{{ $raw }}</a>@else<span class="break-all font-mono text-xs">{{ $raw }}</span>@endif
-                </li>
-                @if ($source)
-                    @php $sourceUrl = $package->sourceUrl($source); @endphp
-                    <li>Source:
-                        @if ($sourceUrl)<a href="{{ $sourceUrl }}" class="break-all font-mono text-xs underline decoration-zinc-300 underline-offset-2 hover:text-zinc-950 dark:decoration-zinc-600 dark:hover:text-white">{{ $source }}</a>@else<span class="break-all font-mono text-xs">{{ $source }}</span>@endif
-                    </li>
-                @endif
-            </ul>
+            <dl class="{{ $dl }}">
+                @foreach ([['Raw record', $raw], ['Source', $source]] as [$label, $path])
+                    @if ($path)
+                        @php $url = $package->sourceUrl($path); @endphp
+                        <dt class="font-medium text-zinc-500 dark:text-zinc-400">{{ $label }}</dt>
+                        <dd class="mb-1.5 sm:mb-0">@if ($url)<a href="{{ $url }}" class="break-all font-mono text-xs underline decoration-zinc-300 underline-offset-2 hover:text-zinc-950 dark:decoration-zinc-600 dark:hover:text-white">{{ $path }}</a>@else<span class="break-all font-mono text-xs">{{ $path }}</span>@endif</dd>
+                    @endif
+                @endforeach
+            </dl>
         </section>
     </x-sidebar-page>
 </x-layout>

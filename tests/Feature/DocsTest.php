@@ -73,14 +73,14 @@ class DocsTest extends TestCase
                 $benchmarks = $this->get($package->url('benchmarks'))->assertOk();
                 foreach ($package->benchmarks() as $benchmark) {
                     $benchmarks->assertSee(Results::label($benchmark))->assertSee('id="'.$benchmark['id'].'"', false);
-                    $this->get($package->url('benchmark', ['id' => $benchmark['id']]))->assertOk()->assertSee($benchmark['title']);
+                    $this->get($package->url('benchmark', ['id' => $benchmark['id']]))->assertOk()->assertSee(Results::label($benchmark));
                 }
             }
             if ($package->verifications() !== []) {
                 $verification = $this->get($package->url('verification'))->assertOk();
                 foreach ($package->verifications() as $report) {
                     $verification->assertSee(Results::label($report))->assertSee('id="'.$report['id'].'"', false);
-                    $this->get($package->url('verification.topic', ['id' => $report['id']]))->assertOk()->assertSee($report['title']);
+                    $this->get($package->url('verification.topic', ['id' => $report['id']]))->assertOk()->assertSee(Results::label($report));
                 }
             }
         }

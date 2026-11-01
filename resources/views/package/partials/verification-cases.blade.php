@@ -15,7 +15,7 @@
                 @if ($showName)<th scope="col" class="py-2 pr-4 font-medium">Case</th>@endif
                 @if ($hasImplementation)<th scope="col" class="py-2 pr-4 font-medium">Implementation</th>@endif
                 <th scope="col" class="py-2 pr-4 font-medium">Quantity</th>
-                @if ($hasRule)<th scope="col" class="py-2 pr-4 font-medium">Rule</th>@endif
+                @if ($hasRule)<th scope="col" class="py-2 pr-4 font-medium">Criterion</th>@endif
                 @foreach ($columns as $column)
                     @if ($column === 'n_compared')
                         <th scope="col" class="py-2 pr-4 text-right font-medium">{{ $labels[$column] }}</th>
@@ -55,7 +55,7 @@
                     @if ($showName)<td class="py-1.5 pr-4 align-top">{{ $first ? $name : '' }}</td>@endif
                     @if ($hasImplementation)<td class="py-1.5 pr-4 align-top">{!! \App\Content\Libraries::mono(e($case['implementation'] ?? '')) !!}</td>@endif
                     <td class="py-1.5 pr-4 align-top">{{ $case['quantity'] ?? '' }}</td>
-                    @if ($hasRule)<td class="py-1.5 pr-4 align-top">{{ $case['rule'] ?? '' }}</td>@endif
+                    @if ($hasRule)<td class="whitespace-nowrap py-1.5 pr-4 align-top font-mono text-xs">{{ $ruleText[$case['rule'] ?? ''] ?? ($case['rule'] ?? '') }}</td>@endif
                     @if (in_array('n_compared', $columns, true))
                         <td class="py-1.5 pr-4 text-right align-top">{{ isset($case['n_compared']) ? number_format($case['n_compared']) : '' }}</td>
                     @endif
