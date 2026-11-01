@@ -61,7 +61,7 @@ $chart = \Phiz\Plot::of($monthly)
     <section id="packages" class="scroll-mt-16 py-16 sm:py-20">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 class="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Packages</h2>
-            <p class="mx-auto mb-10 mt-4 max-w-2xl text-center text-lg leading-8 text-zinc-600 sm:mb-12 dark:text-zinc-400">PHPstats has seven packages for statistical computing workflows, from data cleaning to statistical modeling.</p>
+            <p class="mx-auto mb-10 mt-4 max-w-2xl text-center text-lg leading-snug text-zinc-600 sm:mb-12 dark:text-zinc-400">PHPstats has seven packages for statistical computing workflows, from data cleaning to statistical modeling. Inspired by the capabilities and cohesiveness of R's tidyverse, the packages are designed to work together.</p>
             <x-package-explorer />
         </div>
     </section>

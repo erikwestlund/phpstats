@@ -66,8 +66,8 @@ its own menu:
 - Keep "checked against R" and verification claims off the landing page.
   The About page has one Validation section that links each package's
   verification. The reports belong on each package's Verification section.
-- Don't use "Verbs" as a heading, and don't describe the project as
-  "Inspired by the Tidyverse".
+- Don't use "Verbs" as a heading. The landing page's one mention of the
+  tidyverse's influence is in the Packages introduction.
 - The about page is "About PHPstats".
 
 ## Code examples
