@@ -37,7 +37,7 @@
             @foreach ($code as $impl => $source)
                 @php $slug = $id.'-'.\Illuminate\Support\Str::slug($impl); @endphp
                 <div role="tabpanel" id="code-{{ $slug }}" aria-labelledby="code-tab-{{ $slug }}" x-show="impl === @js($impl)" @unless ($impl === $first) x-cloak @endunless>
-                    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::highlight($dedent($source), $languages[$impl] ?? 'php') !!}</code></pre>
+                    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::hanging(\App\Content\Code::highlight($dedent($source), $languages[$impl] ?? 'php')) !!}</code></pre>
                 </div>
             @endforeach
         </div>
@@ -58,15 +58,7 @@
     </div>
 
     <div class="min-w-0">
-        @php
-            $fastest = collect($rows)->sortBy('value')->first();
-            $leanest = collect($rows)->sortBy('peak_memory_mib')->first();
-        @endphp
-        <h3 class="text-base font-semibold text-zinc-950 dark:text-white">{{ $title }}</h3>
-        <p class="mb-4 mt-1 text-sm leading-snug text-zinc-600 dark:text-zinc-400">
-            Fastest: {!! \App\Content\Libraries::mono(e($name($fastest))) !!}, {{ $time($fastest['value']) }}.
-            Least memory: {!! \App\Content\Libraries::mono(e($name($leanest))) !!}, {{ $memory($leanest['peak_memory_mib']) }}.
-        </p>
+        <h3 class="mb-3 text-base font-semibold text-zinc-950 dark:text-white">{{ $title }}</h3>
         <div class="space-y-6" aria-hidden="true">
             <x-phiz :plot="$timeChart" class="min-w-0 overflow-hidden" />
             <x-phiz :plot="$memoryChart" class="min-w-0 overflow-hidden" />

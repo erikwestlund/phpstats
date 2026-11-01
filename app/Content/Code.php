@@ -11,6 +11,39 @@ class Code
     private static ?Highlighter $highlighter = null;
 
     /**
+     * Highlighted HTML split into one block per source line, for code shown in
+     * a narrow column. A line too long for the column wraps with a hanging
+     * indent: its continuation lines up two columns past the line's own
+     * indentation, rather than at the left edge. Tags open across a line
+     * break, as in a multi-line comment, are closed at the end of the line
+     * and reopened on the next.
+     */
+    public static function hanging(string $html): string
+    {
+        $out = '';
+        $open = [];
+        foreach (explode("\n", $html) as $line) {
+            $text = html_entity_decode(strip_tags($line), ENT_QUOTES | ENT_HTML5);
+            $indent = strlen($text) - strlen(ltrim($text, ' '));
+            $body = implode('', $open).$line;
+            // Track the tags still open at the end of this line.
+            preg_match_all('#<(/?)span\b[^>]*>#', $line, $tags, PREG_SET_ORDER);
+            foreach ($tags as $tag) {
+                if ($tag[1] === '/') {
+                    array_pop($open);
+                } else {
+                    $open[] = $tag[0];
+                }
+            }
+            $body .= str_repeat('</span>', count($open));
+            $hang = $indent + 2;
+            $out .= '<span class="code-line" style="padding-left: '.$hang.'ch; text-indent: -'.$hang.'ch">'.($body === '' ? ' ' : $body).'</span>';
+        }
+
+        return $out;
+    }
+
+    /**
      * Highlighted HTML for $code, with hl-* classes styled in app.css.
      * The language "quarto" highlights a .qmd document in parts; see quarto().
      */

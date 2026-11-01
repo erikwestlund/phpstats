@@ -70,6 +70,10 @@ These committed files are generated, not hand-edited:
 - `database/data/stan/school-intercepts.json`: posterior draws for the
   Bayesian vignette. Regenerate with `php artisan stan:fit-school-posterior`
   (needs CmdStan and phit). Pages never run CmdStan.
+- `database/data/daily-temperatures.csv`: the illustrative daily temperatures
+  for New York, London, and Sydney that the landing hero charts. Regenerate
+  with `php85 scripts/illustrative/daily-temperatures.php`, then run
+  `php artisan examples:clear`.
 - `database/data/juphyter/revenue-by-channel.html`: the cell that juphyter's
   kernel rendered for the landing page's juphyter panel. A page never runs a
   kernel or Quarto. Capture it again as `App\Data\JuphyterCell` describes

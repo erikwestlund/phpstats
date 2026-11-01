@@ -7,8 +7,9 @@
     the package explorer. monoLabel sets the label in the monospace font, for package names.
     Slot text may be HTML-escaped; it is decoded before highlighting.
     language is what the code is highlighted as: php, or quarto for a .qmd.
+    hanging splits the code into lines that wrap with a hanging indent.
 --}}
-@props(['pipe', 'chain' => null, 'label' => null, 'monoLabel' => false, 'spacious' => false, 'language' => 'php'])
+@props(['pipe', 'chain' => null, 'label' => null, 'monoLabel' => false, 'spacious' => false, 'language' => 'php', 'hanging' => false])
 
 @php
     // The pipe operator needs PHP 8.5; earlier versions use the method chain.
@@ -17,6 +18,7 @@
 
 @php
     $code = fn ($slot) => html_entity_decode(trim((string) $slot), ENT_QUOTES | ENT_HTML5);
+    $render = fn (string $source) => $hanging ? \App\Content\Code::hanging(\App\Content\Code::highlight($source, $language)) : \App\Content\Code::highlight($source, $language);
     $hasChain = $chain !== null && trim((string) $chain) !== '';
     $preClass = $spacious ? 'overflow-x-auto px-5 py-5 font-mono text-sm leading-[1.6] sm:px-7 sm:py-5' : 'overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6';
 @endphp
@@ -41,9 +43,9 @@
     </div>
     @endif
     @if ($hasChain)
-        <pre x-show="syntax === 'pipe'" class="{{ $preClass }}"><code>{!! \App\Content\Code::highlight($code($pipe), $language) !!}</code></pre>
-        <pre x-show="syntax === 'chain'" x-cloak class="{{ $preClass }}"><code>{!! \App\Content\Code::highlight($code($chain), $language) !!}</code></pre>
+        <pre x-show="syntax === 'pipe'" class="{{ $preClass }}"><code>{!! $render($code($pipe)) !!}</code></pre>
+        <pre x-show="syntax === 'chain'" x-cloak class="{{ $preClass }}"><code>{!! $render($code($chain)) !!}</code></pre>
     @else
-        <pre class="{{ $preClass }}"><code>{!! \App\Content\Code::highlight($code($pipe), $language) !!}</code></pre>
+        <pre class="{{ $preClass }}"><code>{!! $render($code($pipe)) !!}</code></pre>
     @endif
 </div>

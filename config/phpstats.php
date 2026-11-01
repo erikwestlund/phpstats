@@ -35,11 +35,11 @@ return [
      */
     'content' => [
         'phibble' => ['repo' => 'phpstats/phibble', 'ref' => '348e1d4ac54f02099bb24a6a6dba760f3a230cc4'],
-        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'd9d3c41eebe25712be9ecb49d7e773f8bfb3f3f7'],
+        'phpolars' => ['repo' => 'phpstats/phpolars', 'ref' => 'bb171859d88426d8d12dbf18e893dedf95c5633e'],
         'phplyr' => ['repo' => 'phpstats/phplyr', 'ref' => '0c2d613ac44a62dd750e810ae7b5cd4cc7acafc8'],
-        'phit' => ['repo' => 'phpstats/phit', 'ref' => '2cfee4016af1abb3f101956a9060497e09d8e8a5'],
+        'phit' => ['repo' => 'phpstats/phit', 'ref' => 'cfd4ef6e01526005c02f2ad4d24499683aaf3869'],
         'phiz' => ['repo' => 'phpstats/phiz', 'ref' => '3956fe5a9ec2fff248b97b28d69c451074e33107'],
-        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '6a3dde671a387997edd2fb69c0dfdf1f98155f23'],
+        'cmdstanphp' => ['repo' => 'phpstats/CmdStanPHP', 'ref' => '7ddfe1c138fe8534991e3e5956fe82e779146090'],
         'juphyter' => ['repo' => 'phpstats/juphyter', 'ref' => '82e8fbee5f0b4680491d169596697f1ed0b74af7'],
     ],
 
@@ -51,7 +51,7 @@ return [
      * package's short description is its summary in config/projects.php.
      */
     'layers' => [
-        'data' => ['title' => 'Data & Workflow', 'role' => 'Tables, pipelines, and notebooks', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => ['phibble', 'phplyr', 'juphyter', 'phpolars']],
+        'data' => ['title' => 'Data & Workflow', 'role' => 'Tables, pipelines, and notebooks', 'color' => 'indigo', 'icon' => 'table-cells', 'packages' => ['phibble', 'phplyr', 'phpolars', 'juphyter']],
         'stats' => ['title' => 'Statistics, Modeling & Visualization', 'role' => 'Models, inference, and charts', 'color' => 'purple', 'icon' => 'variable', 'packages' => ['phit', 'phiz', 'cmdstanphp']],
     ],
 

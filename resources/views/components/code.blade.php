@@ -1,8 +1,9 @@
 {{--
     A highlighted code block on the dark ink background. label puts a small
-    header above the code; window adds the three window dots.
+    header above the code; window adds the three window dots. hanging splits
+    the code into lines that wrap with a hanging indent, for narrow columns.
 --}}
-@props(['code', 'lang' => 'php', 'label' => null, 'window' => false])
+@props(['code', 'lang' => 'php', 'label' => null, 'window' => false, 'hanging' => false])
 
 <div {{ $attributes->merge(['class' => 'code-ink overflow-hidden rounded-xl shadow-lg shadow-php-950/10 ring-1 ring-black/5 dark:ring-(--color-ink-line)']) }}>
     @if ($label || $window)
@@ -17,5 +18,5 @@
             @endif
         </div>
     @endif
-    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::highlight($code, $lang) !!}</code></pre>
+    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! $hanging ? \App\Content\Code::hanging(\App\Content\Code::highlight($code, $lang)) : \App\Content\Code::highlight($code, $lang) !!}</code></pre>
 </div>

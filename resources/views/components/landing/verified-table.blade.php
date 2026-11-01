@@ -1,26 +1,4 @@
 {{-- One verification panel's table: phit's values and each library's, rounded alike, with a signed difference only where the rounded values differ, and a dash where a library has no equivalent. Rendered by landing.verified and cached with the example. --}}
-@php
-    // The takeaway: how many of the values every library matches at the precision shown.
-    $compared = array_filter($rows, fn ($row) => array_filter($row[2], fn ($v) => $v !== null) !== []);
-    $agree = array_filter($compared, function ($row) use ($value, $panel) {
-        foreach ($row[2] as $theirs) {
-            if ($theirs !== null && $value($theirs, $panel['relative']) !== $value($row[1], $panel['relative'])) {
-                return false;
-            }
-        }
-
-        return true;
-    });
-    $names = array_map(fn ($l) => preg_replace('/ \((R|Python)\)$/', '', $l), array_values($panel['libraries']));
-    $list = count($names) > 2 ? implode(', ', array_slice($names, 0, -1)).', and '.end($names) : implode(' and ', $names);
-@endphp
-<p class="mb-3 text-sm leading-snug text-zinc-600 dark:text-zinc-400">
-    @if (count($agree) === count($compared))
-        All {{ count($compared) }} values match {!! \App\Content\Libraries::mono(e($list)) !!} at the precision shown.
-    @else
-        {{ count($agree) }} of {{ count($compared) }} values match {!! \App\Content\Libraries::mono(e($list)) !!} at the precision shown.
-    @endif
-</p>
 {{-- Below 640px each quantity is a short list of its values, so nothing is wider than the screen. --}}
 <dl class="divide-y divide-zinc-100 border-y border-zinc-200 text-sm sm:hidden dark:divide-white/5 dark:border-white/10">
     @foreach ($rows as [$label, $mine, $theirs])

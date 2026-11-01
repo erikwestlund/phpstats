@@ -274,9 +274,6 @@
 <section id="verified" aria-labelledby="verified-heading" class="scroll-mt-16 border-t border-zinc-200 py-16 sm:py-20 dark:border-white/10">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 id="verified-heading" class="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Verified against established libraries</h2>
-        <p class="mx-auto mt-4 max-w-2xl text-center text-lg leading-snug text-zinc-600 dark:text-zinc-400">
-            All our libraries are verified against popular alternatives in R and Python.
-        </p>
 
         <div x-data="{ check: @js($first) }" class="mt-10 sm:mt-12">
             <div role="tablist" aria-label="Comparison" class="mx-auto flex w-fit max-w-full flex-wrap justify-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-white/5">
@@ -305,12 +302,12 @@
                             </div>
                             @foreach ($panel['code'] as $lib => $source)
                                 <div role="tabpanel" id="check-code-{{ $key }}-{{ $lib }}" aria-labelledby="check-code-tab-{{ $key }}-{{ $lib }}" x-show="lib === '{{ $lib }}'" @unless ($lib === $firstCode) x-cloak @endunless>
-                                    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::highlight($source, 'php') !!}</code></pre>
+                                    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::hanging(\App\Content\Code::highlight($source, 'php')) !!}</code></pre>
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <x-code :code="$panel['code']" class="min-w-0" />
+                        <x-code :code="$panel['code']" :hanging="true" class="min-w-0" />
                     @endif
 
                     <div class="min-w-0">

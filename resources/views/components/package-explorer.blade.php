@@ -80,7 +80,7 @@
                 }
             @endphp
             <div role="tabpanel" id="package-code-{{ $key }}" aria-labelledby="package-tab-{{ $key }}" x-show="open === '{{ $key }}'" @unless ($key === 'phibble') x-cloak @endunless class="flex h-full flex-col">
-                <x-code-tabs :pipe="$code['pipe']" :chain="$code['chain']" :language="$source['language'] ?? 'php'" :label="$explorer[$key]['example']" :spacious="true" class="rounded-none! shadow-none! ring-0!" />
+                <x-code-tabs :pipe="$code['pipe']" :chain="$code['chain']" :language="$source['language'] ?? 'php'" :label="$explorer[$key]['example']" :spacious="true" :hanging="true" class="rounded-none! shadow-none! ring-0!" />
                 <section class="flex flex-1 flex-col bg-zinc-50/70 dark:bg-white/[0.02]">
                     <h4 class="flex min-h-14 items-center border-b border-zinc-200 px-5 py-3 text-base font-semibold sm:px-7 text-zinc-950 dark:border-white/10 dark:text-white">Example output</h4>
                     @if ($failed)

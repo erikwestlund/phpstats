@@ -25,7 +25,7 @@ that packages sync into it.
 The packages are grouped into two categories, in this order, each with
 its own menu:
 
-- Data & Workflow: phibble, phplyr, juphyter, and phpolars.
+- Data & Workflow: phibble, phplyr, phpolars, and juphyter.
 - Statistics, Modeling & Visualization: phit, phiz, and CmdStanPHP.
 
 ## Copy

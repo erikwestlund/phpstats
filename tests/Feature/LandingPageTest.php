@@ -36,13 +36,13 @@ class LandingPageTest extends TestCase
             ->content();
 
         // The hero is one workflow: load, summarize, chart. No model fit.
-        preg_match('#OrderReport\.php.*?</section>#s', $html, $hero);
+        preg_match('#temperatures\.php.*?</section>#s', $html, $hero);
         $this->assertStringNotContainsString('lm(', strip_tags($hero[0]));
 
-        // The hero offers the packages and a start, and shows the order report's chart.
+        // The hero offers the packages and a start, and charts monthly mean temperatures.
         $this->assertStringContainsString('href="#packages"', $html);
         $this->assertMatchesRegularExpression('#href="'.preg_quote(route('page', 'installation'), '#').'"[^>]*>Get started<#', $html);
-        $this->assertStringContainsString('Monthly revenue by channel', $html);
+        $this->assertStringContainsString('Mean temperature (°C)', $html);
 
         // No "About {package}" panels: each package shows code, output, and a link.
         $this->assertDoesNotMatchRegularExpression('#>About <span class="font-mono">#', $html);

@@ -27,11 +27,11 @@
     $phit = \App\Content\Package::find('phit');
     $path = collect(['examples/polars-mixed-model', 'examples/mixed-model'])->first(fn ($p) => in_array($p, $phit->docsPaths(), true));
 @endphp
-<section id="together" aria-labelledby="together-heading" class="scroll-mt-16 border-t border-zinc-200 py-16 sm:py-20 dark:border-white/10">
+<section id="together" aria-labelledby="together-heading" class="scroll-mt-16 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 id="together-heading" class="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Designed to work together</h2>
-        <p class="mx-auto mt-4 max-w-2xl text-center text-lg leading-snug text-zinc-600 dark:text-zinc-400">
-            Read data with <span class="font-mono">phpolars</span>, fit a Gaussian mixed model with <span class="font-mono">phit</span>, and visualize the results with <span class="font-mono">phiz</span>. All from PHP.
+        <p class="mx-auto mt-4 max-w-3xl text-center text-lg leading-snug text-zinc-600 dark:text-zinc-400">
+            PHPstats is a family of interoperable PHP packages for data processing, statistical analysis, modeling, and visualization. Inspired by R's tidyverse, they share data structures and fit together: below, <span class="font-mono">phpolars</span> reads a CSV file, <span class="font-mono">phit</span> fits a Gaussian mixed model, and <span class="font-mono">phiz</span> charts the result.
         </p>
 
         <p class="mt-10 text-sm text-zinc-500 sm:mt-12 dark:text-zinc-400">The example reads one CSV file of test scores: 250 students in 12 schools.</p>
@@ -43,7 +43,7 @@
                             <span class="mr-1.5 text-zinc-500 dark:text-zinc-400">{{ $i + 1 }}.</span>
                             {{ $titles[$i][0] }} <span class="font-mono">{{ $titles[$i][1] }}</span>
                         </h3>
-                        <x-code :code="$code" />
+                        <x-code :code="$code" :hanging="true" />
                     </li>
                 @endforeach
             </ol>

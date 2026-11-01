@@ -289,6 +289,16 @@ pre,
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+/* Code split by App\Content\Code::hanging(): one block per line, so a wrapped
+   line continues under its own indentation instead of at the left edge. */
+.landing .code-line {
+    display: block;
+}
+@media (max-width: 639px) {
+    .landing pre {
+        font-size: 0.75rem;
+    }
+}
 .landing .juphyter-table th,
 .landing .juphyter-table td {
     white-space: normal;

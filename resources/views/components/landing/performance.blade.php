@@ -33,9 +33,6 @@
 <section id="performance" aria-labelledby="performance-heading" class="scroll-mt-16 border-t border-zinc-200 py-16 sm:py-20 dark:border-white/10">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 id="performance-heading" class="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Performant, powerful, and flexible</h2>
-        <p class="mx-auto mt-4 max-w-2xl text-center text-lg leading-snug text-zinc-600 dark:text-zinc-400">
-            PHPstats's performance is competitive with and sometimes better than statistical computing alternatives.
-        </p>
 
         <div x-data="{ workload: @js($workloads[0]['id']) }" class="mt-10 sm:mt-12">
             <div role="tablist" aria-label="Workload" class="mx-auto flex w-fit max-w-full flex-wrap justify-center gap-1 rounded-xl bg-zinc-100 p-1 dark:bg-white/5">
