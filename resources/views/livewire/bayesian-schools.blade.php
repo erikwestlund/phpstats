@@ -54,10 +54,14 @@
 
         @php($c = $fit['convergence'])
         @php($m = $fit['meta'])
-        <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">The stored fit</h2>
+        <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">The saved fit</h2>
         <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            The page reads draws from a seeded fit saved in the repository and never runs CmdStan.
             CmdStan {{ $m['cmdstan'] }}, seed {{ $m['seed'] }}, {{ $m['chains'] }} chains of {{ number_format($m['iter_sampling']) }} iterations after {{ number_format($m['iter_warmup']) }} warmup, thinned by {{ $m['thin'] }} to {{ number_format($m['chains'] * $m['iter_sampling'] / $m['thin']) }} draws.
-            The largest R-hat is {{ number_format(max($c['rhat']), 3) }}, the smallest bulk effective sample size is {{ number_format(min($c['ess_bulk'])) }}, and there were {{ $m['divergent'] }} divergent transitions.
+            The largest R-hat is {{ number_format(max($c['rhat']), 3) }}, the smallest bulk effective sample size is {{ number_format(min($c['ess_bulk'])) }}, and there {{ $m['divergent'] === 1 ? 'was 1 divergent transition' : 'were '.$m['divergent'].' divergent transitions' }}.
+        </p>
+        <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            To reproduce it, run <code class="font-mono text-[0.8125rem]">php artisan stan:fit-school-posterior</code>, which needs CmdStan and phit and rewrites <code class="font-mono text-[0.8125rem] break-words">database/data/stan/school-intercepts.json</code>.
         </p>
     @endif
 </div>

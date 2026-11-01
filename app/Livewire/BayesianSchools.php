@@ -16,7 +16,7 @@ use function Phit\stat_sd;
 
 /**
  * Vignette: the school random-intercept model fitted with Stan through
- * CmdStanPHP, compared with stats_lmer. The draws come from a stored seeded
+ * CmdStanPHP, compared with fit_lmer(). The draws come from a saved seeded
  * fit, so the page never runs CmdStan.
  */
 class BayesianSchools extends Component
