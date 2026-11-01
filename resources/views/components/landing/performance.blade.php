@@ -93,15 +93,6 @@
 
 
 
-                    <p class="mx-auto mt-4 max-w-4xl text-sm leading-6 text-zinc-500">
-                        Medians of {{ $env['repeats'] }} runs, each in a fresh process, on {{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.
-                        The full record gives versions, thread settings, and where timing starts and stops.
-                    </p>
-                    <div class="mx-auto mt-3 max-w-4xl">
-                        <a href="{{ $w['url'] }}" aria-label="View the complete {{ strtolower($w['label']) }} benchmark on {{ $w['name'] }}'s Benchmarks page" class="inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
-                            View the complete benchmark <x-heroicon-m-arrow-right class="size-4" />
-                        </a>
-                    </div>
                 </div>
             @endforeach
         </div>
