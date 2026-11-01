@@ -81,13 +81,14 @@ class PackagePagesTest extends TestCase
 
     public function test_a_package_with_no_records_says_so_without_charts(): void
     {
-        $phibble = Package::find('phibble');
-        $this->assertSame([], $phibble->benchmarks());
-        $this->get($phibble->url('benchmarks'))->assertOk()
+        // A package with no records says so in one line, with no table or chart.
+        $this->fixtureSite('phiz', []);
+        $phiz = Package::find('phiz');
+        $this->get($phiz->url('benchmarks'))->assertOk()
             ->assertSee('No benchmark measurements are published for')
             ->assertDontSee('data-phiz="', false)
             ->assertDontSee('<table', false);
-        $this->get($phibble->url('verification'))->assertOk()
+        $this->get($phiz->url('verification'))->assertOk()
             ->assertSee('No verification checks are published for')
             ->assertDontSee('<table', false);
 
@@ -351,10 +352,16 @@ class PackagePagesTest extends TestCase
         }
         $this->assertStringNotContainsString('faster', $text);
 
-        // phit's older records give no statistic, so none is invented for them.
-        $text = html_entity_decode(strip_tags($this->get(Package::find('phit')->url('benchmark', ['id' => 'ols']))->getContent()));
+        // A record that gives no statistic or memory gets none invented.
+        $this->fixtureRecord('phiz', 'benchmarks', 'bare', [
+            'title' => 'Bare: one chart',
+            'unit' => 'ms',
+            'environment' => ['repeats' => 5],
+            'rows' => [['case' => 'One chart', 'implementation' => 'phiz', 'value' => 12.5]],
+        ]);
+        $text = html_entity_decode(strip_tags($this->get(Package::find('phiz')->url('benchmark', ['id' => 'bare']))->assertOk()->getContent()));
         $this->assertStringContainsString('5 timed runs', $text);
-        $this->assertStringNotContainsString('Median over the timed runs', $text);
+        $this->assertStringNotContainsString('Median', $text);
         $this->assertStringContainsString('Memory was not measured.', $text);
     }
 
@@ -440,13 +447,14 @@ class PackagePagesTest extends TestCase
         $this->get($phpolars->url('benchmarks'))->assertOk()
             ->assertSee('\\u0022py-polars\\u0022', false);
 
-        // A docs report the package still lists keeps its page; once it
-        // leaves the docs nav, it redirects to the matching evidence page.
+        // A docs report that left the docs nav redirects to the matching
+        // evidence page; one the package still lists keeps its page.
         $phit = Package::find('phit');
-        $this->get($phit->url('docs', ['path' => 'benchmarks/ols']))->assertOk();
         $root = $this->copyContent();
         $docs = json_decode(File::get("{$root}/phit/docs.json"), true);
-        $docs['nav'] = array_values(array_filter($docs['nav'], fn ($item) => ! preg_match('#^(benchmarks/|verifications/|notebooks/.*-verification$|verification$)#', $item['path'])));
+        File::put("{$root}/phit/docs.json", json_encode([...$docs, 'nav' => [...$docs['nav'], ['title' => 'OLS: performance', 'path' => 'benchmarks/ols']]]));
+        Package::flush();
+        $this->assertNull(Package::find('phit')->evidenceRedirect('benchmarks/ols'));
         File::put("{$root}/phit/docs.json", json_encode($docs));
         Package::flush();
         $phit = Package::find('phit');
@@ -455,7 +463,29 @@ class PackagePagesTest extends TestCase
         $this->get($phit->url('docs', ['path' => 'verifications/lmm']))->assertRedirect($phit->url('verification.topic', ['id' => 'lmm']));
         $this->get($phit->url('docs', ['path' => 'notebooks/lmm-public-verification']))->assertRedirect($phit->url('verification.topic', ['id' => 'lmm-public']));
         $this->get($phit->url('docs', ['path' => 'verification']))->assertRedirect($phit->url('verification'));
+        $this->get($phit->url('docs', ['path' => 'notebooks/r-compatibility']))->assertRedirect($phit->url('verification.topic', ['id' => 'r-compatibility']));
         $this->assertSame($phit->url('benchmark', ['id' => 'ols']), Package::resolveLinks('phpstats://phit/docs/benchmarks/ols'));
+    }
+
+    public function test_removed_cmdstanphp_docs_pages_redirect_to_verification(): void
+    {
+        $cmdstan = Package::find('cmdstanphp');
+        $nav = array_column($cmdstan->docsNav(), 'path');
+        foreach (['verification', 'testing'] as $path) {
+            if (in_array($path, $nav, true)) {
+                $this->get($cmdstan->url('docs', ['path' => $path]))->assertOk();
+            } else {
+                $this->get($cmdstan->url('docs', ['path' => $path]))->assertStatus(301)->assertRedirect($cmdstan->url('verification'));
+            }
+        }
+    }
+
+    public function test_a_floored_relative_rule_is_written_with_its_floor(): void
+    {
+        $text = \App\Content\Results::ruleText(['kind' => 'tolerance', 'rtol' => 1e-8, 'rel_floor' => 1]);
+        $this->assertStringContainsString('|x − r| ≤ 1.0e-8 · max(|r|, 1.0e+0)', $text);
+        $this->assertStringNotContainsString('At r = 0', $text);
+        $this->assertStringContainsString('At r = 0 this requires x = 0 exactly.', \App\Content\Results::ruleText(['kind' => 'tolerance', 'rtol' => 1e-9]));
     }
 
     public function test_moved_docs_sections_send_their_fragments_on(): void

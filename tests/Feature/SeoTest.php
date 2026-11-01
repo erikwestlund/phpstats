@@ -88,12 +88,16 @@ class SeoTest extends TestCase
             }
         }
 
-        // phit publishes both; phibble syncs docs and no reports, so neither.
+        // phit publishes both, with a page per record; phibble publishes
+        // verification only, and a section with no records is left out.
         $this->assertContains('http://phit.phpstats.test/benchmarks', $urls);
         $this->assertContains('http://phit.phpstats.test/verification', $urls);
+        $this->assertContains('http://phit.phpstats.test/benchmarks/ols-workload', $urls);
+        $this->assertContains('http://phit.phpstats.test/verification/ols', $urls);
         $this->assertEmpty(Package::find('phibble')->benchmarks());
         $this->assertNotContains('http://phibble.phpstats.test/benchmarks', $urls);
-        $this->assertNotContains('http://phibble.phpstats.test/verification', $urls);
+        $this->assertContains('http://phibble.phpstats.test/verification', $urls);
+
 
         // A live page belongs to the host of the package that owns it.
         $this->assertNotContains('http://phplyr.phpstats.test/vignettes/rent-dashboard', $urls);

@@ -527,11 +527,16 @@ class Package
     /** The evidence page that covers a docs path, whether or not the page is still in the docs. */
     private function evidenceUrlFor(string $path): ?string
     {
+        $listed = config("evidence.docs.{$this->key}.{$path}");
+        if (in_array($listed, ['benchmarks', 'verification'], true)) {
+            return $this->url($listed);
+        }
+
         return match (true) {
             $path === 'verification' || $path === 'verifications' || $path === 'verifications/index' => $this->url('verification'),
             $path === 'benchmarks' || $path === 'benchmarks/index' => $this->url('benchmarks'),
             (bool) preg_match('#^benchmarks/([a-z0-9-]+)$#', $path, $m) => $this->benchmark($m[1]) ? $this->url('benchmark', ['id' => $m[1]]) : null,
-            (bool) preg_match('#^(?:verifications/([a-z0-9-]+)|notebooks/([a-z0-9-]+)-verification)$#', $path, $m) => ($id = ($m[1] ?? '') ?: ($m[2] ?? '')) && $this->verificationTopic($id) ? $this->url('verification.topic', ['id' => $id]) : null,
+            (bool) preg_match('#^(?:verifications/([a-z0-9-]+)|notebooks/([a-z0-9-]+?)(?:-verification)?)$#', $path, $m) => ($id = ($m[1] ?? '') ?: ($m[2] ?? '')) && $this->verificationTopic($id) ? $this->url('verification.topic', ['id' => $id]) : null,
             default => null,
         };
     }

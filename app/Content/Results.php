@@ -371,14 +371,18 @@ class Results
         }
         $atol = is_numeric($rule['atol'] ?? null) ? (float) $rule['atol'] : null;
         $rtol = is_numeric($rule['rtol'] ?? null) ? (float) $rule['rtol'] : null;
+        $floor = is_numeric($rule['rel_floor'] ?? null) ? (float) $rule['rel_floor'] : null;
+        // With a floor, the relative part scales with max(|r|, floor), so a
+        // zero or near-zero reference still gets a tolerance.
+        $scale = $floor === null ? '|r|' : 'max(|r|, '.self::error($floor).')';
         $bound = match (true) {
-            $atol !== null && $rtol !== null => 'a value passes when |x − r| ≤ '.self::error($atol).' + '.self::error($rtol).' · |r|',
+            $atol !== null && $rtol !== null => 'a value passes when |x − r| ≤ '.self::error($atol).' + '.self::error($rtol).' · '.$scale,
             $atol !== null => 'a value passes when |x − r| ≤ '.self::error($atol),
-            $rtol !== null => 'a value passes when |x − r| ≤ '.self::error($rtol).' · |r|',
+            $rtol !== null => 'a value passes when |x − r| ≤ '.self::error($rtol).' · '.$scale,
             default => null,
         };
         $text = $bound === null ? (string) ($rule['text'] ?? 'Tolerance as the description states.') : "Tolerance: {$bound}, where x is the package's value and r the reference's.";
-        if ($rtol !== null && $atol === null) {
+        if ($rtol !== null && $atol === null && $floor === null) {
             $text .= ' At r = 0 this requires x = 0 exactly.';
         }
 

@@ -194,7 +194,7 @@
             @endif
 
             @php
-                $detail = view('package.partials.verification-cases', compact('cases', 'columns', 'peers', 'hasValues', 'hasRule', 'labels', 'number', 'statusClass', 'byCategory') + ['showName' => ! $byCategory && $names > 1])->render();
+                $detail = view('package.partials.verification-cases', compact('cases', 'columns', 'peers', 'hasValues', 'hasRule', 'labels', 'number', 'statusClass', 'byCategory') + ['hasImplementation' => collect($cases)->contains(fn ($c) => isset($c['implementation']))] + ['showName' => ! $byCategory && $names > 1])->render();
             @endphp
             @if ($long)
                 <details class="group/all mt-6 rounded-lg ring-1 ring-zinc-200 dark:ring-white/10">

@@ -86,6 +86,7 @@ than one.
 | --- | --- |
 | `name` (required) | The input or fixture, such as "sleepstudy". Cases with the same name form one row group. |
 | `category` | A heading that groups cases, such as "Joins". When cases have one, the summary table is by category. |
+| `implementation` | The backend, reader, or engine the case ran on, such as "SQLite" or "phit reader", when one record compares several. Shown as its own column. |
 | `quantity` | What was compared, such as "coefficients" or "6 rows × 9 columns". |
 | `status` | `pass`, `fail`, or `skipped`. Replaces `passed`, which still reads as pass or fail. A case with neither shows "not reported", never pass. |
 | `reason` | Required for `fail` and `skipped`: one sentence. |

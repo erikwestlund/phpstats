@@ -17,6 +17,16 @@ return [
     ],
 
     /*
+     * Docs pages that left a package's docs for its evidence sections, by
+     * package: the docs path => 'benchmarks' or 'verification'. Pages under
+     * benchmarks/, verifications/, and notebooks/*-verification, and a page
+     * named verification, are matched without an entry here.
+     */
+    'docs' => [
+        'cmdstanphp' => ['testing' => 'verification'],
+    ],
+
+    /*
      * Sections of docs pages that moved to the evidence pages, by package
      * and docs path: the old #fragment => [package, 'benchmark' or
      * 'verification.topic', record id]. Fragments never reach the server, so

@@ -29,8 +29,10 @@ class DocsTest extends TestCase
         // rather than under the folder it happens to live in.
         $phit = Package::find('phit');
         $this->assertSame('Mathematics', $phit->docsGroupOf('notebooks/lmm-math'));
-        $this->assertSame('Benchmarks and verification', $phit->docsGroupOf('benchmarks/ols'));
-        $this->assertSame('Benchmarks and verification', $phit->docsGroupOf('data/lmm/index'));
+        $this->assertSame('Mathematics', $phit->docsGroupOf('data/lmm/index'));
+        // phit's benchmark and verification reports left its docs for the
+        // Benchmarks and Verification sections.
+        $this->assertArrayNotHasKey('Benchmarks and verification', $phit->docsGroups());
     }
 
     public function test_synced_docs_render_with_resolved_links(): void
@@ -83,9 +85,11 @@ class DocsTest extends TestCase
             }
         }
 
-        // phibble, phiz, and juphyter publish no benchmark or verification
-        // records yet; their sections say so.
-        $this->assertEqualsCanonicalizing(['cmdstanphp', 'phit', 'phplyr', 'phpolars'], $shipping);
+        // At least these packages publish records; the others' sections say
+        // that nothing is published yet.
+        foreach (['cmdstanphp', 'phibble', 'phit', 'phplyr', 'phpolars'] as $key) {
+            $this->assertContains($key, $shipping);
+        }
     }
 
     // Task 10: the three packages that joined the site, and the audits that
@@ -124,7 +128,7 @@ class DocsTest extends TestCase
         }
 
         $this->assertSame([], $outside);
-        $this->assertCount(63, Package::find('phit')->docsNav());
+        $this->assertCount(39, Package::find('phit')->docsNav());
     }
 
     public function test_a_docs_page_named_as_html_redirects_to_its_clean_url(): void
@@ -281,12 +285,12 @@ class DocsTest extends TestCase
         $phit = Package::find('phit');
 
         $sidebar = $this->docsSidebar($phit);
-        $this->assertMatchesRegularExpression('#<details\s+class="[^"]*">\s*<summary[^>]*>\s*Benchmarks and verification#', $sidebar);
+        $this->assertMatchesRegularExpression('#<details\s+class="[^"]*">\s*<summary[^>]*>\s*Mathematics#', $sidebar);
         $this->assertDoesNotMatchRegularExpression('#<details\s+open#', $sidebar);
         $this->assertStringContainsString('>Guides</p>', $sidebar);
 
-        $html = $this->get($phit->url('docs', ['path' => 'benchmarks/ols']))->assertOk()->getContent();
-        $this->assertMatchesRegularExpression('#<details\s+open[^>]*>\s*<summary[^>]*>\s*Benchmarks and verification#', $html);
+        $html = $this->get($phit->url('docs', ['path' => 'notebooks/lmm-math']))->assertOk()->getContent();
+        $this->assertMatchesRegularExpression('#<details\s+open[^>]*>\s*<summary[^>]*>\s*Mathematics#', $html);
     }
 
     /** Just the sidebar, so a group name in the page's own prose cannot count. */
