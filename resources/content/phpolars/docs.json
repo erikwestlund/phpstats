@@ -314,6 +314,21 @@
                     "level": 2
                 },
                 {
+                    "id": "benchmark-reports",
+                    "text": "Benchmark reports",
+                    "level": 2
+                },
+                {
+                    "id": "a-csv-pipeline",
+                    "text": "A CSV pipeline",
+                    "level": 3
+                },
+                {
+                    "id": "phplyr-pipelines-on-three-backends",
+                    "text": "phplyr pipelines on three backends",
+                    "level": 3
+                },
+                {
                     "id": "memory-on-large-files",
                     "text": "Memory on large files",
                     "level": 2
