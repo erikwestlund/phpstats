@@ -86,7 +86,7 @@
             'files' => [],
             'libraries' => ['R' => 'R', 'SciPy' => 'SciPy (Python)'],
             'relative' => true,
-            'note' => 'R: <code>pnorm</code>, <code>qnorm</code>, <code>pgamma</code>, and <code>qgamma</code>. Python: SciPy\'s <code>norm</code> and <code>gamma</code>. Differences are relative.',
+            'note' => 'R: <code>pnorm</code>, <code>qnorm</code>, <code>pgamma</code>, and <code>qgamma</code>. Python: SciPy\'s <code>norm</code> and <code>gamma</code>.',
             'anchor' => 'distributions',
             'rows' => function (array $values, array $ref) {
                 $labels = ['Normal CDF at −8', 'Normal quantile at 0.975', 'Gamma CDF at 12', 'Gamma quantile at 0.999'];
@@ -153,7 +153,7 @@
 
                     <div class="min-w-0">
                         {!! $panel['table'] !!}
-                        <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">{!! $panel['note'] !!} Values are rounded, and a difference from <span class="font-mono">phit</span> appears only where the rounded values differ.</p>
+                        <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">{!! $panel['note'] !!}</p>
                         <a href="{{ $record }}#{{ $panel['anchor'] }}" class="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-php-600 hover:text-php-500 dark:text-php-300 dark:hover:text-php-200">
                             {{ $panel['label'] }} verification record <x-heroicon-m-arrow-right class="size-4" />
                         </a>
