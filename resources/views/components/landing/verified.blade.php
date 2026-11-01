@@ -94,7 +94,7 @@
             'reference' => 'csv',
             'libraries' => ['phpolars' => 'phpolars', 'R' => 'dplyr (R)', 'Python' => 'pandas (Python)'],
             'relative' => false,
-            'note' => 'Hours of readings and mean temperature (°F) and humidity (%) at each New York airport in 2013, leaving out missing readings. R: readr and dplyr. Python: pandas.',
+            'note' => 'R: readr and dplyr. Python: pandas.',
             'anchor' => null,
             'rows' => function (array $rows, array $refs) {
                 $out = [];
@@ -115,7 +115,7 @@
             'reference' => 'ols',
             'libraries' => ['R' => 'lm (R)', 'Python' => $python],
             'relative' => false,
-            'note' => 'Motor Trend cars (<code>mtcars</code>). R: <code>lm()</code>. Python: <code>ols()</code>.',
+            'note' => 'R: <code>lm()</code>. Python: <code>ols()</code>.',
             'anchor' => 'ols',
             'rows' => $model([['Residual SD', 'sigma', 'sigma'], ['R²', 'r_squared', 'r_squared']]),
         ],
@@ -127,7 +127,7 @@
             'reference' => 'logistic',
             'libraries' => ['R' => 'glm (R)', 'Python' => $python],
             'relative' => false,
-            'note' => 'Labor force participation of 753 married women (Mroz). R: <code>glm(family = binomial)</code>. Python: <code>logit()</code>.',
+            'note' => 'R: <code>glm(family = binomial)</code>. Python: <code>logit()</code>.',
             'anchor' => 'logistic',
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
@@ -139,7 +139,7 @@
             'reference' => 'probit',
             'libraries' => ['R' => 'glm (R)', 'Python' => $python],
             'relative' => false,
-            'note' => 'The same Mroz data with the probit link. R: <code>glm(family = binomial("probit"))</code>. Python: <code>probit()</code>.',
+            'note' => 'R: <code>glm(family = binomial("probit"))</code>. Python: <code>probit()</code>.',
             'anchor' => 'probit',
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
@@ -151,7 +151,7 @@
             'reference' => 'mixed_gaussian',
             'libraries' => ['R' => 'lme4 (R)', 'Python' => $python],
             'relative' => false,
-            'note' => 'lme4\'s sleep deprivation study (<code>sleepstudy</code>), fitted by REML. R: <code>lmer()</code>. Python: <code>mixedlm()</code>.',
+            'note' => 'R: <code>lmer()</code>. Python: <code>mixedlm()</code>.',
             'anchor' => 'lmm',
             'rows' => $model([['Subject variance', $groupVariance, 'group_variance'], ['Residual variance', 'residual_variance', 'residual_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
@@ -163,7 +163,7 @@
             'reference' => 'mixed_logistic',
             'libraries' => ['R' => 'lme4 (R)', 'Python' => 'GPBoost (Python)'],
             'relative' => false,
-            'note' => 'lme4\'s contagious bovine pleuropneumonia data (<code>cbpp</code>), Laplace approximation. R: <code>glmer()</code>. Python: GPBoost, because statsmodels has no maximum-likelihood mixed logistic model.',
+            'note' => 'R: <code>glmer()</code>. Python: GPBoost.',
             'anchor' => 'logistic-mixed',
             'rows' => $model([['Herd variance', $groupVariance, 'group_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
@@ -175,7 +175,7 @@
             'stored' => 'interfaces',
             'libraries' => ['R' => 'CmdStanR (R)', 'Python' => 'CmdStanPy (Python)'],
             'relative' => false,
-            'note' => 'A hierarchical Gaussian model of coaching effects in eight schools (Rubin 1981), sampled by Stan. CmdStanPHP, CmdStanR, and CmdStanPy run the same CmdStan executable with the same data, seed, and arguments, and their 4,000 draws are identical. The table compares each interface\'s posterior means.',
+            'note' => 'R: CmdStanR. Python: CmdStanPy. All three run the same CmdStan executable, and their draws are identical.',
             'anchor' => 'interfaces',
         ],
     ];
@@ -295,7 +295,7 @@
                         <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
                             {!! \App\Content\Libraries::mono($panel['note']) !!}
                             @if ($panel['dataset'])
-                                <a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">Data source</a>.
+                                <br>Data: <code>{{ $panel['dataset'] }}</code> (<a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">source</a>).
                             @endif
                         </p>
                         @if ($panel['link'])
