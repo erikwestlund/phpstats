@@ -361,11 +361,6 @@
                     "level": 2
                 },
                 {
-                    "id": "homebrew-php-and-juphyter-0.1.0",
-                    "text": "Homebrew PHP and juphyter 0.1.0",
-                    "level": 3
-                },
-                {
                     "id": "no-python-can-host-the-kernel",
                     "text": "No Python can host the kernel",
                     "level": 2
