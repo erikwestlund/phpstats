@@ -222,23 +222,48 @@
             "headings": [
                 {
                     "id": "supported-workflows",
-                    "text": "Supported workflows",
+                    "text": "Supported",
                     "level": 2
                 },
                 {
                     "id": "method-names",
-                    "text": "Method names",
-                    "level": 3
-                },
-                {
-                    "id": "cmdstanr-1-0",
-                    "text": "CmdStanR 1.0",
+                    "text": "Naming",
                     "level": 2
                 },
                 {
                     "id": "php-adaptations",
-                    "text": "PHP adaptations",
+                    "text": "Differences",
                     "level": 2
+                },
+                {
+                    "id": "data",
+                    "text": "Data",
+                    "level": 3
+                },
+                {
+                    "id": "draws-and-summaries",
+                    "text": "Draws and summaries",
+                    "level": 3
+                },
+                {
+                    "id": "model-methods",
+                    "text": "Model methods",
+                    "level": 3
+                },
+                {
+                    "id": "initialization-from-fits",
+                    "text": "Initialization from fits",
+                    "level": 3
+                },
+                {
+                    "id": "builds-processes-and-files",
+                    "text": "Builds, processes, and files",
+                    "level": 3
+                },
+                {
+                    "id": "options-and-defaults",
+                    "text": "Options and defaults",
+                    "level": 3
                 },
                 {
                     "id": "moment-matching-and-loo",
@@ -248,6 +273,11 @@
                 {
                     "id": "not-implemented",
                     "text": "Not implemented",
+                    "level": 2
+                },
+                {
+                    "id": "cmdstanr-1-0",
+                    "text": "Code written before CmdStanR 1.0 (2026-10)",
                     "level": 2
                 }
             ],
@@ -284,6 +314,11 @@
                 {
                     "id": "version-control",
                     "text": "Version control",
+                    "level": 2
+                },
+                {
+                    "id": "implementation-details",
+                    "text": "Implementation details",
                     "level": 2
                 }
             ],
@@ -396,11 +431,6 @@
         "getting-started": {
             "title": "Getting started",
             "headings": [
-                {
-                    "id": "set-up-a-project",
-                    "text": "Set up a project",
-                    "level": 2
-                },
                 {
                     "id": "the-model",
                     "text": "The model",
@@ -532,6 +562,11 @@
                 {
                     "id": "stan-functions",
                     "text": "Stan functions",
+                    "level": 2
+                },
+                {
+                    "id": "build-details",
+                    "text": "Build details",
                     "level": 2
                 }
             ],

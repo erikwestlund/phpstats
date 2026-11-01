@@ -1,4 +1,4 @@
-<p>Some workflows need the model’s log density itself: to check gradients, to evaluate the posterior at given parameter values, to move between the constrained and unconstrained scales, or to call the program’s own Stan functions. CmdStanPHP provides these through CmdStan’s executable methods and, without starting a process, through a compiled model library loaded with PHP’s FFI extension.</p>
+<p>Evaluate a model’s log density and gradients, move between the constrained and unconstrained scales, and call the program’s Stan functions. The executable’s methods run CmdStan processes. The in-process methods and Stan functions load a compiled model library with PHP’s FFI extension and start no process.</p>
 <section id="gradient-checks-and-batch-log-density" class="level2">
 <h2 class="anchored" data-anchor-id="gradient-checks-and-batch-log-density">Gradient checks and batch log density</h2>
 <p><code>diagnose()</code> compares the model’s gradients with finite differences at the initial values, which finds errors in user-written gradients and numerical problems. <code>logProb()</code> evaluates the log density and its gradient at given parameter values in one CmdStan process. Both use <code>examples/normal.stan</code>, a model with one parameter <code>mu</code>.</p>
@@ -9,14 +9,58 @@
 <h2 class="anchored" data-anchor-id="in-process-model-methods">In-process model methods</h2>
 <p>These methods need PHP’s FFI extension. <code>$fit</code> is a fit of the Bernoulli model from <a href="phpstats://cmdstanphp/docs/getting-started">Getting started</a>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb2-1" class="code-line" style="--indent: 0ch"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">$fit</span>-&gt;initModelMethods(seed<span class="ot">:</span> <span class="dv">1</span>)<span class="ot">;</span></span><span id="cb2-2" class="code-line" style="--indent: 0ch"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">$u</span> <span class="op">=</span> <span class="va">$fit</span>-&gt;unconstrainVariables([<span class="st">'theta'</span> =&gt; <span class="fl">0.3</span>])<span class="ot">;</span></span><span id="cb2-3" class="code-line" style="--indent: 0ch"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">$lp</span> <span class="op">=</span> <span class="va">$fit</span>-&gt;logProb(<span class="va">$u</span>)<span class="ot">;</span></span><span id="cb2-4" class="code-line" style="--indent: 0ch"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">$gradient</span> <span class="op">=</span> <span class="va">$fit</span>-&gt;gradLogProb(<span class="va">$u</span><span class="ot">,</span> jacobian<span class="ot">:</span> <span class="kw">false</span>)[<span class="st">'gradient'</span>]<span class="ot">;</span></span><span id="cb2-5" class="code-line" style="--indent: 0ch"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">$hessian</span> <span class="op">=</span> <span class="va">$fit</span>-&gt;hessian(<span class="va">$u</span>)[<span class="st">'hessian'</span>]<span class="ot">;</span></span><span id="cb2-6" class="code-line" style="--indent: 0ch"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="va">$values</span> <span class="op">=</span> <span class="va">$fit</span>-&gt;constrainVariables(<span class="va">$u</span>)<span class="ot">;</span></span><span id="cb2-7" class="code-line" style="--indent: 0ch"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="va">$unconstrained</span> <span class="op">=</span> <span class="va">$fit</span>-&gt;unconstrainDraws(format<span class="ot">:</span> <span class="st">'draws_matrix'</span>)<span class="ot">;</span></span></code></pre></div></div>
-<p>Model methods compile a shared library from the model’s generated C++ with the selected CmdStan’s compiler settings and load it with PHP FFI. The first build takes a few seconds; later calls reuse the library cached beside the Stan source. The library is bound to the fit’s data and to a seed for the generated-quantities RNG. Log densities drop constant terms, and <code>jacobian</code> defaults to true, as in CmdStanR. An imported CSV fit needs the model: <code>$fit-&gt;initModelMethods(model: $model)</code>. <code>initModelMethods(data: $data)</code> binds other data, for example after a saved fit’s data file is gone.</p>
-<p>Unconstrained values are flat lists in Stan’s order, and <code>unconstrainDraws()</code> labels them with Stan’s unconstrained names. Constrained values are keyed by variable name, with arrays and vectors as lists, matrices as lists of rows, complex numbers as <code>[re, im]</code> pairs, and tuples as lists of their elements, so <code>t.2</code> is <code>$values['t'][1]</code>. <code>unconstrainVariables()</code> accepts the same structure.</p>
+<ul>
+<li>Log densities drop constant terms, and <code>jacobian</code> defaults to true, as in CmdStanR.</li>
+<li>The methods are bound to the fit’s data and to a seed for the generated-quantities RNG. <code>initModelMethods(data: $data)</code> binds other data, for example after a saved fit’s data file is gone.</li>
+<li>An imported CSV fit needs the model: <code>$fit-&gt;initModelMethods(model: $model)</code>.</li>
+<li>The first call compiles a library, which takes a few seconds. Later calls reuse it.</li>
+</ul>
+<p>Unconstrained values are flat lists in Stan’s order, and <code>unconstrainDraws()</code> labels them with Stan’s unconstrained names. Constrained values are keyed by variable name, and <code>unconstrainVariables()</code> accepts the same structure:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Stan type</th>
+<th>PHP value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>real</code>, <code>int</code></td>
+<td>A number</td>
+</tr>
+<tr class="even">
+<td><code>vector</code>, <code>row_vector</code>, <code>array</code></td>
+<td>A list, nested for multidimensional arrays</td>
+</tr>
+<tr class="odd">
+<td><code>matrix</code></td>
+<td>A list of rows</td>
+</tr>
+<tr class="even">
+<td><code>complex</code></td>
+<td><code>[re, im]</code></td>
+</tr>
+<tr class="odd">
+<td><code>tuple</code></td>
+<td>A list of its elements, so <code>t.2</code> is <code>$values['t'][1]</code></td>
+</tr>
+</tbody>
+</table>
+<p>PHP indices are zero-based, so Stan’s <code>beta[1]</code> is <code>$values['beta'][0]</code>.</p>
 </section>
 <section id="stan-functions" class="level2">
 <h2 class="anchored" data-anchor-id="stan-functions">Stan functions</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode php code-with-copy"><code class="sourceCode php"><span id="cb3-1" class="code-line" style="--indent: 0ch"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">$functions</span> <span class="op">=</span> <span class="va">$model</span>-&gt;exposeFunctions()<span class="ot">;</span></span><span id="cb3-2" class="code-line" style="--indent: 0ch"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">$functions</span>-&gt;my_function(<span class="fl">1.5</span><span class="ot">,</span> [<span class="fl">1.0</span><span class="ot">,</span> <span class="fl">2.0</span>])<span class="ot">;</span></span><span id="cb3-3" class="code-line" style="--indent: 0ch"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="va">$functions</span>-&gt;call(<span class="st">'normal_draw_rng'</span><span class="ot">,</span> <span class="fl">0.0</span><span class="ot">,</span> <span class="fl">1.0</span><span class="ot">,</span> seed<span class="ot">:</span> <span class="dv">42</span>)<span class="ot">;</span></span></code></pre></div></div>
 <p><code>exposeFunctions()</code> compiles the model’s <code>functions</code> block. Arguments may be positional or named by their Stan names. Supported types are real, int, complex, vectors, matrices, arrays of these, and tuples. Functions ending in <code>_rng</code> take an optional <code>seed</code>. Density functions ending in <code>_lpdf</code> or <code>_lpmf</code> return the full density. Functions ending in <code>_lp</code> and overloaded functions cannot be called. <code>functions()</code> on the returned object lists each signature and whether it is supported.</p>
 <p>FFI is enabled for the CLI by default. Under PHP-FPM or another web SAPI, set <code>ffi.enable=true</code> or preload the library.</p>
+</section>
+<section id="build-details" class="level2">
+<h2 class="anchored" data-anchor-id="build-details">Build details</h2>
+<p>Model methods and exposed functions compile a shared library from the model’s generated C++ with the selected CmdStan’s compiler settings. The library is cached beside the Stan source, with a fingerprint in its file name.</p>
 
 
 </section>
