@@ -314,7 +314,7 @@
                         <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
                             {!! \App\Content\Libraries::mono($panel['note']) !!}
                             @if ($panel['dataset'])
-                                <br>Data: <code>{{ $panel['dataset'] }}</code> (<a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">source</a>).
+                                Data: <code>{{ $panel['dataset'] }}</code> (<a href="https://github.com/phpstats/datasets#{{ $panel['dataset'] }}" class="underline decoration-zinc-300 underline-offset-2 hover:text-zinc-700 dark:decoration-zinc-600 dark:hover:text-zinc-200">source</a>).
                             @endif
                         </p>
                         @if ($panel['link'])
