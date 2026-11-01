@@ -63,13 +63,13 @@ return [
      * not describe its workload, and an optional note. A workload whose record has not synced is left out.
      */
     'benchmarks' => [
-        ['package' => 'phit', 'id' => 'distributions-workload', 'label' => 'Distributions', 'names' => ['R' => 'R', 'SciPy' => 'SciPy (Python)'], 'note' => null],
+        ['package' => 'phit', 'id' => 'distributions-workload', 'label' => 'Distributions', 'names' => ['R' => 'R', 'SciPy' => 'SciPy (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
         ['package' => 'phpolars', 'id' => 'csv-pipeline', 'label' => 'CSV processing', 'task' => 'Keep the completed orders, then total them by region and month.', 'note' => null],
-        ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS', 'names' => ['R' => 'lm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => null],
-        ['package' => 'phit', 'id' => 'logistic-workload', 'label' => 'Logistic', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => null],
-        ['package' => 'phit', 'id' => 'probit-workload', 'label' => 'Probit', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => null],
-        ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Mixed Gaussian', 'names' => ['R' => 'lme4 (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => null],
-        ['package' => 'phit', 'id' => 'mixed-logistic-workload', 'label' => 'Mixed logistic', 'names' => ['R' => 'lme4 (R)', 'GPBoost' => 'GPBoost (Python)'], 'note' => null],
+        ['package' => 'phit', 'id' => 'ols-workload', 'label' => 'OLS', 'names' => ['R' => 'lm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
+        ['package' => 'phit', 'id' => 'logistic-workload', 'label' => 'Logistic', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
+        ['package' => 'phit', 'id' => 'probit-workload', 'label' => 'Probit', 'names' => ['R' => 'glm (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
+        ['package' => 'phit', 'id' => 'mixed-workload', 'label' => 'Mixed Gaussian', 'names' => ['R' => 'lme4 (R)', 'statsmodels' => 'statsmodels (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
+        ['package' => 'phit', 'id' => 'mixed-logistic-workload', 'label' => 'Mixed logistic', 'names' => ['R' => 'lme4 (R)', 'GPBoost' => 'GPBoost (Python)'], 'note' => 'Use phit-polyfill for ease of installation and the phit extension for performance.'],
         ['package' => 'cmdstanphp', 'id' => 'interfaces-workload', 'label' => 'Mixed Gaussian (Bayesian)', 'names' => ['CmdStanR' => 'CmdStanR (R)', 'CmdStanPy' => 'CmdStanPy (Python)'], 'note' => null],
     ],
 
