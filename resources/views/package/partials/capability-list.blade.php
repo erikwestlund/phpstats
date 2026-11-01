@@ -11,7 +11,7 @@
             {{ $list['heading'] }}
         @endif
     </h2>
-    <div class="prose prose-zinc prose-php mt-3 max-w-none break-words dark:prose-invert prose-li:my-1 prose-ul:mt-2">
+    <div class="prose prose-sm prose-zinc prose-php mt-3 max-w-none break-words dark:prose-invert prose-li:my-1 prose-ul:mt-2">
         @if ($list['lead'])
             <p class="mt-0">{!! \App\Content\Markdown::inline($list['lead']) !!}</p>
         @endif

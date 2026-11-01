@@ -128,9 +128,10 @@ class Package
 
     /**
      * The overview's capabilities from config/projects.php: lists side by
-     * side, then one full width, each with its heading's link (the docs
-     * nav's Functions and methods section, else the named docs page), its
-     * optional lead sentence, and its items as inline Markdown.
+     * side, then one full width, each with its heading's link (the named
+     * docs page, else the docs nav's Functions and methods section), its
+     * optional lead sentence, and its items as inline Markdown, with each
+     * function linked to its entry in the function reference.
      *
      * @return array{columns: list<array{heading: string, url: ?string, lead: ?string, items: list<string>}>, other: ?array{heading: string, url: ?string, lead: ?string, items: list<string>}}|null
      */
@@ -141,11 +142,19 @@ class Package
             return null;
         }
         $api = $this->apiReference()['url'] ?? null;
+        $functions = $this->functionUrls();
+        // A pattern such as stat_*() links to the page of the first function it matches.
+        $find = fn (string $name) => $functions[$name] ?? (str_contains($name, '*')
+            ? strstr(current(array_intersect_key($functions, array_flip(preg_grep('/^'.str_replace('\\*', '\\w+', preg_quote($name, '/')).'$/', array_keys($functions))))) ?: '#', '#', true) ?: null
+            : null);
+        $link = fn (string $item) => preg_replace_callback('/(?<!\[)`([A-Za-z_][\w*]*)\(([^`]*)\)`/', fn (array $m) => ($url = $find($m[1])) !== null
+            ? "[`{$m[1]}({$m[2]})`]({$url})"
+            : $m[0], $item);
         $list = fn (array $block) => [
             'heading' => (string) $block['heading'],
-            'url' => $api ?? (isset($block['docs']) && $this->docsPage($block['docs']) !== null ? $this->url('docs', ['path' => $block['docs']]) : null),
-            'lead' => $block['lead'] ?? null,
-            'items' => array_values($block['items'] ?? []),
+            'url' => isset($block['docs']) && $this->docsPage($block['docs']) !== null ? $this->url('docs', ['path' => $block['docs']]) : $api,
+            'lead' => isset($block['lead']) ? $link($block['lead']) : null,
+            'items' => array_map($link, array_values($block['items'] ?? [])),
         ];
 
         return [
@@ -391,6 +400,33 @@ class Package
         }
 
         return null;
+    }
+
+    /**
+     * The URL of each function's entry in the docs' Functions and methods
+     * section, keyed by function name, from the section ids of its pages.
+     *
+     * @return array<string, string>
+     */
+    public function functionUrls(): array
+    {
+        $urls = [];
+        foreach ($this->docsGroups() as $group => $items) {
+            if (! in_array(strtolower($group), ['functions and methods', 'functions', 'methods'], true)) {
+                continue;
+            }
+            foreach (array_column($items, 'path') as $path) {
+                $file = $this->path("docs/{$path}.html");
+                if (! is_file($file) || ! preg_match_all('/<section id="([A-Za-z_]\w*)"/', file_get_contents($file), $ids)) {
+                    continue;
+                }
+                foreach ($ids[1] as $id) {
+                    $urls[$id] ??= $this->url('docs', ['path' => $path === 'index' ? null : $path]).'#'.$id;
+                }
+            }
+        }
+
+        return $urls;
     }
 
     /** The group a docs page is in. */
