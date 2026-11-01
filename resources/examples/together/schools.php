@@ -10,11 +10,11 @@ $schools = scan_csv('schools.csv')
     ->collect();
 
 // ---
-use function Phit\fit_lmer;
+use function Phit\fit_mixed_gaussian;
 
 $data = $schools->toColumns();
 
-$fit = fit_lmer(
+$fit = fit_mixed_gaussian(
     'score ~ study_hours + (1 | school)',
     $data,
 );

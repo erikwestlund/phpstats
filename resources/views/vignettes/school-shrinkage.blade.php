@@ -13,27 +13,27 @@
 
         <h2 class="mt-8 text-sm font-medium uppercase tracking-wide text-zinc-500">Code</h2>
         <x-code-tabs class="mt-3">
-            <x-slot:chain>use function Phit\fit_lmer;
+            <x-slot:chain>use function Phit\fit_mixed_gaussian;
 
 $scores = DataFrame::fromQuery(StudentScore::query());
 
-$mixed = fit_lmer('{{ \App\Livewire\SchoolEffects::FORMULA }}', $scores, reml: true);
+$mixed = fit_mixed_gaussian('{{ \App\Livewire\SchoolEffects::FORMULA }}', $scores, reml: true);
 $noPooling = phplyr($scores)->lm('{{ \App\Livewire\SchoolEffects::NO_POOLING_FORMULA }}');
 
 $mixed['random'][0]['covariance'];  // school variance
 $mixed['random'][0]['effects'];     // one random intercept per school</x-slot:chain>
-            <x-slot:pipe>use function Phit\fit_lmer;
+            <x-slot:pipe>use function Phit\fit_mixed_gaussian;
 
 $scores = DataFrame::fromQuery(StudentScore::query());
 
-$mixed = fit_lmer('{{ \App\Livewire\SchoolEffects::FORMULA }}', $scores, reml: true);
+$mixed = fit_mixed_gaussian('{{ \App\Livewire\SchoolEffects::FORMULA }}', $scores, reml: true);
 $noPooling = $scores |> lm('{{ \App\Livewire\SchoolEffects::NO_POOLING_FORMULA }}');
 
 $mixed['random'][0]['covariance'];  // school variance
 $mixed['random'][0]['effects'];     // one random intercept per school</x-slot:pipe>
         </x-code-tabs>
         <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
-            Phit\fit_lmer() takes the phibble DataFrame directly. Its results are verified against R's lme4.
+            Phit\fit_mixed_gaussian() takes the phibble DataFrame directly. Its results are verified against R's lme4.
         </p>
     </article>
 

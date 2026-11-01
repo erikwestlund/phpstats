@@ -56,7 +56,7 @@ class LandingPageTest extends TestCase
         $steps = Example::steps('together/schools');
         $this->assertCount(3, $steps);
         $this->assertStringContainsString('scan_csv(', $steps[0]);
-        $this->assertStringContainsString('fit_lmer(', $steps[1]);
+        $this->assertStringContainsString('fit_mixed_gaussian(', $steps[1]);
         $this->assertStringContainsString('->embed()', $steps[2]);
         $this->assertStringContainsString('id="together"', $html);
 

@@ -222,7 +222,7 @@ return [
      */
     'vignettes' => [
         'school-shrinkage' => ['packages' => ['phit'], 'title' => 'School effects and shrinkage', 'summary' => 'A linear mixed model with random school intercepts, variance components, shrinkage, and what-if predictions.'],
-        'bayesian-schools' => ['packages' => ['cmdstanphp', 'phit'], 'title' => 'Bayesian school effects', 'summary' => 'The school effects model in Stan through CmdStanPHP, with posterior intervals next to Phit\\fit_lmer().'],
+        'bayesian-schools' => ['packages' => ['cmdstanphp', 'phit'], 'title' => 'Bayesian school effects', 'summary' => 'The school effects model in Stan through CmdStanPHP, with posterior intervals next to Phit\\fit_mixed_gaussian().'],
         'rent-dashboard' => ['packages' => ['phiz', 'phplyr', 'phit'], 'title' => 'Rent dashboard', 'summary' => 'A Livewire dashboard: filters, a phplyr summary, two phiz charts, a logistic model, and what-if predictions.'],
     ],
 

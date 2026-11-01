@@ -51,7 +51,7 @@ class VignettesTest extends TestCase
 
     public function test_school_effects_vignette_reports_variance_components(): void
     {
-        if (! function_exists('Phit\\fit_lmer')) {
+        if (! function_exists('Phit\\fit_mixed_gaussian')) {
             $this->markTestSkipped('phit is not loaded.');
         }
 
@@ -66,7 +66,7 @@ class VignettesTest extends TestCase
 
     public function test_school_intercepts_shrink_by_the_stated_share(): void
     {
-        if (! function_exists('Phit\\fit_lmer')) {
+        if (! function_exists('Phit\\fit_mixed_gaussian')) {
             $this->markTestSkipped('phit is not loaded.');
         }
 
@@ -98,7 +98,7 @@ class VignettesTest extends TestCase
 
     public function test_bayesian_vignette_compares_the_posterior_with_lmer(): void
     {
-        if (! function_exists('Phit\\fit_lmer')) {
+        if (! function_exists('Phit\\fit_mixed_gaussian')) {
             $this->markTestSkipped('phit is not loaded.');
         }
 
@@ -118,7 +118,7 @@ class VignettesTest extends TestCase
 
     public function test_rent_dashboard_reacts_to_its_filters(): void
     {
-        if (! function_exists('Phit\\fit_glm')) {
+        if (! function_exists('Phit\\fit_generalized_linear')) {
             $this->markTestSkipped('phit is not loaded.');
         }
 

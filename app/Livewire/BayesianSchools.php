@@ -9,14 +9,14 @@ use Phibble\DataFrame;
 use Phiz\Plot;
 
 use function Phiz\aes;
-use function Phit\fit_lmer;
+use function Phit\fit_mixed_gaussian;
 use function Phit\stat_mean;
 use function Phit\stat_quantile_array;
 use function Phit\stat_sd;
 
 /**
  * Vignette: the school random-intercept model fitted with Stan through
- * CmdStanPHP, compared with fit_lmer(). The draws come from a saved seeded
+ * CmdStanPHP, compared with fit_mixed_gaussian(). The draws come from a saved seeded
  * fit, so the page never runs CmdStan.
  */
 class BayesianSchools extends Component
@@ -27,7 +27,7 @@ class BayesianSchools extends Component
 
     public function render()
     {
-        $ready = function_exists('Phit\\fit_lmer') && SchoolPosterior::exists();
+        $ready = function_exists('Phit\\fit_mixed_gaussian') && SchoolPosterior::exists();
 
         return view('livewire.bayesian-schools', [
             'ready' => $ready,
@@ -44,7 +44,7 @@ class BayesianSchools extends Component
         $draws = $posterior['draws'];
         $schools = $posterior['meta']['schools'];
 
-        $lmer = fit_lmer(SchoolPosterior::FORMULA, DataFrame::fromQuery(StudentScore::query()->orderBy('id')));
+        $lmer = fit_mixed_gaussian(SchoolPosterior::FORMULA, DataFrame::fromQuery(StudentScore::query()->orderBy('id')));
         $random = $lmer['random'][0];
         $lmerIntercepts = [];
         foreach ($random['group_labels'] as $i => $school) {

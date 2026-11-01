@@ -69,7 +69,7 @@ class ScriptVignette extends Component
     public static function available(string $package): bool
     {
         return match ($package) {
-            'phit' => function_exists('Phit\\fit_lm'),
+            'phit' => function_exists('Phit\\fit_ols'),
             'phpolars', 'php_polars' => extension_loaded('php_polars'),
             'phibble' => class_exists('Phibble\\DataFrame'),
             // Vignette scripts may use the method chain, which phplyr added in 0.3.

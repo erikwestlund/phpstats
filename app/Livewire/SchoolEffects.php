@@ -8,7 +8,7 @@ use Phibble\DataFrame;
 use Phiz\Plot;
 
 use function Phplyr\lm;
-use function Phit\fit_lmer;
+use function Phit\fit_mixed_gaussian;
 use function Phit\predict;
 
 /**
@@ -32,20 +32,20 @@ class SchoolEffects extends Component
     public function render()
     {
         return view('livewire.school-effects', [
-            'extensionLoaded' => function_exists('Phit\\fit_lmer'),
+            'extensionLoaded' => function_exists('Phit\\fit_mixed_gaussian'),
             'fit' => $this->fit(),
         ]);
     }
 
     private function fit(): ?array
     {
-        if (! function_exists('Phit\\fit_lmer')) {
+        if (! function_exists('Phit\\fit_mixed_gaussian')) {
             return null;
         }
 
         $scores = DataFrame::fromQuery(StudentScore::query());
 
-        $mixed = fit_lmer(self::FORMULA, $scores, reml: $this->reml);
+        $mixed = fit_mixed_gaussian(self::FORMULA, $scores, reml: $this->reml);
         $noPooling = $scores |> lm(self::NO_POOLING_FORMULA);
 
         $random = $mixed['random'][0];

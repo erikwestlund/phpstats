@@ -2,7 +2,7 @@
 
 // ---
 use Phibble\DataFrame;
-use function Phit\fit_glmer;
+use function Phit\fit_mixed_logistic;
 
 $data = 'https://raw.githubusercontent.com/phpstats/datasets/main/csv';
 $cbpp = DataFrame::fromCsv(
@@ -10,7 +10,7 @@ $cbpp = DataFrame::fromCsv(
     types: ['period' => 'f'],
 );
 
-$fit = fit_glmer(
+$fit = fit_mixed_logistic(
     'cbind(incidence, size - incidence) ~ period + (1 | herd)',
     $cbpp,
 );
