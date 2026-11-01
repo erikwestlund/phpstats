@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\DB;
 use function Phpolars\{col, len, read_database};
 
 $orders = read_database(
-    'select channel, total, returned from orders',
+    'select channel, cast(total as double precision) as total
+     from orders where not returned',
     DB::connection()->getPdo(),
 );
 
 $byChannel = $orders
-    ->filter(col('returned')->eq(0))
     ->groupBy('channel')
     ->agg(
         len()->alias('orders'),
