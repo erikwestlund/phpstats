@@ -8,7 +8,7 @@
     landing.performance renders it once per workload, or once per case under
     subtabs when a record measures the workload more than one way.
 --}}
-@props(['w', 'record', 'rows', 'code', 'id', 'time', 'memory', 'dedent'])
+@props(['w', 'record', 'rows', 'code', 'id', 'time', 'memory', 'dedent', 'title'])
 @php
     $languages = $record['languages'] ?? [];
     $env = $record['environment'];
@@ -53,6 +53,7 @@
     </div>
 
     <div class="min-w-0">
+        <h3 class="mb-3 text-base font-semibold text-zinc-950 dark:text-white">{{ $title }}</h3>
         <div class="space-y-6" aria-hidden="true">
             <x-phiz :plot="$timeChart" class="min-w-0 overflow-hidden" />
             <x-phiz :plot="$memoryChart" class="min-w-0 overflow-hidden" />

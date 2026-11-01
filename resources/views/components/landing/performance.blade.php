@@ -61,7 +61,6 @@
                         $data = $record['dataset'] ?? null;
                         $caption = $record['workload'] ?? ($data ? number_format($data['rows']).' rows, '.number_format($data['bytes'] / 1e9, 2).' GB. '.($w['task'] ?? '') : $record['title']);
                     @endphp
-                    <p class="text-center text-[0.9375rem] text-zinc-600 dark:text-zinc-400">{{ trim($caption) }}</p>
 
                     @php
                         // A record may measure the workload more than one way, as cases
@@ -83,12 +82,12 @@
                             @foreach ($cases as $case => $caseRows)
                                 @php $cid = $w['id'].'-'.\Illuminate\Support\Str::slug($case); @endphp
                                 <div role="tabpanel" id="case-{{ $cid }}" aria-labelledby="case-tab-{{ $cid }}" x-show="c === @js($case)" @unless ($case === $firstCase) x-cloak @endunless>
-                                    <x-landing.benchmark-case :w="$w" :record="$record" :rows="$caseRows" :code="$nested ? ($code[$case] ?? []) : $code" :id="$cid" :time="$time" :memory="$memory" :dedent="$dedent" />
+                                    <x-landing.benchmark-case :w="$w" :record="$record" :rows="$caseRows" :code="$nested ? ($code[$case] ?? []) : $code" :id="$cid" :time="$time" :memory="$memory" :dedent="$dedent" :title="trim($caption)" />
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <x-landing.benchmark-case :w="$w" :record="$record" :rows="$rows" :code="$nested ? reset($code) : $code" :id="$w['id']" :time="$time" :memory="$memory" :dedent="$dedent" />
+                        <x-landing.benchmark-case :w="$w" :record="$record" :rows="$rows" :code="$nested ? reset($code) : $code" :id="$w['id']" :time="$time" :memory="$memory" :dedent="$dedent" :title="trim($caption)" />
                     @endif
 
 
