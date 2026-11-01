@@ -17,9 +17,15 @@
     $languages = $record['languages'] ?? [];
     $env = $record['environment'];
     $name = fn (array $row) => $w['names'][$row['implementation']] ?? $row['implementation'];
-    $footprint = ($record['memory_measure'] ?? null) === 'peak memory footprint';
+    $measure = $record['memory_measure'] ?? null;
+    $footprint = in_array($measure, ['peak memory footprint', 'peak anonymous memory'], true);
+    // A CPU with an entry in config/phpstats.php cpus is named by its cores, as in "2 AMD Zen 5 cores".
+    $cores = config('phpstats.cpus')[$env['cpu']] ?? null;
+    $machine = $cores === null
+        ? "{$env['cpu']} ({$env['cores']} cores, {$env['memory_gb']} GB), {$env['os']}"
+        : "{$env['cores']} {$cores} cores, {$env['memory_gb']} GB RAM, ".strtok($env['os'], ',');
     $timeChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['value'] / 1000, 'shown' => $time($r['value'])], $rows), 'Elapsed time (s)');
-    $memoryChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['peak_memory_mib'], 'shown' => $memory($r['peak_memory_mib'])], $rows), $footprint ? 'Peak memory footprint (MiB)' : 'Peak resident memory (MiB)');
+    $memoryChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['peak_memory_mib'], 'shown' => $memory($r['peak_memory_mib'])], $rows), $footprint ? 'Peak memory (MiB)' : 'Peak resident memory (MiB)');
     $first = array_key_first($code);
 @endphp
 <div class="grid gap-8 lg:grid-cols-2 lg:items-start lg:gap-12">
@@ -44,8 +50,10 @@
     @endif
         <div class="mt-4 space-y-2 text-xs leading-snug text-zinc-500 dark:text-zinc-400">
             <p>Medians of {{ $env['repeats'] }} runs, each in a fresh process.</p>
-            <p>{{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.</p>
-            @if ($footprint)
+            <p>{{ $machine }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.</p>
+            @if ($measure === 'peak anonymous memory')
+                <p>Memory is the peak anonymous memory: the most memory the process allocated at once, including the runtime, the data, and native allocations, but not file pages it maps.</p>
+            @elseif ($footprint)
                 <p>Memory is the peak memory footprint: the most memory the process held at once, including the runtime, the data, and native allocations, but not file pages the system can drop.</p>
             @else
                 <p>Memory is the peak resident set size, including file pages the process mapped.</p>

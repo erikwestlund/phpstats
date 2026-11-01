@@ -56,6 +56,32 @@ return [
     ],
 
     /*
+     * Pages in a package's docs that collect more examples, such as a
+     * gallery, listed on /examples after that package's curated examples. A
+     * page that has not synced is left out.
+     */
+    'example_collections' => [
+        'phplyr' => [
+            ['path' => 'port-r-script', 'title' => 'Port an R script', 'description' => 'An R analysis that cleans, reshapes, summarizes, and fits models, rewritten with phplyr and phit.'],
+            ['path' => 'gallery', 'title' => 'Analysis gallery', 'description' => 'Five short analyses that combine phplyr pipelines with model fits.'],
+        ],
+        'phiz' => [
+            ['path' => 'gallery', 'title' => 'Chart gallery', 'description' => 'Charts by type, including histograms, boxplots, heatmaps, facets, themes, tooltips, and linked brushing.'],
+        ],
+        'cmdstanphp' => [
+            ['path' => 'examples', 'title' => 'Bundled Stan models', 'description' => 'The example models CmdStanPHP ships from CmdStanR, fit with cmdstanr_example().'],
+        ],
+    ],
+
+    /*
+     * Benchmark machines' CPUs as the records name them, each with the name
+     * of its cores, so the landing page says "2 AMD Zen 5 cores".
+     */
+    'cpus' => [
+        'AMD Ryzen 9 9955HX 16-Core Processor' => 'AMD Zen 5',
+    ],
+
+    /*
      * The landing page's benchmark workloads, in selector order: the package
      * whose synced benchmark record holds the saved results, the record's
      * id, the selector label, display names for the record's

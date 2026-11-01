@@ -78,6 +78,17 @@ class RootPagesTest extends TestCase
         }
         $this->assertGreaterThanOrEqual(3, $owners);
 
+        // Then each docs page that collects more examples, such as a gallery, when it has synced.
+        foreach (config('phpstats.example_collections') as $key => $pages) {
+            $package = Package::find($key);
+            foreach ($pages as $page) {
+                if (in_array($page['path'], $package->docsPaths(), true)) {
+                    $this->assertSame(1, substr_count($html, 'href="'.e($package->url('docs', ['path' => $page['path']])).'"'), "{$key}/{$page['path']}");
+                    $response->assertSee($page['title'])->assertSee($page['description']);
+                }
+            }
+        }
+
         // No live badges, package chips, or notes on how the site runs examples.
         $response->assertDontSee('>Live<', false)->assertDontSee('runs on the server');
     }
