@@ -64,53 +64,34 @@
                     <p class="text-center text-[0.9375rem] text-zinc-600 dark:text-zinc-400">{{ trim($caption) }}</p>
 
                     @php
-                        $name = fn (array $row) => $w['names'][$row['implementation']] ?? $row['implementation'];
-                        $timeChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['value'] / 1000, 'shown' => $time($r['value'])], $rows), 'Elapsed time (s)');
-                        $memoryChart = \App\Content\BenchmarkChart::plot(array_map(fn ($r) => ['name' => $name($r), 'value' => $r['peak_memory_mib'], 'shown' => $memory($r['peak_memory_mib'])], $rows), ($record['memory_measure'] ?? null) === 'peak memory footprint' ? 'Peak memory footprint (MiB)' : 'Peak resident memory (MiB)');
+                        // A record may measure the workload more than one way, as cases
+                        // under subtabs; its code is then keyed by case as well.
+                        $cases = collect($rows)->groupBy('case')->map(fn ($r) => $r->values()->all())->all();
+                        $nested = $code !== [] && is_array(reset($code));
                     @endphp
-                    <div class="mx-auto mt-6 grid max-w-5xl gap-8 md:grid-cols-2" aria-hidden="true">
-                        <x-phiz :plot="$timeChart" class="min-w-0 overflow-hidden" />
-                        <x-phiz :plot="$memoryChart" class="min-w-0 overflow-hidden" />
-                    </div>
-                    <p class="mx-auto mt-3 max-w-4xl text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                        @if (($record['memory_measure'] ?? null) === 'peak memory footprint')
-                            Memory is each process's peak memory footprint: the most memory it held at once, as macOS reports it. That includes the language runtime, the data, and native allocations such as Polars' and phit's, and leaves out file pages the system can drop.
-                        @else
-                            Memory is each process's peak resident set size: the most physical memory it used at once, including file pages it mapped.
-                        @endif
-                    </p>
-                    <div class="sr-only"><table>
-                        <caption>{{ $w['label'] }}: median elapsed time and peak memory of {{ $env['repeats'] }} runs</caption>
-                        <thead><tr><th scope="col">Implementation</th><th scope="col">Elapsed time</th><th scope="col">Memory</th></tr></thead>
-                        <tbody>
-                            @foreach ($rows as $row)
-                                <tr><th scope="row">{{ $name($row) }}</th><td>{{ $time($row['value']) }}</td><td>{{ $memory($row['peak_memory_mib']) }}</td></tr>
-                            @endforeach
-                        </tbody>
-                    </table></div>
-                    @if ($w['note'])
-                        <p class="mx-auto mt-4 max-w-4xl text-[0.9375rem] leading-relaxed text-zinc-700 dark:text-zinc-300">{!! \App\Content\Libraries::mono(e($w['note'])) !!}</p>
-                    @endif
-
-                    @if ($code !== [])
-                        @php $first = array_key_first($code); @endphp
-                        <div x-data="{ impl: @js($first) }" class="code-ink mx-auto mt-8 max-w-4xl overflow-hidden rounded-xl shadow-lg shadow-php-950/10 ring-1 ring-black/5 dark:ring-(--color-ink-line)">
-                            <div role="tablist" aria-label="{{ $w['label'] }} code" class="flex flex-wrap gap-1 border-b border-white/5 px-3 py-2 text-xs">
-                                @foreach ($code as $impl => $source)
-                                    @php $slug = $w['id'].'-'.\Illuminate\Support\Str::slug($impl); @endphp
-                                    <button type="button" role="tab" id="code-tab-{{ $slug }}" aria-controls="code-{{ $slug }}"
-                                            x-on:click="impl = @js($impl)" x-bind:aria-selected="(impl === @js($impl)).toString()" aria-selected="{{ $impl === $first ? 'true' : 'false' }}"
-                                            class="rounded-md px-2.5 py-1 text-zinc-400 transition hover:text-white aria-selected:bg-php-500/30 aria-selected:text-white">{!! \App\Content\Libraries::mono(e($w['names'][$impl] ?? $impl)) !!}</button>
+                    @if (count($cases) > 1)
+                        @php $firstCase = array_key_first($cases); @endphp
+                        <div x-data="{ c: @js($firstCase) }">
+                            <div role="tablist" aria-label="{{ $w['label'] }} cases" class="mx-auto mt-5 flex w-fit gap-1 rounded-lg border border-zinc-200 p-0.5 text-sm dark:border-white/10">
+                                @foreach (array_keys($cases) as $case)
+                                    @php $cid = $w['id'].'-'.\Illuminate\Support\Str::slug($case); @endphp
+                                    <button type="button" role="tab" id="case-tab-{{ $cid }}" aria-controls="case-{{ $cid }}"
+                                            x-on:click="c = @js($case)" x-bind:aria-selected="(c === @js($case)).toString()" aria-selected="{{ $case === $firstCase ? 'true' : 'false' }}"
+                                            class="rounded-md px-3 py-1 font-medium text-zinc-600 transition hover:text-zinc-900 aria-selected:bg-zinc-100 aria-selected:text-zinc-900 dark:text-zinc-400 dark:hover:text-white dark:aria-selected:bg-white/10 dark:aria-selected:text-white">{{ $case }}</button>
                                 @endforeach
                             </div>
-                            @foreach ($code as $impl => $source)
-                                @php $slug = $w['id'].'-'.\Illuminate\Support\Str::slug($impl); @endphp
-                                <div role="tabpanel" id="code-{{ $slug }}" aria-labelledby="code-tab-{{ $slug }}" x-show="impl === @js($impl)" @unless ($impl === $first) x-cloak @endunless>
-                                    <pre class="overflow-x-auto p-4 font-mono text-[0.8125rem] leading-6"><code>{!! \App\Content\Code::highlight($dedent($source), $languages[$impl] ?? 'php') !!}</code></pre>
+                            @foreach ($cases as $case => $caseRows)
+                                @php $cid = $w['id'].'-'.\Illuminate\Support\Str::slug($case); @endphp
+                                <div role="tabpanel" id="case-{{ $cid }}" aria-labelledby="case-tab-{{ $cid }}" x-show="c === @js($case)" @unless ($case === $firstCase) x-cloak @endunless>
+                                    <x-landing.benchmark-case :w="$w" :record="$record" :rows="$caseRows" :code="$nested ? ($code[$case] ?? []) : $code" :id="$cid" :time="$time" :memory="$memory" :dedent="$dedent" />
                                 </div>
                             @endforeach
                         </div>
+                    @else
+                        <x-landing.benchmark-case :w="$w" :record="$record" :rows="$rows" :code="$nested ? reset($code) : $code" :id="$w['id']" :time="$time" :memory="$memory" :dedent="$dedent" />
                     @endif
+
+
 
                     <p class="mx-auto mt-4 max-w-4xl text-sm leading-6 text-zinc-500">
                         Medians of {{ $env['repeats'] }} runs, each in a fresh process, on {{ $env['cpu'] }} ({{ $env['cores'] }} cores, {{ $env['memory_gb'] }} GB), {{ $env['os'] }}, PHP {{ $env['php'] }}, recorded {{ $env['date'] }}.
