@@ -65,7 +65,6 @@
     $panels = [
         'distributions' => [
             'title' => 'Normal and gamma probabilities and quantiles',
-            'model' => 'Distribution and quantile functions; gamma with shape 2 and scale 3',
             'dataset' => null,
             'record' => 'Distributions',
             'label' => 'Distributions',
@@ -87,8 +86,7 @@
             },
         ],
         'csv' => [
-            'title' => 'Weather at New York City airports in 2013',
-            'model' => 'A CSV file of 26,115 hourly readings, summarized by airport, skipping missing values',
+            'title' => 'CSV processing of hourly weather at New York City airports',
             'dataset' => 'weather',
             'record' => 'CSV processing',
             'label' => 'CSV processing',
@@ -112,8 +110,7 @@
             },
         ],
         'ols' => [
-            'title' => 'Fuel economy of 32 cars',
-            'model' => '<code>mpg ~ wt + hp</code>, ordinary least squares',
+            'title' => 'Linear regression of fuel economy for 32 cars',
             'dataset' => 'mtcars',
             'record' => 'OLS regression',
             'label' => 'OLS',
@@ -126,8 +123,7 @@
             'rows' => $model([['Residual SD', 'sigma', 'sigma'], ['R²', 'r_squared', 'r_squared']]),
         ],
         'logistic' => [
-            'title' => 'Labor force participation of 753 married women',
-            'model' => '<code>lfp ~ k5 + k618 + age + wc + hc + lwg + inc</code>, logistic regression',
+            'title' => 'Logistic regression of labor force participation for 753 married women',
             'dataset' => 'mroz',
             'record' => 'Logistic regression',
             'label' => 'Logistic',
@@ -140,8 +136,7 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'probit' => [
-            'title' => 'Labor force participation of 753 married women',
-            'model' => '<code>lfp ~ k5 + k618 + age + wc + hc + lwg + inc</code>, probit regression',
+            'title' => 'Probit regression of labor force participation for 753 married women',
             'dataset' => 'mroz',
             'record' => 'Probit regression',
             'label' => 'Probit',
@@ -154,8 +149,7 @@
             'rows' => $model([['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-gaussian' => [
-            'title' => 'Reaction times under sleep deprivation',
-            'model' => '<code>Reaction ~ Days + (1 | Subject)</code>, linear mixed model fitted by REML',
+            'title' => 'Linear mixed model of reaction times under sleep deprivation',
             'dataset' => 'sleepstudy',
             'record' => 'Gaussian mixed model',
             'label' => 'Mixed Gaussian',
@@ -168,8 +162,7 @@
             'rows' => $model([['Subject variance', $groupVariance, 'group_variance'], ['Residual variance', 'residual_variance', 'residual_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'mixed-logistic' => [
-            'title' => 'Pleuropneumonia in 15 cattle herds',
-            'model' => '<code>cbind(incidence, size - incidence) ~ period + (1 | herd)</code>, mixed logistic regression with the Laplace approximation',
+            'title' => 'Mixed logistic regression of pleuropneumonia in 15 cattle herds',
             'dataset' => 'cbpp',
             'record' => 'Mixed logistic model',
             'label' => 'Mixed logistic',
@@ -182,8 +175,7 @@
             'rows' => $model([['Herd variance', $groupVariance, 'group_variance'], ['Log-likelihood', 'log_likelihood', 'log_likelihood']]),
         ],
         'bayesian' => [
-            'title' => 'Coaching effects in eight schools',
-            'model' => '<code>y ~ normal(mu + tau * theta, sigma)</code>, a hierarchical model sampled by NUTS in four chains',
+            'title' => 'Bayesian hierarchical model of coaching effects in eight schools',
             'dataset' => 'schools',
             'record' => 'Bayesian interfaces',
             'label' => 'Mixed Gaussian (Bayesian)',
@@ -308,8 +300,7 @@
                     @endif
 
                     <div class="min-w-0">
-                        <h3 class="text-base font-semibold text-zinc-950 dark:text-white">{{ $panel['title'] }}</h3>
-                        <p class="mb-3 mt-0.5 text-sm text-zinc-600 dark:text-zinc-400">{!! $panel['model'] !!}</p>
+                        <h3 class="mb-2 text-base font-semibold text-zinc-950 dark:text-white">{{ $panel['title'] }}</h3>
                         {!! $panel['table'] !!}
                         <p class="mt-3 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
                             {!! \App\Content\Libraries::mono($panel['note']) !!}
