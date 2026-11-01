@@ -225,6 +225,14 @@ pre,
 .docs-content .vega-embed {
     max-width: 100%;
 }
+/* Inline math cannot wrap, and a notebook prints matrices as inline
+   \displaystyle math, so a paragraph that holds math scrolls inside its own
+   box when the math is wider than the column. The padding keeps tall
+   brackets clear of the scroll box's edge. */
+.docs-content p:has(> .math.inline) {
+    overflow-x: auto;
+    padding-block: 0.125em;
+}
 .docs-content .vega-embed svg {
     max-width: 100%;
     height: auto;
@@ -294,6 +302,7 @@ pre,
 }
 .docs-content .panel-tabset .nav-tabs {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.25rem;
     list-style: none;
     padding: 0;
