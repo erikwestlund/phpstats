@@ -70,13 +70,11 @@ class SitemapController extends Controller
                 }
             }
 
-            // The sections and their topic pages, where there are records:
-            // a section with none only says so.
+            // The sections, where there are records, and each verification
+            // topic's page; benchmark workloads are anchors on one page. A
+            // section with no records only says so.
             if ($package->benchmarks() !== []) {
                 $urls[] = $package->url('benchmarks');
-                foreach ($package->benchmarks() as $record) {
-                    $urls[] = $package->url('benchmark', ['id' => $record['id']]);
-                }
             }
 
             if ($package->verifications() !== []) {

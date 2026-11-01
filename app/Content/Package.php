@@ -424,6 +424,17 @@ class Package
         return Arr::first($this->benchmarks(), fn (array $record) => $record['id'] === $id);
     }
 
+    /**
+     * The address of a benchmark workload: its anchor on the one Benchmarks
+     * page. A renamed or merged record's old id gives its replacement's.
+     */
+    public function benchmarkUrl(string $id): string
+    {
+        $id = $this->benchmark($id) === null ? ($this->renamedTopics('benchmarks')[$id] ?? $id) : $id;
+
+        return $this->url('benchmarks').'#'.$id;
+    }
+
     /** The verification record with this id. */
     public function verificationTopic(string $id): ?array
     {
@@ -517,7 +528,7 @@ class Package
             $target = self::find($key);
             $found = $target === null ? null : ($route === 'benchmark' ? $target->benchmark($id) : $target->verificationTopic($id));
             if ($found !== null) {
-                $urls[$fragment] = $target->url($route, ['id' => $id]);
+                $urls[$fragment] = $route === 'benchmark' ? $target->benchmarkUrl($id) : $target->url($route, ['id' => $id]);
             }
         }
 
@@ -535,7 +546,7 @@ class Package
         return match (true) {
             $path === 'verification' || $path === 'verifications' || $path === 'verifications/index' => $this->url('verification'),
             $path === 'benchmarks' || $path === 'benchmarks/index' => $this->url('benchmarks'),
-            (bool) preg_match('#^benchmarks/([a-z0-9-]+)$#', $path, $m) => $this->benchmark($m[1]) ? $this->url('benchmark', ['id' => $m[1]]) : null,
+            (bool) preg_match('#^benchmarks/([a-z0-9-]+)$#', $path, $m) => $this->benchmark($m[1]) ? $this->benchmarkUrl($m[1]) : null,
             (bool) preg_match('#^(?:verifications/([a-z0-9-]+)|notebooks/([a-z0-9-]+?)(?:-verification)?)$#', $path, $m) => ($id = ($m[1] ?? '') ?: ($m[2] ?? '')) && $this->verificationTopic($id) ? $this->url('verification.topic', ['id' => $id]) : null,
             default => null,
         };

@@ -70,7 +70,7 @@ class LandingPageTest extends TestCase
 
         // Each benchmark workload links its topic page, and its memory chart
         // is labeled by the record's own metric.
-        $this->assertStringContainsString('href="'.e($phit->url('benchmark', ['id' => 'ols-workload'])).'"', $html);
+        $this->assertStringContainsString('href="'.e($phit->benchmarkUrl('ols-workload')).'"', $html);
         $this->assertStringContainsString('Peak anonymous memory (MiB)', $html);
 
         // The benchmark appears only with phpolars' saved record.

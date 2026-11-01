@@ -459,8 +459,9 @@ class Results
     }
 
     /**
-     * The sidebar of a Benchmarks or Verification page: the section's
-     * summary page, then one link per record under its group, with the
+     * The sidebar of a Benchmarks or Verification page. Benchmarks: one
+     * anchor per workload on the one page, under its group. Verification:
+     * the summary page, then one link per topic under its group, with the
      * current page's own sections under it.
      *
      * @param  'benchmarks'|'verification'  $section
@@ -469,19 +470,29 @@ class Results
      */
     public static function sidebar(Package $package, string $section, ?string $current, array $children = []): array
     {
-        $records = $section === 'benchmarks' ? $package->benchmarks() : $package->verifications();
-        $route = $section === 'benchmarks' ? 'benchmark' : 'verification.topic';
+        // Benchmarks are one page, so their entries are anchors on it.
+        if ($section === 'benchmarks') {
+            $groups = [];
+            foreach ($package->benchmarks() as $record) {
+                $group = is_string($record['group'] ?? null) ? $record['group'] : '';
+                $groups[$group] ??= ['title' => $group === '' ? null : $group, 'items' => []];
+                $groups[$group]['items'][] = ['id' => $record['id'], 'label' => self::label($record)];
+            }
+
+            return array_values($groups);
+        }
+
         $groups = [null => ['title' => null, 'items' => [[
             'href' => $package->url($section),
             'label' => 'Summary',
             'current' => $current === null,
             'children' => $current === null ? $children : [],
         ]]]];
-        foreach ($records as $record) {
+        foreach ($package->verifications() as $record) {
             $group = is_string($record['group'] ?? null) ? $record['group'] : '';
             $groups[$group] ??= ['title' => $group === '' ? null : $group, 'items' => []];
             $groups[$group]['items'][] = [
-                'href' => $package->url($route, ['id' => $record['id']]),
+                'href' => $package->url('verification.topic', ['id' => $record['id']]),
                 'label' => self::label($record),
                 'current' => $current === $record['id'],
                 'children' => $current === $record['id'] ? $children : [],

@@ -92,7 +92,7 @@ class SeoTest extends TestCase
         // records is left out.
         $this->assertContains('http://phit.phpstats.test/benchmarks', $urls);
         $this->assertContains('http://phit.phpstats.test/verification', $urls);
-        $this->assertContains('http://phit.phpstats.test/benchmarks/ols-workload', $urls);
+        $this->assertNotContains('http://phit.phpstats.test/benchmarks/ols-workload', $urls);
         $this->assertContains('http://phit.phpstats.test/verification/ols', $urls);
         foreach (Package::all() as $key => $package) {
             $this->assertSame($package->benchmarks() !== [], in_array("http://{$key}.phpstats.test/benchmarks", $urls, true), $key);

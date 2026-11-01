@@ -450,3 +450,36 @@ pre.code-wrap {
     --jp-content-font-color3: var(--color-zinc-500);
     --jp-border-color2: color-mix(in oklab, white 12%, transparent);
 }
+
+/* A benchmark workload's tabs (package.partials.benchmark-workload). With
+   scripts, only the Results panel shows until Alpine takes over, and each
+   panel's own heading is for screen readers; without scripts, and in print,
+   the three panels follow one another under their headings. */
+html.js .evidence-tabs:not(.tabs-ready) [role="tabpanel"]:not([id$="-results"]) {
+    display: none;
+}
+html.js .evidence-tabs .tab-heading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+@media print {
+    .evidence-tabs [role="tabpanel"] {
+        display: block !important;
+    }
+    .evidence-tabs [role="tablist"] {
+        display: none !important;
+    }
+    html.js .evidence-tabs .tab-heading {
+        position: static;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip-path: none;
+        white-space: normal;
+        margin-top: 1.5rem;
+    }
+}

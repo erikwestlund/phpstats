@@ -76,7 +76,7 @@ class PackagePagesTest extends TestCase
 
         // A topic page marks its section as current.
         $phit = Package::find('phit');
-        $html = $this->get($phit->url('benchmark', ['id' => 'ols-workload']))->assertOk()->getContent();
+        $html = $this->get($phit->url('benchmarks'))->assertOk()->getContent();
         $this->assertMatchesRegularExpression('#href="'.preg_quote(e($phit->url('benchmarks')), '#').'"\s+aria-current="page"#', $html);
     }
 
@@ -347,7 +347,7 @@ class PackagePagesTest extends TestCase
     public function test_benchmark_methods_come_from_each_record(): void
     {
         $cmdstan = Package::find('cmdstanphp');
-        $text = html_entity_decode(strip_tags($this->get($cmdstan->url('benchmark', ['id' => 'interfaces-workload']))->assertOk()->getContent()));
+        $text = html_entity_decode(strip_tags($this->get($cmdstan->url('benchmarks'))->assertOk()->getContent()));
         foreach (['Timing boundaries', 'Median over the timed runs', '7 timed runs', '2 AMD Zen 5 cores', 'Memory metric', 'Raw record', 'site/benchmarks/interfaces-workload.json'] as $fact) {
             $this->assertStringContainsString($fact, $text);
         }
@@ -359,8 +359,8 @@ class PackagePagesTest extends TestCase
             'unit' => 'ms',
             'environment' => ['repeats' => 5],
             'rows' => [['case' => 'One chart', 'implementation' => 'phiz', 'value' => 12.5]],
-        ]);
-        $text = html_entity_decode(strip_tags($this->get(Package::find('phiz')->url('benchmark', ['id' => 'bare']))->assertOk()->getContent()));
+        ], only: true);
+        $text = html_entity_decode(strip_tags($this->get(Package::find('phiz')->url('benchmarks'))->assertOk()->getContent()));
         $this->assertStringContainsString('5 timed runs', $text);
         $this->assertStringNotContainsString('Median', $text);
         $this->assertStringContainsString('Memory not measured.', $text);
@@ -368,7 +368,7 @@ class PackagePagesTest extends TestCase
 
     public function test_each_memory_metric_is_labeled_by_its_own_name(): void
     {
-        $html = $this->get(Package::find('phpolars')->url('benchmark', ['id' => 'csv-pipeline']))->assertOk()->getContent();
+        $html = $this->get(Package::find('phpolars')->url('benchmarks'))->assertOk()->getContent();
         $this->assertStringContainsString('>Peak anonymous memory</th>', $html);
         $this->assertStringContainsString('>Peak resident set size</th>', $html);
         $this->assertStringContainsString('Peak anonymous memory (MiB)', $html);
@@ -387,8 +387,8 @@ class PackagePagesTest extends TestCase
                 ['case' => 'One chart', 'implementation' => 'phiz', 'value' => 12.5, 'peak_memory_mib' => 30.0],
                 ['case' => 'One chart', 'implementation' => 'ggplot2', 'value' => null, 'peak_memory_mib' => null],
             ],
-        ]);
-        $html = $this->get(Package::find('phiz')->url('benchmark', ['id' => 'export']))->assertOk()->getContent();
+        ], only: true);
+        $html = $this->get(Package::find('phiz')->url('benchmarks'))->assertOk()->getContent();
         $this->assertSame(2, substr_count($html, 'not measured'));
         // The charts hold phiz's bar only, and no zero for ggplot2.
         preg_match_all('/data-phiz="([^"]*)"/', $html, $charts);
@@ -448,18 +448,52 @@ class PackagePagesTest extends TestCase
         $this->assertDoesNotMatchRegularExpression('/\(values\)/', $text);
     }
 
+    public function test_benchmarks_are_one_page_with_tabs_per_workload(): void
+    {
+        $phit = Package::find('phit');
+        $html = $this->get($phit->url('benchmarks'))->assertOk()->getContent();
+        foreach ($phit->benchmarks() as $record) {
+            $id = $record['id'];
+            // A section per workload, an anchor in the sidebar, and three tabs whose panels have deep-linkable ids.
+            $this->assertStringContainsString('<section id="'.$id.'"', $html);
+            $this->assertStringContainsString('data-toc="'.$id.'"', $html);
+            foreach (['results', 'methods', 'reproduction'] as $tab) {
+                $this->assertStringContainsString('id="'.$id.'-'.$tab.'" aria-labelledby="'.$id.'-tab-'.$tab.'"', $html);
+            }
+        }
+        $this->assertStringContainsString('role="tablist"', $html);
+        // The panels keep their headings for screen readers, print, and no-script reading.
+        $this->assertSame(3 * count($phit->benchmarks()), substr_count($html, 'tab-heading'));
+        // Workloads follow site.json's order, under their groups.
+        $positions = array_map(fn ($r) => strpos($html, '<section id="'.$r['id'].'"'), $phit->benchmarks());
+        $this->assertSame($positions, collect($positions)->sort()->values()->all());
+        $this->get('http://phit.phpstats.test/benchmarks/ols-workload')->assertStatus(301)->assertRedirect($phit->url('benchmarks').'#ols-workload');
+        $this->get('http://phit.phpstats.test/benchmarks/not-a-workload')->assertNotFound();
+    }
+
+    public function test_package_implementations_are_colored_as_phpstats(): void
+    {
+        foreach (['DataFrame', 'SqlTable', 'PolarsTable', 'phit reader', 'PHP reader', 'juphyter kernel', 'PHP engine alone', 'phiz + vl-convert', 'SQLite', 'CmdStanPHP', 'phpolars, 2 threads (default)', 'phibble (PHP reader)', 'Rust core'] as $name) {
+            $this->assertSame('PHPstats', \App\Content\BenchmarkChart::kind($name), $name);
+        }
+        foreach (['R', 'SciPy', 'statsmodels', 'GPBoost', 'dplyr', 'py-polars', 'python3 ipykernel', 'CmdStanR', 'CmdStanPy', 'CmdStan alone', 'plain PHP arrays', 'plain PHP', 'lm (R)', 'pandas (Python)', 'tibble (R)'] as $name) {
+            $this->assertSame('Other', \App\Content\BenchmarkChart::kind($name), $name);
+        }
+        $this->assertSame('Polyfill', \App\Content\BenchmarkChart::kind('phit-polyfill'));
+    }
+
     public function test_old_evidence_urls_redirect_to_their_topics(): void
     {
         $phpolars = Package::find('phpolars');
-        $this->get('http://phpolars.phpstats.test/benchmarks/py-polars')->assertStatus(301)->assertRedirect($phpolars->url('benchmark', ['id' => 'read-group-join']));
-        $this->get('http://phpolars.phpstats.test/benchmarks/php-arrays')->assertStatus(301)->assertRedirect($phpolars->url('benchmark', ['id' => 'read-group-join']));
+        $this->get('http://phpolars.phpstats.test/benchmarks/py-polars')->assertStatus(301)->assertRedirect($phpolars->benchmarkUrl('read-group-join'));
+        $this->get('http://phpolars.phpstats.test/benchmarks/php-arrays')->assertStatus(301)->assertRedirect($phpolars->benchmarkUrl('read-group-join'));
         $this->get('http://phit.phpstats.test/verifications/ols')->assertStatus(301)->assertRedirect('http://phit.phpstats.test/verification/ols');
         $this->get('http://phit.phpstats.test/benchmarks/not-a-workload')->assertNotFound();
         $this->get('http://phit.phpstats.test/verification/not-a-topic')->assertNotFound();
 
         // Old #fragments go on to the topic pages, including renamed ones.
         $this->get($phpolars->url('benchmarks'))->assertOk()
-            ->assertSee('\\u0022py-polars\\u0022', false);
+            ->assertSee('\\u0022py-polars\\u0022:\\u0022read-group-join\\u0022', false);
 
         // A docs report that left the docs nav redirects to the matching
         // evidence page; one the package still lists keeps its page.
@@ -472,13 +506,13 @@ class PackagePagesTest extends TestCase
         File::put("{$root}/phit/docs.json", json_encode($docs));
         Package::flush();
         $phit = Package::find('phit');
-        $this->get($phit->url('docs', ['path' => 'benchmarks/ols']))->assertStatus(301)->assertRedirect($phit->url('benchmark', ['id' => 'ols']));
-        $this->get($phit->url('docs', ['path' => 'benchmarks/ols.html']))->assertStatus(301)->assertRedirect($phit->url('benchmark', ['id' => 'ols']));
+        $this->get($phit->url('docs', ['path' => 'benchmarks/ols']))->assertStatus(301)->assertRedirect($phit->benchmarkUrl('ols'));
+        $this->get($phit->url('docs', ['path' => 'benchmarks/ols.html']))->assertStatus(301)->assertRedirect($phit->benchmarkUrl('ols'));
         $this->get($phit->url('docs', ['path' => 'verifications/lmm']))->assertRedirect($phit->url('verification.topic', ['id' => 'lmm']));
         $this->get($phit->url('docs', ['path' => 'notebooks/lmm-public-verification']))->assertRedirect($phit->url('verification.topic', ['id' => 'lmm-public']));
         $this->get($phit->url('docs', ['path' => 'verification']))->assertRedirect($phit->url('verification'));
         $this->get($phit->url('docs', ['path' => 'notebooks/r-compatibility']))->assertRedirect($phit->url('verification.topic', ['id' => 'r-compatibility']));
-        $this->assertSame($phit->url('benchmark', ['id' => 'ols']), Package::resolveLinks('phpstats://phit/docs/benchmarks/ols'));
+        $this->assertSame($phit->benchmarkUrl('ols'), Package::resolveLinks('phpstats://phit/docs/benchmarks/ols'));
     }
 
     public function test_removed_cmdstanphp_docs_pages_redirect_to_verification(): void
@@ -506,8 +540,8 @@ class PackagePagesTest extends TestCase
     {
         $phplyr = Package::find('phplyr');
         $moved = $phplyr->movedFragments('performance');
-        $this->assertSame($phplyr->url('benchmark', ['id' => 'workloads']), $moved['methods']);
-        $this->assertSame($phplyr->url('benchmark', ['id' => 'backends']), $moved['backend-pipelines']);
+        $this->assertSame($phplyr->benchmarkUrl('workloads'), $moved['methods']);
+        $this->assertSame($phplyr->benchmarkUrl('backends'), $moved['backend-pipelines']);
         $this->get($phplyr->url('docs', ['path' => 'performance']))->assertOk()->assertSee('var moved = ', false);
         $this->get($phplyr->url('docs'))->assertOk()->assertDontSee('var moved = ', false);
     }
@@ -524,14 +558,14 @@ class PackagePagesTest extends TestCase
         return $root;
     }
 
-    /** One more record for a package, listed in its site.json. */
-    private function fixtureRecord(string $key, string $kind, string $id, array $record): void
+    /** One more record for a package, listed in its site.json, or its only one with $only. */
+    private function fixtureRecord(string $key, string $kind, string $id, array $record, bool $only = false): void
     {
         $root = $this->copyContent();
         File::ensureDirectoryExists("{$root}/{$key}/{$kind}");
         File::put("{$root}/{$key}/{$kind}/{$id}.json", json_encode($record));
         $site = json_decode(File::get("{$root}/{$key}/site.json"), true);
-        $site[$kind] = [...($site[$kind] ?? []), "site/{$kind}/{$id}.json"];
+        $site[$kind] = [...($only ? [] : $site[$kind] ?? []), "site/{$kind}/{$id}.json"];
         File::put("{$root}/{$key}/site.json", json_encode($site));
         Package::flush();
     }

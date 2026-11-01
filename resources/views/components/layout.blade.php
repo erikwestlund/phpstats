@@ -44,6 +44,8 @@
             try { choice = localStorage.getItem('phpstats-theme'); } catch (e) {}
             var dark = choice ? choice === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
             document.documentElement.classList.toggle('dark', dark);
+            // Scripts run: components such as the benchmark tabs hide their other panels from the first paint.
+            document.documentElement.classList.add('js');
         })();
     </script>
     <link rel="preconnect" href="https://fonts.bunny.net">

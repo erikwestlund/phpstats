@@ -69,16 +69,16 @@ class PackageController extends Controller
         return $this->page($package, 'benchmarks');
     }
 
+    /**
+     * A workload's page from before the benchmarks were one page: its anchor
+     * there, or its replacement's when it was renamed or merged.
+     */
     public function benchmark(string $package, string $id)
     {
         $item = $this->package($package);
-        if (($record = $item->benchmark($id)) === null) {
-            $target = $item->renamedTopics('benchmarks')[$id] ?? abort(404);
+        abort_if($item->benchmark($id) === null && ! isset($item->renamedTopics('benchmarks')[$id]), 404);
 
-            return redirect()->to($item->url('benchmark', ['id' => $target]), 301);
-        }
-
-        return $this->page($package, 'benchmark', ['record' => $record]);
+        return redirect()->to($item->benchmarkUrl($id), 301);
     }
 
     public function verification(string $package): View

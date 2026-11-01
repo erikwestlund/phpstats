@@ -159,6 +159,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// A benchmark workload's Results, Methods, and Reproduction tabs. The arrow
+// keys, Home, and End move between them, and #{id}-methods and the like open
+// a tab and scroll to its workload. Before this runs, CSS keeps only the
+// Results panel showing, and without scripts all three follow one another.
+Alpine.data('evidenceTabs', (id) => ({
+    tab: 'results',
+    order: ['results', 'methods', 'reproduction'],
+    init() {
+        const open = () => {
+            const hash = decodeURIComponent(location.hash.slice(1));
+            const name = this.order.find((t) => hash === `${id}-${t}`);
+            if (name) {
+                this.tab = name;
+                this.$nextTick(() => this.$el.scrollIntoView());
+            }
+        };
+        open();
+        window.addEventListener('hashchange', open);
+        this.$el.classList.add('tabs-ready');
+    },
+    select(name, focus = false) {
+        this.tab = name;
+        if (focus) this.$nextTick(() => this.$refs[name].focus());
+    },
+    key(event) {
+        let i = this.order.indexOf(this.tab);
+        const moves = { ArrowRight: i + 1, ArrowLeft: i - 1 + this.order.length, Home: 0, End: this.order.length - 1 };
+        if (!(event.key in moves)) return;
+        event.preventDefault();
+        this.select(this.order[moves[event.key] % this.order.length], true);
+    },
+}));
+
 // <x-command>'s Copy button: the command exactly as shown.
 Alpine.data('copyCommand', (text) => ({
     copied: false,

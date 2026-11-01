@@ -14,7 +14,7 @@
         $package = \App\Content\Package::find($workload['package']);
         $record = $package ? collect($package->benchmarks())->firstWhere('id', $workload['id']) : null;
 
-        return $record ? [...$workload, 'record' => $record, 'url' => $package->url('benchmark', ['id' => $workload['id']]), 'name' => $package->name()] : null;
+        return $record ? [...$workload, 'record' => $record, 'url' => $package->benchmarkUrl($workload['id']), 'name' => $package->name()] : null;
     })->filter()->values();
     $time = fn (float $ms) => $ms < 1000 ? number_format($ms, $ms < 10 ? 1 : 0).' ms' : number_format($ms / 1000, 1).' s';
     $memory = fn (float $mib) => $mib >= 1024 ? number_format($mib / 1024, 1).' GiB' : number_format($mib).' MiB';
