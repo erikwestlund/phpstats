@@ -26,7 +26,7 @@
 <td>the phpolars API</td>
 </tr>
 <tr class="odd">
-<td>PHP closures in many verbs</td>
+<td>PHP closures in many methods</td>
 <td>phibble’s in-memory <code>DataFrame</code>. On a <code>PolarsTable</code>, each closure converts the table (see <a href="#what-runs-in-polars">What runs in Polars</a>).</td>
 </tr>
 </tbody>
@@ -66,7 +66,7 @@
 </section>
 <section id="what-runs-in-polars" class="level2">
 <h2 class="anchored" data-anchor-id="what-runs-in-polars">What runs in Polars</h2>
-<p>Verbs given column names or phibble expressions (<code>Phibble\Expr</code>, which phplyr’s helpers such as <code>col()</code>, <code>mean()</code>, and <code>n()</code> build) run in Polars with dplyr’s semantics:</p>
+<p>Methods given column names or phibble expressions (<code>Phibble\Expr</code>, which phplyr’s helpers such as <code>col()</code>, <code>mean()</code>, and <code>n()</code> build) run in Polars with dplyr’s semantics:</p>
 <ul>
 <li><code>NA</code> propagates, and aggregates default to <code>naRm: false</code>.</li>
 <li>Grouped <code>mutate()</code> and <code>filter()</code> evaluate aggregates and windows per group.</li>
@@ -76,12 +76,12 @@
 </ul>
 <p>Some steps cannot run in Polars, and the adapter runs them on a phibble <code>DataFrame</code> and converts the result back:</p>
 <ul>
-<li>a verb given a PHP closure, because PHP code cannot run on Polars threads</li>
-<li>any verb on a rowwise table</li>
-<li>grouped verbs on factor keys that keep empty groups (phibble’s <code>groupBy(drop: false)</code> or phplyr’s <code>group_by(_drop: false)</code>), because Polars does not see empty groups</li>
+<li>a method given a PHP closure, because PHP code cannot run on Polars threads</li>
+<li>any method on a rowwise table</li>
+<li>grouped operations on factor keys that keep empty groups (phibble’s <code>groupBy(drop: false)</code> or phplyr’s <code>group_by(_drop: false)</code>), because Polars does not see empty groups</li>
 <li>functions that the translator does not support, such as <code>str_to_title()</code></li>
 </ul>
-<p><code>PolarsTable::$fallbacks</code> counts these conversions. Set <code>PolarsTable::$strict = true</code> to throw <code>Phibble\Polars\PolarsFallback</code> instead; its message names the verb and the reason. <a href="phpstats://phpolars/docs/performance#practical-guidance">Performance</a> describes when a fallback costs time.</p>
+<p><code>PolarsTable::$fallbacks</code> counts these conversions. Set <code>PolarsTable::$strict = true</code> to throw <code>Phibble\Polars\PolarsFallback</code> instead; its message names the method and the reason. <a href="phpstats://phpolars/docs/performance#practical-guidance">Performance</a> describes when a fallback costs time.</p>
 </section>
 <section id="missing-values" class="level2">
 <h2 class="anchored" data-anchor-id="missing-values">Missing values</h2>

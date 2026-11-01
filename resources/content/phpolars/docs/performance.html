@@ -4,9 +4,9 @@
 <li>Polars memory is outside PHP’s memory manager, so <code>memory_limit</code> does not count it. PHP arrays built from a result do count.</li>
 <li><code>rows()</code>, <code>toDicts()</code>, and <code>iterRows()</code> build PHP arrays for every row, which can take far more memory than the data does in Polars. Calling <code>rows()</code> on each slice from <code>iterSlices(10000)</code> keeps PHP’s peak low.</li>
 <li>Collecting rows into PHP costs time in proportion to the rows and columns returned. Datetime columns cost the most, because each value becomes a <code>DateTimeImmutable</code> object.</li>
-<li>A <code>PolarsTable</code> gains the most when a pipeline reduces the data (summaries, filters, or joins followed by summaries) or chains several verbs before collecting.</li>
+<li>A <code>PolarsTable</code> gains the most when a pipeline reduces the data (summaries, filters, or joins followed by summaries) or chains several methods before collecting.</li>
 <li>Reading files with <code>Phpolars\read_csv()</code> or <code>read_parquet()</code> and wrapping the result with <code>PolarsTable::fromPolars()</code> avoids parsing the file in PHP.</li>
-<li>A verb given a PHP closure converts a <code>PolarsTable</code> to a phibble <code>DataFrame</code> and back. Use expressions on large data, or phibble’s in-memory <code>DataFrame</code> for closure-heavy pipelines.</li>
+<li>A method given a PHP closure converts a <code>PolarsTable</code> to a phibble <code>DataFrame</code> and back. Use expressions on large data, or phibble’s in-memory <code>DataFrame</code> for closure-heavy pipelines.</li>
 <li>For a filtered scan of a large file, <code>collect(engine: 'streaming')</code> runs in batches and keeps less in memory.</li>
 </ul>
 </section>

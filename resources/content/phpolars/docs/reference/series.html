@@ -39,7 +39,7 @@ Array
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
 <p>In the signatures, <code>= null</code> marks an optional argument. Leaving it out, or passing <code>null</code>, uses Polars’ default for that argument, which in most cases is py-polars’ default. A note after a signature describes behavior that is easy to misread.</p>
 <ul>
-<li><a href="#series"><code>Phpolars\Series</code></a>
+<li><a href="#series"><code>Series</code></a>
 <ul>
 <li><a href="#series--arithmetic-and-comparison">Arithmetic and comparison</a>: <a href="#series-abs"><code>abs</code></a> · <a href="#series-add"><code>add</code></a> · <a href="#series-div"><code>div</code></a> · <a href="#series-eq"><code>eq</code></a> · <a href="#series-floordiv"><code>floordiv</code></a> · <a href="#series-ge"><code>ge</code></a> · <a href="#series-gt"><code>gt</code></a> · <a href="#series-isBetween"><code>isBetween</code></a> · <a href="#series-isIn"><code>isIn</code></a> · <a href="#series-le"><code>le</code></a> · <a href="#series-lt"><code>lt</code></a> · <a href="#series-mod"><code>mod</code></a> · <a href="#series-mul"><code>mul</code></a> · <a href="#series-ne"><code>ne</code></a> · <a href="#series-pow"><code>pow</code></a> · <a href="#series-sub"><code>sub</code></a> · <a href="#series-truediv"><code>truediv</code></a></li>
 <li><a href="#series--logic-and-bits">Logic and bits</a>: <a href="#series-and"><code>and</code></a> · <a href="#series-not"><code>not</code></a> · <a href="#series-or"><code>or</code></a></li>
@@ -54,10 +54,11 @@ Array
 <li><a href="#series--create-and-convert">Create and convert</a>: <a href="#series-__call"><code>__call</code></a> · <a href="#series-__toString"><code>__toString</code></a> · <a href="#series-chunkLengths"><code>chunkLengths</code></a> · <a href="#series-clear"><code>clear</code></a> · <a href="#series-clone"><code>clone</code></a> · <a href="#series-equals"><code>equals</code></a> · <a href="#series-estimatedSize"><code>estimatedSize</code></a> · <a href="#series-nChunks"><code>nChunks</code></a> · <a href="#series-newFromIndex"><code>newFromIndex</code></a> · <a href="#series-rechunk"><code>rechunk</code></a> · <a href="#series-shape"><code>shape</code></a> · <a href="#series-shrinkToFit"><code>shrinkToFit</code></a> · <a href="#series-toDummies"><code>toDummies</code></a> · <a href="#series-toFrame"><code>toFrame</code></a> · <a href="#series-toList"><code>toList</code></a></li>
 </ul></li>
 </ul>
-<section id="series" class="level3">
-<h3 class="anchored" data-anchor-id="series"><code>Phpolars\Series</code></h3>
-<section id="series--arithmetic-and-comparison" class="level4">
-<h4 class="anchored" data-anchor-id="series--arithmetic-and-comparison">Arithmetic and comparison</h4>
+</section>
+<section id="series" class="level2">
+<h2 class="anchored" data-anchor-id="series"><code>Series</code></h2>
+<section id="series--arithmetic-and-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="series--arithmetic-and-comparison">Arithmetic and comparison</h3>
 <ul>
 <li><span id="series-abs"></span> <code>abs(): Phpolars\Series</code></li>
 <li><span id="series-add"></span> <code>add(mixed $other): Phpolars\Series</code></li>
@@ -78,16 +79,16 @@ Array
 <li><span id="series-truediv"></span> <code>truediv(mixed $other): Phpolars\Series</code></li>
 </ul>
 </section>
-<section id="series--logic-and-bits" class="level4">
-<h4 class="anchored" data-anchor-id="series--logic-and-bits">Logic and bits</h4>
+<section id="series--logic-and-bits" class="level3">
+<h3 class="anchored" data-anchor-id="series--logic-and-bits">Logic and bits</h3>
 <ul>
 <li><span id="series-and"></span> <code>and(mixed $other): Phpolars\Series</code></li>
 <li><span id="series-not"></span> <code>not(): Phpolars\Series</code></li>
 <li><span id="series-or"></span> <code>or(mixed $other): Phpolars\Series</code></li>
 </ul>
 </section>
-<section id="series--missing-values" class="level4">
-<h4 class="anchored" data-anchor-id="series--missing-values">Missing values</h4>
+<section id="series--missing-values" class="level3">
+<h3 class="anchored" data-anchor-id="series--missing-values">Missing values</h3>
 <ul>
 <li><span id="series-dropNulls"></span> <code>dropNulls(): Phpolars\Series</code></li>
 <li><span id="series-fillNan"></span> <code>fillNan(mixed $value): Phpolars\Series</code></li>
@@ -99,8 +100,8 @@ Array
 <li><span id="series-nullCount"></span> <code>nullCount(): int</code></li>
 </ul>
 </section>
-<section id="series--aggregate" class="level4">
-<h4 class="anchored" data-anchor-id="series--aggregate">Aggregate</h4>
+<section id="series--aggregate" class="level3">
+<h3 class="anchored" data-anchor-id="series--aggregate">Aggregate</h3>
 <ul>
 <li><span id="series-all"></span> <code>all(?bool $ignoreNulls = null): mixed</code></li>
 <li><span id="series-any"></span> <code>any(?bool $ignoreNulls = null): mixed</code></li>
@@ -126,8 +127,8 @@ Array
 <li><span id="series-var"></span> <code>var(?int $ddof = null): mixed</code></li>
 </ul>
 </section>
-<section id="series--math" class="level4">
-<h4 class="anchored" data-anchor-id="series--math">Math</h4>
+<section id="series--math" class="level3">
+<h3 class="anchored" data-anchor-id="series--math">Math</h3>
 <ul>
 <li><span id="series-clip"></span> <code>clip(mixed $lowerBound = null, mixed $upperBound = null): Phpolars\Series</code></li>
 <li><span id="series-exp"></span> <code>exp(): Phpolars\Series</code></li>
@@ -136,8 +137,8 @@ Array
 <li><span id="series-sqrt"></span> <code>sqrt(): Phpolars\Series</code></li>
 </ul>
 </section>
-<section id="series--windows-cumulative-and-rolling" class="level4">
-<h4 class="anchored" data-anchor-id="series--windows-cumulative-and-rolling">Windows, cumulative, and rolling</h4>
+<section id="series--windows-cumulative-and-rolling" class="level3">
+<h3 class="anchored" data-anchor-id="series--windows-cumulative-and-rolling">Windows, cumulative, and rolling</h3>
 <ul>
 <li><span id="series-cumMax"></span> <code>cumMax(?bool $reverse = null): Phpolars\Series</code></li>
 <li><span id="series-cumMin"></span> <code>cumMin(?bool $reverse = null): Phpolars\Series</code></li>
@@ -149,8 +150,8 @@ Array
 <li><span id="series-shift"></span> <code>shift(?int $n = null): Phpolars\Series</code></li>
 </ul>
 </section>
-<section id="series--sort-select-and-deduplicate" class="level4">
-<h4 class="anchored" data-anchor-id="series--sort-select-and-deduplicate">Sort, select, and deduplicate</h4>
+<section id="series--sort-select-and-deduplicate" class="level3">
+<h3 class="anchored" data-anchor-id="series--sort-select-and-deduplicate">Sort, select, and deduplicate</h3>
 <ul>
 <li><span id="series-argSort"></span> <code>argSort(?bool $descending = null, ?bool $nullsLast = null): Phpolars\Series</code></li>
 <li><span id="series-argTrue"></span> <code>argTrue(): Phpolars\Series</code></li>
@@ -169,16 +170,16 @@ Array
 <li><span id="series-unique"></span> <code>unique(?bool $maintainOrder = null): Phpolars\Series</code></li>
 </ul>
 </section>
-<section id="series--combine-and-reshape" class="level4">
-<h4 class="anchored" data-anchor-id="series--combine-and-reshape">Combine and reshape</h4>
+<section id="series--combine-and-reshape" class="level3">
+<h3 class="anchored" data-anchor-id="series--combine-and-reshape">Combine and reshape</h3>
 <ul>
 <li><span id="series-append"></span> <code>append(Phpolars\Series $other): Phpolars\Series</code></li>
 <li><span id="series-extend"></span> <code>extend(Phpolars\Series $other): Phpolars\Series</code></li>
 <li><span id="series-zipWith"></span> <code>zipWith(Phpolars\Series $mask, Phpolars\Series $other): Phpolars\Series</code></li>
 </ul>
 </section>
-<section id="series--types-names-and-replacing-values" class="level4">
-<h4 class="anchored" data-anchor-id="series--types-names-and-replacing-values">Types, names, and replacing values</h4>
+<section id="series--types-names-and-replacing-values" class="level3">
+<h3 class="anchored" data-anchor-id="series--types-names-and-replacing-values">Types, names, and replacing values</h3>
 <ul>
 <li><span id="series-alias"></span> <code>alias(string $name): Phpolars\Series</code></li>
 <li><span id="series-cast"></span> <code>cast(string $dtype, ?bool $strict = null): Phpolars\Series</code></li>
@@ -188,8 +189,8 @@ Array
 <li><span id="series-set"></span> <code>set(Phpolars\Series $filter, mixed $value): Phpolars\Series</code></li>
 </ul>
 </section>
-<section id="series--namespaces" class="level4">
-<h4 class="anchored" data-anchor-id="series--namespaces">Namespaces</h4>
+<section id="series--namespaces" class="level3">
+<h3 class="anchored" data-anchor-id="series--namespaces">Namespaces</h3>
 <ul>
 <li><span id="series-arr"></span> <code>arr(): Phpolars\ArrayNameSpace</code></li>
 <li><span id="series-bin"></span> <code>bin(): Phpolars\BinaryNameSpace</code></li>
@@ -201,8 +202,8 @@ Array
 <li><span id="series-struct"></span> <code>struct(): Phpolars\StructNameSpace</code></li>
 </ul>
 </section>
-<section id="series--create-and-convert" class="level4">
-<h4 class="anchored" data-anchor-id="series--create-and-convert">Create and convert</h4>
+<section id="series--create-and-convert" class="level3">
+<h3 class="anchored" data-anchor-id="series--create-and-convert">Create and convert</h3>
 <ul>
 <li><span id="series-__call"></span> <code>__call(string $name, array $arguments): mixed</code></li>
 <li><span id="series-__toString"></span> <code>__toString(): string</code></li>
@@ -222,6 +223,5 @@ Array
 </ul>
 
 
-</section>
 </section>
 </section>

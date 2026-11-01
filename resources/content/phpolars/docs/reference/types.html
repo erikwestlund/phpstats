@@ -109,6 +109,39 @@ array(5) {
 <pre class="text output"><code>Phpolars\Exception\ColumnNotFoundError: not found: unable to find column "b"; valid columns: ["a"]
 Phpolars\Exception\SchemaError: column 'a' mixes incompatible types; pass a dtype or cast first
 both extend Phpolars\PolarsError</code></pre>
+</section>
+<section id="datatype" class="level2">
+<h2 class="anchored" data-anchor-id="datatype"><code>DataType</code></h2>
+<ul>
+<li><span id="datatype-datetime"></span> <code>static datetime(?string $unit = null, ?string $timeZone = null): string</code></li>
+<li><span id="datatype-duration"></span> <code>static duration(?string $unit = null): string</code></li>
+<li><span id="datatype-list"></span> <code>static list(string $inner): string</code></li>
+</ul>
+</section>
+<section id="config" class="level2">
+<h2 class="anchored" data-anchor-id="config"><code>Config</code></h2>
+<ul>
+<li><span id="config-restoreDefaults"></span> <code>static restoreDefaults(): void</code></li>
+<li><span id="config-setDecimalSeparator"></span> <code>static setDecimalSeparator(?string $separator = null): void</code></li>
+<li><span id="config-setFloatPrecision"></span> <code>static setFloatPrecision(?int $precision = null): void</code></li>
+<li><span id="config-setFmtFloat"></span> <code>static setFmtFloat(?string $fmt = null): void</code></li>
+<li><span id="config-setFmtStrLengths"></span> <code>static setFmtStrLengths(?int $n = null): void</code></li>
+<li><span id="config-setFmtTableCellListLen"></span> <code>static setFmtTableCellListLen(?int $n = null): void</code></li>
+<li><span id="config-setTblCellAlignment"></span> <code>static setTblCellAlignment(?string $format = null): void</code></li>
+<li><span id="config-setTblCellNumericAlignment"></span> <code>static setTblCellNumericAlignment(?string $format = null): void</code></li>
+<li><span id="config-setTblCols"></span> <code>static setTblCols(?int $n = null): void</code></li>
+<li><span id="config-setTblColumnDataTypeInline"></span> <code>static setTblColumnDataTypeInline(?bool $active = null): void</code></li>
+<li><span id="config-setTblDataframeShapeBelow"></span> <code>static setTblDataframeShapeBelow(?bool $active = null): void</code></li>
+<li><span id="config-setTblFormatting"></span> <code>static setTblFormatting(?string $format = null, ?bool $roundedCorners = null): void</code></li>
+<li><span id="config-setTblHideColumnDataTypes"></span> <code>static setTblHideColumnDataTypes(?bool $active = null): void</code></li>
+<li><span id="config-setTblHideColumnNames"></span> <code>static setTblHideColumnNames(?bool $active = null): void</code></li>
+<li><span id="config-setTblHideDataframeShape"></span> <code>static setTblHideDataframeShape(?bool $active = null): void</code></li>
+<li><span id="config-setTblHideDtypeSeparator"></span> <code>static setTblHideDtypeSeparator(?bool $active = null): void</code></li>
+<li><span id="config-setTblRows"></span> <code>static setTblRows(?int $n = null): void</code></li>
+<li><span id="config-setTblWidthChars"></span> <code>static setTblWidthChars(?int $n = null): void</code></li>
+<li><span id="config-setThousandsSeparator"></span> <code>static setThousandsSeparator(?string $separator = null): void</code></li>
+<li><span id="config-setTrimDecimalZeros"></span> <code>static setTrimDecimalZeros(?bool $active = null): void</code></li>
+</ul>
 
 
 </section>

@@ -2,26 +2,13 @@
     "nav": [
         {
             "title": "Overview",
-            "path": "index"
+            "path": "index",
+            "section": "Getting started"
         },
         {
             "title": "Getting started",
-            "path": "getting-started"
-        },
-        {
-            "title": "Aggregate with expressions",
-            "path": "examples/expressions",
-            "section": "Examples"
-        },
-        {
-            "title": "Query a large CSV file lazily",
-            "path": "examples/lazy-csv",
-            "section": "Examples"
-        },
-        {
-            "title": "Rolling windows and as-of joins",
-            "path": "examples/time-series",
-            "section": "Examples"
+            "path": "getting-started",
+            "section": "Getting started"
         },
         {
             "title": "Coming from py-polars",
@@ -39,38 +26,59 @@
             "section": "Guides"
         },
         {
-            "title": "DataFrame and LazyFrame",
-            "path": "reference/dataframe",
-            "section": "Reference"
-        },
-        {
-            "title": "Expressions",
-            "path": "reference/expressions",
-            "section": "Reference"
-        },
-        {
-            "title": "Series",
-            "path": "reference/series",
-            "section": "Reference"
-        },
-        {
-            "title": "Input and output",
-            "path": "reference/io",
-            "section": "Reference"
-        },
-        {
-            "title": "Data types",
-            "path": "reference/types",
-            "section": "Reference"
-        },
-        {
             "title": "Compatibility and limitations",
-            "path": "compatibility"
+            "path": "compatibility",
+            "section": "Guides"
         },
         {
             "title": "Performance",
             "path": "performance",
-            "section": "Benchmarks and verification"
+            "section": "Guides"
+        },
+        {
+            "title": "Functions and methods",
+            "path": "reference/index",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "DataFrame and LazyFrame",
+            "path": "reference/dataframe",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Expressions",
+            "path": "reference/expressions",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Series",
+            "path": "reference/series",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Input and output",
+            "path": "reference/io",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Data types",
+            "path": "reference/types",
+            "section": "Functions and methods"
+        },
+        {
+            "title": "Aggregate with expressions",
+            "path": "examples/expressions",
+            "section": "Examples"
+        },
+        {
+            "title": "Query a large CSV file lazily",
+            "path": "examples/lazy-csv",
+            "section": "Examples"
+        },
+        {
+            "title": "Rolling windows and as-of joins",
+            "path": "examples/time-series",
+            "section": "Examples"
         },
         {
             "title": "Development",
@@ -397,23 +405,133 @@
                 },
                 {
                     "id": "dataframe",
-                    "text": "Phpolars\\DataFrame",
+                    "text": "DataFrame",
+                    "level": 2
+                },
+                {
+                    "id": "dataframe--create-and-convert",
+                    "text": "Create and convert",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe--inspect",
+                    "text": "Inspect",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe--select-and-add-columns",
+                    "text": "Select and add columns",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe--filter-sort-and-slice-rows",
+                    "text": "Filter, sort, and slice rows",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe--missing-values",
+                    "text": "Missing values",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe--group-and-aggregate",
+                    "text": "Group and aggregate",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe--join-and-combine",
+                    "text": "Join and combine",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe--reshape",
+                    "text": "Reshape",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe--sql",
+                    "text": "SQL",
+                    "level": 3
+                },
+                {
+                    "id": "dataframe--write",
+                    "text": "Write",
                     "level": 3
                 },
                 {
                     "id": "lazyframe",
-                    "text": "Phpolars\\LazyFrame",
+                    "text": "LazyFrame",
+                    "level": 2
+                },
+                {
+                    "id": "lazyframe--create-and-convert",
+                    "text": "Create and convert",
+                    "level": 3
+                },
+                {
+                    "id": "lazyframe--inspect",
+                    "text": "Inspect",
+                    "level": 3
+                },
+                {
+                    "id": "lazyframe--select-and-add-columns",
+                    "text": "Select and add columns",
+                    "level": 3
+                },
+                {
+                    "id": "lazyframe--filter-sort-and-slice-rows",
+                    "text": "Filter, sort, and slice rows",
+                    "level": 3
+                },
+                {
+                    "id": "lazyframe--missing-values",
+                    "text": "Missing values",
+                    "level": 3
+                },
+                {
+                    "id": "lazyframe--group-and-aggregate",
+                    "text": "Group and aggregate",
+                    "level": 3
+                },
+                {
+                    "id": "lazyframe--join-and-combine",
+                    "text": "Join and combine",
+                    "level": 3
+                },
+                {
+                    "id": "lazyframe--reshape",
+                    "text": "Reshape",
+                    "level": 3
+                },
+                {
+                    "id": "lazyframe--sql",
+                    "text": "SQL",
+                    "level": 3
+                },
+                {
+                    "id": "lazyframe--write",
+                    "text": "Write",
                     "level": 3
                 },
                 {
                     "id": "groupby",
-                    "text": "Phpolars\\GroupBy",
-                    "level": 3
+                    "text": "GroupBy",
+                    "level": 2
                 },
                 {
                     "id": "lazygroupby",
-                    "text": "Phpolars\\LazyGroupBy",
-                    "level": 3
+                    "text": "LazyGroupBy",
+                    "level": 2
+                },
+                {
+                    "id": "groupiterator",
+                    "text": "GroupIterator",
+                    "level": 2
+                },
+                {
+                    "id": "sqlcontext",
+                    "text": "SQLContext",
+                    "level": 2
                 }
             ],
             "math": false
@@ -462,64 +580,235 @@
                     "level": 2
                 },
                 {
+                    "id": "fn--create-and-combine-data-frames",
+                    "text": "Create and combine data frames",
+                    "level": 3
+                },
+                {
+                    "id": "fn--columns-and-literals",
+                    "text": "Columns and literals",
+                    "level": 3
+                },
+                {
+                    "id": "fn--conditions",
+                    "text": "Conditions",
+                    "level": 3
+                },
+                {
+                    "id": "fn--aggregates",
+                    "text": "Aggregates",
+                    "level": 3
+                },
+                {
+                    "id": "fn--across-columns",
+                    "text": "Across columns",
+                    "level": 3
+                },
+                {
+                    "id": "fn--dates-times-and-ranges",
+                    "text": "Dates, times, and ranges",
+                    "level": 3
+                },
+                {
+                    "id": "fn--sorting-and-positions",
+                    "text": "Sorting and positions",
+                    "level": 3
+                },
+                {
+                    "id": "fn--runtime",
+                    "text": "Runtime",
+                    "level": 3
+                },
+                {
                     "id": "methods",
                     "text": "Methods",
                     "level": 2
                 },
                 {
                     "id": "expr",
-                    "text": "Phpolars\\Expr",
+                    "text": "Expr",
+                    "level": 2
+                },
+                {
+                    "id": "expr--arithmetic-and-comparison",
+                    "text": "Arithmetic and comparison",
+                    "level": 3
+                },
+                {
+                    "id": "expr--logic-and-bits",
+                    "text": "Logic and bits",
+                    "level": 3
+                },
+                {
+                    "id": "expr--missing-values",
+                    "text": "Missing values",
+                    "level": 3
+                },
+                {
+                    "id": "expr--aggregate",
+                    "text": "Aggregate",
+                    "level": 3
+                },
+                {
+                    "id": "expr--math",
+                    "text": "Math",
+                    "level": 3
+                },
+                {
+                    "id": "expr--windows-cumulative-and-rolling",
+                    "text": "Windows, cumulative, and rolling",
+                    "level": 3
+                },
+                {
+                    "id": "expr--sort-select-and-deduplicate",
+                    "text": "Sort, select, and deduplicate",
+                    "level": 3
+                },
+                {
+                    "id": "expr--combine-and-reshape",
+                    "text": "Combine and reshape",
+                    "level": 3
+                },
+                {
+                    "id": "expr--types-names-and-replacing-values",
+                    "text": "Types, names, and replacing values",
+                    "level": 3
+                },
+                {
+                    "id": "expr--namespaces",
+                    "text": "Namespaces",
+                    "level": 3
+                },
+                {
+                    "id": "expr--create-and-convert",
+                    "text": "Create and convert",
                     "level": 3
                 },
                 {
                     "id": "when",
-                    "text": "Phpolars\\When",
-                    "level": 3
+                    "text": "When",
+                    "level": 2
                 },
                 {
                     "id": "then",
-                    "text": "Phpolars\\Then",
-                    "level": 3
+                    "text": "Then",
+                    "level": 2
                 },
                 {
                     "id": "str",
-                    "text": "Phpolars\\StrNameSpace",
-                    "level": 3
+                    "text": "StrNameSpace",
+                    "level": 2
                 },
                 {
                     "id": "dt",
-                    "text": "Phpolars\\DtNameSpace",
-                    "level": 3
+                    "text": "DtNameSpace",
+                    "level": 2
                 },
                 {
                     "id": "list",
-                    "text": "Phpolars\\ListNameSpace",
-                    "level": 3
-                },
-                {
-                    "id": "struct",
-                    "text": "Phpolars\\StructNameSpace",
-                    "level": 3
-                },
-                {
-                    "id": "name",
-                    "text": "Phpolars\\NameNameSpace",
-                    "level": 3
-                },
-                {
-                    "id": "cat",
-                    "text": "Phpolars\\CatNameSpace",
-                    "level": 3
+                    "text": "ListNameSpace",
+                    "level": 2
                 },
                 {
                     "id": "arr",
-                    "text": "Phpolars\\ArrayNameSpace",
-                    "level": 3
+                    "text": "ArrayNameSpace",
+                    "level": 2
+                },
+                {
+                    "id": "struct",
+                    "text": "StructNameSpace",
+                    "level": 2
+                },
+                {
+                    "id": "cat",
+                    "text": "CatNameSpace",
+                    "level": 2
                 },
                 {
                     "id": "bin",
-                    "text": "Phpolars\\BinaryNameSpace",
+                    "text": "BinaryNameSpace",
+                    "level": 2
+                },
+                {
+                    "id": "name",
+                    "text": "NameNameSpace",
+                    "level": 2
+                },
+                {
+                    "id": "meta",
+                    "text": "MetaNameSpace",
+                    "level": 2
+                }
+            ],
+            "math": false
+        },
+        "reference/index": {
+            "title": "Functions and methods",
+            "headings": [
+                {
+                    "id": "functions",
+                    "text": "Functions",
+                    "level": 2
+                },
+                {
+                    "id": "index-read-files-and-databases",
+                    "text": "Read files and databases",
                     "level": 3
+                },
+                {
+                    "id": "index-create-and-combine-data-frames",
+                    "text": "Create and combine data frames",
+                    "level": 3
+                },
+                {
+                    "id": "index-columns-and-literals",
+                    "text": "Columns and literals",
+                    "level": 3
+                },
+                {
+                    "id": "index-conditions",
+                    "text": "Conditions",
+                    "level": 3
+                },
+                {
+                    "id": "index-aggregates",
+                    "text": "Aggregates",
+                    "level": 3
+                },
+                {
+                    "id": "index-across-columns",
+                    "text": "Across columns",
+                    "level": 3
+                },
+                {
+                    "id": "index-dates-times-and-ranges",
+                    "text": "Dates, times, and ranges",
+                    "level": 3
+                },
+                {
+                    "id": "index-sorting-and-positions",
+                    "text": "Sorting and positions",
+                    "level": 3
+                },
+                {
+                    "id": "index-runtime",
+                    "text": "Runtime",
+                    "level": 3
+                },
+                {
+                    "id": "index-selectors",
+                    "text": "Selectors",
+                    "level": 3
+                },
+                {
+                    "id": "classes",
+                    "text": "Classes and methods",
+                    "level": 2
+                },
+                {
+                    "id": "errors",
+                    "text": "Errors",
+                    "level": 2
                 }
             ],
             "math": false
@@ -545,7 +834,62 @@
                 },
                 {
                     "id": "series",
-                    "text": "Phpolars\\Series",
+                    "text": "Series",
+                    "level": 2
+                },
+                {
+                    "id": "series--arithmetic-and-comparison",
+                    "text": "Arithmetic and comparison",
+                    "level": 3
+                },
+                {
+                    "id": "series--logic-and-bits",
+                    "text": "Logic and bits",
+                    "level": 3
+                },
+                {
+                    "id": "series--missing-values",
+                    "text": "Missing values",
+                    "level": 3
+                },
+                {
+                    "id": "series--aggregate",
+                    "text": "Aggregate",
+                    "level": 3
+                },
+                {
+                    "id": "series--math",
+                    "text": "Math",
+                    "level": 3
+                },
+                {
+                    "id": "series--windows-cumulative-and-rolling",
+                    "text": "Windows, cumulative, and rolling",
+                    "level": 3
+                },
+                {
+                    "id": "series--sort-select-and-deduplicate",
+                    "text": "Sort, select, and deduplicate",
+                    "level": 3
+                },
+                {
+                    "id": "series--combine-and-reshape",
+                    "text": "Combine and reshape",
+                    "level": 3
+                },
+                {
+                    "id": "series--types-names-and-replacing-values",
+                    "text": "Types, names, and replacing values",
+                    "level": 3
+                },
+                {
+                    "id": "series--namespaces",
+                    "text": "Namespaces",
+                    "level": 3
+                },
+                {
+                    "id": "series--create-and-convert",
+                    "text": "Create and convert",
                     "level": 3
                 }
             ],
@@ -567,6 +911,16 @@
                 {
                     "id": "errors",
                     "text": "Errors",
+                    "level": 2
+                },
+                {
+                    "id": "datatype",
+                    "text": "DataType",
+                    "level": 2
+                },
+                {
+                    "id": "config",
+                    "text": "Config",
                     "level": 2
                 }
             ],
