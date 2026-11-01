@@ -10,7 +10,8 @@
     {{-- On the narrowest screens the mark alone keeps the bar from overflowing; the link keeps its label. --}}
     <span @class(['hidden sm:inline' => $current, 'max-[419px]:sr-only' => ! $current])>PHPstats</span>
 </a>
-<div class="flex items-center">
+{{-- The menus fill the space between the mark and the bar's links, centered in it. --}}
+<div class="flex min-w-0 flex-1 items-center justify-center">
     @foreach (config('phpstats.menus') as $menu)
         <x-group-menu :menu="$menu" :current="$current" :dark="$dark" />
     @endforeach
