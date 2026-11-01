@@ -17,8 +17,50 @@ return [
         'docs' => 'https://phpstats.github.io/phit/',
         'overview' => [
             'Fit statistical models, compute probability distributions, and summarize data in PHP. Model functions accept formulas or explicit designs and return PHP arrays.',
-            'The models are OLS, logistic, probit, and Poisson regression, linear mixed models, and mixed logistic regression. The library also has probability distributions, descriptive statistics, posterior-draw kernels, and a seeded random number generator.',
-            'Every function is in the Phit namespace, such as Phit\fit_ols(), Phit\predict(), and Phit\dist_normal_cdf().',
+        ],
+        // The overview's capabilities: two lists side by side, then one full
+        // width, in inline Markdown. Each heading links the docs nav's
+        // Functions and methods section when the package has one, else the
+        // docs page named under docs.
+        'capabilities' => [
+            'columns' => [
+                [
+                    'heading' => 'Supported models',
+                    'docs' => 'reference-models',
+                    'items' => [
+                        'OLS — `fit_ols()`',
+                        'Logistic regression — `fit_generalized_linear(family: \'binomial\')`',
+                        'Probit regression — `fit_generalized_linear(family: \'binomial\', link: \'probit\')`',
+                        'Poisson regression — `fit_generalized_linear(family: \'poisson\')`',
+                        'Linear mixed models, random intercepts and slopes, REML or ML — `fit_mixed_gaussian()`',
+                        'Binomial mixed models (mixed logistic regression) — `fit_mixed_logistic()`',
+                        'Predictions and model matrices — `predict()`, `model_matrix()`',
+                    ],
+                ],
+                [
+                    'heading' => 'Probability distributions',
+                    'docs' => 'distributions',
+                    'lead' => 'Density or mass, CDF, survival function, quantile, their logarithms, and seeded draws for each.',
+                    'items' => [
+                        'Normal, Student\'s t, chi-square, F',
+                        'Beta, gamma, exponential, log-normal, logistic',
+                        'Binomial, Poisson, negative binomial (two parameterizations)',
+                        'Draws only: uniform, categorical',
+                    ],
+                ],
+            ],
+            'other' => [
+                'heading' => 'Other functions',
+                'docs' => 'reference-utilities',
+                'items' => [
+                    'Descriptive statistics: mean, variance, standard deviation, covariance, correlation, median, quantiles, weighted mean and variance — `stat_*()`',
+                    'Kernel density estimates and bandwidths, empirical CDF, linear interpolation — `stat_density()`, `stat_bw_nrd0()`, `stat_ecdf()`, `stat_approx()`',
+                    'Optimization and root finding — `optimize()`, `uniroot()`',
+                    'Posterior-draw numerics: moments, covariance maps, affine transforms — `draws_moments()`, `draws_covariance_map()`, `draws_affine()`',
+                    'Seeded sampling: draws from every distribution, permutations — `dist_*_rng()`, `permutation_rng()`',
+                    'CSV reading — `read_csv()` (extension only)',
+                ],
+            ],
         ],
     ],
     'phit-polyfill' => [

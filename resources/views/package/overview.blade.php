@@ -144,6 +144,23 @@
                 @endif
             @endif
 
+            @if ($capabilities = $package->capabilities())
+                {{-- What the package provides: lists side by side from md up, then one full width. --}}
+                @php
+                    $block = function (array $list, string $class = '') {
+                        return view('package.partials.capability-list', ['list' => $list, 'class' => $class])->render();
+                    };
+                @endphp
+                <div class="mt-12 grid gap-10 md:grid-cols-2">
+                    @foreach ($capabilities['columns'] as $list)
+                        {!! $block($list) !!}
+                    @endforeach
+                </div>
+                @if ($capabilities['other'])
+                    {!! $block($capabilities['other'], 'mt-10') !!}
+                @endif
+            @endif
+
             @if ($more)
                 <div class="prose prose-zinc prose-php mt-10 max-w-none text-[1.0625rem] dark:prose-invert">
                     @foreach ($more as $paragraph)

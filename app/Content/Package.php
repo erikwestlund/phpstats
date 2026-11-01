@@ -126,6 +126,34 @@ class Package
         return [$text, null];
     }
 
+    /**
+     * The overview's capabilities from config/projects.php: lists side by
+     * side, then one full width, each with its heading's link (the docs
+     * nav's Functions and methods section, else the named docs page), its
+     * optional lead sentence, and its items as inline Markdown.
+     *
+     * @return array{columns: list<array{heading: string, url: ?string, lead: ?string, items: list<string>}>, other: ?array{heading: string, url: ?string, lead: ?string, items: list<string>}}|null
+     */
+    public function capabilities(): ?array
+    {
+        $capabilities = $this->project['capabilities'] ?? null;
+        if (! is_array($capabilities)) {
+            return null;
+        }
+        $api = $this->apiReference()['url'] ?? null;
+        $list = fn (array $block) => [
+            'heading' => (string) $block['heading'],
+            'url' => $api ?? (isset($block['docs']) && $this->docsPage($block['docs']) !== null ? $this->url('docs', ['path' => $block['docs']]) : null),
+            'lead' => $block['lead'] ?? null,
+            'items' => array_values($block['items'] ?? []),
+        ];
+
+        return [
+            'columns' => array_map($list, $capabilities['columns'] ?? []),
+            'other' => isset($capabilities['other']) ? $list($capabilities['other']) : null,
+        ];
+    }
+
     /** @return list<string> */
     public function install(): array
     {
