@@ -6,7 +6,7 @@
     The optional features and platforms are in the package's installation guide.
     Secondary, for the package overview, whose hero already gives PHP, the
     platforms, and the required items, keeps only the optional items and the
-    build tools.
+    build tools, each group a card with one row per item.
 --}}
 @props(['package', 'compact' => false, 'secondary' => false])
 @php
@@ -32,6 +32,27 @@
     <div {{ $attributes->merge(['class' => 'space-y-1 text-[0.9375rem] leading-7 text-zinc-600 dark:text-zinc-400']) }}>
         @foreach ($groups as $label => $items)
             <p><span class="mr-1 font-semibold text-zinc-900 dark:text-zinc-100">{{ $label }}:</span> {{ implode(', ', $items) }}</p>
+        @endforeach
+    </div>
+@elseif ($secondary && $groups !== [])
+    {{-- One card per group: each dependency in mono with the feature it enables beside it. --}}
+    <div {{ $attributes->merge(['class' => 'space-y-6']) }}>
+        @foreach (array_filter(['Optional' => $package->optional(), $package->buildLabel() => array_map(fn (string $name) => ['name' => $name, 'for' => null], $package->build())]) as $label => $items)
+            <div class="overflow-hidden rounded-xl ring-1 ring-zinc-200 dark:ring-white/10">
+                <p class="border-b border-zinc-200 bg-zinc-50 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-400">{{ $label }}</p>
+                <ul class="divide-y divide-zinc-100 dark:divide-white/5">
+                    @foreach ($items as $item)
+                        <li class="grid gap-1 px-5 py-3.5 text-sm sm:grid-cols-[minmax(0,15rem)_1fr] sm:gap-6">
+                            {{-- An identifier (phit, php_polars, illuminate/database, FFI) is mono; a product name (Quarto) is not. --}}
+                            @php([$head, $rest] = array_pad(explode(' ', $item['name'], 2), 2, null))
+                            <span class="font-medium break-words text-zinc-900 dark:text-zinc-100"><span @class(['font-mono' => preg_match('/^([a-z]|[A-Z]+$)/', $head)])>{{ $head }}</span>{{ $rest !== null ? ' '.$rest : '' }}</span>
+                            @if ($item['for'])
+                                <span class="text-zinc-600 dark:text-zinc-400">{{ ucfirst($item['for']) }}</span>
+                            @endif
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         @endforeach
     </div>
 @elseif ($groups !== [])

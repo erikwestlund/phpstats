@@ -192,13 +192,19 @@
                     <table class="w-full text-left text-sm">
                         <caption class="sr-only">Comparisons that did not pass</caption>
                         <thead class="border-b border-zinc-200 text-zinc-600 dark:border-white/10 dark:text-zinc-400">
-                            <tr><th scope="col" class="py-2 pr-4 font-medium">Case</th><th scope="col" class="py-2 pr-4 font-medium">Quantity</th><th scope="col" class="py-2 pr-4 font-medium">Status</th><th scope="col" class="py-2 font-medium">Reason</th></tr>
+                            @php
+                                // Columns only for fields some listed case has.
+                                $problemImplementation = collect($problems)->contains(fn ($case) => filled($case['implementation'] ?? null));
+                                $problemQuantity = collect($problems)->contains(fn ($case) => filled($case['quantity'] ?? null));
+                            @endphp
+                            <tr><th scope="col" class="py-2 pr-4 font-medium">Case</th>@if ($problemImplementation)<th scope="col" class="py-2 pr-4 font-medium">Implementation</th>@endif @if ($problemQuantity)<th scope="col" class="py-2 pr-4 font-medium">Quantity</th>@endif<th scope="col" class="py-2 pr-4 font-medium">Status</th><th scope="col" class="py-2 font-medium">Reason</th></tr>
                         </thead>
                         <tbody class="divide-y divide-zinc-100 dark:divide-white/5">
                             @foreach ($problems as $case)
                                 <tr>
                                     <td class="py-2 pr-4 align-top">{{ $case['name'] ?? '' }}</td>
-                                    <td class="py-2 pr-4 align-top">{{ $case['quantity'] ?? '' }}</td>
+                                    @if ($problemImplementation)<td class="py-2 pr-4 align-top">{{ $case['implementation'] ?? '' }}</td>@endif
+                                    @if ($problemQuantity)<td class="py-2 pr-4 align-top">{{ $case['quantity'] ?? '' }}</td>@endif
                                     <td @class(['py-2 pr-4 align-top', $statusClass(Results::status($case))])>{{ Results::status($case) }}</td>
                                     <td class="py-2 align-top">{{ $case['reason'] ?? 'No reason recorded.' }}</td>
                                 </tr>

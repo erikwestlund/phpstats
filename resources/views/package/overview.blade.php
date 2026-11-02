@@ -213,12 +213,12 @@
                     <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500">Connected packages</h2>
                     @foreach (['uses' => 'Uses', 'used_by' => 'Used by'] as $kind => $title)
                         @if ($relations->has($kind))
-                            <p class="mt-4 text-sm font-medium text-zinc-900 dark:text-white">{{ $title }}</p>
-                            <ul class="mt-2 space-y-3">
+                            <p class="mt-6 text-sm font-medium text-zinc-900 first-of-type:mt-4 dark:text-white">{{ $title }}</p>
+                            <ul class="mt-3 space-y-6">
                                 @foreach ($relations[$kind] as $relation)
                                     <li class="text-sm">
                                         <x-package-chip :package="$relation['package']" />
-                                        <p class="mt-1 text-zinc-600 dark:text-zinc-400">{{ $relation['text'] }}</p>
+                                        <p class="mt-2 leading-relaxed text-zinc-600 dark:text-zinc-400">{{ $relation['text'] }}</p>
                                     </li>
                                 @endforeach
                             </ul>
